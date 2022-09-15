@@ -1,0 +1,13 @@
+---
+import { Logo } from "../../molecules/logo/Logo";
+import { Menu } from "../../molecules/menu/Menu";
+---
+
+<nav class="relative z-50 h-24 select-none">
+  <div
+    class="container relative flex flex-wrap items-center justify-between h-24 mx-auto overflow-hidden font-medium border-b border-gray-200 md:overflow-visible px-8 sm:px-4 md:px-2 lg:px-0"
+  >
+    <Logo />
+    <Menu client:load />
+  </div>
+</nav>

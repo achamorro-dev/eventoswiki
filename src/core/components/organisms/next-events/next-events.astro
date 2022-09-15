@@ -1,0 +1,38 @@
+---
+import { EventCard } from "../../molecules/event-card/event-card";
+import { Datetime } from "../../../datetime/datetime";
+
+const events = await Astro.glob("../../../../pages/events/**/*.mdx");
+const nextEvents = events
+  .filter((event) => Datetime.isAfterYesterday(event.frontmatter.startDate))
+  .sort((a, b) =>
+    Datetime.sortByDateAsc(a.frontmatter.startDate, b.frontmatter.startDate)
+  )
+  .slice(0, 9);
+---
+
+<section>
+  <h2
+    class="mb-3 text-3xl font-extrabold leading-none text-gray-900 lg:text-4xl xl:text-5xl sm:mb-3"
+  >
+    Próximos eventos
+  </h2>
+  <div class="grid grid-cols-12 col-span-12 gap-7">
+    {
+      nextEvents.map((event) => {
+        return (
+          <EventCard
+            title={event.frontmatter.title}
+            tags={event.frontmatter.tags}
+            tagColor={event.frontmatter.tagColor}
+            image={event.frontmatter.image}
+            location={event.frontmatter.location}
+            startDate={event.frontmatter.startDate}
+            href={event.url}
+            className="col-span-12 md:col-span-6 lg:col-span-4"
+          />
+        );
+      })
+    }
+  </div>
+</section>

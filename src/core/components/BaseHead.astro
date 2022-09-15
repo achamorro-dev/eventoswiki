@@ -1,0 +1,18 @@
+---
+interface BaseHeadProps {
+  title?: string;
+}
+
+const { title = "Eventos.wiki" } = Astro.props as BaseHeadProps;
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
+</head>

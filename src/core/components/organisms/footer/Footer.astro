@@ -1,0 +1,34 @@
+---
+import { GitHub } from "../../atoms/icons/GitHub";
+import { Logo } from "../../molecules/logo/Logo";
+import { Twitter } from "../../atoms/icons/Twitter";
+---
+
+<section class="text-gray-700 bg-white body-font border-t border-gray-200">
+  <div
+    class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row"
+  >
+    <Logo />
+    <p
+      class="mt-4 text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0"
+    >
+      Made with ❤️ by <a
+        href="https://twitter.com/achamorro_dev"
+        target="_blank">@achamorro_dev</a
+      >
+    </p>
+    <span
+      class="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start"
+    >
+      <a href="#" class="text-gray-400 hover:text-gray-500">
+        <span class="sr-only">Twitter</span>
+        <Twitter />
+      </a>
+
+      <a href="#" class="text-gray-400 hover:text-gray-500">
+        <span class="sr-only">GitHub</span>
+        <GitHub />
+      </a>
+    </span>
+  </div>
+</section>
