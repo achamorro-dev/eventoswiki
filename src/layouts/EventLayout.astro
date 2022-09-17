@@ -1,12 +1,119 @@
+---
+import type { MarkdownLayoutProps } from "astro";
+import { Container } from "../core/components/atoms/container/container";
+import { Tag } from "../core/components/atoms/tag/tag";
+import { SocialLink } from "../core/components/molecules/social-link/social-link";
+import BaseHead from "../core/components/BaseHead.astro";
+import Footer from "../core/components/organisms/footer/Footer.astro";
+import Header from "../core/components/organisms/header/Header.astro";
+import { Calendar } from "../core/components/atoms/icons/Calendar";
+import { Datetime } from "../core/datetime/datetime";
+import { Link } from "../core/components/atoms/icons/Link";
+import type { Sociable } from "../core/social/sociable";
+
+type Props = MarkdownLayoutProps<
+  Sociable & {
+    title: string;
+    shortDescription: string;
+    thumbnail: string;
+    image: string;
+    altImage?: string;
+    tags: string[];
+    tagColor?: string;
+    startDate?: string;
+    endDate?: string;
+    web?: string;
+  }
+>;
+
+const { frontmatter } = Astro.props;
+const {
+  title,
+  image,
+  tags,
+  tagColor,
+  altImage,
+  startDate,
+  endDate,
+  twitter,
+  twitch,
+  web,
+} = frontmatter;
+---
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
+  <BaseHead title={`${title} - eventos.wiki`} />
   <body>
-    <slot />
+    <Header />
+    <div class="relative h-72 bg-indigo-900">
+      <img
+        src={image}
+        alt={altImage || `Foto de portada del evento ${title}`}
+        class="absolute w-full h-full object-cover shadow-md"
+      />
+      <div class="absolute w-full h-52 bottom-0 bg-gradient-to-t from-black">
+      </div>
+      <div
+        class="absolute w-full bottom-0 px-6 py-4 max-w-7xl left-0 right-0 ml-auto mr-auto lg:px-0"
+      >
+        <div class="flex items-center gap-2">
+          {tags.map((t) => <Tag color={tagColor}>{t}</Tag>)}
+        </div>
+        <h1 class="text-4xl font-medium text-white">{title}</h1>
+        <div class="flex">
+          {
+            startDate && (
+              <div class="flex items-center gap-2">
+                <Calendar color="white" size="1.2rem" />
+                <p class="text-sm text-white">
+                  {Datetime.toDateTimeString(startDate)}
+                </p>
+              </div>
+            )
+          }
+          {
+            endDate && (
+              <div class="flex items-center">
+                <p class="text-sm text-white">
+                  &nbsp;~ {Datetime.toDateTimeString(endDate)}
+                </p>
+              </div>
+            )
+          }
+        </div>
+        {
+          web && (
+            <div class="flex items-center gap-1">
+              <Link color="white" size="1.2rem" />
+              <a href={web} target="_blank" class="text-sm text-white">
+                {web}
+              </a>
+            </div>
+          )
+        }
+      </div>
+      <div
+        class="absolute -bottom-5 px-6 flex justify-end gap-1 max-w-7xl left-0 right-0 ml-auto mr-auto lg:px-0"
+      >
+        {twitter && <SocialLink href={twitter} type="twitter" />}
+        {twitch && <SocialLink href={twitch} type="twitch" />}
+      </div>
+    </div>
+    <main class="mt-4">
+      <Container>
+        <slot />
+      </Container>
+    </main>
+    <Footer />
+    <style>
+      :global(h2) {
+        @apply text-3xl font-bold py-4;
+      }
+
+      :global(p) {
+        @apply py-2;
+      }
+    </style>
   </body>
 </html>

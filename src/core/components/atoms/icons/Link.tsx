@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 import type { Icon } from './icon'
 
-export const Calendar: FC<Icon> = (props) => {
+export const Link: FC<Icon> = (props) => {
   const { size, color } = props
   return (
     <svg
-      viewBox='0 0 24 24'
       className='w-6 h-6 stroke-gray-300'
+      viewBox='0 0 24 24'
       stroke-width='1.5'
       fill='none'
       stroke-linecap='round'
@@ -18,12 +18,8 @@ export const Calendar: FC<Icon> = (props) => {
       }}
     >
       <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
-      <rect x='4' y='5' width='16' height='16' rx='2'></rect>
-      <line x1='16' y1='3' x2='16' y2='7'></line>
-      <line x1='8' y1='3' x2='8' y2='7'></line>
-      <line x1='4' y1='11' x2='20' y2='11'></line>
-      <line x1='11' y1='15' x2='12' y2='15'></line>
-      <line x1='12' y1='15' x2='12' y2='18'></line>
+      <path d='M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5'></path>
+      <path d='M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5'></path>
     </svg>
   )
 }

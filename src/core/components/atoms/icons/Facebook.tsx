@@ -1,9 +1,10 @@
 import type { FC } from 'react'
+import type { Icon } from './icon'
 
-export const Facebook: FC = () => {
+export const Facebook: FC<Icon> = ({ size }) => {
   return (
     <svg
-      className='w-6 h-6'
+      className={`w-${size || 6} h-${size || 6}`}
       fill='currentColor'
       viewBox='0 0 24 24'
       aria-hidden='true'

@@ -15,4 +15,5 @@ const { title = "Eventos.wiki" } = Astro.props as BaseHeadProps;
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="generator" content={Astro.generator} />
   <title>{title}</title>
+  <slot />
 </head>

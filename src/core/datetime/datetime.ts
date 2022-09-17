@@ -7,6 +7,12 @@ export class Datetime {
     return dayjs(dateToFormat).locale('es').format('DD/MM/YYYY')
   }
 
+  static toDateTimeString(dateToFormat: string | Date): string {
+    if (!dateToFormat) return ''
+
+    return dayjs(dateToFormat).locale('es').format('DD/MM/YYYY HH:mm')
+  }
+
   static isBeforeToday(date: string | Date): boolean {
     if (!date) return false
 
