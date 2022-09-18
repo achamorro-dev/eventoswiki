@@ -27,11 +27,15 @@ export class Datetime {
     return dayjs(date).isAfter(yesterday)
   }
 
-  static sortByDateDesc(dateA: string | Date, dateB: string | Date): number {
+  static sortByDateDesc(dateA?: string | Date, dateB?: string | Date): number {
+    if (!dateA) return -1
+    if (!dateB) return 1
     return dayjs(dateA).isBefore(dateB) ? 1 : -1
   }
 
-  static sortByDateAsc(dateA: string | Date, dateB: string | Date): number {
+  static sortByDateAsc(dateA?: string | Date, dateB?: string | Date): number {
+    if (!dateA) return 1
+    if (!dateB) return -1
     return dayjs(dateA).isBefore(dateB) ? -1 : 1
   }
 }

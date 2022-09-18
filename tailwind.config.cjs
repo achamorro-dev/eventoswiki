@@ -9,11 +9,13 @@ module.exports = {
       ...colors,
       primary: {
         light: colors.indigo[300],
-        DEFAULT: colors.indigo[500],
+        DEFAULT: '#6089D3',
         dark: colors.indigo[800],
       },
       accent: {
+        light: colors.green[200],
         DEFAULT: colors.green[400],
+        dark: colors.green[600],
       },
     },
   },

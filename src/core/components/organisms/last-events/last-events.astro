@@ -1,38 +1,23 @@
 ---
-import { EventCard } from "../../molecules/event-card/event-card";
-import { Datetime } from "../../../../core/datetime/datetime";
+import { EventsGrid } from "../../organisms/events-grid/events-grid";
+import type { AstroEvent } from "../../../events/astro-event";
+import { EventUtils } from "../../../events/event-utils";
 
-const events = await Astro.glob("../../../../pages/events/**/*.mdx");
-const lastEvents = events
-  .filter((event) => Datetime.isBeforeToday(event.frontmatter.startDate))
-  .sort((a, b) =>
-    Datetime.sortByDateDesc(a.frontmatter.startDate, b.frontmatter.startDate)
-  )
-  .slice(0, 6);
+const events = (await Astro.glob(
+  "../../../../pages/eventos/**/*.mdx"
+)) as AstroEvent[];
+const lastEventsFiltered = EventUtils.getLastEvents(events);
+const lastEvents = EventUtils.sortByStartDateDesc(lastEventsFiltered).slice(
+  0,
+  6
+);
 ---
 
 <section class="mt-12">
   <h2
-    class="mb-3 text-3xl font-extrabold leading-none text-gray-900 lg:text-4xl xl:text-5xl sm:mb-3"
+    class="mb-3 text-3xl font-extrabold leading-none text-gray-900 dark:text-gray-50 lg:text-4xl xl:text-5xl sm:mb-3"
   >
     Últimos eventos
   </h2>
-  <div class="grid grid-cols-12 col-span-12 gap-7">
-    {
-      lastEvents.map((event) => {
-        return (
-          <EventCard
-            title={event.frontmatter.title}
-            tags={event.frontmatter.tags}
-            tagColor={event.frontmatter.tagColor}
-            image={event.frontmatter.image}
-            location={event.frontmatter.location}
-            startDate={event.frontmatter.startDate}
-            href={event.url}
-            className="col-span-12 md:col-span-6 lg:col-span-4"
-          />
-        );
-      })
-    }
-  </div>
+  <EventsGrid events={lastEvents} />
 </section>

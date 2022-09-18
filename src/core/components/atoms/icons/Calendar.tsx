@@ -6,7 +6,7 @@ export const Calendar: FC<Icon> = (props) => {
   return (
     <svg
       viewBox='0 0 24 24'
-      className='w-6 h-6 stroke-gray-300'
+      className='w-6 h-6 stroke-gray-500 dark:stroke-gray-100'
       stroke-width='1.5'
       fill='none'
       stroke-linecap='round'

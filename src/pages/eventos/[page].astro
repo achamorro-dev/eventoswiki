@@ -1,0 +1,40 @@
+---
+import { Button } from "../../core/components/atoms/button/Button";
+import { Link } from "../../core/components/atoms/link/Link";
+import { EventsGrid } from "../../core/components/organisms/events-grid/events-grid";
+import type { AstroEvent } from "../../core/events/astro-event";
+import { EventUtils } from "../../core/events/event-utils";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths({ paginate }: { paginate: any }) {
+  const events = (await Astro.glob("../eventos/**/*.mdx")) as AstroEvent[];
+
+  const eventsFiltered = EventUtils.getNextEvents(events);
+  const eventsSortered = EventUtils.sortByStartDateAsc(eventsFiltered);
+  return paginate(eventsSortered, { pageSize: 10 });
+}
+
+const { page } = Astro.props;
+const hasMorePages = page.data.length === 10;
+---
+
+<Layout title="eventos.wiki - Eventos pasados">
+  <div class="flex items-center justify-between mt-4 mb-10">
+    <h2
+      class="flex-shrink-0 text-3xl font-extrabold leading-none text-primary lg:text-4xl xl:text-5xl sm:mb-3"
+    >
+      Eventos actuales
+    </h2>
+    <Link href="/eventos/archivados/1" className="text-right"
+      >Ver anteriores</Link
+    >
+  </div>
+  <EventsGrid events={page.data} />
+  {
+    hasMorePages && (
+      <Button type="link" href={`/eventos/${page.currentPage}`}>
+        Siguiente página
+      </Button>
+    )
+  }
+</Layout>

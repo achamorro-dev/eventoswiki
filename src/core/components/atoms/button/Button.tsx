@@ -11,11 +11,12 @@ type ButtonProps = {
 }
 
 const BUTTON_DEFAULT_CLASSES =
-  'inline-flex items-center justify-center w-full px-8 py-4 text-base font-bold leading-6 text-white bg-primary border border-transparent rounded-full md:w-auto hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600'
+  'inline-flex items-center justify-center w-full px-8 py-4 text-base font-bold leading-6 text-white bg-primary dark:bg-accent border border-transparent rounded-full md:w-auto hover:bg-primary-light dark:hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600'
 
 const BUTTON_VARIANT_CLASSES: { [variant in ButtonVariant]: string } = {
-  outline: 'bg-transparent border-primary text-primary hover:bg-gray-100',
-  text: 'bg-transparent border-transparent text-primary hover:bg-gray-50',
+  outline:
+    'bg-transparent dark:bg-transparent border-primary text-primary dark:text-accent hover:bg-gray-100 dark:hover:bg-gray-50 dark:hover:bg-opacity-10',
+  text: 'bg-transparent dark:bg-transparent border-transparent text-primary dark:text-accent hover:bg-gray-50 dark:hover:bg-gray-50 dark:hover:bg-opacity-10',
   default: '',
 }
 

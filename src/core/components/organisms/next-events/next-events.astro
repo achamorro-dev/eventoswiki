@@ -1,25 +1,28 @@
 ---
 import { EventCard } from "../../molecules/event-card/event-card";
-import { Datetime } from "../../../datetime/datetime";
+import { EventUtils } from "../../../../core/events/event-utils";
+import type { AstroEvent } from "../../../events/astro-event";
 
-const events = await Astro.glob("../../../../pages/events/**/*.mdx");
-const nextEvents = events
-  .filter((event) => Datetime.isAfterYesterday(event.frontmatter.startDate))
-  .sort((a, b) =>
-    Datetime.sortByDateAsc(a.frontmatter.startDate, b.frontmatter.startDate)
-  )
-  .slice(0, 9);
+const events = (await Astro.glob(
+  "../../../../pages/eventos/**/*.mdx"
+)) as AstroEvent[];
+
+const nextEventsFiltered = EventUtils.getNextEvents(events);
+const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(
+  0,
+  9
+);
 ---
 
 <section>
   <h2
-    class="mb-3 text-3xl font-extrabold leading-none text-gray-900 lg:text-4xl xl:text-5xl sm:mb-3"
+    class="mb-3 text-3xl font-extrabold leading-none text-gray-900 dark:text-gray-50 lg:text-4xl xl:text-5xl sm:mb-3"
   >
     Próximos eventos
   </h2>
   <div class="grid grid-cols-12 col-span-12 gap-7">
     {
-      nextEvents.map((event) => {
+      nextEvents.map((event: AstroEvent) => {
         return (
           <EventCard
             title={event.frontmatter.title}

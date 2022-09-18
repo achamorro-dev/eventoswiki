@@ -4,13 +4,15 @@ import { Logo } from "../../molecules/logo/Logo";
 import { Twitter } from "../../atoms/icons/Twitter";
 ---
 
-<section class="text-gray-700 bg-white body-font border-t border-gray-200">
+<section
+  class="text-gray-700 bg-white dark:bg-slate-900 body-font border-t border-gray-200"
+>
   <div
     class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row"
   >
     <Logo />
     <p
-      class="mt-4 text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0"
+      class="mt-4 text-sm text-gray-500 dark:text-gray-300 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0"
     >
       Made with ❤️ by <a
         href="https://twitter.com/achamorro_dev"
@@ -22,6 +24,7 @@ import { Twitter } from "../../atoms/icons/Twitter";
     >
       <a
         href="https://twitter.com/eventos_wiki"
+        target="_blank"
         class="text-gray-400 hover:text-gray-500"
         rel="nofollow"
       >
@@ -32,6 +35,7 @@ import { Twitter } from "../../atoms/icons/Twitter";
       <a
         href="https://github.com/achamorro-dev/eventoswiki"
         rel="nofollow"
+        target="_blank"
         class="text-gray-400 hover:text-gray-500"
       >
         <span class="sr-only">GitHub</span>

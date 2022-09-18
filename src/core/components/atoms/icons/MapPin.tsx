@@ -5,7 +5,7 @@ export const MapPin: FC = () => {
     <svg
       viewBox='0 0 24 24'
       stroke-width='1.5'
-      className='w-6 h-6 stroke-gray-500'
+      className='w-6 h-6 stroke-gray-500 dark:stroke-gray-100'
       fill='none'
       stroke-linecap='round'
       stroke-linejoin='round'

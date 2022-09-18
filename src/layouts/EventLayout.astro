@@ -9,22 +9,9 @@ import Header from "../core/components/organisms/header/Header.astro";
 import { Calendar } from "../core/components/atoms/icons/Calendar";
 import { Datetime } from "../core/datetime/datetime";
 import { Link } from "../core/components/atoms/icons/Link";
-import type { Sociable } from "../core/social/sociable";
+import type { Event } from "../core/events/event";
 
-type Props = MarkdownLayoutProps<
-  Sociable & {
-    title: string;
-    shortDescription: string;
-    thumbnail: string;
-    image: string;
-    altImage?: string;
-    tags: string[];
-    tagColor?: string;
-    startDate?: string;
-    endDate?: string;
-    web?: string;
-  }
->;
+type Props = MarkdownLayoutProps<Event>;
 
 const { frontmatter } = Astro.props;
 const {
@@ -44,7 +31,7 @@ const {
 <!DOCTYPE html>
 <html lang="en">
   <BaseHead title={`${title} - eventos.wiki`} />
-  <body>
+  <body class="bg-white dark:bg-slate-800">
     <Header />
     <div class="relative h-72 bg-indigo-900">
       <img
@@ -107,6 +94,10 @@ const {
     </main>
     <Footer />
     <style>
+      :global(h2, h3, h4, h5, h6, p, span) {
+        @apply dark:text-gray-50;
+      }
+
       :global(h2) {
         @apply text-3xl font-bold py-4;
       }
