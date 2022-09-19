@@ -30,7 +30,7 @@ export const EventCard: FC<EventCardProps> = (props) => {
 
   return (
     <a href={href} className={className}>
-      <Card className='relative hover:transition-transform hover:translate-y-[-12px]'>
+      <Card className='relative hover:transition-transform lg:hover:translate-y-[-12px]'>
         <img className='object-cover w-full h-56' src={image} />
         <div className='relative top-0 left-3 -mt-3 flex items-center flex-wrap gap-1 rounded-full'>
           {tags.map((t) => (
