@@ -42,7 +42,7 @@ const {
       <div class="absolute w-full h-52 bottom-0 bg-gradient-to-t from-black">
       </div>
       <div
-        class="absolute w-full bottom-0 px-6 py-4 max-w-7xl left-0 right-0 ml-auto mr-auto lg:px-0"
+        class="absolute w-full bottom-0 px-6 py-4 max-w-7xl left-0 right-0 ml-auto mr-auto xl:px-0"
       >
         <div class="flex items-center gap-2">
           {tags.map((t) => <Tag color={tagColor}>{t}</Tag>)}
@@ -81,7 +81,7 @@ const {
         }
       </div>
       <div
-        class="absolute -bottom-5 px-6 flex justify-end gap-1 max-w-7xl left-0 right-0 ml-auto mr-auto lg:px-0"
+        class="absolute -bottom-5 px-6 flex justify-end gap-1 max-w-7xl left-0 right-0 ml-auto mr-auto xl:px-0"
       >
         {twitter && <SocialLink href={twitter} type="twitter" />}
         {twitch && <SocialLink href={twitch} type="twitch" />}
@@ -94,8 +94,24 @@ const {
     </main>
     <Footer />
     <style>
-      :global(h2, h3, h4, h5, h6, p, span) {
-        @apply dark:text-gray-50;
+      html {
+        font-family: system-ui, sans-serif;
+        font-size: var(--font-size-base);
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        min-height: 100%;
+      }
+
+      :global(p, span) {
+        @apply text-gray-900 dark:text-gray-50;
+      }
+      :global(h2, h3, h4, h5, h6) {
+        @apply text-slate-900 dark:text-gray-200;
       }
 
       :global(h2) {
