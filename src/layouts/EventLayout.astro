@@ -31,7 +31,9 @@ const {
 <!DOCTYPE html>
 <html lang="en">
   <BaseHead title={`${title} - eventos.wiki`} />
-  <body class="bg-white dark:bg-slate-800">
+  <body
+    class="bg-white dark:bg-slate-800 grid min-h-full m-0 grid-rows-[auto_auto_1fr_auto]"
+  >
     <Header />
     <div class="relative h-72 bg-indigo-900">
       <img
@@ -94,22 +96,16 @@ const {
     </main>
     <Footer />
     <style>
-      html {
+      :global(html) {
         font-family: system-ui, sans-serif;
         font-size: var(--font-size-base);
         height: 100%;
       }
 
-      body {
-        margin: 0;
-        display: grid;
-        grid-template-rows: auto auto 1fr auto;
-        min-height: 100%;
-      }
-
       :global(p, span) {
         @apply text-gray-900 dark:text-gray-50;
       }
+
       :global(h2, h3, h4, h5, h6) {
         @apply text-slate-900 dark:text-gray-200;
       }
