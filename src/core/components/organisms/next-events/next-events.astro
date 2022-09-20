@@ -1,7 +1,7 @@
 ---
-import { EventCard } from "../../molecules/event-card/event-card";
 import { EventUtils } from "../../../../core/events/event-utils";
 import type { AstroEvent } from "../../../events/astro-event";
+import { EventsGrid } from "../events-grid/events-grid";
 
 const events = (await Astro.glob(
   "../../../../pages/eventos/**/*.mdx"
@@ -20,22 +20,5 @@ const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(
   >
     Próximos eventos
   </h2>
-  <div class="grid grid-cols-12 col-span-12 gap-7">
-    {
-      nextEvents.map((event: AstroEvent) => {
-        return (
-          <EventCard
-            title={event.frontmatter.title}
-            tags={event.frontmatter.tags}
-            tagColor={event.frontmatter.tagColor}
-            image={event.frontmatter.image}
-            location={event.frontmatter.location}
-            startDate={event.frontmatter.startDate}
-            href={event.url}
-            className="col-span-12 md:col-span-6 lg:col-span-4"
-          />
-        );
-      })
-    }
-  </div>
+  <EventsGrid events={nextEvents} />
 </section>

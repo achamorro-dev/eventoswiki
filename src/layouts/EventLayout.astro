@@ -10,12 +10,14 @@ import { Calendar } from "../core/components/atoms/icons/Calendar";
 import { Datetime } from "../core/datetime/datetime";
 import { Link } from "../core/components/atoms/icons/Link";
 import type { Event } from "../core/events/event";
+import { MapPin } from "../core/components/atoms/icons/MapPin";
 
 type Props = MarkdownLayoutProps<Event>;
 
-const { frontmatter } = Astro.props;
+const { frontmatter, url } = Astro.props;
 const {
   title,
+  shortDescription,
   image,
   tags,
   tagColor,
@@ -24,13 +26,16 @@ const {
   endDate,
   twitter,
   twitch,
+  instagram,
+  youtube,
   web,
+  location,
 } = frontmatter;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-  <BaseHead title={`${title} - eventos.wiki`} />
+  <BaseHead title={`${title} - eventos.wiki`} description={shortDescription} image={image} url={`https://eventos.wiki${url}`} />
   <body
     class="bg-white dark:bg-slate-800 grid min-h-full m-0 grid-rows-[auto_auto_1fr_auto]"
   >
@@ -53,7 +58,7 @@ const {
         <div class="flex">
           {
             startDate && (
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1">
                 <Calendar color="white" size="1.2rem" />
                 <p class="text-sm text-white">
                   {Datetime.toDateTimeString(startDate)}
@@ -65,7 +70,7 @@ const {
             endDate && (
               <div class="flex items-center">
                 <p class="text-sm text-white">
-                  &nbsp;~ {Datetime.toDateTimeString(endDate)}
+                  &nbsp;&centerdot; {Datetime.toDateTimeString(endDate)}
                 </p>
               </div>
             )
@@ -81,12 +86,22 @@ const {
             </div>
           )
         }
+        {
+          location && (
+              <MapPin color="white" size="1.25rem" />
+              <div class="flex items-center gap-1">
+              <p class="text-sm text-white">{location}</p>
+            </div>
+          )
+        }
       </div>
       <div
         class="absolute -bottom-5 px-6 flex justify-end gap-1 max-w-7xl left-0 right-0 ml-auto mr-auto xl:px-0"
       >
         {twitter && <SocialLink href={twitter} type="twitter" />}
         {twitch && <SocialLink href={twitch} type="twitch" />}
+        {instagram && <SocialLink href={instagram} type="instagram" />}
+        {youtube && <SocialLink href={youtube} type="youtube" />}
       </div>
     </div>
     <main class="mt-4">

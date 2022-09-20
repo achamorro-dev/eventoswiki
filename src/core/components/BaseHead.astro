@@ -3,7 +3,6 @@ type BaseHeadProps = {
   title?: string;
   description?: string;
   image?: string;
-  altImage?: string;
   url?: string;
 };
 
@@ -11,7 +10,6 @@ const {
   title = "eventos.wiki",
   description = "En eventos.wiki tendrás todos los eventos sobre tecnología en un mismo lugar",
   image = "",
-  altImage = "",
   url = "https://eventos.wiki/",
 } = Astro.props as BaseHeadProps;
 ---
