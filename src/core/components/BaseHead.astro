@@ -1,19 +1,50 @@
 ---
-interface BaseHeadProps {
+type BaseHeadProps = {
   title?: string;
-}
+  description?: string;
+  image?: string;
+  altImage?: string;
+  url?: string;
+};
 
-const { title = "Eventos.wiki" } = Astro.props as BaseHeadProps;
+const {
+  title = "eventos.wiki",
+  description = "En eventos.wiki tendrás todos los eventos sobre tecnología en un mismo lugar",
+  image = "",
+  altImage = "",
+  url = "https://eventos.wiki/",
+} = Astro.props as BaseHeadProps;
 ---
 
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" dir="rtl" />
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <meta name="generator" content={Astro.generator} />
+  <meta name="description" content={description} />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={url} />
+  <meta property="og:title" content={title} />
+  <meta property="og:image" content={image} />
+  <meta property="og:description" content={description} />
+  <meta property="og:site_name" content="eventos.wiki" />
+  <meta property="og:locale" content="es_ES" />
+  <meta name="twitter:site" content="@eventos_wiki" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@achamorro_dev" />
+  <meta name="twitter:url" content={url} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={image} />
+  <link rel="canonical" href={url} />
   <title>{title}</title>
-  <slot />
 </head>
+<slot />
