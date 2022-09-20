@@ -35,7 +35,12 @@ const {
 
 <!DOCTYPE html>
 <html lang="en">
-  <BaseHead title={`${title} - eventos.wiki`} description={shortDescription} image={image} url={`https://eventos.wiki${url}`} />
+  <BaseHead
+    title={`${title} - eventos.wiki`}
+    description={shortDescription}
+    image={image}
+    url={`https://eventos.wiki${url}`}
+  />
   <body
     class="bg-white dark:bg-slate-800 grid min-h-full m-0 grid-rows-[auto_auto_1fr_auto]"
   >
@@ -88,8 +93,8 @@ const {
         }
         {
           location && (
+            <div class="flex items-center gap-1">
               <MapPin color="white" size="1.25rem" />
-              <div class="flex items-center gap-1">
               <p class="text-sm text-white">{location}</p>
             </div>
           )
@@ -118,7 +123,7 @@ const {
       }
 
       :global(p, span) {
-        @apply text-gray-900 dark:text-gray-50;
+        @apply text-gray-900 dark:text-gray-50 text-xl;
       }
 
       :global(h2, h3, h4, h5, h6) {
