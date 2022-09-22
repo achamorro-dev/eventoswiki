@@ -13,9 +13,9 @@ module.exports = {
         dark: colors.indigo[900],
       },
       accent: {
-        light: colors.emerald[200],
-        DEFAULT: colors.emerald[400],
-        dark: colors.emerald[600],
+        light: colors.rose[400],
+        DEFAULT: colors.rose[600],
+        dark: colors.rose[800],
       },
     },
   },
