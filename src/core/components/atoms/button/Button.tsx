@@ -5,6 +5,7 @@ type ButtonVariant = "default" | "outline" | "text";
 type ButtonProps = {
   type?: "button" | "link";
   href?: string;
+  rel?: string;
   onClick?(): void;
   variant?: ButtonVariant;
   className?: string;
@@ -28,13 +29,15 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = (props) => {
     href,
     className = "",
     children,
+    rel,
   } = props;
 
   return type === "link" ? (
     <a
       href={href}
       type="button"
-      className={`${BUTTON_DEFAULT_CLASSES} ${BUTTON_VARIANT_CLASSES[variant]} ${className}`}
+      rel={rel}
+      className={`${BUTTON_DEFAULT_CLASSES} ${BUTTON_VARIANT_CLASSES[variant]} ${className}`}
     >
       {children}
     </a>
