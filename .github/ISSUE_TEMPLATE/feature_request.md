@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Solicitud para añadir un evento
-title: "[NUEVO EVENTO] Solicitud para dar de alta"
+title: "[EVENTO] Añadir nuevo evento"
 labels: enhancement
 assignees: achamorro-dev
 
