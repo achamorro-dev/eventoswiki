@@ -42,7 +42,9 @@ export const EventCard: FC<EventCardProps> = (props) => {
         <h3 className="text-base font-bold p-4 pb-0 sm:text-lg md:text-xl text-black dark:text-gray-100">
           {title}
         </h3>
-        <p className="px-4 text-sm text-gray-500 line-clamp-3">{description}</p>
+        <p className="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-3">
+          {description}
+        </p>
         <div className="w-full flex gap-4 items-center p-4">
           {startDate && (
             <div className="flex items-center">

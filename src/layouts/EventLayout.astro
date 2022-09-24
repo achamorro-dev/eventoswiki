@@ -143,6 +143,10 @@ const {
         @apply text-gray-900 dark:text-gray-50 text-xl;
       }
 
+      :global(small) {
+        @apply text-gray-900 dark:text-gray-50 text-sm;
+      }
+
       :global(h2, h3, h4, h5, h6) {
         @apply text-slate-900 dark:text-gray-200;
       }
@@ -153,6 +157,17 @@ const {
 
       :global(p) {
         @apply py-2;
+      }
+
+      :global(table) {
+        @apply mb-10;
+      }
+
+      :global(table tr) {
+        @apply border-b dark:border-b-gray-50;
+      }
+      :global(table td) {
+        @apply text-gray-900 dark:text-gray-50 p-4;
       }
     </style>
   </body>
