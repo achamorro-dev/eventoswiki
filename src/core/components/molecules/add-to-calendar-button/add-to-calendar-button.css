@@ -1,0 +1,41 @@
+.atcb-button {
+  @apply rounded-full shadow-lg bg-white hover:bg-gray-50 hover:shadow-xl;
+}
+
+.atcb-button.atcb-active:not(.atcb-modal-style, .atcb-dropoverlay) {
+  @apply bg-primary dark:bg-accent border-none;
+}
+
+.atcb-button .atcb-text {
+  @apply text-primary dark:text-accent font-sans font-bold text-sm;
+}
+
+.atcb-button.atcb-active:not(.atcb-modal-style, .atcb-dropoverlay) .atcb-text {
+  @apply text-white;
+}
+
+.atcb-button .atcb-icon {
+  @apply m-0 mr-4;
+}
+
+.atcb-button .atcb-icon svg {
+  @apply fill-primary dark:fill-accent;
+}
+
+.atcb-button.atcb-active:not(.atcb-modal-style, .atcb-dropoverlay)
+  .atcb-icon
+  svg {
+  @apply fill-white;
+}
+
+.atcb-list-item {
+  @apply p-2 bg-slate-600 border-none hover:bg-slate-500;
+}
+
+.atcb-list-item .atcb-icon {
+  @apply m-0;
+}
+
+.atcb-list-item .atcb-text {
+  @apply text-white font-sans text-sm pl-4;
+}

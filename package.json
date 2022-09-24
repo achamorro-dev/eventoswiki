@@ -16,8 +16,9 @@
     "@tailwindcss/line-clamp": "0.4.2",
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",
-    "dayjs": "1.11.5",
+    "add-to-calendar-button": "1.15.5",
     "astro": "1.1.2",
+    "dayjs": "1.11.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   }

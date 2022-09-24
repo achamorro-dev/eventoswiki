@@ -11,6 +11,7 @@ import { Datetime } from "../core/datetime/datetime";
 import { Link } from "../core/components/atoms/icons/Link";
 import type { Event } from "../core/events/event";
 import { MapPin } from "../core/components/atoms/icons/MapPin";
+import { AddToCalendarButton } from "../core/components/molecules/add-to-calendar-button/add-to-calendar-button";
 
 type Props = MarkdownLayoutProps<Event>;
 
@@ -28,6 +29,7 @@ const {
   twitch,
   instagram,
   youtube,
+  linkedin,
   web,
   location,
 } = frontmatter;
@@ -54,12 +56,14 @@ const {
       <div class="absolute w-full h-52 bottom-0 bg-gradient-to-t from-black">
       </div>
       <div
-        class="absolute w-full bottom-0 px-6 py-4 max-w-7xl left-0 right-0 ml-auto mr-auto xl:px-0"
+        class="absolute w-full bottom-0 px-6 py-4 max-w-5xl left-0 right-0 ml-auto mr-auto xl:px-0"
       >
         <div class="flex items-center gap-2">
           {tags.map((t) => <Tag color={tagColor}>{t}</Tag>)}
         </div>
-        <h1 class="text-4xl font-medium text-white">{title}</h1>
+        <h1 class="text-4xl font-medium text-white">
+          {title}
+        </h1>
         <div class="flex">
           {
             startDate && (
@@ -101,18 +105,31 @@ const {
         }
       </div>
       <div
-        class="absolute -bottom-5 px-6 flex justify-end gap-1 max-w-7xl left-0 right-0 ml-auto mr-auto xl:px-0"
+        class="absolute -bottom-5 px-6 flex justify-end gap-1 max-w-5xl left-0 right-0 ml-auto mr-auto xl:px-0"
       >
         {twitter && <SocialLink href={twitter} type="twitter" />}
         {twitch && <SocialLink href={twitch} type="twitch" />}
         {instagram && <SocialLink href={instagram} type="instagram" />}
         {youtube && <SocialLink href={youtube} type="youtube" />}
+        {linkedin && <SocialLink href={linkedin} type="linkedin" />}
       </div>
     </div>
     <main class="mt-4">
-      <Container>
+      <Container maxSize="m">
         <slot />
       </Container>
+      <div class="sticky bottom-2 w-full text-center p-4">
+        <AddToCalendarButton
+          client:load
+          title={title}
+          description={shortDescription}
+          startDate={Datetime.toDateIsoString(startDate!)}
+          endDate={Datetime.toDateIsoString(endDate!)}
+          startTime={Datetime.toTimeIsoString(startDate!)}
+          endTime={Datetime.toTimeIsoString(endDate!)}
+          location={location}
+        />
+      </div>
     </main>
     <Footer />
     <style>

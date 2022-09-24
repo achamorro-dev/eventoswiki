@@ -20,5 +20,5 @@ const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(
   >
     Próximos eventos
   </h2>
-  <EventsGrid events={nextEvents} />
+  <EventsGrid client:load events={nextEvents} />
 </section>

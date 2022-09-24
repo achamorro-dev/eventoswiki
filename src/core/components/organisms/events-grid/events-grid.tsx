@@ -4,11 +4,12 @@ import { EventCard } from "../../molecules/event-card/event-card";
 
 export const EventsGrid: FC<{ events: AstroEvent[] }> = ({ events }) => {
   return (
-    <div className="grid grid-cols-12 col-span-12 gap-7">
+    <div className="grid grid-cols-12 col-span-12 auto-rows-min justify-items-stretch gap-7">
       {events.map((event: AstroEvent) => {
         return (
           <EventCard
             title={event.frontmatter.title}
+            description={event.frontmatter.shortDescription}
             tags={event.frontmatter.tags}
             tagColor={event.frontmatter.tagColor}
             image={event.frontmatter.thumbnail}
