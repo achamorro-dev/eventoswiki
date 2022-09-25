@@ -69,7 +69,7 @@ const {
             startDate && (
               <div class="flex items-center gap-1">
                 <Calendar color="white" size="1.2rem" />
-                <p class="text-sm text-white">
+                <p class="text-sm text-white py-2">
                   {Datetime.toDateTimeString(startDate)}
                 </p>
               </div>
@@ -78,7 +78,7 @@ const {
           {
             endDate && (
               <div class="flex items-center">
-                <p class="text-sm text-white">
+                <p class="text-sm text-white py-2">
                   &nbsp;&centerdot; {Datetime.toDateTimeString(endDate)}
                 </p>
               </div>
@@ -99,7 +99,7 @@ const {
           location && (
             <div class="flex items-center gap-1">
               <MapPin color="white" size="1.25rem" />
-              <p class="text-sm text-white">{location}</p>
+              <p class="text-sm text-white py-2">{location}</p>
             </div>
           )
         }
@@ -143,6 +143,10 @@ const {
         @apply text-gray-900 dark:text-gray-50 text-xl;
       }
 
+      :global(a) {
+        @apply text-blue-800 dark:text-blue-200 underline;
+      }
+
       :global(small) {
         @apply text-gray-900 dark:text-gray-50 text-sm;
       }
@@ -156,7 +160,7 @@ const {
       }
 
       :global(p) {
-        @apply py-2;
+        @apply py-4;
       }
 
       :global(table) {
