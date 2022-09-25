@@ -31,14 +31,14 @@ export class Datetime {
     if (!date) return false;
 
     const today = dayjs();
-    return dayjs(date).isBefore(today);
+    return dayjs(date).isBefore(today, "day");
   }
 
   static isAfterYesterday(date: ValidDate): boolean {
     if (!date) return false;
 
     const yesterday = dayjs().subtract(1, "day");
-    return dayjs(date).isAfter(yesterday);
+    return dayjs(date).isAfter(yesterday, "day");
   }
 
   static sortByDateDesc(dateA?: ValidDate, dateB?: string | Date): number {
