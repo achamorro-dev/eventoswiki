@@ -175,8 +175,25 @@ const {
       :global(table tr) {
         @apply border-b dark:border-b-gray-50;
       }
+
       :global(table td) {
         @apply text-gray-900 dark:text-gray-50 p-4;
+      }
+
+      :global(ol, ul) {
+        @apply text-base font-sans p-4;
+      }
+
+      :global(ol) {
+        @apply list-decimal;
+      }
+
+      :global(ul) {
+        @apply list-disc;
+      }
+
+      :global(ol li, ul li) {
+        @apply text-lg mb-2;
       }
     </style>
   </body>
