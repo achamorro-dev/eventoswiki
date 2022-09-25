@@ -153,11 +153,15 @@ const {
       }
 
       :global(h2, h3, h4, h5, h6) {
-        @apply text-slate-900 dark:text-gray-200;
+        @apply text-slate-900 dark:text-gray-200 font-bold;
       }
 
       :global(h2) {
-        @apply text-3xl font-bold py-4;
+        @apply text-3xl py-4;
+      }
+
+      :global(h3) {
+        @apply text-2xl font-bold py-3;
       }
 
       :global(p) {
