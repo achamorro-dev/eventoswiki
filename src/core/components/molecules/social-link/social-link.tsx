@@ -1,6 +1,7 @@
 import type { FC, ReactNode } from "react";
 import type { SocialNetwork } from "../../../social/social-network";
 import { Facebook } from "../../atoms/icons/Facebook";
+import { GitHub } from "../../atoms/icons/GitHub";
 import { Instagram } from "../../atoms/icons/Instagram";
 import { Linkedin } from "../../atoms/icons/Linkedin";
 import { Twitch } from "../../atoms/icons/twitch";
@@ -19,6 +20,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   twitch: <Twitch />,
   facebook: <Facebook />,
   instagram: <Instagram />,
+  github: <GitHub />,
 };
 
 export const SocialLink: FC<SocialLinkProps> = (props) => {

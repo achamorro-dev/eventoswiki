@@ -30,6 +30,7 @@ const {
   instagram,
   youtube,
   linkedin,
+  github,
   web,
   location,
 } = frontmatter;
@@ -117,6 +118,7 @@ const {
         {instagram && <SocialLink href={instagram} type="instagram" />}
         {youtube && <SocialLink href={youtube} type="youtube" />}
         {linkedin && <SocialLink href={linkedin} type="linkedin" />}
+        {github && <SocialLink href={github} type="github" />}
       </div>
     </div>
     <main class="mt-4">
@@ -192,7 +194,11 @@ const {
         @apply list-disc;
       }
 
-      :global(ol li, ul li) {
+      :global(ul li) {
+        @apply text-slate-900 dark:text-gray-200 text-lg mb-2;
+      }
+
+      :global(ol li) {
         @apply text-slate-900 dark:text-gray-200 text-lg mb-2;
       }
     </style>
