@@ -5,7 +5,7 @@ export const Linkedin: FC<Icon> = (props) => {
   const { size, color } = props;
   return (
     <svg
-      className="w-6 h-6 stroke-[#2c3e50]"
+      className="w-6 h-6 stroke-[#0072b1]"
       viewBox="0 0 24 24"
       stroke-width="1.5"
       fill="none"
