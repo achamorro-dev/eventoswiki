@@ -36,13 +36,13 @@ export const Menu: FC = () => {
 
       {showMenu && <ThemeModeToggle className="relative right-8 md:hidden" />}
 
-      <div
+      <button
         onClick={() => setShowMenu(!showMenu)}
         className="absolute right-0 flex items-center justify-center w-10 h-10 bg-white rounded-full cursor-pointer md:hidden hover:bg-gray-100 mr-5"
       >
         {!showMenu && <HamburgerMenu />}
         {showMenu && <Close />}
-      </div>
+      </button>
     </>
   );
 };
