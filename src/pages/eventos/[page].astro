@@ -11,11 +11,12 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
 
   const eventsFiltered = EventUtils.getNextEvents(events);
   const eventsSortered = EventUtils.sortByStartDateAsc(eventsFiltered);
-  return paginate(eventsSortered, { pageSize: 10 });
+
+  return paginate(eventsSortered, { pageSize: 9 });
 }
 
 const { page } = Astro.props;
-const hasMorePages = page.data.length === 10;
+const hasMorePages = page.url.next;
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">
@@ -32,9 +33,11 @@ const hasMorePages = page.data.length === 10;
   <EventsGrid events={page.data} />
   {
     hasMorePages && (
-      <Button type="link" href={`/eventos/${page.currentPage}`}>
-        Siguiente página
-      </Button>
+      <div class="flex justify-end mt-4">
+        <Button type="link" href={`/eventos/${page.currentPage + 1}`}>
+          Siguiente página
+        </Button>
+      </div>
     )
   }
 </Layout>
