@@ -34,7 +34,12 @@ export const Menu: FC = () => {
         <ThemeModeToggle className="hidden md:flex" />
       </div>
 
-      {showMenu && <ThemeModeToggle className="relative right-8 md:hidden" />}
+      {showMenu && (
+        <ThemeModeToggle
+          className="relative right-8 md:hidden"
+          onClick={() => setTimeout(() => setShowMenu(false), 0)}
+        />
+      )}
 
       <button
         onClick={() => setShowMenu(!showMenu)}
