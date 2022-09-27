@@ -25,11 +25,9 @@ const prevPage = page.url.prev;
     <h2
       class="text-3xl font-extrabold leading-none text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent lg:text-4xl xl:text-5xl sm:mb-3"
     >
-      Eventos actuales
+      Próximos eventos
     </h2>
-    <Link href="/eventos/archivados/1" className="text-right"
-      >Ver anteriores</Link
-    >
+    <Link href="/eventos/archivados/1" className="text-right">Ver pasados</Link>
   </div>
   <EventsGrid events={page.data} />
   <div class="flex justify-between mt-8">
