@@ -19,9 +19,8 @@
     "@types/react-big-calendar": "0.38.1",
     "@types/react-dom": "18.0.6",
     "add-to-calendar-button": "1.15.5",
-    "astro": "1.1.2",
+    "astro": "^1.4.2",
     "dayjs": "1.11.5",
-    "luxon": "4.0.4",
     "react": "18.2.0",
     "react-big-calendar": "1.5.0",
     "react-dom": "18.2.0"
