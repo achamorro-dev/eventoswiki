@@ -15,6 +15,7 @@ type EventCardProps = {
   location?: string;
   startDate?: string;
   href?: string;
+  altImage?: string;
 };
 
 export const EventCard: FC<EventCardProps> = (props) => {
@@ -28,12 +29,17 @@ export const EventCard: FC<EventCardProps> = (props) => {
     startDate = "",
     href = "#",
     tagColor,
+    altImage,
   } = props;
 
   return (
     <a href={href} className={className}>
       <Card className="relative transition-shadow duration-300 lg:hover:shadow-md">
-        <img className="object-cover w-full h-56" src={image} />
+        <img
+          className="object-cover w-full h-56"
+          src={image}
+          alt={altImage || `Foto de portada del evento ${title}`}
+        />
         <div className="relative top-0 left-3 -mt-3 flex items-center flex-wrap gap-1 rounded-full">
           {tags.map((t) => (
             <Tag color={tagColor}>{t}</Tag>
