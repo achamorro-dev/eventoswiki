@@ -3,6 +3,10 @@ import dayjs from "dayjs";
 type ValidDate = string | Date;
 
 export class Datetime {
+  static toDate(dateString: string): Date {
+    return dayjs(dateString).locale("es").toDate();
+  }
+
   static toDateString(dateToFormat: ValidDate): string {
     if (!dateToFormat) return "";
 
