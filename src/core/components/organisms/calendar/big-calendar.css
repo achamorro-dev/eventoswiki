@@ -1,0 +1,74 @@
+.calendar-wrapper {
+  height: 800px;
+}
+
+.event {
+  color: #fff;
+  background-color: var(--event-background-color, #4338ca) !important;
+  font-weight: bold;
+}
+
+.big-calendar .rbc-month-header span,
+.big-calendar .rbc-time-header-cell span,
+.big-calendar .rbc-time-slot span {
+  @apply text-base font-sans;
+}
+
+.big-calendar span {
+  @apply text-primary-dark;
+}
+
+.rbc-header {
+  @apply p-2;
+}
+
+.rbc-calendar span,
+.rbc-calendar button,
+.rbc-calendar th,
+.rbc-calendar td {
+  @apply dark:text-white;
+}
+
+.rbc-calendar button:hover {
+  @apply dark:text-black;
+}
+
+.rbc-agenda-table {
+  @apply table-fixed md:table-auto;
+}
+
+.rbc-agenda-date-cell,
+.rbc-agenda-time-cell {
+  @apply w-1/3 whitespace-normal md:w-auto md:whitespace-nowrap;
+}
+
+.rbc-agenda-date-cell,
+.rbc-agenda-event-cell,
+.rbc-agenda-time-cell span {
+  @apply text-white font-medium text-base;
+}
+
+.rbc-toolbar-label {
+  @apply font-bold;
+}
+
+.rbc-toolbar {
+  @apply gap-4;
+}
+
+.rbc-off-range-bg {
+  @apply dark:bg-primary-dark;
+}
+
+.rbc-today {
+  @apply bg-accent-light bg-opacity-75;
+}
+
+.rbc-btn-group .rbc-active,
+.rbc-btn-group:hover {
+  @apply border-none dark:text-black;
+}
+
+.rbc-button-link {
+  @apply hover:underline dark:hover:text-white !important;
+}
