@@ -1,0 +1,34 @@
+---
+import { BigCalendar } from "../core/components/organisms/calendar/big-calendar";
+import type { CalendarEvent } from "../core/components/organisms/calendar/calendar-event";
+import { Datetime } from "../core/datetime/datetime";
+import type { AstroEvent } from "../core/events/astro-event";
+import Layout from "../layouts/Layout.astro";
+
+const events = (await Astro.glob("./eventos/**/*.mdx")) as AstroEvent[];
+const calendarEvents = events.map(
+  (event, index) =>
+    ({
+      id: index,
+      title: event.frontmatter.title,
+      start: Datetime.toDate(event.frontmatter.startDate),
+      end: Datetime.toDate(event.frontmatter.endDate),
+      url: event.url,
+      color: event.frontmatter.tagColor,
+    } as CalendarEvent)
+);
+---
+
+<Layout
+  title="eventos.wiki - Calendario"
+  description="En eventos.wiki encontrarás el calendario de eventos sobre desarrollo y tecnología definitivo. Pasa y echa un vistazo a la gran variedad de eventos y, si falta el tuyo, sólo tienes que pedírnoslo."
+>
+  <div class="flex items-center justify-between mt-4 mb-10">
+    <h2
+      class="text-3xl font-extrabold leading-none text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent lg:text-4xl xl:text-5xl sm:mb-3"
+    >
+      Calendario
+    </h2>
+  </div>
+  <BigCalendar client:load events={calendarEvents} />
+</Layout>

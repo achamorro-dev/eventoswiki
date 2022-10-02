@@ -20,6 +20,7 @@ export const Menu: FC = () => {
           <Logo className="ml-5 md:hidden" />
           <div className="flex flex-col items-start justify-center w-full space-x-6 mb-4 text-center lg:space-x-8 md:w-2/3 md:mt-0 md:mb-0 md:mr-4 md:flex-row md:items-center md:justify-end ">
             <Link href="/eventos/1">Eventos</Link>
+            <Link href="/calendario">Calendario</Link>
             <Button
               variant="text"
               type="link"
