@@ -6,14 +6,15 @@ import Header from "../core/components/organisms/header/Header.astro";
 
 export interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="es">
-  <BaseHead title={title} />
+  <BaseHead title={title} description={description} />
   <body
     class="bg-white dark:bg-slate-800 grid min-h-full m-0 grid-rows-[auto_1fr_auto]"
   >
