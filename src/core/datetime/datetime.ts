@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 
+import "dayjs/locale/es";
+
 type ValidDate = string | Date;
 
 export class Datetime {
@@ -55,5 +57,27 @@ export class Datetime {
     if (!dateA) return 1;
     if (!dateB) return -1;
     return dayjs(dateA).isBefore(dateB) ? -1 : 1;
+  }
+
+  static toMonthString(date: Date): string {
+    return dayjs(date).locale("es").format("MMMM");
+  }
+
+  static toWeekdayString(date: Date): string {
+    return dayjs(date).locale("es").format("ddd");
+  }
+
+  static toDayNumberString(date: Date): string {
+    return dayjs(date).locale("es").format("DD");
+  }
+
+  static toDayString(date: Date): string {
+    return dayjs(date).locale("es").format("dddd DD MMM");
+  }
+
+  static toDateRangeString(startDate: Date, endDate: Date): string {
+    const start = dayjs(startDate).locale("es").format("DD MMMM YY");
+    const end = dayjs(endDate).locale("es").format("DD MMMM YY");
+    return `${start} - ${end}`;
   }
 }

@@ -2,9 +2,10 @@
   height: 800px;
 }
 
-.event {
+.rbc-month-view .event,
+.rbc-time-view .event {
   color: #fff;
-  background-color: var(--event-background-color, #4338ca) !important;
+  background-color: var(--event-background-color, #4338ca);
   font-weight: bold;
 }
 
@@ -45,7 +46,7 @@
 .rbc-agenda-date-cell,
 .rbc-agenda-event-cell,
 .rbc-agenda-time-cell span {
-  @apply text-white font-medium text-base;
+  @apply font-medium text-base;
 }
 
 .rbc-toolbar-label {

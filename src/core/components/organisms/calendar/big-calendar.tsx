@@ -1,12 +1,17 @@
-import { FC, useEffect, useState, CSSProperties } from "react";
+import { FC, useEffect, useState, CSSProperties, useMemo } from "react";
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./big-calendar.css";
 import type { CalendarEvent } from "./calendar-event";
+import { Datetime } from "../../../datetime/datetime";
 
-moment.locale("es");
+moment.locale("es", {
+  week: {
+    dow: 1,
+  },
+});
 
 const localizer = momentLocalizer(moment);
 
@@ -19,7 +24,7 @@ interface CustomCSS extends CSSProperties {
 }
 
 // @ts-ignore
-const allViews = Object.keys(Views).map((k) => Views[k]);
+const allViews = [Views.MONTH, Views.WEEK, Views.AGENDA];
 const agendaView = [Views.AGENDA];
 
 export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
@@ -34,6 +39,21 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
     setIsSmallView(window.innerWidth < 768);
   }, []);
 
+  const formats = useMemo(
+    () => ({
+      dayFormat: Datetime.toDayString,
+      dateFormat: Datetime.toDayNumberString,
+      agendaDateFormat: Datetime.toDayString,
+      monthHeaderFormat: Datetime.toMonthString,
+      weekdayFormat: Datetime.toWeekdayString,
+      dayRangeHeaderFormat: (range: { start: Date; end: Date }) =>
+        Datetime.toDateRangeString(range.start, range.end),
+      agendaHeaderFormat: (range: { start: Date; end: Date }) =>
+        Datetime.toDateRangeString(range.start, range.end),
+    }),
+    []
+  );
+
   const onSelectEvent = (event: CalendarEvent) => {
     window.location.href = event.url;
   };
@@ -46,6 +66,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
         events={events}
         views={isSmallView ? agendaView : allViews}
         view={isSmallView ? agendaView[0] : undefined}
+        formats={formats}
         popup
         messages={{
           date: "Fecha",
