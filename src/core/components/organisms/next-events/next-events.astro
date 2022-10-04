@@ -1,6 +1,7 @@
 ---
 import { EventUtils } from "../../../../core/events/event-utils";
 import type { AstroEvent } from "../../../events/astro-event";
+import { Link } from "../../atoms/link/link";
 import { EventsGrid } from "../events-grid/events-grid";
 
 const events = (await Astro.glob(
@@ -10,15 +11,18 @@ const events = (await Astro.glob(
 const nextEventsFiltered = EventUtils.getNextEvents(events);
 const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(
   0,
-  9
+  6
 );
 ---
 
 <section>
-  <h2
-    class="mb-3 text-3xl font-extrabold leading-none text-gray-900 dark:text-gray-50 lg:text-4xl xl:text-5xl sm:mb-3"
-  >
-    Próximos eventos
-  </h2>
+  <div class="flex items-center justify-between mt-4 mb-10">
+    <h2
+      class="mb-3 text-3xl font-extrabold leading-none text-gray-900 dark:text-gray-50 lg:text-4xl xl:text-5xl sm:mb-3"
+    >
+      Próximos eventos
+    </h2>
+    <Link href="/eventos/1" className="text-right">Ver más</Link>
+  </div>
   <EventsGrid client:load events={nextEvents} />
 </section>
