@@ -21,6 +21,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = (props) => {
     <button
       className={`flex items-center justify-center w-10 h-10 bg-white rounded-full cursor-pointer hover:bg-gray-100 ${className}`}
       tabIndex={0}
+      aria-label="Cambiar tema de la web"
       onClick={onButtonClick}
     >
       {isDarkSelected ? <Sun /> : <Moon />}
