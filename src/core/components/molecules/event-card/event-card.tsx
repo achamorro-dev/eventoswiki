@@ -1,9 +1,9 @@
 import type { FC } from "react";
 import { Card } from "../../atoms/card/card";
 import { Tag } from "../../atoms/tag/tag";
-import { Calendar } from "../../atoms/icons/Calendar";
+import { Calendar } from "../../atoms/icons/calendar";
 import { Datetime } from "../../../datetime/datetime";
-import { MapPin } from "../../atoms/icons/MapPin";
+import { MapPin } from "../../atoms/icons/map-pin";
 
 type EventCardProps = {
   title: string;

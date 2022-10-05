@@ -1,12 +1,12 @@
 import type { FC, ReactNode } from "react";
 import type { SocialNetwork } from "../../../social/social-network";
-import { Facebook } from "../../atoms/icons/Facebook";
-import { GitHub } from "../../atoms/icons/GitHub";
-import { Instagram } from "../../atoms/icons/Instagram";
-import { Linkedin } from "../../atoms/icons/Linkedin";
+import { Facebook } from "../../atoms/icons/facebook";
+import { Github } from "../../atoms/icons/github";
+import { Instagram } from "../../atoms/icons/instagram";
+import { Linkedin } from "../../atoms/icons/linkedin";
 import { Twitch } from "../../atoms/icons/twitch";
-import { Twitter } from "../../atoms/icons/Twitter";
-import { Youtube } from "../../atoms/icons/Youtube";
+import { Twitter } from "../../atoms/icons/twitter";
+import { Youtube } from "../../atoms/icons/youtube";
 
 type SocialLinkProps = {
   href: string;
@@ -20,7 +20,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   twitch: <Twitch />,
   facebook: <Facebook />,
   instagram: <Instagram />,
-  github: <GitHub />,
+  github: <Github />,
 };
 
 export const SocialLink: FC<SocialLinkProps> = (props) => {

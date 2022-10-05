@@ -1,10 +1,10 @@
 ---
-import { Button } from "../../../core/components/atoms/button/Button";
-import { Link } from "../../../core/components/atoms/link/Link";
+import { Button } from "../../../core/components/atoms/button/button";
+import { Link } from "../../../core/components/atoms/link/link";
 import { EventsGrid } from "../../../core/components/organisms/events-grid/events-grid";
 import type { AstroEvent } from "../../../core/events/astro-event";
 import { EventUtils } from "../../../core/events/event-utils";
-import Layout from "../../../layouts/Layout.astro";
+import Layout from "../../../layouts/layout.astro";
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
   const events = (await Astro.glob("../../eventos/**/*.mdx")) as AstroEvent[];

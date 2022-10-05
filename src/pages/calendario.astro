@@ -3,7 +3,7 @@ import { BigCalendar } from "../core/components/organisms/calendar/big-calendar"
 import type { CalendarEvent } from "../core/components/organisms/calendar/calendar-event";
 import { Datetime } from "../core/datetime/datetime";
 import type { AstroEvent } from "../core/events/astro-event";
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/layout.astro";
 
 const events = (await Astro.glob("./eventos/**/*.mdx")) as AstroEvent[];
 const calendarEvents = events.map(

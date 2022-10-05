@@ -1,10 +1,10 @@
 import { FC, useState } from "react";
-import { Button } from "../../atoms/button/Button";
-import { Close } from "../../atoms/icons/Close";
-import { HamburgerMenu } from "../../atoms/icons/HamburgerMenu";
-import { Link } from "../../atoms/link/Link";
-import { Logo } from "../logo/Logo";
-import { ThemeModeToggle } from "../theme-mode-toggle/ThemeModeToggle";
+import { Button } from "../../atoms/button/button";
+import { Close } from "../../atoms/icons/close";
+import { HamburgerMenu } from "../../atoms/icons/hamburger-menu";
+import { Link } from "../../atoms/link/link";
+import { Logo } from "../logo/logo";
+import { ThemeModeToggle } from "../theme-mode-toggle/theme-mode-toggle";
 
 export const Menu: FC = () => {
   const [showMenu, setShowMenu] = useState(false);

@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { Moon } from "../../atoms/icons/Moon";
-import { Sun } from "../../atoms/icons/Sun";
+import { Moon } from "../../atoms/icons/moon";
+import { Sun } from "../../atoms/icons/sun";
 import { useTheme } from "./use-theme";
 
 type ThemeModeToggleProps = {

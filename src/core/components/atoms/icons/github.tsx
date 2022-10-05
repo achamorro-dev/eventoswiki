@@ -1,4 +1,4 @@
-export const GitHub = () => {
+export const Github = () => {
   return (
     <svg
       className='w-6 h-6'
