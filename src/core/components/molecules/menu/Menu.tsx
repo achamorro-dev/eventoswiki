@@ -45,6 +45,8 @@ export const Menu: FC = () => {
       <button
         onClick={() => setShowMenu(!showMenu)}
         className="absolute right-0 flex items-center justify-center w-10 h-10 bg-white rounded-full cursor-pointer md:hidden hover:bg-gray-100 mr-5"
+        aria-label="Menú de la aplicación"
+        aria-expanded={showMenu}
       >
         {!showMenu && <HamburgerMenu />}
         {showMenu && <Close />}
