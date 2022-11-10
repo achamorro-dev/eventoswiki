@@ -27,6 +27,7 @@ export const Menu: FC = () => {
               href="https://github.com/achamorro-dev/eventoswiki/issues/new?assignees=achamorro-dev&labels=enhancement&template=solicitud-nuevo-evento.md&title=A%C3%B1adir+nuevo+evento"
               rel="nofollow"
               className="hidden md:block"
+              target="_blank"
             >
               Añadir evento
             </Button>

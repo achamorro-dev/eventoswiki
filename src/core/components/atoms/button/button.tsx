@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from "react";
+import type { FC, HTMLAttributeAnchorTarget, PropsWithChildren } from "react";
 
 type ButtonVariant = "default" | "outline" | "text";
 
@@ -9,6 +9,7 @@ type ButtonProps = {
   onClick?(): void;
   variant?: ButtonVariant;
   className?: string;
+  target?: HTMLAttributeAnchorTarget;
 };
 
 const BUTTON_DEFAULT_CLASSES =
@@ -30,6 +31,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = (props) => {
     className = "",
     children,
     rel,
+    target = "_self",
   } = props;
 
   return type === "link" ? (
@@ -38,6 +40,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = (props) => {
       type="button"
       rel={rel}
       className={`${BUTTON_DEFAULT_CLASSES} ${BUTTON_VARIANT_CLASSES[variant]} ${className}`}
+      target={target}
     >
       {children}
     </a>
