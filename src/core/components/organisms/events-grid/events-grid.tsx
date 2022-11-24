@@ -15,6 +15,7 @@ export const EventsGrid: FC<{ events: AstroEvent[] }> = ({ events }) => {
             image={event.frontmatter.thumbnail}
             location={event.frontmatter.location}
             startDate={event.frontmatter.startDate}
+            endDate={event.frontmatter.endDate}
             href={event.url}
             className="col-span-12 md:col-span-6 lg:col-span-4"
           />

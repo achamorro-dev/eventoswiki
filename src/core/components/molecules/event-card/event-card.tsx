@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC, useMemo } from "react";
 import { Card } from "../../atoms/card/card";
 import { Tag } from "../../atoms/tag/tag";
 import { Calendar } from "../../atoms/icons/calendar";
@@ -14,6 +14,7 @@ type EventCardProps = {
   className?: string;
   location?: string;
   startDate?: string;
+  endDate?: string;
   href?: string;
   altImage?: string;
 };
@@ -27,10 +28,18 @@ export const EventCard: FC<EventCardProps> = (props) => {
     className = "",
     location = "",
     startDate = "",
+    endDate = "",
     href = "#",
     tagColor,
     altImage,
   } = props;
+
+  const showEndDate = useMemo(() => {
+    const start = Datetime.toDateString(startDate);
+    const end = Datetime.toDateString(endDate);
+
+    return start !== end;
+  }, [startDate, endDate]);
 
   return (
     <a href={href} className={className}>
@@ -45,30 +54,39 @@ export const EventCard: FC<EventCardProps> = (props) => {
             <Tag color={tagColor}>{t}</Tag>
           ))}
         </div>
-        <h3 className="text-base font-bold p-4 pb-0 sm:text-lg md:text-xl text-black dark:text-gray-100">
-          {title}
-        </h3>
-        <p className="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-3 dark:text-gray-50">
-          {description}
-        </p>
-        <div className="w-full flex gap-4 items-center p-4">
+        <div className="w-full flex flex-col-reverse justify-center items-start px-4 mt-2">
+          <h3 className="text-base font-bold sm:text-lg md:text-xl text-black dark:text-gray-100 p-0 my-2">
+            {title}
+          </h3>
           {startDate && (
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
               <Calendar />
-              <p className="text-sm text-gray-500 dark:text-gray-50">
-                {Datetime.toDateString(startDate)}
-              </p>
-            </div>
-          )}
-          {location && (
-            <div className="flex items-center">
-              <MapPin />
-              <p className="text-sm text-gray-500 dark:text-gray-50">
-                {location}
-              </p>
+              <div className="flex items-center content-center">
+                <p className="text-sm text-gray-500 dark:text-gray-50 p-0">
+                  {Datetime.toDateString(startDate)}
+                </p>
+                {showEndDate && (
+                  <p className="text-sm text-gray-500 dark:text-gray-50 p-0">
+                    &nbsp;-&nbsp;
+                    {Datetime.toDateString(endDate)}
+                  </p>
+                )}
+              </div>
             </div>
           )}
         </div>
+        <p className="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50">
+          {description}
+        </p>
+        {location && (
+          <div className="w-full flex items-center justify-end px-4">
+            <MapPin />
+            <p className="text-sm text-gray-500 dark:text-gray-50">
+              {location}
+            </p>
+          </div>
+        )}
+        {/* </div> */}
       </Card>
     </a>
   );
