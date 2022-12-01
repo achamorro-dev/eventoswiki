@@ -12,6 +12,7 @@ import { Link } from "../core/components/atoms/icons/link";
 import type { Event } from "../core/events/event";
 import { MapPin } from "../core/components/atoms/icons/map-pin";
 import { AddToCalendarButton } from "../core/components/molecules/add-to-calendar-button/add-to-calendar-button";
+import {EventDatePeriod} from "../core/components/molecules/event-date-period/event-date-period"
 
 type Props = MarkdownLayoutProps<Event>;
 
@@ -65,27 +66,7 @@ const {
         <h1 class="text-4xl font-medium text-white">
           {title}
         </h1>
-        <div class="flex">
-          {
-            startDate && (
-              <div class="flex items-center gap-1">
-                <Calendar color="white" size="1.2rem" />
-                <p class="text-sm text-white py-2">
-                  {Datetime.toDateTimeString(startDate)}
-                </p>
-              </div>
-            )
-          }
-          {
-            endDate && (
-              <div class="flex items-center">
-                <p class="text-sm text-white py-2">
-                  &nbsp;&centerdot; {Datetime.toDateTimeString(endDate)}
-                </p>
-              </div>
-            )
-          }
-        </div>
+        <EventDatePeriod startDate={startDate} endDate={endDate} client:load />
         {
           web && (
             <div class="flex items-center gap-1">
