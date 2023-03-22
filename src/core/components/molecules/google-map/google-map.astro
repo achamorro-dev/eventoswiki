@@ -1,0 +1,17 @@
+---
+export interface Props {
+  src: string;
+  ariaLabel: string;
+}
+
+const { src, ariaLabel } = Astro.props as Props;
+---
+
+<iframe
+  class="w-full mt-4 border-none"
+  height="400"
+  src={src}
+  aria-label={ariaLabel}
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"></iframe>
