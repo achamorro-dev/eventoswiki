@@ -79,9 +79,9 @@ export const EventCard: FC<EventCardProps> = (props) => {
           {description}
         </p>
         {location && (
-          <div className="w-full flex items-center justify-end px-4">
+          <div className="w-full flex flex-1 items-end justify-end p-4">
             <MapPin />
-            <p className="text-sm text-gray-500 dark:text-gray-50">
+            <p className="text-sm p-0 pb-0.5 text-gray-500 dark:text-gray-50">
               {location}
             </p>
           </div>
