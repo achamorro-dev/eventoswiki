@@ -6,10 +6,10 @@ export const Youtube: FC<Icon> = ({ color, size }) => {
     <svg
       className={`w-6 h-6 stroke-[#ff0000]`}
       viewBox="0 0 24 24"
-      stroke-width="1.5"
+      strokeWidth="1.5"
       fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       style={{
         width: size,
         height: size,
