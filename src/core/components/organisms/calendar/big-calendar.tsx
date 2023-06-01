@@ -44,7 +44,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
       dayFormat: Datetime.toDayString,
       dateFormat: Datetime.toDayNumberString,
       agendaDateFormat: Datetime.toDayString,
-      monthHeaderFormat: Datetime.toMonthString,
+      monthHeaderFormat: Datetime.toMonthYearString,
       weekdayFormat: Datetime.toWeekdayString,
       dayRangeHeaderFormat: (range: { start: Date; end: Date }) =>
         Datetime.toDateRangeString(range.start, range.end),
