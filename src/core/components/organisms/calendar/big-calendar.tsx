@@ -1,11 +1,11 @@
-import { FC, useEffect, useState, CSSProperties, useMemo } from "react";
-import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import moment from "moment";
+import { CSSProperties, FC, useEffect, useMemo, useState } from "react";
+import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { Datetime } from "../../../datetime/datetime";
 import "./big-calendar.css";
 import type { CalendarEvent } from "./calendar-event";
-import { Datetime } from "../../../datetime/datetime";
 
 moment.locale("es", {
   week: {
@@ -44,7 +44,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
       dayFormat: Datetime.toDayString,
       dateFormat: Datetime.toDayNumberString,
       agendaDateFormat: Datetime.toDayString,
-      monthHeaderFormat: Datetime.toMonthString,
+      monthHeaderFormat: Datetime.toMonthYearString,
       weekdayFormat: Datetime.toWeekdayString,
       dayRangeHeaderFormat: (range: { start: Date; end: Date }) =>
         Datetime.toDateRangeString(range.start, range.end),

@@ -63,6 +63,10 @@ export class Datetime {
     return dayjs(date).locale("es").format("MMMM");
   }
 
+  static toMonthYearString(date: Date): string {
+    return dayjs(date).locale("es").format("MMMM YYYY");
+  }
+
   static toWeekdayString(date: Date): string {
     return dayjs(date).locale("es").format("ddd");
   }
