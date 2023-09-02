@@ -16,7 +16,7 @@
     "@types/react": "^18.2.21",
     "@types/react-big-calendar": "1.6.4",
     "@types/react-dom": "^18.2.7",
-    "add-to-calendar-button": "1.15.5",
+    "add-to-calendar-button-react": "2.4.1",
     "astro": "3.0.7",
     "dayjs": "1.11.5",
     "react": "^18.2.0",
