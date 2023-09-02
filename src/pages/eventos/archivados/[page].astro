@@ -1,5 +1,6 @@
 ---
 import { Button } from "../../../core/components/atoms/button/button";
+import { GradientTitle } from "../../../core/components/atoms/gradient-title/gradient-title";
 import { Link } from "../../../core/components/atoms/link/link";
 import { EventsGrid } from "../../../core/components/organisms/events-grid/events-grid";
 import type { AstroEvent } from "../../../core/events/astro-event";
@@ -20,11 +21,7 @@ const prevPage = page.url.prev;
 
 <Layout title="eventos.wiki - Eventos pasados">
   <div class="flex items-center justify-between mt-4 mb-10">
-    <h2
-      class="text-3xl font-extrabold leading-none text-transparent bg-clip-text bg-gradient-to-br from-accent to-primary lg:text-4xl xl:text-5xl sm:mb-3"
-    >
-      Eventos pasados
-    </h2>
+    <GradientTitle>Próximos eventos</GradientTitle>
     <Link href="/eventos/1" className="text-right">Ver próximos</Link>
   </div>
   <EventsGrid events={page.data} />

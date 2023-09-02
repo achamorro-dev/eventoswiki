@@ -1,6 +1,5 @@
-import { FC, useEffect } from "react";
-import { atcb_init } from "add-to-calendar-button";
-import "add-to-calendar-button/assets/css/atcb.css";
+import { AddToCalendarButton as AddToCalendar } from 'add-to-calendar-button-react';
+import { type FC } from "react";
 import "./add-to-calendar-button.css";
 
 type AddToCalendarButtonProps = {
@@ -14,28 +13,7 @@ type AddToCalendarButtonProps = {
 };
 
 export const AddToCalendarButton: FC<AddToCalendarButtonProps> = (props) => {
-  const {
-    title,
-    description = "",
-    location = "",
-    startDate,
-    endDate,
-    startTime,
-    endTime,
-  } = props;
-
-  useEffect(atcb_init, []);
-
   return (
-    <div className="atcb">
-      {"{"}
-      "name":"{title}", "description":"{description}", "startDate":"{startDate}
-      ", "endDate":"{endDate}", "startTime":"{startTime}", "endTime":"{endTime}
-      ", "location":"{location}", "label":"Añadir a calendario", "options":[
-      "Apple", "Google", "iCal", "Microsoft365", "Outlook.com"],
-      "timeZone":"Europe/Madrid", "iCalFileName":"{title}", "listStyle":
-      "dropdown", "trigger": "click"
-      {"}"}
-    </div>
+    <AddToCalendar {...props} listStyle='dropdown' trigger='click' iCalFileName={props.title} label='Añadir a calendario' options={["Apple", "Google", "iCal", "Microsoft365", "Outlook.com"]} timeZone='Europe/Madrid' />
   );
 };

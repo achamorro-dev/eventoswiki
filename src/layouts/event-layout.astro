@@ -1,17 +1,17 @@
 ---
 import type { MarkdownLayoutProps } from "astro";
 import { Container } from "../core/components/atoms/container/container";
+import { Link } from "../core/components/atoms/icons/link";
+import { MapPin } from "../core/components/atoms/icons/map-pin";
 import { Tag } from "../core/components/atoms/tag/tag";
-import { SocialLink } from "../core/components/molecules/social-link/social-link";
 import BaseHead from "../core/components/base-head.astro";
+import { AddToCalendarButton } from "../core/components/molecules/add-to-calendar-button/add-to-calendar-button";
+import { EventDatePeriod } from "../core/components/molecules/event-date-period/event-date-period";
+import { SocialLink } from "../core/components/molecules/social-link/social-link";
 import Footer from "../core/components/organisms/footer/footer.astro";
 import Header from "../core/components/organisms/header/header.astro";
 import { Datetime } from "../core/datetime/datetime";
-import { Link } from "../core/components/atoms/icons/link";
 import type { Event } from "../core/events/event";
-import { MapPin } from "../core/components/atoms/icons/map-pin";
-import { AddToCalendarButton } from "../core/components/molecules/add-to-calendar-button/add-to-calendar-button";
-import {EventDatePeriod} from "../core/components/molecules/event-date-period/event-date-period"
 
 type Props = MarkdownLayoutProps<Event>;
 
@@ -36,8 +36,8 @@ const {
 } = frontmatter;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
   <BaseHead
     title={`${title} - eventos.wiki`}
     description={shortDescription}
@@ -86,7 +86,13 @@ const {
           location && (
             <div class="flex items-center gap-1">
               <MapPin color="white" size="1.25rem" />
-              <p class="text-sm text-white py-2" tabindex="0" aria-label={`Localización del evento: ${location}`}>{location}</p>
+              <p
+                class="text-sm text-white py-2"
+                tabindex="0"
+                aria-label={`Localización del evento: ${location}`}
+              >
+                {location}
+              </p>
             </div>
           )
         }
@@ -96,9 +102,17 @@ const {
       >
         {twitter && <SocialLink name={title} href={twitter} type="twitter" />}
         {twitch && <SocialLink name={title} href={twitch} type="twitch" />}
-        {instagram && <SocialLink name={title} href={instagram} type="instagram" />}
+        {
+          instagram && (
+            <SocialLink name={title} href={instagram} type="instagram" />
+          )
+        }
         {youtube && <SocialLink name={title} href={youtube} type="youtube" />}
-        {linkedin && <SocialLink name={title} href={linkedin} type="linkedin" />}
+        {
+          linkedin && (
+            <SocialLink name={title} href={linkedin} type="linkedin" />
+          )
+        }
         {github && <SocialLink name={title} href={github} type="github" />}
       </div>
     </div>
@@ -120,67 +134,77 @@ const {
       </div>
     </main>
     <Footer />
-    <style>
-      :global(html) {
+    <style is:global>
+      html {
         font-family: system-ui, sans-serif;
         font-size: var(--font-size-base);
         height: 100%;
       }
 
-      :global(p, span) {
+      p,
+      span {
         @apply text-gray-900 dark:text-gray-50 text-xl;
       }
 
-      :global(small) {
+      small {
         @apply text-gray-900 dark:text-gray-50 text-sm;
       }
 
-      :global(h2, h3, h4, h5, h6) {
-        @apply font-bold;
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        @apply !font-bold;
       }
 
-      :global(h2) {
-        @apply text-slate-900 dark:text-gray-200 text-3xl py-4;
+      h2 {
+        @apply text-slate-900 dark:text-gray-200 !text-3xl py-4;
       }
 
-      :global(h3) {
-        @apply text-slate-900 dark:text-gray-200 text-2xl py-3;
+      h3 {
+        @apply text-slate-900 dark:text-gray-200 !text-2xl py-3;
       }
 
-      :global(p) {
+      p {
         @apply py-4;
       }
 
-      :global(table) {
+      table {
         @apply mb-10;
       }
 
-      :global(table tr) {
+      table tr {
         @apply border-b dark:border-b-gray-50;
       }
 
-      :global(table td) {
+      table td {
         @apply text-gray-900 dark:text-gray-50 p-4;
       }
 
-      :global(ol, ul) {
+      table th {
+        @apply !text-gray-900 dark:!text-gray-50 p-4;
+      }
+
+      ol,
+      ul {
         @apply text-base font-sans p-4;
       }
 
-      :global(ol) {
+      ol {
         @apply list-decimal;
       }
 
-      :global(ul) {
+      ul {
         @apply list-disc;
       }
 
-      :global(ul li) {
-        @apply text-slate-900 dark:text-gray-200 text-lg mb-2;
+      ul li {
+        @apply text-slate-900 dark:text-gray-200 !text-lg mb-2;
       }
 
-      :global(ol li) {
-        @apply text-slate-900 dark:text-gray-200 text-lg mb-2;
+      ol li {
+        @apply text-slate-900 dark:text-gray-200 !text-lg mb-2;
       }
     </style>
   </body>
