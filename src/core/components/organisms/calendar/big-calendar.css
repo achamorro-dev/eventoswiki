@@ -49,6 +49,10 @@
   @apply font-medium text-base;
 }
 
+.rbc-agenda-event-cell {
+  @apply cursor-pointer;
+}
+
 .rbc-toolbar-label {
   @apply font-bold;
 }
