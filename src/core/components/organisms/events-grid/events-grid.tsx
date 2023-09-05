@@ -2,7 +2,9 @@ import type { FC } from "react";
 import type { AstroEvent } from "../../../events/astro-event";
 import { EventCard } from "../../molecules/event-card/event-card";
 
-export const EventsGrid: FC<{ events: AstroEvent[] }> = ({ events }) => {
+export const EventsGrid: FC<{ events: AstroEvent[] }> = (props) => {
+  if (!props) return null
+  const {events} = props 
   return (
     <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
       {events.map((event: AstroEvent) => {

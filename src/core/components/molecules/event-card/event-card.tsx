@@ -1,9 +1,9 @@
-import { FC, useMemo } from "react";
-import { Card } from "../../atoms/card/card";
-import { Tag } from "../../atoms/tag/tag";
-import { Calendar } from "../../atoms/icons/calendar";
+import { useMemo, type FC } from "react";
 import { Datetime } from "../../../datetime/datetime";
+import { Card } from "../../atoms/card/card";
+import { Calendar } from "../../atoms/icons/calendar";
 import { MapPin } from "../../atoms/icons/map-pin";
+import { Tag } from "../../atoms/tag/tag";
 
 type EventCardProps = {
   title: string;
