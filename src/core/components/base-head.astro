@@ -46,5 +46,16 @@ const {
   <link rel="canonical" href={url} />
   <title>{title}</title>
   <ViewTransitions />
+  <script is:inline>
+    const localStorageValue = localStorage?.getItem('theme-mode')
+    const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const darkTheme = 'dark'
+
+    if (preferDark || localStorageValue === darkTheme) {
+      document.documentElement.classList.add(darkTheme)
+    } else {
+      document.documentElement.classList.remove(darkTheme)
+    }
+  </script>
 </head>
 <slot />
