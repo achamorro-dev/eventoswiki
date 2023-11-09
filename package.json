@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=18.17. 1"
+    "node": ">=18.17. 1",
+    "npm": "9.6.7"
   },
   "scripts": {
     "dev": "astro dev",
