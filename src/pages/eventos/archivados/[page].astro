@@ -1,30 +1,27 @@
 ---
-import { Button } from "../../../core/components/atoms/button/button";
-import { Link } from "../../../core/components/atoms/link/link";
-import { EventsGrid } from "../../../core/components/organisms/events-grid/events-grid";
-import type { AstroEvent } from "../../../core/events/astro-event";
-import { EventUtils } from "../../../core/events/event-utils";
-import Layout from "../../../layouts/layout.astro";
+import { Button } from '../../../core/components/atoms/button/button'
+import { GradientTitle } from '../../../core/components/atoms/gradient-title/gradient-title'
+import { Link } from '../../../core/components/atoms/link/link'
+import EventsGrid from '../../../core/components/organisms/events-grid/events-grid.astro'
+import type { AstroEvent } from '../../../core/events/astro-event'
+import { EventUtils } from '../../../core/events/event-utils'
+import Layout from '../../../layouts/layout.astro'
 
 export async function getStaticPaths({ paginate }: { paginate: any }) {
-  const events = (await Astro.glob("../../eventos/**/*.mdx")) as AstroEvent[];
-  const eventsFiltered = EventUtils.getLastEvents(events);
-  const eventsSortered = EventUtils.sortByStartDateDesc(eventsFiltered);
-  return paginate(eventsSortered, { pageSize: 9 });
+  const events = (await Astro.glob('../../eventos/**/*.mdx')) as AstroEvent[]
+  const eventsFiltered = EventUtils.getLastEvents(events)
+  const eventsSortered = EventUtils.sortByStartDateDesc(eventsFiltered)
+  return paginate(eventsSortered, { pageSize: 9 })
 }
 
-const { page } = Astro.props;
-const nextPage = page.url.next;
-const prevPage = page.url.prev;
+const { page } = Astro.props
+const nextPage = page.url.next
+const prevPage = page.url.prev
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">
   <div class="flex items-center justify-between mt-4 mb-10">
-    <h2
-      class="text-3xl font-extrabold leading-none text-transparent bg-clip-text bg-gradient-to-br from-accent to-primary lg:text-4xl xl:text-5xl sm:mb-3"
-    >
-      Eventos pasados
-    </h2>
+    <GradientTitle>Próximos eventos</GradientTitle>
     <Link href="/eventos/1" className="text-right">Ver próximos</Link>
   </div>
   <EventsGrid events={page.data} />

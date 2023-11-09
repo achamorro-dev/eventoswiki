@@ -1,26 +1,18 @@
 ---
-import { EventsGrid } from "../../organisms/events-grid/events-grid";
-import type { AstroEvent } from "../../../events/astro-event";
-import { EventUtils } from "../../../events/event-utils";
-import { Link } from "../../atoms/link/link";
+import type { AstroEvent } from '../../../events/astro-event'
+import { EventUtils } from '../../../events/event-utils'
+import { GradientTitle } from '../../atoms/gradient-title/gradient-title'
+import { Link } from '../../atoms/link/link'
+import EventsGrid from '../events-grid/events-grid.astro'
 
-const events = (await Astro.glob(
-  "../../../../pages/eventos/**/*.mdx"
-)) as AstroEvent[];
-const lastEventsFiltered = EventUtils.getLastEvents(events);
-const lastEvents = EventUtils.sortByStartDateDesc(lastEventsFiltered).slice(
-  0,
-  6
-);
+const events = (await Astro.glob('../../../../pages/eventos/**/*.mdx')) as AstroEvent[]
+const lastEventsFiltered = EventUtils.getLastEvents(events)
+const lastEvents = EventUtils.sortByStartDateDesc(lastEventsFiltered).slice(0, 6)
 ---
 
 <section class="mt-12">
   <div class="flex items-center justify-between mt-4 mb-10">
-    <h2
-      class="mb-3 text-3xl font-extrabold leading-none text-gray-900 dark:text-gray-50 lg:text-4xl xl:text-5xl sm:mb-3"
-    >
-      Últimos eventos
-    </h2>
+    <GradientTitle>Últimos eventos</GradientTitle>
     <Link href="/eventos/archivados/1" className="text-right">Ver más</Link>
   </div>
   <EventsGrid events={lastEvents} />
