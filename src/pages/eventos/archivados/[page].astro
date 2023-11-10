@@ -14,7 +14,7 @@ export async function getStaticPaths({ paginate }: { paginate: any }) {
   return paginate(eventsSortered, { pageSize: 9 })
 }
 
-const { page } = Astro.props
+const { page } = Astro.props as { page: { url: { next: string; prev: string }; data: Array<AstroEvent> } }
 const nextPage = page.url.next
 const prevPage = page.url.prev
 ---
