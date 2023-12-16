@@ -28,7 +28,7 @@ const { title, description } = Astro.props
 
       images.forEach(image => {
         image.addEventListener('error', function (event) {
-          event.currentTarget.src = 'not-found.jpg'
+          event.currentTarget.src = '/not-found.jpg'
         })
       })
     </script>
