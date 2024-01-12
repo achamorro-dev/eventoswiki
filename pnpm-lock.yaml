@@ -21,8 +21,8 @@ dependencies:
     specifier: 18.2.21
     version: 18.2.21
   '@types/react-big-calendar':
-    specifier: 1.6.4
-    version: 1.6.4
+    specifier: 1.8.8
+    version: 1.8.8
   '@types/react-dom':
     specifier: 18.2.7
     version: 18.2.7
@@ -39,8 +39,8 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0
   react-big-calendar:
-    specifier: 1.8.4
-    version: 1.8.4(react-dom@18.2.0)(react@18.2.0)
+    specifier: 1.8.6
+    version: 1.8.6(react-dom@18.2.0)(react@18.2.0)
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
@@ -1196,8 +1196,8 @@ packages:
     resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
     dev: false
 
-  /@types/react-big-calendar@1.6.4:
-    resolution: {integrity: sha512-xAbdQ2cQhx71dsnacJ1knSGqTi6cD8odGi28AzCjA+N4bgpJjSyYo/fN1bG4ScfBAEQomSl/UoXYrSgUoJ0MGA==}
+  /@types/react-big-calendar@1.8.8:
+    resolution: {integrity: sha512-xSwparUglinKh9YyuaFqmMGZvSXKV9iEygD6JnSuEH8YR9YFemQ9+3U9MM8Ylqiaf2Sff+jlmcoe4E6USp2e0w==}
     dependencies:
       '@types/date-arithmetic': 4.1.4
       '@types/prop-types': 15.7.11
@@ -4067,8 +4067,8 @@ packages:
     dev: false
     optional: true
 
-  /react-big-calendar@1.8.4(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-zo2LDQxWHvcnkvtgzZlxJsCfi6fI8neOSyjG5ntePLO2CAlkhHiwwXgynxIFeWCwJ5LMnhN6tBt03IN4Y0bOzQ==}
+  /react-big-calendar@1.8.6(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-/weukU7kfaowMgC634Vtzc3eNAEpTPxmK9aVEpRQ6gIrTUlL8E+xpgWZ4ouc8HdwRDD0nJD14po5NGbTOFwbtg==}
     peerDependencies:
       react: ^16.14.0 || ^17 || ^18
       react-dom: ^16.14.0 || ^17 || ^18
