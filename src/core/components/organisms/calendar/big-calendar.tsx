@@ -1,5 +1,7 @@
 import moment from 'moment'
-import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties, FC } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
