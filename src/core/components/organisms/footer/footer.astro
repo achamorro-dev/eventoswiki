@@ -1,28 +1,28 @@
 ---
-import { Github } from "../../atoms/icons/github";
-import { Logo } from "../../molecules/logo/logo";
-import { Twitter } from "../../atoms/icons/twitter";
+import { Github } from '../../atoms/icons/github'
+import { Twitter } from '../../atoms/icons/twitter'
+import { Logo } from '../../molecules/logo/logo'
+import {Image} from 'astro:assets'
+
+import {Codely} from '../../atoms/sponsors/codely'
 ---
 
-<footer
-  class="text-gray-700 bg-white dark:bg-slate-900 body-font border-t border-gray-200 dark:border-transparent"
->
-  <div
-    class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row"
-  >
+<footer class="text-gray-700 bg-white dark:bg-slate-900 body-font border-t border-gray-200 dark:border-transparent">
+  <section class="container mx-auto py-4 text-gray-500 text-center dark:text-white">
+    <h2 class="py-2">Sponsors</h2>
+    <p class="text-md font-light py-0">¡Gracias por su apoyo!</p>
+    <ul class="list-none flex justify-center mt-8">
+      <li>
+        <a href="https://codely.com" alt="Codely" rel="nofollow" target="_blank" class="text-[#1a2233] dark:text-[#3cff64]"><Codely /></a>
+      </li>
+    </ul>
+  </section>
+  <section class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row">
     <Logo />
-    <p
-      class="mt-4 text-sm text-gray-500 dark:text-gray-300 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0"
-    >
-      Made with ❤️ by <a
-        href="https://twitter.com/achamorro_dev"
-        target="_blank"
-        rel="nofollow">@achamorro_dev</a
-      >
+    <p class="mt-4 text-sm text-gray-500 dark:text-gray-300 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0">
+      Made with ❤️ by <a href="https://twitter.com/achamorro_dev" target="_blank" rel="nofollow">@achamorro_dev</a>
     </p>
-    <span
-      class="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start"
-    >
+    <span class="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">
       <a
         href="https://twitter.com/eventos_wiki"
         target="_blank"
@@ -43,5 +43,5 @@ import { Twitter } from "../../atoms/icons/twitter";
         <Github />
       </a>
     </span>
-  </div>
+  </section>
 </footer>
