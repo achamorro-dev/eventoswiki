@@ -1,19 +1,19 @@
-import { FC, useState } from "react";
-import { Button } from "../../atoms/button/button";
-import { Close } from "../../atoms/icons/close";
-import { HamburgerMenu } from "../../atoms/icons/hamburger-menu";
-import { Link } from "../../atoms/link/link";
-import { Logo } from "../logo/logo";
-import { ThemeModeToggle } from "../theme-mode-toggle/theme-mode-toggle";
+import { useState, type FC } from 'react'
+import { Button } from '../../atoms/button/button'
+import { Close } from '../../atoms/icons/close'
+import { HamburgerMenu } from '../../atoms/icons/hamburger-menu'
+import { Link } from '../../atoms/link/link'
+import { Logo } from '../logo/logo'
+import { ThemeModeToggle } from '../theme-mode-toggle/theme-mode-toggle'
 
 export const Menu: FC = () => {
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState(false)
 
   return (
     <>
       <div
         className={`top-0 left-0 items-start w-full h-full p-4 text-sm bg-gray-900 bg-opacity-50 md:items-center md:w-3/4 lg:text-base md:bg-transparent md:p-0 md:relative md:flex ${
-          showMenu ? "flex fixed" : "hidden"
+          showMenu ? 'flex fixed' : 'hidden'
         }`}
       >
         <div className="flex-col w-full h-auto overflow-hidden rounded-lg bg-white dark:bg-slate-600 md:bg-transparent md:dark:bg-transparent md:overflow-visible md:rounded-none md:relative md:flex md:flex-row md:justify-end">
@@ -53,5 +53,5 @@ export const Menu: FC = () => {
         {showMenu && <Close />}
       </button>
     </>
-  );
-};
+  )
+}

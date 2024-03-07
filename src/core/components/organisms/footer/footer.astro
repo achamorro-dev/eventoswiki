@@ -2,9 +2,8 @@
 import { Github } from '../../atoms/icons/github'
 import { Twitter } from '../../atoms/icons/twitter'
 import { Logo } from '../../molecules/logo/logo'
-import {Image} from 'astro:assets'
 
-import {Codely} from '../../atoms/sponsors/codely'
+import { Codely } from '../../atoms/sponsors/codely'
 ---
 
 <footer class="text-gray-700 bg-white dark:bg-slate-900 body-font border-t border-gray-200 dark:border-transparent">
@@ -13,7 +12,13 @@ import {Codely} from '../../atoms/sponsors/codely'
     <p class="text-md font-light py-0">¡Gracias por su apoyo!</p>
     <ul class="list-none flex justify-center mt-8">
       <li>
-        <a href="https://codely.com" alt="Codely" rel="nofollow" target="_blank" class="text-[#1a2233] dark:text-[#3cff64]"><Codely /></a>
+        <a
+          href="https://codely.com"
+          alt="Codely"
+          rel="nofollow"
+          target="_blank"
+          class="text-[#1a2233] dark:text-[#3cff64]"><Codely /></a
+        >
       </li>
     </ul>
   </section>
@@ -44,4 +49,5 @@ import {Codely} from '../../atoms/sponsors/codely'
       </a>
     </span>
   </section>
+</footer>
 </footer>
