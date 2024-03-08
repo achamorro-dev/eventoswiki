@@ -7,17 +7,17 @@ import type { AstroEvent } from '../../../core/events/astro-event'
 import { EventUtils } from '../../../core/events/event-utils'
 import Layout from '../../../layouts/layout.astro'
 
-const EVENTS_PER_PAGE = 10
-const events = (await Astro.glob('../eventos/**/*.mdx')) as AstroEvent[]
+const EVENTS_PER_PAGE = 12
+const events = (await Astro.glob('../../eventos/**/*.mdx')) as AstroEvent[]
 const eventsFiltered = EventUtils.getLastEvents(events)
-const eventsSortered = EventUtils.sortByStartDateAsc(eventsFiltered)
+const eventsSortered = EventUtils.sortByStartDateDesc(eventsFiltered)
 
 const pageParam = Astro.params.page
 const pageNumber = pageParam ? parseInt(pageParam) : 1
 
 const pageEvents = eventsSortered.slice((pageNumber - 1) * EVENTS_PER_PAGE, pageNumber * EVENTS_PER_PAGE)
-const nextPage = eventsSortered.length > pageNumber * EVENTS_PER_PAGE ? `/eventos/${parseInt(pageNumber) + 1}` : null
-const prevPage = pageNumber > 1 ? `/eventos/${parseInt(pageNumber) - 1}` : null
+const nextPage = eventsSortered.length > pageNumber * EVENTS_PER_PAGE ? `/eventos/archivados/${pageNumber + 1}` : null
+const prevPage = pageNumber > 1 ? `/eventos/archivados/${pageNumber - 1}` : null
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">
@@ -25,7 +25,7 @@ const prevPage = pageNumber > 1 ? `/eventos/${parseInt(pageNumber) - 1}` : null
     <GradientTitle>Eventos pasados</GradientTitle>
     <Link href="/eventos/1" className="text-right">Ver próximos</Link>
   </div>
-  <EventsGrid events={page.data} />
+  <EventsGrid events={pageEvents} />
   <div class="flex justify-between mt-8">
     {
       prevPage ? (
