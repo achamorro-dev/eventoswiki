@@ -96,7 +96,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
         })}
         onSelectEvent={onSelectEvent}
       />
-      <a ref={linkRef} aria-hidden />
+      <a ref={linkRef} target="_blank" aria-hidden />
     </section>
   )
 }
