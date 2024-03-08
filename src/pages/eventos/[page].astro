@@ -7,7 +7,7 @@ import type { AstroEvent } from '../../core/events/astro-event'
 import { EventUtils } from '../../core/events/event-utils'
 import Layout from '../../layouts/layout.astro'
 
-const EVENTS_PER_PAGE = 10
+const EVENTS_PER_PAGE = 12
 const events = (await Astro.glob('../eventos/**/*.mdx')) as AstroEvent[]
 const eventsFiltered = EventUtils.getNextEvents(events)
 const eventsSortered = EventUtils.sortByStartDateAsc(eventsFiltered)
@@ -16,8 +16,8 @@ const pageParam = Astro.params.page
 const pageNumber = pageParam ? parseInt(pageParam) : 1
 
 const pageEvents = eventsSortered.slice((pageNumber - 1) * EVENTS_PER_PAGE, pageNumber * EVENTS_PER_PAGE)
-const nextPage = eventsSortered.length > pageNumber * EVENTS_PER_PAGE ? `/eventos/${parseInt(pageNumber) + 1}` : null
-const prevPage = pageNumber > 1 ? `/eventos/${parseInt(pageNumber) - 1}` : null
+const nextPage = eventsSortered.length > pageNumber * EVENTS_PER_PAGE ? `/eventos/${pageNumber + 1}` : null
+const prevPage = pageNumber > 1 ? `/eventos/${pageNumber - 1}` : null
 ---
 
 <Layout title="eventos.wiki - Próximos eventos">
