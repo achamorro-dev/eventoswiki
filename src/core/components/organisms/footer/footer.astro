@@ -1,26 +1,45 @@
 ---
+import type { AstroEvent } from '../../../events/astro-event'
+import { EventUtils } from '../../../events/event-utils'
+
 import { Github } from '../../atoms/icons/github'
 import { Twitter } from '../../atoms/icons/twitter'
 import { Logo } from '../../molecules/logo/logo'
 
 import { Codely } from '../../atoms/sponsors/codely'
+
+const events = (await Astro.glob('../../../../pages/eventos/**/*.mdx')) as AstroEvent[]
+
+const locations = EventUtils.getLocationEvents(events)
+const locationsFiltered = locations.filter(location => !location.includes('Online'))
+const locationsSorted = locationsFiltered.sort((a, b) => a.localeCompare(b))
 ---
 
 <footer class="text-gray-700 bg-white dark:bg-slate-900 body-font border-t border-gray-200 dark:border-transparent">
-  <section class="container mx-auto py-4 text-gray-500 text-center dark:text-white">
-    <h2 class="py-2">Sponsors</h2>
-    <p class="text-md font-light py-0">¡Gracias por su apoyo!</p>
-    <ul class="list-none flex justify-center mt-8">
-      <li>
-        <a
-          href="https://codely.com"
-          alt="Codely"
-          rel="nofollow"
-          target="_blank"
-          class="text-[#1a2233] dark:text-[#3cff64]"><Codely /></a
-        >
-      </li>
-    </ul>
+  <section class="container flex flex-col justify-between px-8 py-8 mx-auto max-w-7xl sm:flex-row">
+    <div class="w-full mb-6">
+      <h2 class="py-2">Eventos por ciudad</h2>
+      <ul class="grid grid-cols-2 lg:grid-cols-3 list-none p-0">
+        {
+          locationsSorted.map(location => (
+            <li class="m-0 leading-none">
+              <a href={`/eventos/${EventUtils.slugify(location)}/1/`}>{location}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="text-center md:text-right">
+      <h2 class="py-2">Sponsors</h2>
+      <p class="text-md font-light py-0">¡Gracias por su apoyo!</p>
+      <ul class="list-none flex justify-center mt-8">
+        <li>
+          <a href="https://codely.com" rel="nofollow" target="_blank" class="text-[#1a2233] dark:text-[#3cff64]"
+            ><Codely /></a
+          >
+        </li>
+      </ul>
+    </div>
   </section>
   <section class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row">
     <Logo />
@@ -49,5 +68,4 @@ import { Codely } from '../../atoms/sponsors/codely'
       </a>
     </span>
   </section>
-</footer>
 </footer>
