@@ -1,0 +1,18 @@
+---
+import Layout from '../../../layouts/layout.astro'
+import NextEvents from '../../../core/components/organisms/next-events/next-events.astro'
+import LastEvents from '../../../core/components/organisms/last-events/last-events.astro'
+import { EventUtils } from '../../../core/events/event-utils'
+import { AstroEvent } from '../../../core/events/astro-event'
+
+const events = (await Astro.glob('../**/*.mdx')) as AstroEvent[]
+
+const { location = '' } = Astro.params
+
+const locationName = EventUtils.getLocationName(events, location)
+---
+
+<Layout title={`eventos.wiki - Eventos en ${locationName}`}>
+  <NextEvents location={location} />
+  <LastEvents location={location} />
+</Layout>
