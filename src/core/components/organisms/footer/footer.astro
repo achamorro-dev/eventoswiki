@@ -22,8 +22,8 @@ const locationsSorted = locationsFiltered.sort((a, b) => a.localeCompare(b))
       <ul class="grid grid-cols-2 lg:grid-cols-3 list-none p-0">
         {
           locationsSorted.map(location => (
-            <li class="m-0 leading-tight">
-              <a href={`/eventos/${EventUtils.slugify(location)}/1/`} class="hover:text-accent">
+            <li class="m-0">
+              <a href={`/eventos/${EventUtils.slugify(location)}/1`} class="text-sm hover:text-accent">
                 {location}
               </a>
             </li>
