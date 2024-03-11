@@ -7,14 +7,19 @@ import EventsGrid from '../events-grid/events-grid.astro'
 
 const events = (await Astro.glob('../../../../pages/eventos/**/*.mdx')) as AstroEvent[]
 
-const nextEventsFiltered = EventUtils.getNextEvents(events)
+const { location } = Astro.props
+
+const locationName = EventUtils.getLocationName(events, location)
+
+const nextEventsFiltered = EventUtils.getNextEvents(events, { location })
 const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(0, 6)
 ---
 
 <section>
   <div class="flex items-center justify-between mt-4 mb-10">
-    <GradientTitle>Próximos eventos</GradientTitle>
+    <GradientTitle>Próximos eventos{locationName && ` en ${locationName}`}</GradientTitle>
     <Link href="/eventos/1" className="text-right">Ver más</Link>
   </div>
+  {nextEvents.length === 0 && <p class="opacity-50">Aún no hay información sobre próximos eventos</p>}
   <EventsGrid events={nextEvents} />
 </section>

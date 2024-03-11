@@ -4,3 +4,7 @@ export interface AstroEvent {
   frontmatter: Event
   url: string
 }
+
+export type FilterEvent = {
+  location?: string;
+}
