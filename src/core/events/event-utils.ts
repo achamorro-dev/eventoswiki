@@ -33,9 +33,9 @@ export class EventUtils {
     return [...new Set(locations)];
   }
 
-  static getLocationName(events: AstroEvent[], slug: string): string {
+  static getLocationName(events: AstroEvent[], location: string): string {
     return events
-      .find((event) => this.slugify(event.frontmatter.location) === slug)
+      .find((event) => this.slugify(event.frontmatter.location) === location)
       ?.frontmatter.location ?? '';
   }
 
