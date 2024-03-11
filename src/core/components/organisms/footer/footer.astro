@@ -16,32 +16,30 @@ const locationsSorted = locationsFiltered.sort((a, b) => a.localeCompare(b))
 ---
 
 <footer class="text-gray-700 bg-white dark:bg-slate-900 body-font border-t border-gray-200 dark:border-transparent">
-  <section class="container flex flex-col justify-between px-8 py-8 mx-auto max-w-7xl sm:flex-row">
-    <div class="w-full mb-6">
-      <h2 class="py-2">Eventos por ciudad</h2>
-      <ul class="grid grid-cols-2 lg:grid-cols-3 list-none p-0">
-        {
-          locationsSorted.map(location => (
-            <li class="m-0">
-              <a href={`/eventos/${EventUtils.slugify(location)}/1`} class="text-sm hover:text-accent">
-                {location}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-    <div class="text-center md:text-right">
-      <h2 class="py-2">Sponsors</h2>
-      <p class="text-md font-light py-0">¡Gracias por su apoyo!</p>
-      <ul class="list-none flex justify-center mt-8">
-        <li>
-          <a href="https://codely.com" rel="nofollow" target="_blank" class="text-[#1a2233] dark:text-[#3cff64]"
-            ><Codely /></a
-          >
-        </li>
-      </ul>
-    </div>
+  <section class="container mx-auto py-4 text-gray-500 text-center dark:text-white">
+    <h2 class="py-2">Sponsors</h2>
+    <p class="text-md font-light py-0">¡Gracias por su apoyo!</p>
+    <ul class="list-none flex justify-center mt-8">
+      <li>
+        <a href="https://codely.com" rel="nofollow" target="_blank" class="text-[#1a2233] dark:text-[#3cff64]"
+          ><Codely /></a
+        >
+      </li>
+    </ul>
+  </section>
+  <section class="container mx-auto max-w-7xl py-4 text-gray-500 text-center dark:text-white">
+    <h2 class="py-2">Eventos por ciudad</h2>
+    <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 list-none p-0 mt-2">
+      {
+        locationsSorted.map(location => (
+          <li class="m-0">
+            <a href={`/eventos/${EventUtils.slugify(location)}/1`} class="text-sm hover:text-accent">
+              {location}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </section>
   <section class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row">
     <Logo />
