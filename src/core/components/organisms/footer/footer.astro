@@ -9,8 +9,9 @@ import { Logo } from '../../molecules/logo/logo'
 import { Codely } from '../../atoms/sponsors/codely'
 
 const events = (await Astro.glob('../../../../pages/eventos/**/*.mdx')) as AstroEvent[]
+const meetups = (await Astro.glob('../../../../pages/meetups/**/*.mdx')) as AstroEvent[]
 
-const locations = EventUtils.getLocationEvents(events)
+const locations = EventUtils.getLocationEvents(Array.from(events).concat(meetups))
 const locationsFiltered = locations.filter(location => !location.includes('Online'))
 const locationsSorted = locationsFiltered.sort((a, b) => a.localeCompare(b))
 ---

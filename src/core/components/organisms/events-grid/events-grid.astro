@@ -16,3 +16,5 @@ const { events = [] } = Astro.props
     })
   }
 </div>
+{events.length === 0 && <p class="text-xl font-medium">No hay eventos disponibles en estos momentos</p>}
+

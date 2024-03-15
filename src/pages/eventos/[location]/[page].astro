@@ -2,6 +2,8 @@
 import Layout from '../../../layouts/layout.astro'
 import NextEvents from '../../../core/components/organisms/next-events/next-events.astro'
 import LastEvents from '../../../core/components/organisms/last-events/last-events.astro'
+import NextMeetups from '../../../core/components/organisms/next-meetups/next-meetups.astro'
+import LastMeetups from '../../../core/components/organisms/last-meetups/last-meetups.astro'
 import { EventUtils } from '../../../core/events/event-utils'
 import { AstroEvent } from '../../../core/events/astro-event'
 
@@ -14,5 +16,7 @@ const locationName = EventUtils.getLocationName(events, location)
 
 <Layout title={`eventos.wiki - Eventos en ${locationName}`}>
   <NextEvents location={location} />
+  <NextMeetups location={location} />
   <LastEvents location={location} />
+  <LastMeetups location={location} />
 </Layout>

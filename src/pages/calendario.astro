@@ -7,7 +7,8 @@ import type { AstroEvent } from '../core/events/astro-event'
 import Layout from '../layouts/layout.astro'
 
 const events = (await Astro.glob('./eventos/**/*.mdx')) as AstroEvent[]
-const calendarEvents = events.map(
+const meetups = (await Astro.glob('./meetups/**/*.mdx')) as AstroEvent[]
+const calendarEvents = Array.from(events).concat(meetups).map(
   (event, index) =>
     ({
       id: index,

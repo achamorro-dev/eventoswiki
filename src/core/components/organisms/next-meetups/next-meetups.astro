@@ -5,20 +5,20 @@ import { GradientTitle } from '../../atoms/gradient-title/gradient-title'
 import { Link } from '../../atoms/link/link'
 import EventsGrid from '../events-grid/events-grid.astro'
 
-const events = (await Astro.glob('../../../../pages/eventos/**/*.mdx')) as AstroEvent[]
+const events = (await Astro.glob('../../../../pages/meetups/**/*.mdx')) as AstroEvent[]
 
 const { location } = Astro.props
 
 const locationName = EventUtils.getLocationName(events, location)
 
 const nextEventsFiltered = EventUtils.getNextEvents(events, { location })
-const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(0, 3)
+const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(0, 6)
 ---
 
 <section>
   <div class="flex items-center justify-between mt-4 mb-10">
-    <GradientTitle>Próximos eventos{locationName && ` en ${locationName}`}</GradientTitle>
-    <Link href="/eventos/1" className="text-right">Ver más</Link>
+    <GradientTitle>Próximos meetups{locationName && ` en ${locationName}`}</GradientTitle>
+    <Link href="/meetups/1" className="text-right">Ver más</Link>
   </div>
   <EventsGrid events={nextEvents} />
 </section>
