@@ -20,6 +20,7 @@
     "@vercel/analytics": "^1.2.2",
     "add-to-calendar-button-react": "2.4.1",
     "astro": "4.4.13",
+    "clsx": "^2.1.0",
     "dayjs": "1.11.5",
     "moment": "2.30.1",
     "react": "18.2.0",
