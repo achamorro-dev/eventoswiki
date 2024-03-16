@@ -2,10 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Astro: debug",
-      "type": "node-terminal",
+      "name": "Development server",
+      "type": "pwa-node",
       "request": "launch",
-      "command": "npm run dev"
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run-script",
+        "dev"
+      ],
+      "sourceMaps": true
     }
   ]
 }
