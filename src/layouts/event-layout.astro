@@ -99,7 +99,7 @@ const {
       </div>
     </div>
     <main class="mt-4">
-      <Container maxSize="m">
+      <Container maxSize="m" className="event-container">
         <slot />
       </Container>
       <div class="sticky bottom-2 w-full text-center p-4">
@@ -116,6 +116,7 @@ const {
       </div>
     </main>
     <Footer />
+
     <style is:global>
       html {
         font-family: system-ui, sans-serif;
@@ -188,6 +189,10 @@ const {
       ol li {
         @apply text-slate-900 dark:text-gray-200 !text-lg mb-2;
       }
+
+      .event-container a {
+        @apply underline;
+     }
     </style>
     <script is:inline>
       const eventImage = document.getElementById('event-image')

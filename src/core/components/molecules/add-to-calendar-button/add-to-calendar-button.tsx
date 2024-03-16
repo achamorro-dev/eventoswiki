@@ -1,5 +1,5 @@
-import { AddToCalendarButton as AddToCalendar } from 'add-to-calendar-button-react'
 import { type FC } from 'react'
+import { AddToCalendarButton as AddToCalendar } from 'add-to-calendar-button-react'
 import './add-to-calendar-button.css'
 
 type AddToCalendarButtonProps = {

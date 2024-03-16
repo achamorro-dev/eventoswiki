@@ -1,17 +1,17 @@
 .atcb-light {
   --btn-background: white;
   --btn-background-hover: #f8fafc;
-  --btn-text: rgb(67 56 202);
-  --btn-text-hover: rgb(67 56 202);
+  --btn-text: #e11d48;
+  --btn-text-hover: #e11d48;
   display: inline-block;
   margin: 0 auto;
 }
 
 :is(.dark .atcb-light) {
-  --btn-background: white;
-  --btn-background-hover: #f8fafc;
-  --btn-text: rgb(225 29 72);
-  --btn-text-hover: rgb(225 29 72);
+  --btn-background: rgb(30 41 59);
+  --btn-background-hover: rgb(30 41 65);
+  --btn-text: #f43f5e;
+  --btn-text-hover: #f43f5e;
   display: inline-block;
   margin: 0 auto;
 }
