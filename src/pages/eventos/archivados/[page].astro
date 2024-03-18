@@ -2,6 +2,7 @@
 import { Button } from '../../../core/components/atoms/button/button'
 import { GradientTitle } from '../../../core/components/atoms/gradient-title/gradient-title'
 import { Link } from '../../../core/components/atoms/link/link'
+import { Tags } from '../../../core/components/molecules/tags/tags'
 import EventsGrid from '../../../core/components/organisms/events-grid/events-grid.astro'
 import type { AstroEvent } from '../../../core/events/astro-event'
 import { EventUtils } from '../../../core/events/event-utils'
@@ -25,16 +26,6 @@ const prevPage = pageNumber > 1 ? `/eventos/archivados/${pageNumber - 1}` : null
 
 const eventsAux = EventUtils.getLastEvents(events)
 const tagsEvents = EventUtils.getTagsEvents(eventsAux)
-
-function getLink(tag: string) {
-  const url = new URL(Astro.request.url)
-  if (tags.includes(tag)) {
-    url.searchParams.delete('tag')
-  } else {
-    url.searchParams.append('tag', tag)
-  }
-  return url.toString()
-}
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">
@@ -42,20 +33,7 @@ function getLink(tag: string) {
     <GradientTitle>Eventos pasados</GradientTitle>
     <Link href="/eventos/1" className="text-right">Ver próximos</Link>
   </div>
-  <section class="flex flex-wrap gap-1 mb-8">
-    {
-      tagsEvents.map(tag => (
-        <a
-          href={getLink(tag)}
-          class={`inline-flex items-center px-3 py-1.5 leading-none w-auto rounded-full text-xs font-bold uppercase border hover:bg-gray-200 ${
-            tags.includes(tag) && 'bg-gray-200'
-          }`}
-        >
-          {tag}
-        </a>
-      ))
-    }
-  </section>
+  <Tags url={Astro.request.url} tagsEvents={tagsEvents} />
   <EventsGrid events={pageEvents} />
   <div class="flex justify-between mt-8">
     {
