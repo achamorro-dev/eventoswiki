@@ -15,7 +15,6 @@ const searchParams = new URL(Astro.request.url).searchParams
 const tags = searchParams.getAll('tag')
 
 const eventsFiltered = EventUtils.getNextEvents(events, { tags })
-
 const eventsSortered = EventUtils.sortByStartDateAsc(eventsFiltered)
 
 const pageParam = Astro.params.page
