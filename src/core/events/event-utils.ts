@@ -89,4 +89,17 @@ export class EventUtils {
       .replace(/^-+/, "")
       .replace(/-+$/, "");
   }
+
+  static getLink(url: URL, tag: string) {
+    const tags = url.searchParams.getAll('tag');
+    const index = tags.indexOf(tag);
+    if (index !== -1) {
+      tags.splice(index, 1);
+    } else {
+      tags.push(tag);
+    }
+    const newUrl = new URL(url.origin + url.pathname)
+    tags.forEach((tag) => newUrl.searchParams.append('tag', tag));
+    return newUrl.toString()
+  }
 }
