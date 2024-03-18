@@ -9,7 +9,11 @@ import Layout from '../../../layouts/layout.astro'
 
 const EVENTS_PER_PAGE = 12
 const events = (await Astro.glob('../../eventos/**/*.mdx')) as AstroEvent[]
-const eventsFiltered = EventUtils.getLastEvents(events)
+
+const searchParams = new URL(Astro.request.url).searchParams
+const tags = searchParams.getAll('tag')
+
+const eventsFiltered = EventUtils.getLastEvents(events, { tags })
 const eventsSortered = EventUtils.sortByStartDateDesc(eventsFiltered)
 
 const pageParam = Astro.params.page
@@ -18,13 +22,40 @@ const pageNumber = pageParam ? parseInt(pageParam) : 1
 const pageEvents = eventsSortered.slice((pageNumber - 1) * EVENTS_PER_PAGE, pageNumber * EVENTS_PER_PAGE)
 const nextPage = eventsSortered.length > pageNumber * EVENTS_PER_PAGE ? `/eventos/archivados/${pageNumber + 1}` : null
 const prevPage = pageNumber > 1 ? `/eventos/archivados/${pageNumber - 1}` : null
+
+const eventsAux = EventUtils.getLastEvents(events)
+const tagsEvents = EventUtils.getTagsEvents(eventsAux)
+
+function getLink(tag: string) {
+  const url = new URL(Astro.request.url)
+  if (tags.includes(tag)) {
+    url.searchParams.delete('tag')
+  } else {
+    url.searchParams.append('tag', tag)
+  }
+  return url.toString()
+}
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">
-  <div class="flex items-center justify-between mt-4 mb-10">
+  <div class="flex items-center justify-between mt-4 mb-2">
     <GradientTitle>Eventos pasados</GradientTitle>
     <Link href="/eventos/1" className="text-right">Ver próximos</Link>
   </div>
+  <section class="flex flex-wrap gap-1 mb-8">
+    {
+      tagsEvents.map(tag => (
+        <a
+          href={getLink(tag)}
+          class={`inline-flex items-center px-3 py-1.5 leading-none w-auto rounded-full text-xs font-bold uppercase border hover:bg-gray-200 ${
+            tags.includes(tag) && 'bg-gray-200'
+          }`}
+        >
+          {tag}
+        </a>
+      ))
+    }
+  </section>
   <EventsGrid events={pageEvents} />
   <div class="flex justify-between mt-8">
     {
