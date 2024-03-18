@@ -23,14 +23,5 @@ const { title, description } = Astro.props
       </Container>
     </main>
     <Footer />
-    <script is:inline>
-      const images = document.querySelectorAll('img')
-
-      images.forEach(image => {
-        image.addEventListener('error', function (event) {
-          event.currentTarget.src = '/not-found.jpg'
-        })
-      })
-    </script>
   </body>
 </html>
