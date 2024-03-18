@@ -7,4 +7,5 @@ export interface AstroEvent {
 
 export type FilterEvent = {
   location?: string;
+  tags?: string[];
 }

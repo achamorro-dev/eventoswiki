@@ -10,6 +10,11 @@ export class EventUtils {
         if (this.slugify(event.frontmatter.location) !== filter.location) return false;
       }
 
+      if (filter && filter.tags) {
+        const tags = event.frontmatter.tags ?? [];
+        if (!tags.some((tag) => filter.tags?.includes(tag))) return false;
+      }
+
       return Datetime.isAfterYesterday(event.frontmatter.endDate);
     });
   }
@@ -20,6 +25,11 @@ export class EventUtils {
 
       if (filter && filter.location) {
         if (this.slugify(event.frontmatter.location) !== filter.location) return false;
+      }
+
+      if (filter && filter.tags) {
+        const tags = event.frontmatter.tags ?? [];
+        if (!tags.some((tag) => filter.tags?.includes(tag))) return false;
       }
 
       return Datetime.isBeforeToday(event.frontmatter.endDate);
@@ -37,6 +47,13 @@ export class EventUtils {
     return events
       .find((event) => this.slugify(event.frontmatter.location) === location)
       ?.frontmatter.location ?? '';
+  }
+
+  static getTagsEvents(events: AstroEvent[]): string[] {
+    const tags = events
+      .map((event) => event.frontmatter.tags ?? '')
+      .flat()
+    return [...new Set(tags)];
   }
 
   static sortByStartDateAsc(events: AstroEvent[]): AstroEvent[] {
