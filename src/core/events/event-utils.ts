@@ -10,7 +10,7 @@ export class EventUtils {
         if (this.slugify(event.frontmatter.location) !== filter.location) return false;
       }
 
-      if (filter && filter.tags) {
+      if (filter && filter.tags?.length) {
         const tags = event.frontmatter.tags ?? [];
         if (!tags.some((tag) => filter.tags?.includes(tag))) return false;
       }
@@ -27,7 +27,7 @@ export class EventUtils {
         if (this.slugify(event.frontmatter.location) !== filter.location) return false;
       }
 
-      if (filter && filter.tags) {
+      if (filter && filter.tags?.length) {
         const tags = event.frontmatter.tags ?? [];
         if (!tags.some((tag) => filter.tags?.includes(tag))) return false;
       }
@@ -53,7 +53,7 @@ export class EventUtils {
     const tags = events
       .map((event) => event.frontmatter.tags ?? '')
       .flat()
-    return [...new Set(tags)];
+    return [...new Set(tags)].sort((a, b) => a.localeCompare(b));
   }
 
   static sortByStartDateAsc(events: AstroEvent[]): AstroEvent[] {
