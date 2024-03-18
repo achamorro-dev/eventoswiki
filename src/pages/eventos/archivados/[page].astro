@@ -33,7 +33,7 @@ const tagsEvents = EventUtils.getTagsEvents(eventsAux)
     <GradientTitle>Eventos pasados</GradientTitle>
     <Link href="/eventos/1" className="text-right">Ver próximos</Link>
   </div>
-  <Tags url={Astro.request.url} tagsEvents={tagsEvents} />
+  <Tags url={Astro.request.url} tags={tagsEvents} />
   <EventsGrid events={pageEvents} />
   <div class="flex justify-between mt-8">
     {
