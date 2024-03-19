@@ -12,8 +12,9 @@ export const Menu: FC = () => {
   return (
     <>
       <div
-        className={`top-0 left-0 items-start w-full h-full p-4 text-sm bg-gray-900 bg-opacity-50 md:items-center md:w-3/4 lg:text-base md:bg-transparent md:p-0 md:relative md:flex ${showMenu ? 'flex fixed' : 'hidden'
-          }`}
+        className={`top-0 left-0 items-start w-full h-full p-4 text-sm bg-gray-900 bg-opacity-50 md:items-center md:w-3/4 lg:text-base md:bg-transparent md:p-0 md:relative md:flex ${
+          showMenu ? 'flex fixed' : 'hidden'
+        }`}
       >
         <div className="flex-col w-full h-auto overflow-hidden rounded-lg bg-white dark:bg-slate-600 md:bg-transparent md:dark:bg-transparent md:overflow-visible md:rounded-none md:relative md:flex md:flex-row md:justify-end">
           <Logo className="ml-5 md:hidden" />
@@ -26,7 +27,7 @@ export const Menu: FC = () => {
               type="link"
               href="https://github.com/achamorro-dev/eventoswiki/issues/new?assignees=achamorro-dev&labels=enhancement&template=solicitud-nuevo-evento.md&title=A%C3%B1adir+nuevo+evento"
               rel="nofollow"
-              className="hidden md:block"
+              className="hidden !ml-0 lg:!ml-4 md:block"
               target="_blank"
             >
               Añadir evento

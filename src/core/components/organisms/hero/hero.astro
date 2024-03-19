@@ -2,18 +2,11 @@
 import { Button } from '../../atoms/button/button'
 ---
 
-<section
-  class="hero"
->
+<section class="hero">
   <article>
     <h2 class="hero-title">
-      <span
-        class="hero-title-first"
-        >Todos los eventos tecnológicos</span
-      >
-      <span class="hero-title-second">
-        en un mismo lugar.</span
-      >
+      <span class="hero-title-first">Todos los eventos tecnológicos</span>
+      <span class="hero-title-second"> en un mismo lugar.</span>
     </h2>
     <div class="hero-actions">
       <Button type="link" rel="nofollow" href="/calendario">Ver calendario</Button>
@@ -39,22 +32,22 @@ import { Button } from '../../atoms/button/button'
 </section>
 
 <style>
-.hero {
-  @apply container max-w-lg flex flex-col-reverse items-center mx-auto mt-px text-left md:max-w-none md:grid md:grid-cols-2;
-}
-.hero-title {
-  @apply !font-extrabold leading-10 tracking-tight text-left sm:leading-none;
-}
-.hero-title-first {
-  @apply  !text-3xl text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent block md:pb-1 md:!text-4xl;
-}
-.hero-title-second {
-  @apply !text-3xl relative md:inline-block text-black dark:text-white md:!text-4xl;
-}
-.hero-actions {
-  @apply flex flex-col lg:flex-row lg:justify-start mt-12 text-center gap-4;
-}
-.hero-image {
-  @apply w-full h-64 object-cover lg:h-[450px];
-}
+  .hero {
+    @apply container max-w-lg flex flex-col-reverse items-center mx-auto mt-px text-left md:max-w-none md:grid md:grid-cols-2;
+  }
+  .hero-title {
+    @apply !font-extrabold leading-10 tracking-tight text-left sm:leading-none;
+  }
+  .hero-title-first {
+    @apply !text-4xl text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent block md:pb-1 lg:!text-5xl;
+  }
+  .hero-title-second {
+    @apply !text-4xl relative md:inline-block text-black dark:text-white lg:!text-5xl;
+  }
+  .hero-actions {
+    @apply flex flex-col lg:flex-row lg:justify-start mt-2 text-center gap-4 md:mt-4 lg:mt-8;
+  }
+  .hero-image {
+    @apply w-full h-64 object-cover lg:h-[450px];
+  }
 </style>
