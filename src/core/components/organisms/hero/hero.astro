@@ -3,19 +3,19 @@ import { Button } from '../../atoms/button/button'
 ---
 
 <section
-  class="container max-w-lg flex flex-col-reverse items-center px-4 py-5 mx-auto mt-px text-left md:max-w-none md:grid md:grid-cols-2"
+  class="hero"
 >
   <article>
-    <h2 class="!font-extrabold leading-10 tracking-tight text-left sm:leading-none">
+    <h2 class="hero-title">
       <span
-        class="!text-5xl text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent inline md:block md:pb-1 md:!text-6xl"
+        class="hero-title-first"
         >Todos los eventos tecnológicos</span
       >
-      <span class="!text-5xl relative md:inline-block text-black dark:text-white md:!text-6xl">
+      <span class="hero-title-second">
         en un mismo lugar.</span
       >
     </h2>
-    <div class="flex flex-col md:flex-row md:justify-start mt-12 text-center gap-4">
+    <div class="hero-actions">
       <Button type="link" rel="nofollow" href="/calendario">Ver calendario</Button>
       <Button
         type="link"
@@ -32,8 +32,29 @@ import { Button } from '../../atoms/button/button'
     <img
       src="/hero_image.svg"
       alt="Ilustración donde podemos ver un dibujo de una mujer sentada en el suelo con las piernas cruzadas y su portátil encima. También se ve una bombilla como si se le hubiera ocurrido una idea ingeniosa."
-      class="w-full h-96 object-cover lg:h-[600px]"
+      class="hero-image"
       loading="eager"
     />
   </article>
 </section>
+
+<style>
+.hero {
+  @apply container max-w-lg flex flex-col-reverse items-center mx-auto mt-px text-left md:max-w-none md:grid md:grid-cols-2;
+}
+.hero-title {
+  @apply !font-extrabold leading-10 tracking-tight text-left sm:leading-none;
+}
+.hero-title-first {
+  @apply  !text-3xl text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent block md:pb-1 md:!text-4xl;
+}
+.hero-title-second {
+  @apply !text-3xl relative md:inline-block text-black dark:text-white md:!text-4xl;
+}
+.hero-actions {
+  @apply flex flex-col lg:flex-row lg:justify-start mt-12 text-center gap-4;
+}
+.hero-image {
+  @apply w-full h-64 object-cover lg:h-[450px];
+}
+</style>
