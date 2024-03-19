@@ -2,7 +2,7 @@
 import { Button } from '../../core/components/atoms/button/button'
 import { GradientTitle } from '../../core/components/atoms/gradient-title/gradient-title'
 import { Link } from '../../core/components/atoms/link/link'
-import { Tags } from '../../core/components/molecules/tags/tags'
+import { EventTags } from '../../core/components/molecules/event-tags/event-tags'
 import EventsGrid from '../../core/components/organisms/events-grid/events-grid.astro'
 import type { AstroEvent } from '../../core/events/astro-event'
 import { EventUtils } from '../../core/events/event-utils'
@@ -33,7 +33,7 @@ const tagsEvents = EventUtils.getTagsEvents(eventsAux)
     <GradientTitle>Próximos eventos</GradientTitle>
     <Link href="/eventos/archivados/1" className="text-right">Ver pasados</Link>
   </div>
-  <Tags url={Astro.request.url} tags={tagsEvents} />
+  <EventTags url={Astro.request.url} tags={tagsEvents} />
   <EventsGrid events={pageEvents} />
   <div class="flex justify-between mt-8">
     {
@@ -54,3 +54,4 @@ const tagsEvents = EventUtils.getTagsEvents(eventsAux)
     }
   </div>
 </Layout>
+../../core/components/molecules/tags/event-tags ../../core/components/molecules/event-tags/event-tags
