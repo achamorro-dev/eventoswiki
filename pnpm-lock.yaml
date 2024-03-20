@@ -27,7 +27,7 @@ dependencies:
     specifier: 18.2.7
     version: 18.2.7
   '@vercel/analytics':
-    specifier: ^1.2.2
+    specifier: 1.2.2
     version: 1.2.2(react@18.2.0)
   add-to-calendar-button-react:
     specifier: 2.4.1
@@ -36,7 +36,7 @@ dependencies:
     specifier: 4.4.13
     version: 4.4.13(@types/node@20.11.30)(typescript@5.3.3)
   clsx:
-    specifier: ^2.1.0
+    specifier: 2.1.0
     version: 2.1.0
   dayjs:
     specifier: 1.11.5
@@ -62,16 +62,16 @@ dependencies:
 
 devDependencies:
   '@commitlint/config-conventional':
-    specifier: ^19.1.0
+    specifier: 19.1.0
     version: 19.1.0
   commitlint:
-    specifier: ^19.2.1
+    specifier: 19.2.1
     version: 19.2.1(@types/node@20.11.30)(typescript@5.3.3)
   pretty-quick:
-    specifier: ^4.0.0
+    specifier: 4.0.0
     version: 4.0.0(prettier@3.2.5)
   simple-git-hooks:
-    specifier: ^2.11.0
+    specifier: 2.11.0
     version: 2.11.0
 
 packages:
