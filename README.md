@@ -100,4 +100,4 @@ Alberto Chamorro - [albertochamorro.dev](https://albertochamorro.dev)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[product-screenshot]: docs/hero.jpg
+[product-screenshot]: docs/hero.png
