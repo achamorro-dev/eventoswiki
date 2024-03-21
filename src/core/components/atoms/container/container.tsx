@@ -16,7 +16,7 @@ export const Container: FC<PropsWithChildren<ContainerProps>> = ({ maxSize = 'l'
   const maxSizeClass = CONTAINER_MAX_SIZES[maxSize]
 
   return (
-    <div className="w-full px-6 pb-12 antialiased bg-white dark:bg-slate-900">
+    <div className="w-full bg-white px-4 pb-12 antialiased dark:bg-slate-900">
       <div className={classnames('mx-auto', maxSizeClass, className)}>{children}</div>
     </div>
   )
