@@ -29,9 +29,9 @@ const tagsEvents = EventUtils.getTagsEvents(eventsAux)
 ---
 
 <Layout title="eventos.wiki - Próximos eventos">
-  <div class="flex items-center justify-between mt-4">
+  <div class="flex items-center justify-between">
     <GradientTitle>Próximos eventos</GradientTitle>
-    <Link href="/eventos/archivados/1" className="text-right">Ver pasados</Link>
+    <Link href="/eventos/archivados/1" className="text-right  shrink-0">Ver pasados</Link>
   </div>
   <EventTags url={Astro.request.url} tags={tagsEvents} />
   <EventsGrid events={pageEvents} />

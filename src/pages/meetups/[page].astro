@@ -21,9 +21,9 @@ const prevPage = pageNumber > 1 ? `/meetups/${pageNumber - 1}` : null
 ---
 
 <Layout title="eventos.wiki - Próximos meetups">
-  <div class="flex items-center justify-between mt-4 mb-10">
+  <div class="flex items-center justify-between">
     <GradientTitle>Próximos meetups</GradientTitle>
-    <Link href="/meetups/archivados/1" className="text-right">Ver pasados</Link>
+    <Link href="/meetups/archivados/1" className="text-right shrink-0">Ver pasados</Link>
   </div>
   <EventsGrid events={pageEvents} />
   <div class="flex justify-between mt-8">

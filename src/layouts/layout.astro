@@ -4,7 +4,7 @@ import BaseHead from '../core/components/base-head.astro'
 import Footer from '../core/components/organisms/footer/footer.astro'
 import Header from '../core/components/organisms/header/header.astro'
 
-export interface Props {
+interface Props {
   title: string
   description?: string
 }
@@ -15,7 +15,7 @@ const { title, description } = Astro.props
 <!doctype html>
 <html lang="es" style="scrollbar-gutter: stable;">
   <BaseHead title={title} description={description} />
-  <body class="bg-white dark:bg-slate-900 grid min-h-full m-0 grid-rows-[auto_1fr_auto]">
+  <body>
     <Header />
     <main>
       <Container>
@@ -23,5 +23,10 @@ const { title, description } = Astro.props
       </Container>
     </main>
     <Footer />
+    <style>
+      body {
+        @apply m-0 grid min-h-full grid-rows-[auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+      }
+    </style>
   </body>
 </html>

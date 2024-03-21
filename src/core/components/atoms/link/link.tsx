@@ -1,17 +1,16 @@
 import type { FC, PropsWithChildren } from 'react'
+import { classnames } from '../../../classnames/classnames'
 
 type LinkProps = {
   href: string
   className?: string
+  selected?: boolean
 }
 
-export const Link: FC<PropsWithChildren<LinkProps>> = (props) => {
+export const Link: FC<PropsWithChildren<LinkProps>> = props => {
   const { href, className = '', children } = props
   return (
-    <a
-      href={href}
-      className={`inline-block w-full py-2 mx-0 ml-6 font-medium text-left text-gray-600 dark:text-gray-50 md:ml-0 md:w-auto md:px-0 md:mx-2 lg:mx-3 md:text-center ${className}`}
-    >
+    <a href={href} className={classnames('inline-block text-left font-medium md:text-center', className)}>
       {children}
     </a>
   )

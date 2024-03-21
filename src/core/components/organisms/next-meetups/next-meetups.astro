@@ -18,7 +18,7 @@ const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(0, 6)
 <section>
   <div class="flex items-center justify-between my-4">
     <GradientTitle>Próximos meetups{locationName && ` en ${locationName}`}</GradientTitle>
-    <Link href="/meetups/1" className="text-right">Ver más</Link>
+    <Link href="/meetups/1" className="text-right shrink-0">Ver más</Link>
   </div>
   <EventsGrid events={nextEvents} />
 </section>

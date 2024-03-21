@@ -44,7 +44,7 @@ const {
     image={image}
     url={`https://eventos.wiki${url}`}
   />
-  <body class="bg-white dark:bg-slate-900 grid min-h-full m-0 grid-rows-[auto_auto_1fr_auto]">
+  <body>
     <Header />
     <div class="relative h-72 bg-indigo-900">
       <img
@@ -119,6 +119,11 @@ const {
     </main>
     <Footer />
 
+    <style>
+      body {
+        @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+      }
+    </style>
     <style is:global>
       html {
         font-family: system-ui, sans-serif;
@@ -128,11 +133,11 @@ const {
 
       p,
       span {
-        @apply text-gray-900 dark:text-gray-50 text-xl;
+        @apply text-xl text-gray-900 dark:text-gray-50;
       }
 
       small {
-        @apply text-gray-900 dark:text-gray-50 text-sm;
+        @apply text-sm text-gray-900 dark:text-gray-50;
       }
 
       h2,
@@ -144,11 +149,11 @@ const {
       }
 
       h2 {
-        @apply text-slate-900 dark:text-gray-200 !text-3xl py-4;
+        @apply py-4 !text-3xl text-slate-900 dark:text-gray-200;
       }
 
       h3 {
-        @apply text-slate-900 dark:text-gray-200 !text-2xl py-3;
+        @apply py-3 !text-2xl text-slate-900 dark:text-gray-200;
       }
 
       p {
@@ -164,16 +169,16 @@ const {
       }
 
       table td {
-        @apply text-gray-900 dark:text-gray-50 p-4;
+        @apply p-4 text-gray-900 dark:text-gray-50;
       }
 
       table th {
-        @apply !text-gray-900 dark:!text-gray-50 p-4;
+        @apply p-4 !text-gray-900 dark:!text-gray-50;
       }
 
       ol,
       ul {
-        @apply text-base font-sans p-4;
+        @apply p-4 font-sans text-base;
       }
 
       ol {
@@ -185,11 +190,11 @@ const {
       }
 
       ul li {
-        @apply text-slate-900 dark:text-gray-200 !text-lg mb-2;
+        @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
       }
 
       ol li {
-        @apply text-slate-900 dark:text-gray-200 !text-lg mb-2;
+        @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
       }
 
       .event-container a {
