@@ -24,7 +24,7 @@ module.exports = {
         DEFAULT: colors.white,
         dark: {
           DEFAULT: colors.slate[900],
-          light: colors.slate[700],
+          light: colors.slate[800],
         },
       },
       foreground: {

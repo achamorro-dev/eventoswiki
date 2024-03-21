@@ -1,71 +1,13 @@
 ---
-import type { AstroEvent } from '../../../events/astro-event'
-import { EventUtils } from '../../../events/event-utils'
-
-import { Logo } from '../../molecules/logo/logo'
-
-import { Github, Twitter } from '../../../ui/icons'
-import { Codely } from '../../atoms/sponsors/codely'
-
-const events = (await Astro.glob('../../../../pages/eventos/**/*.mdx')) as AstroEvent[]
-const meetups = (await Astro.glob('../../../../pages/meetups/**/*.mdx')) as AstroEvent[]
-
-const locations = EventUtils.getLocationEvents(Array.from(events).concat(meetups))
-const locationsFiltered = locations.filter(location => !location.includes('Online'))
-const locationsSorted = locationsFiltered.sort((a, b) => a.localeCompare(b))
+import CopyrightFooter from './copyright-footer.astro'
+import EventsByLocationFooter from './events-by-location-footer.astro'
+import SponsorsFooter from './sponsors-footer.astro'
 ---
 
-<footer class="text-gray-700 bg-white dark:bg-slate-900 body-font border-t border-gray-200 dark:border-transparent">
-  <section class="container mx-auto py-4 text-gray-500 text-center dark:text-white">
-    <h2 class="py-2">Sponsors</h2>
-    <p class="text-md font-light py-0">¡Gracias por su apoyo!</p>
-    <ul class="list-none flex justify-center mt-8">
-      <li>
-        <a href="https://codely.com" rel="nofollow" target="_blank" class="text-[#1a2233] dark:text-[#3cff64]"
-          ><Codely /></a
-        >
-      </li>
-    </ul>
-  </section>
-  <section class="container mx-auto max-w-7xl py-4 text-gray-500 text-center dark:text-white">
-    <h2 class="py-2">Eventos por ciudad</h2>
-    <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 list-none p-0 mt-2">
-      {
-        locationsSorted.map(location => (
-          <li class="m-0">
-            <a href={`/eventos/${EventUtils.slugify(location)}/1`} class="text-sm hover:text-accent">
-              {location}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-  <section class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row mb-24 md:mb-0">
-    <Logo />
-    <p class="mt-4 text-sm text-gray-500 dark:text-gray-300 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0">
-      Made with ❤️ by <a href="https://twitter.com/achamorro_dev" target="_blank" rel="nofollow">@achamorro_dev</a>
-    </p>
-    <span class="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">
-      <a
-        href="https://twitter.com/eventos_wiki"
-        target="_blank"
-        class="text-gray-400 hover:text-gray-500"
-        rel="nofollow"
-      >
-        <span class="sr-only">Twitter</span>
-        <Twitter />
-      </a>
-
-      <a
-        href="https://github.com/achamorro-dev/eventoswiki"
-        rel="nofollow"
-        target="_blank"
-        class="text-gray-400 hover:text-gray-500"
-      >
-        <span class="sr-only">GitHub</span>
-        <Github />
-      </a>
-    </span>
-  </section>
+<footer
+  class="text-foreground dark:text-foreground-dark bg-background-light dark:bg-background-dark-light body-font border-t border-gray-200 dark:border-transparent"
+>
+  <SponsorsFooter />
+  <EventsByLocationFooter />
+  <CopyrightFooter />
 </footer>
