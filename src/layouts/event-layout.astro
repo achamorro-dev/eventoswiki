@@ -1,8 +1,6 @@
 ---
 import type { MarkdownLayoutProps } from 'astro'
 import { Container } from '../core/components/atoms/container/container'
-import { Link } from '../core/components/atoms/icons/link'
-import { MapPin } from '../core/components/atoms/icons/map-pin'
 import { Tag } from '../core/components/atoms/tag/tag'
 import BaseHead from '../core/components/base-head.astro'
 import { AddToCalendarButton } from '../core/components/molecules/add-to-calendar-button/add-to-calendar-button'
@@ -12,6 +10,7 @@ import Footer from '../core/components/organisms/footer/footer.astro'
 import Header from '../core/components/organisms/header/header.astro'
 import { Datetime } from '../core/datetime/datetime'
 import type { Event } from '../core/events/event'
+import { Link, MapPin } from '../core/ui/icons'
 
 type Props = MarkdownLayoutProps<Event>
 
@@ -29,6 +28,7 @@ const {
   twitch,
   instagram,
   youtube,
+  facebook,
   linkedin,
   github,
   web,
@@ -96,6 +96,7 @@ const {
         {twitch && <SocialLink name={title} href={twitch} type="twitch" />}
         {instagram && <SocialLink name={title} href={instagram} type="instagram" />}
         {youtube && <SocialLink name={title} href={youtube} type="youtube" />}
+        {facebook && <SocialLink name={title} href={facebook} type="facebook" />}
         {linkedin && <SocialLink name={title} href={linkedin} type="linkedin" />}
         {github && <SocialLink name={title} href={github} type="github" />}
       </div>
