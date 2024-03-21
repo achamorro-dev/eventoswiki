@@ -8,9 +8,16 @@ type LinkProps = {
 }
 
 export const Link: FC<PropsWithChildren<LinkProps>> = props => {
-  const { href, className = '', children } = props
+  const { href, className = '', selected = false, children } = props
   return (
-    <a href={href} className={classnames('inline-block text-left font-medium md:text-center', className)}>
+    <a
+      href={href}
+      className={classnames(
+        'inline-block text-left font-medium md:text-center',
+        { 'text-primary dark:text-primary-light': selected },
+        className,
+      )}
+    >
       {children}
     </a>
   )
