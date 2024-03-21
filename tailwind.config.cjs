@@ -33,9 +33,11 @@ module.exports = {
       },
       menu: {
         background: colors.zinc[100],
-        darkBackground: colors.zinc[800],
+        dark: {
+          DEFAULT: colors.slate[800],
+          foreground: colors.white,
+        },
         foreground: colors.black,
-        darkForeground: colors.white,
       },
     },
   },

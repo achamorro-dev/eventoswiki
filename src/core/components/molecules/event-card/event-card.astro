@@ -1,9 +1,8 @@
 ---
 import { Datetime } from '../../../datetime/datetime'
 import type { AstroEvent } from '../../../events/astro-event'
+import { Calendar, MapPin } from '../../../ui/icons'
 import { Card } from '../../atoms/card/card'
-import { Calendar } from '../../atoms/icons/calendar'
-import { MapPin } from '../../atoms/icons/map-pin'
 import { Tag } from '../../atoms/tag/tag'
 
 interface Props {
@@ -59,12 +58,12 @@ const {
         )
       }
     </div>
-    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50">{shortDescription}</p>
+    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 flex-1">{shortDescription}</p>
     {
       location && (
-        <div class="w-full flex flex-1 items-end justify-end p-4">
-          <MapPin />
-          <p class="text-sm p-0 pb-0.5 text-gray-500 dark:text-gray-50">{location}</p>
+        <div class="w-full flex gap-1 items-center justify-end p-4">
+          <MapPin className="text-xl" />
+          <p class="text-sm p-0 text-gray-500 dark:text-gray-50">{location}</p>
         </div>
       )
     }

@@ -2,10 +2,9 @@
 import type { AstroEvent } from '../../../events/astro-event'
 import { EventUtils } from '../../../events/event-utils'
 
-import { Github } from '../../atoms/icons/github'
-import { Twitter } from '../../atoms/icons/twitter'
 import { Logo } from '../../molecules/logo/logo'
 
+import { Github, Twitter } from '../../../ui/icons'
 import { Codely } from '../../atoms/sponsors/codely'
 
 const events = (await Astro.glob('../../../../pages/eventos/**/*.mdx')) as AstroEvent[]

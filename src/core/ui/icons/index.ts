@@ -1,1 +1,17 @@
-export { PiCalendar as Calendar, PiChalkboard as Chalkboard, PiUsersFour as Users } from 'react-icons/pi'
+export {
+  PiCalendar as Calendar,
+  PiCalendarBlank as CalendarBlank,
+  PiChalkboard as Chalkboard,
+  PiFacebookLogoFill as Facebook,
+  PiGithubLogoFill as Github,
+  PiInstagramLogoFill as Instagram,
+  PiLink as Link,
+  PiLinkedinLogoFill as Linkedin,
+  PiMapPin as MapPin,
+  PiTwitchLogoFill as Twitch,
+  PiTwitterLogoFill as Twitter,
+  PiUsersFour as Users,
+  PiYoutubeLogoFill as Youtube,
+  PiMoon as Moon,
+  PiSun as Sun,
+} from 'react-icons/pi'
