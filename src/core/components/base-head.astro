@@ -1,26 +1,23 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ViewTransitions } from 'astro:transitions'
 type BaseHeadProps = {
-  title?: string;
-  description?: string;
-  image?: string;
-  url?: string;
-};
+  title?: string
+  description?: string
+  image?: string
+  url?: string
+}
 
 const {
-  title = "eventos.wiki",
-  description = "En eventos.wiki tendrás todos los eventos sobre tecnología en un mismo lugar",
-  image = "https://eventos.wiki/og.jpg",
-  url = "https://eventos.wiki/",
-} = Astro.props as BaseHeadProps;
+  title = 'eventos.wiki',
+  description = 'En eventos.wiki tendrás todos los eventos sobre tecnología en un mismo lugar',
+  image = 'https://eventos.wiki/og.jpg',
+  url = 'https://eventos.wiki/',
+} = Astro.props as BaseHeadProps
 ---
 
 <head>
   <meta charset="utf-8" dir="rtl" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

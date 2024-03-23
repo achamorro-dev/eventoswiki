@@ -1,19 +1,17 @@
 import type { FC } from 'react'
-import { Moon, Sun } from '../../../ui/icons'
+import { Laptop, Moon, Sun } from '../../../ui/icons'
 import { useTheme } from './use-theme'
 
-type ThemeModeToggleProps = {
-  onClick?(): void
-}
+type ThemeModeToggleProps = {}
 
-export const ThemeModeToggle: FC<ThemeModeToggleProps> = props => {
-  const { onClick = () => {} } = props
-  const { isDarkSelected, toggleTheme } = useTheme()
+export const ThemeModeToggle: FC<ThemeModeToggleProps> = () => {
+  const { isDarkSelected, isSystemSelected, toggleTheme, theme } = useTheme()
 
   const onButtonClick = () => {
     toggleTheme()
-    onClick()
   }
+
+  if (!theme) return null
 
   return (
     <button
@@ -22,7 +20,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = props => {
       aria-label="Cambiar tema de la web"
       onClick={onButtonClick}
     >
-      {isDarkSelected ? <Sun /> : <Moon />}
+      {isDarkSelected ? <Moon /> : isSystemSelected ? <Laptop /> : <Sun />}
     </button>
   )
 }
