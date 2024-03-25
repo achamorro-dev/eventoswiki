@@ -1,0 +1,67 @@
+name: Solicitud nuevo evento
+description: Solicitud para dar de alta un evento nuevo
+title: "Añadir nuevo evento: "
+labels: ["enhancement"]
+assignees: ["achamorro-dev"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Muchas gracias por tu ayuda**
+
+        No te vamos a obligar a rellenar todo esto pero cuanta más información nos facilites mejor:
+  - type: input
+    id: event-name
+    attributes:
+      label: Nombre o título del evento
+    validations:
+      required: true
+  - type: input
+    id: event-website
+    attributes:
+      label: Web del evento
+    validations:
+      required: true
+  - type: textarea
+    id: short-description
+    attributes:
+      label: Descripción corta
+    validations:
+      required: true
+  - type: input
+    id: start-date
+    attributes:
+      label: Fecha de inicio
+    validations:
+      required: true
+  - type: input
+    id: end-date
+    attributes:
+      label: Fecha de fin
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Localización del evento
+    validations:
+      required: true
+  - type: input
+    id: cover-image
+    attributes:
+      label: Imagen de portada
+    validations:
+      required: false
+  - type: input
+    id: social-networks
+    attributes:
+      label: Redes sociales
+    validations:
+      required: false
+  - type: textarea
+    id: details
+    attributes:
+      label: Detalles
+      description: Esta información aparecerá como contenido del evento
+    validations:
+      required: false
