@@ -24,6 +24,9 @@ const { title, description } = Astro.props
     </main>
     <Footer />
     <style>
+      html {
+        @apply scroll-smooth;
+      }
       body {
         @apply m-0 grid min-h-full grid-rows-[auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
       }
