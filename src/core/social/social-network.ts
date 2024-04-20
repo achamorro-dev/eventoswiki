@@ -7,3 +7,4 @@ export type SocialNetwork =
   | 'instagram'
   | 'github'
   | 'telegram'
+  | 'whatsapp'

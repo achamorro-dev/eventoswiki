@@ -15,5 +15,6 @@ export {
   PiTwitchLogoFill as Twitch,
   PiTwitterLogoFill as Twitter,
   PiUsersFour as Users,
+  PiWhatsappLogoFill as Whatsapp,
   PiYoutubeLogoFill as Youtube,
 } from 'react-icons/pi'
