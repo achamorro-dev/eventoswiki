@@ -31,6 +31,7 @@ const {
   facebook,
   linkedin,
   github,
+  telegram,
   web,
   location,
 } = frontmatter
@@ -99,6 +100,7 @@ const {
         {facebook && <SocialLink name={title} href={facebook} type="facebook" />}
         {linkedin && <SocialLink name={title} href={linkedin} type="linkedin" />}
         {github && <SocialLink name={title} href={github} type="github" />}
+        {telegram && <SocialLink name={title} href={telegram} type="telegram" />}
       </div>
     </div>
     <main class="mt-4">

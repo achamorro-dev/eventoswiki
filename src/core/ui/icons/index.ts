@@ -11,6 +11,7 @@ export {
   PiMapPin as MapPin,
   PiMoon as Moon,
   PiSun as Sun,
+  PiTelegramLogoFill as Telegram,
   PiTwitchLogoFill as Twitch,
   PiTwitterLogoFill as Twitter,
   PiUsersFour as Users,
