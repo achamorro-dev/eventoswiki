@@ -8,3 +8,4 @@ export type SocialNetwork =
   | 'github'
   | 'telegram'
   | 'whatsapp'
+  | 'discord'

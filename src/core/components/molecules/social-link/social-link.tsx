@@ -1,6 +1,17 @@
 import type { FC, ReactNode } from 'react'
 import type { SocialNetwork } from '../../../social/social-network'
-import { Facebook, Github, Instagram, Linkedin, Telegram, Twitch, Twitter, Whatsapp, Youtube } from '../../../ui/icons'
+import {
+  Discord,
+  Facebook,
+  Github,
+  Instagram,
+  Linkedin,
+  Telegram,
+  Twitch,
+  Twitter,
+  Whatsapp,
+  Youtube,
+} from '../../../ui/icons'
 
 type SocialLinkProps = {
   href: string
@@ -18,6 +29,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   github: <Github style={{ color: '#24292e' }} />,
   telegram: <Telegram style={{ color: '#2481cc' }} />,
   whatsapp: <Whatsapp style={{ color: '#25d366' }} />,
+  discord: <Discord style={{ color: '#7289da' }} />,
 }
 
 export const SocialLink: FC<SocialLinkProps> = props => {

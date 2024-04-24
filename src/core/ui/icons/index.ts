@@ -2,6 +2,7 @@ export {
   PiCalendar as Calendar,
   PiCalendarBlank as CalendarBlank,
   PiChalkboard as Chalkboard,
+  PiDiscordLogoFill as Discord,
   PiFacebookLogoFill as Facebook,
   PiGithubLogoFill as Github,
   PiInstagramLogoFill as Instagram,
