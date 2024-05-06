@@ -12,7 +12,7 @@ const { location } = Astro.props
 const locationName = EventUtils.getLocationName(events, location)
 
 const nextEventsFiltered = EventUtils.getNextEvents(events, { location })
-const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(0, 6)
+const nextEvents = EventUtils.sortByStartDateAsc(nextEventsFiltered).slice(0, 3)
 ---
 
 <section>
