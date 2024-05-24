@@ -58,12 +58,12 @@ const {
         )
       }
     </div>
-    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 flex-1 max-h-[2.35rem]">
+    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 max-h-[2.35rem]">
       {shortDescription}
     </p>
     {
       location && (
-        <div class="w-full flex gap-1 items-center justify-end p-4">
+        <div class="w-full flex flex-1 gap-1 items-end justify-end p-4">
           <MapPin className="text-xl" />
           <p class="text-sm p-0 text-gray-500 dark:text-gray-50">{location}</p>
         </div>
