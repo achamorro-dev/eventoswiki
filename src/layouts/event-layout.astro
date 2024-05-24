@@ -46,62 +46,58 @@ const {
   image={image}
   url={`https://eventos.wiki${url}`}
 >
-  <div class="relative h-72 bg-indigo-900">
+  <div class="max-w-5xl mx-auto flex flex-col justify-center px-4 lg:px-0 lg:justify-start gap-4 md:flex-row">
     <img
       id="event-image"
       src={image}
       alt={altImage || `Foto de portada del evento ${title}`}
-      class="absolute w-full h-full object-cover shadow-md bg-white"
+      class="w-full max-w-[350px] max-h-[300px] object-cover rounded-xl shadow-md bg-white"
       loading="lazy"
       onerror="this.src='/not-found.jpg'"
+      transition:name={`media-image-${url}`}
     />
-    <div class="absolute w-full h-52 bottom-0 bg-gradient-to-t from-black"></div>
-    <div class="absolute w-full bottom-0 px-6 py-4 max-w-5xl left-0 right-0 ml-auto mr-auto xl:px-0">
-      <div class="flex items-center gap-2">
-        {tags.map((t: string) => <Tag color={tagColor}>{t}</Tag>)}
+    <div>
+      <div class="w-full lg:px-6 max-w-5xl xl:px-0">
+        <div class="flex items-center gap-2" transition:animate="fade">
+          {tags.map((t: string) => <Tag color={tagColor}>{t}</Tag>)}
+        </div>
+        <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
+          {title}
+        </h1>
+        <EventDatePeriod startDate={startDate} endDate={endDate} client:load transition:animate="fade" />
+        {
+          web && (
+            <div class="flex items-center gap-1 text-black dark:text-white" transition:animate="fade">
+              <Link size="1.2rem" />
+              <a href={web} target="_blank" rel="nofollow" class="text-sm" aria-label={`Link al evento ${title}`}>
+                {web}
+              </a>
+            </div>
+          )
+        }
+        {
+          location && (
+            <div class="flex items-center gap-1 text-black dark:text-white" transition:animate="fade">
+              <MapPin size="1.25rem" />
+              <p class="text-sm py-2" tabindex="0" aria-label={`Localización del evento: ${location}`}>
+                {location}
+              </p>
+            </div>
+          )
+        }
       </div>
-      <h1 class="text-4xl font-medium text-white" tabindex={0}>
-        {title}
-      </h1>
-      <EventDatePeriod startDate={startDate} endDate={endDate} client:load />
-      {
-        web && (
-          <div class="flex items-center gap-1">
-            <Link color="white" size="1.2rem" />
-            <a
-              href={web}
-              target="_blank"
-              rel="nofollow"
-              class="text-sm text-white"
-              aria-label={`Link al evento ${title}`}
-            >
-              {web}
-            </a>
-          </div>
-        )
-      }
-      {
-        location && (
-          <div class="flex items-center gap-1">
-            <MapPin color="white" size="1.25rem" />
-            <p class="text-sm text-white py-2" tabindex="0" aria-label={`Localización del evento: ${location}`}>
-              {location}
-            </p>
-          </div>
-        )
-      }
-    </div>
-    <div class="absolute -bottom-5 px-6 flex justify-end gap-1 max-w-5xl left-0 right-0 ml-auto mr-auto xl:px-0">
-      {twitter && <SocialLink name={title} href={twitter} type="twitter" />}
-      {twitch && <SocialLink name={title} href={twitch} type="twitch" />}
-      {instagram && <SocialLink name={title} href={instagram} type="instagram" />}
-      {youtube && <SocialLink name={title} href={youtube} type="youtube" />}
-      {facebook && <SocialLink name={title} href={facebook} type="facebook" />}
-      {linkedin && <SocialLink name={title} href={linkedin} type="linkedin" />}
-      {github && <SocialLink name={title} href={github} type="github" />}
-      {telegram && <SocialLink name={title} href={telegram} type="telegram" />}
-      {whatsapp && <SocialLink name={title} href={whatsapp} type="whatsapp" />}
-      {discord && <SocialLink name={title} href={discord} type="discord" />}
+      <div class="flex justify-start gap-1 max-w-5xl left-0 right-0 ml-auto mr-auto xl:px-0">
+        {twitter && <SocialLink name={title} href={twitter} type="twitter" />}
+        {twitch && <SocialLink name={title} href={twitch} type="twitch" />}
+        {instagram && <SocialLink name={title} href={instagram} type="instagram" />}
+        {youtube && <SocialLink name={title} href={youtube} type="youtube" />}
+        {facebook && <SocialLink name={title} href={facebook} type="facebook" />}
+        {linkedin && <SocialLink name={title} href={linkedin} type="linkedin" />}
+        {github && <SocialLink name={title} href={github} type="github" />}
+        {telegram && <SocialLink name={title} href={telegram} type="telegram" />}
+        {whatsapp && <SocialLink name={title} href={whatsapp} type="whatsapp" />}
+        {discord && <SocialLink name={title} href={discord} type="discord" />}
+      </div>
     </div>
   </div>
   <main class="mt-4">

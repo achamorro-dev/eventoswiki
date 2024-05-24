@@ -38,7 +38,7 @@ export const SocialLink: FC<SocialLinkProps> = props => {
     <a
       href={href}
       target="_blank"
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-400 bg-white text-xl shadow-xl"
+      className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl"
       rel="nofollow"
       aria-label={`Enlace a ${type} de ${name}`}
     >

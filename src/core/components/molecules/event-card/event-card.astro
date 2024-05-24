@@ -35,6 +35,7 @@ const {
       alt={altImage || `Foto de portada del evento ${title}`}
       loading="lazy"
       onerror="this.src='/not-found.jpg'"
+      transition:name={`media-image-${event.url}`}
     />
     <div class="relative top-0 left-3 -mt-3 flex items-center flex-wrap gap-1 rounded-full">
       {tags.map(t => <Tag color={tagColor}>{t}</Tag>)}
