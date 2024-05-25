@@ -5,7 +5,7 @@ export const Codely = () => {
       width="250"
       fill="currentColor"
       viewBox="0 0 118 29"
-      className="transition hover:scale-110"
+      className="transition hover:-rotate-3 hover:scale-110"
     >
       <path d="M5.648 11.299H0v5.648h5.648V11.3zM11.297 5.652H5.648v5.649h5.649V5.652zM11.297 16.947H5.648v5.649h5.649v-5.649zM16.943 0h-5.648v5.648h5.648V0z"></path>
       <path d="M16.943 22.594h-5.648v5.648h5.648v-5.648zM36.236 16.947h5.649V11.3h-5.649v5.648z"></path>
