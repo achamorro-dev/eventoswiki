@@ -46,7 +46,9 @@ const {
   image={image}
   url={`https://eventos.wiki${url}`}
 >
-  <div class="max-w-5xl mx-auto flex flex-col justify-center px-4 lg:px-0 lg:justify-start gap-4 md:flex-row">
+  <header
+    class="max-w-5xl w-full mx-auto mt-4 flex flex-col justify-center lg:items-center px-4 lg:px-0 lg:justify-start gap-4 md:flex-row"
+  >
     <img
       id="event-image"
       src={image}
@@ -99,8 +101,8 @@ const {
         {discord && <SocialLink name={title} href={discord} type="discord" />}
       </div>
     </div>
-  </div>
-  <main class="mt-4">
+  </header>
+  <main class="lg:mt-4">
     <Container maxSize="m" className="event-container">
       <slot />
     </Container>
