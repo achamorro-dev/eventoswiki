@@ -15,12 +15,7 @@ const { title, description, image, url } = Astro.props
 
 <!doctype html>
 <html lang="es">
-  <BaseHead
-    title={`${title} - eventos.wiki`}
-    description={description}
-    image={image}
-    url={`https://eventos.wiki${url}`}
-  />
+  <BaseHead title={`${title} - eventos.wiki`} description={description} image={image} url={url} />
   <body>
     <Header transition:persist />
     <slot />
