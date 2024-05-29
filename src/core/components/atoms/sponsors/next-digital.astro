@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets'
+import NextDigitalBlack from '../../../../assets/next-digital-black.png'
+import NextDigitalWhite from '../../../../assets/next-digital-white.png'
+---
+
+<a
+  href="https://nextdigital.es"
+  aria-label="Next Digital"
+  rel="nofollow"
+  target="_blank"
+  class="dark:hidden block w-60 transition hover:-rotate-3 hover:scale-110"
+>
+  <Image src={NextDigitalBlack} alt="Next Digital" format="avif" />
+</a>
+
+<a
+  href="https://nextdigital.es"
+  aria-label="Next Digital"
+  rel="nofollow"
+  target="_blank"
+  class="hidden dark:block w-60 transition hover:-rotate-3 hover:scale-110"
+>
+  <Image src={NextDigitalWhite} alt="Next Digital" format="avif" />
+</a>
