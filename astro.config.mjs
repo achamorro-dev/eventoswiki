@@ -6,11 +6,16 @@ import { defineConfig } from 'astro/config'
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react(), mdx()],
+  site: 'https://eventos.wiki',
   output: 'server',
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
+  integrations: [
+    tailwind(),
+    react(),
+    mdx(),
+    vercel({
+      webAnalytics: {
+        enabled: true,
+      },
+    }),
+  ],
 })
