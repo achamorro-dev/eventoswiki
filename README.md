@@ -11,13 +11,18 @@
   <h3>Sponsored by</h3>
 
   <div align="center">
-    <a href="https://codely.com">
-      <img src="docs/sponsors/codely.png" alt="Codely" width="250">
+    <a href="https://codely.com" align="center">
+      <img src="docs/sponsors/codely.png" alt="Codely" width="300" align="center">
+    </a>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+    <a href="https://www.nextdigital.es/">
+      <img src="docs/sponsors/next-digital.png" alt="Next Digital" height="38" align="center">
     </a>
   </div>
 </div>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Eventos.wiki][product-screenshot]](https://eventos.wiki)
@@ -25,6 +30,7 @@
 <p align="right"><a style="font-size: 0.75rem" href="#readme-top">back to top</a></p>
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Prerequisites
@@ -100,4 +106,5 @@ Alberto Chamorro - [albertochamorro.dev](https://albertochamorro.dev)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [product-screenshot]: docs/hero.png

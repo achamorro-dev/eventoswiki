@@ -1,8 +1,6 @@
 ---
 import { Container } from '../core/components/atoms/container/container'
-import BaseHead from '../core/components/base-head.astro'
-import Footer from '../core/components/organisms/footer/footer.astro'
-import Header from '../core/components/organisms/header/header.astro'
+import BaseLayout from './base-layout.astro'
 
 interface Props {
   title: string
@@ -12,21 +10,15 @@ interface Props {
 const { title, description } = Astro.props
 ---
 
-<!doctype html>
-<html lang="es" style="scrollbar-gutter: stable;">
-  <BaseHead title={title} description={description} />
-  <body>
-    <Header />
-    <main>
-      <Container>
-        <slot />
-      </Container>
-    </main>
-    <Footer />
-    <style>
-      body {
-        @apply m-0 grid min-h-full grid-rows-[auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
-      }
-    </style>
-  </body>
-</html>
+<BaseLayout title={title} description={description}>
+  <main>
+    <Container>
+      <slot />
+    </Container>
+  </main>
+  <style is:global>
+    body {
+      @apply m-0 grid min-h-full grid-rows-[auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+    }
+  </style>
+</BaseLayout>

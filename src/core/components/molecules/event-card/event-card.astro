@@ -35,6 +35,7 @@ const {
       alt={altImage || `Foto de portada del evento ${title}`}
       loading="lazy"
       onerror="this.src='/not-found.jpg'"
+      transition:name={`media-image-${event.url}`}
     />
     <div class="relative top-0 left-3 -mt-3 flex items-center flex-wrap gap-1 rounded-full">
       {tags.map(t => <Tag color={tagColor}>{t}</Tag>)}
@@ -58,10 +59,12 @@ const {
         )
       }
     </div>
-    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 flex-1">{shortDescription}</p>
+    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 max-h-[2.35rem]">
+      {shortDescription}
+    </p>
     {
       location && (
-        <div class="w-full flex gap-1 items-center justify-end p-4">
+        <div class="w-full flex flex-1 gap-1 items-end justify-end p-4">
           <MapPin className="text-xl" />
           <p class="text-sm p-0 text-gray-500 dark:text-gray-50">{location}</p>
         </div>

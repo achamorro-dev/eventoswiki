@@ -13,7 +13,7 @@ import { Button } from '../../atoms/button/button'
       <Button
         type="link"
         variant="text"
-        href="https://github.com/achamorro-dev/eventoswiki/issues/new?assignees=achamorro-dev&labels=enhancement&template=solicitud-nuevo-evento.md&title=A%C3%B1adir+nuevo+evento"
+        href="https://github.com/achamorro-dev/eventoswiki/issues/new?assignees=achamorro-dev&labels=enhancement&projects=&template=solicitud-nuevo-evento.yaml&title=A%C3%B1adir+nuevo+evento%3A+"
         rel="nofollow"
         target="_blank"
       >
@@ -33,21 +33,21 @@ import { Button } from '../../atoms/button/button'
 
 <style>
   .hero {
-    @apply container max-w-lg flex flex-col-reverse items-center mx-auto mt-px text-left md:max-w-none md:grid md:grid-cols-2;
+    @apply container mx-auto mt-px flex max-w-lg flex-col-reverse items-center text-left md:grid md:max-w-none md:grid-cols-2;
   }
   .hero-title {
-    @apply !font-extrabold leading-10 tracking-tight text-left sm:leading-none;
+    @apply text-left !font-extrabold leading-10 tracking-tight sm:leading-none;
   }
   .hero-title-first {
-    @apply !text-4xl text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent block md:pb-1 lg:!text-5xl;
+    @apply block bg-gradient-to-br from-primary to-accent bg-clip-text !text-4xl text-transparent md:pb-1 lg:!text-5xl;
   }
   .hero-title-second {
-    @apply !text-4xl relative md:inline-block text-black dark:text-white lg:!text-5xl;
+    @apply relative !text-4xl text-black dark:text-white md:inline-block lg:!text-5xl;
   }
   .hero-actions {
-    @apply flex flex-col lg:flex-row lg:justify-start mt-2 text-center gap-4 md:mt-4 lg:mt-8;
+    @apply mt-2 flex flex-col gap-4 text-center md:mt-4 lg:mt-8 lg:flex-row lg:justify-start;
   }
   .hero-image {
-    @apply w-full h-64 object-cover lg:h-[450px];
+    @apply h-64 w-full object-cover lg:h-[450px];
   }
 </style>
