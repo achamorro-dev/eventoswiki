@@ -10,25 +10,15 @@
 
   <h3>Sponsored by</h3>
 
-  <table border="0">
-    <caption>
-      Sponsors of the project
-    </caption>
-    <tbody>
-      <tr>
-        <td>
-          <a href="https://codely.com">
-            <img src="docs/sponsors/codely.png" alt="Codely" width="250">
-          </a>
-        </td>
-        <td>
-          <a href="https://www.nextdigital.es/">
-            <img src="docs/sponsors/next-digital.png" alt="Next Digital" width="250">
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div align="center">
+    <a href="https://codely.com" align="center">
+      <img src="docs/sponsors/codely.png" alt="Codely" width="300" align="center">
+    </a>
+    <span>&nbsp;&nbsp;&nbsp;</span>
+    <a href="https://www.nextdigital.es/">
+      <img src="docs/sponsors/next-digital.png" alt="Next Digital" height="38" align="center">
+    </a>
+  </div>
 </div>
 
 <!-- ABOUT THE PROJECT -->
