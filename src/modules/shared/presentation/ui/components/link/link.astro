@@ -1,0 +1,21 @@
+---
+import { classnames } from '@/core/classnames/classnames'
+
+interface Props {
+  href: string
+  classes?: string
+  selected?: boolean
+}
+const { href, classes = '', selected = false } = Astro.props
+---
+
+<a
+  href={href}
+  class={classnames(
+    'inline-block text-left font-medium md:text-center',
+    { 'text-primary dark:text-primary-light': selected },
+    classes,
+  )}
+>
+  <slot />
+</a>

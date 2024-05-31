@@ -1,0 +1,28 @@
+---
+import { Calendar } from '@/core/ui/icons'
+
+interface Props {
+  startDate?: string
+  endDate?: string
+}
+
+const { startDate, endDate } = Astro.props
+const shouldShowEndDate = startDate && endDate && startDate !== endDate
+---
+
+{
+  startDate && (
+    <div class="flex items-center gap-1">
+      <Calendar />
+      <div class="flex items-center content-center">
+        <p class="text-sm text-gray-500 dark:text-gray-50 p-0">{startDate}</p>
+        {shouldShowEndDate && (
+          <p class="text-sm text-gray-500 dark:text-gray-50 p-0">
+            &nbsp;-&nbsp;
+            {endDate}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}

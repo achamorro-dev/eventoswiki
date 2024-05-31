@@ -1,0 +1,18 @@
+---
+import { MapPin } from '@/core/ui/icons'
+
+interface Props {
+  location?: string
+}
+
+const { location } = Astro.props
+---
+
+{
+  location && (
+    <div class="w-full flex flex-1 gap-1 items-end justify-end p-4">
+      <MapPin className="text-xl" />
+      <p class="text-sm p-0 text-gray-500 dark:text-gray-50">{location}</p>
+    </div>
+  )
+}
