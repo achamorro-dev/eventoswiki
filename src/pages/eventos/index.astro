@@ -1,0 +1,13 @@
+---
+import { NewUrls } from '@/core/ui/urls/urls'
+import Layout from '@/layouts/layout.astro'
+import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
+import Link from '@/ui/components/link/link.astro'
+---
+
+<Layout title="eventos.wiki - Eventos">
+  <div class="flex items-center justify-between">
+    <GradientTitle>Eventos</GradientTitle>
+    <Link href={NewUrls.PAST_EVENTS} classes="text-right  shrink-0">Ver pasados</Link>
+  </div>
+</Layout>

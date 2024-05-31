@@ -7,3 +7,9 @@ export const Urls = {
   PAST_MEETUPS: (page: number) => `/meetups/pasados/${page}`,
   CALENDAR: '/calendario',
 }
+
+export const NewUrls = {
+  HOME: '/',
+  EVENTS: '/eventos/',
+  PAST_EVENTS: '/eventos/pasados/',
+}
