@@ -1,0 +1,38 @@
+---
+import { Card } from '@/core/components/atoms/card/card'
+import { Tag } from '@/core/components/atoms/tag/tag'
+import type { Event } from '@/events/domain/event'
+import DatePeriod from '@/modules/shared/presentation/ui/components/date-period/date-period.astro'
+import Location from '@/modules/shared/presentation/ui/components/location/location.astro'
+
+interface Props {
+  event: Event
+  classes: string
+}
+
+const { event, classes } = Astro.props
+---
+
+<a href={event.slug} class={classes}>
+  <Card className="relative transition-shadow duration-300 lg:hover:shadow-md">
+    <img
+      class="object-cover w-full h-56"
+      src={event.image}
+      alt={event.altImage || `Foto de portada del evento ${event.title}`}
+      loading="lazy"
+      onerror="this.src='/not-found.jpg'"
+      transition:name={`media-image-${event.slug}`}
+    />
+    <div class="relative top-0 left-3 -mt-3 flex items-center flex-wrap gap-1 rounded-full">
+      {event.tags.map(t => <Tag color={event.tagColor}>{t}</Tag>)}
+    </div>
+    <div class="w-full flex flex-col-reverse justify-center items-start px-4 mt-2">
+      <h3 class="text-base font-bold sm:text-lg md:text-xl text-black dark:text-gray-100 p-0 my-2">{event.title}</h3>
+      <DatePeriod startDate={event.getStartDateFormatted()} endDate={event.getEndDateFormatted()} />
+    </div>
+    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 max-h-[2.35rem]">
+      {event.shortDescription}
+    </p>
+    <Location location={event.location} />
+  </Card>
+</a>
