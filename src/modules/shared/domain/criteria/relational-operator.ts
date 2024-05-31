@@ -1,0 +1,10 @@
+export enum RelationalOperator {
+  EQUALS,
+  NOT_EQUALS,
+  GREATER_THAN,
+  LOWER_THAN,
+  GREATER_THAN_OR_EQUAL,
+  LOWER_THAN_OR_EQUAL,
+  LIKE,
+  LIKE_NOT_SENSITIVE,
+}
