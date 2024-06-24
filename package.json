@@ -36,11 +36,11 @@
     "pre-commit": "npx pretty-quick --staged"
   },
   "volta": {
-    "node": "18.17.1",
+    "node": "20.15.0",
     "npm": "9.6.7"
   },
   "engines": {
-    "node": ">=18.17.1",
+    "node": ">=20.15.0",
     "npm": ">=9.6.7"
   },
   "devDependencies": {
