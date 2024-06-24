@@ -1,9 +1,3 @@
----
-import { Image } from 'astro:assets'
-import NextDigitalBlack from '../../../../assets/next-digital-black.png'
-import NextDigitalWhite from '../../../../assets/next-digital-white.png'
----
-
 <a
   href="https://nextdigital.es"
   aria-label="Next Digital"
@@ -11,7 +5,14 @@ import NextDigitalWhite from '../../../../assets/next-digital-white.png'
   target="_blank"
   class="dark:hidden block w-60 transition hover:-rotate-3 hover:scale-110"
 >
-  <Image src={NextDigitalBlack} alt="Next Digital" />
+  <img
+    src="/sponsors/next-digital/next-digital-black.webp"
+    alt="Next Digital"
+    width="382"
+    height="44"
+    loading="lazy"
+    decoding="async"
+  />
 </a>
 
 <a
@@ -21,5 +22,12 @@ import NextDigitalWhite from '../../../../assets/next-digital-white.png'
   target="_blank"
   class="hidden dark:block w-60 transition hover:-rotate-3 hover:scale-110"
 >
-  <Image src={NextDigitalWhite} alt="Next Digital" />
+  <img
+    src="/sponsors/next-digital/next-digital-white.webp"
+    alt="Next Digital"
+    width="464"
+    height="55"
+    loading="lazy"
+    decoding="async"
+  />
 </a>
