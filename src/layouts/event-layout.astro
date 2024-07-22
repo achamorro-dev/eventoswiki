@@ -53,7 +53,7 @@ const {
       id="event-image"
       src={image}
       alt={altImage || `Foto de portada del evento ${title}`}
-      class="w-full max-w-[350px] max-h-[300px] object-cover rounded-xl shadow-md bg-white"
+      class="w-full max-w-[350px] max-h-[300px] min-h-[200px] object-cover rounded-xl shadow-md bg-white"
       loading="lazy"
       onerror="this.src='/not-found.jpg'"
       transition:name={`media-image-${url}`}
