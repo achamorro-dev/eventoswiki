@@ -5,9 +5,9 @@
     "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
+      "@/ui/*": ["./src/modules/shared/presentation/ui/*"],
       "@/shared/*": ["./src/modules/shared/*"],
       "@/events/*": ["./src/modules/events/*"],
-      "@/ui/*": ["./src/modules/shared/presentation/ui/*"],
       "@/*": ["./src/*"]
     }
   }
