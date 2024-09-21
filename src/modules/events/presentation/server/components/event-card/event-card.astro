@@ -1,9 +1,9 @@
 ---
-import { Card } from '@/core/components/atoms/card/card'
-import { Tag } from '@/core/components/atoms/tag/tag'
 import type { Event } from '@/events/domain/event'
-import DatePeriod from '@/modules/shared/presentation/ui/components/date-period/date-period.astro'
-import Location from '@/modules/shared/presentation/ui/components/location/location.astro'
+import Card from '@/ui/components/card/card.astro'
+import DatePeriod from '@/ui/components/date-period/date-period.astro'
+import Location from '@/ui/components/location/location.astro'
+import Tag from '@/ui/components/tag/tag.astro'
 
 interface Props {
   event: Event
@@ -13,8 +13,8 @@ interface Props {
 const { event, classes } = Astro.props
 ---
 
-<a href={event.slug} class={classes}>
-  <Card className="relative transition-shadow duration-300 lg:hover:shadow-md">
+<a href={event.slug} class:list={classes}>
+  <Card classes="relative transition-shadow duration-300 lg:hover:shadow-md">
     <img
       class="object-cover w-full h-56"
       src={event.image}

@@ -1,7 +1,7 @@
 import { Datetime } from '@/core/datetime/datetime'
+import type { Primitives } from '../../shared/domain/primitives/primitives'
 
 export class Event implements EventProps {
-  readonly id: string
   readonly slug: string
   readonly title: string
   readonly shortDescription: string
@@ -24,9 +24,9 @@ export class Event implements EventProps {
   readonly discord?: string
   readonly tags: string[]
   readonly tagColor: string
+  readonly content: string
 
   private constructor(props: EventProps) {
-    this.id = props.id
     this.slug = props.slug
     this.title = props.title
     this.shortDescription = props.shortDescription
@@ -49,11 +49,11 @@ export class Event implements EventProps {
     this.discord = props.discord
     this.tags = props.tags
     this.tagColor = props.tagColor
+    this.content = props.content
   }
 
-  static fromPrimitives(primitives: EventPrimitives): Event {
+  static fromPrimitives(primitives: Primitives<Event>): Event {
     return new Event({
-      id: primitives.id,
       slug: primitives.slug,
       title: primitives.title,
       shortDescription: primitives.shortDescription,
@@ -76,6 +76,7 @@ export class Event implements EventProps {
       discord: primitives.discord,
       tags: primitives.tags,
       tagColor: primitives.tagColor,
+      content: primitives.content,
     })
   }
 
@@ -93,7 +94,6 @@ export class Event implements EventProps {
 }
 
 interface EventProps {
-  id: string
   slug: string
   title: string
   shortDescription: string
@@ -116,30 +116,5 @@ interface EventProps {
   discord?: string
   tags: string[]
   tagColor: string
-}
-
-interface EventPrimitives {
-  id: string
-  slug: string
-  title: string
-  shortDescription: string
-  startsAt: string
-  endsAt: string
-  thumbnail: string
-  altImage?: string
-  image: string
-  location: string
-  web?: string
-  twitter?: string
-  linkedin?: string
-  youtube?: string
-  twitch?: string
-  facebook?: string
-  instagram?: string
-  github?: string
-  telegram?: string
-  whatsapp?: string
-  discord?: string
-  tags: string[]
-  tagColor: string
+  content: string
 }

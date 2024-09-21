@@ -5,8 +5,7 @@ import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
 import Link from '@/ui/components/link/link.astro'
 import EventsGrid from '../events-grid/events-grid.astro'
 
-const getLastEventsQuery = EventsLocator.getLastEventsQuery()
-const lastEvents = await getLastEventsQuery.execute({ count: 3 })
+const lastEvents = await EventsLocator.getLastEventsQuery().execute({ count: 3 })
 ---
 
 <section class="mt-12">
