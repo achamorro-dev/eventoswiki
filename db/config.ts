@@ -1,6 +1,6 @@
 import { NOW, column, defineDb, defineTable } from 'astro:db'
 
-const Event = defineTable({
+export const Event = defineTable({
   columns: {
     slug: column.text({ primaryKey: true }),
     title: column.text(),
