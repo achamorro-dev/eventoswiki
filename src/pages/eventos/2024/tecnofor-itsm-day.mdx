@@ -15,8 +15,6 @@ tags: [itsm]
 tagColor: '#F5C200'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## La nueva generación de gestión de servicios
 
 En un mundo donde todo lo consumimos como servicio, la gestión de servicios de tecnologías de la información (ITSM) sigue teniendo un rol importante y destacado. Pero la sociedad evoluciona, las organizaciones maduran y surgen nuevas disciplinas.
@@ -108,7 +106,12 @@ Además te contaremos cómo estamos desarrollando estas soluciones para nuestros
 
 Dirección: Espacio Bertelsmann, Calle de O'Donnell, 10, Retiro, 28009 Madrid
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6074.867896401195!2d-3.678056!3d40.421389!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4228a37a62cef3%3A0xaf54c90bc68f9c86!2sEspacio%20Bertelsmann!5e0!3m2!1ses!2ses!4v1715157337442!5m2!1ses!2ses"
-  ariaLabel="Espacio Bertelsmann, Calle de O'Donnell, 10, Retiro, 28009 Madrid"
-/>
+  aria-label="Espacio Bertelsmann, Calle de O'Donnell, 10, Retiro, 28009 Madrid"
+></iframe>

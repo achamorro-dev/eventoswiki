@@ -17,8 +17,6 @@ tags: [dev, api design]
 tagColor: '#e21a3e'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## ¡Vuelve el evento de APIs más esperado!
 
 **#APIAddictsDays24**
@@ -35,7 +33,12 @@ No pierdas la oportunidad de aprender de los máximos representantes de APIs a n
 
 Dirección: La Nave - Calle Cifuentes, 5, 28021 Madrid
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.7630779306296!2d-3.69857202325268!3d40.3476014598427!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4226dc6a64c46b%3A0x23e1b239d4aea935!2sLa%20Nave!5e0!3m2!1ses!2ses!4v1687238977089!5m2!1ses!2ses"
-  ariaLabel="La Nave - Calle Cifuentes, 5, 28021 Madrid"
-/>
+  aria-label="La Nave - Calle Cifuentes, 5, 28021 Madrid"
+></iframe>

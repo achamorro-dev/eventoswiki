@@ -14,8 +14,6 @@ tags: [web assembly]
 tagColor: '#3A86FE'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## ALL THINGS WEBASSEMBLY
 
 Wasm I/O is a two-day conference focused on the WebAssembly ecosystem. **Join us in our second edition!**
@@ -35,14 +33,19 @@ Wasm I/O 2024 will take place in the beautiful city of Barcelona. Don’t miss t
   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen=""
   height="415"
-  class="w-full mt-4 mb-4 border-none"
+  class="mb-4 mt-4 w-full border-none"
 ></iframe>
 
 ## Location
 
 Address: AXA Auditorium, Av. Diagonal, 547, Les Corts, 08029 Barcelona
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11973.165618659417!2d2.1267692333512778!3d41.38947754101103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4987ac0f65621%3A0x36a3465ffbcb3b7a!2sAuditorio%20Axa!5e0!3m2!1sen!2ses!4v1704782584308!5m2!1sen!2ses"
-  ariaLabel="AXA Auditorium, Av. Diagonal, 547, Les Corts, 08029 Barcelona"
-/>
+  aria-label="AXA Auditorium, Av. Diagonal, 547, Les Corts, 08029 Barcelona"
+></iframe>

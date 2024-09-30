@@ -2,18 +2,16 @@
 layout: ../../../layouts/event-layout.astro
 title: AtlánticaConf
 shortDescription: El evento de la comunidad tech gallega
-startDate: "2023-09-22T07:00:00.000Z"
-endDate: "2023-09-23T16:00:00.000Z"
-thumbnail: "https://atlanticaconf.com/img/meta_img.png"
-image: "https://atlanticaconf.com/img/meta_img.png"
-location: "A Coruña"
+startDate: '2023-09-22T07:00:00.000Z'
+endDate: '2023-09-23T16:00:00.000Z'
+thumbnail: 'https://atlanticaconf.com/img/meta_img.png'
+image: 'https://atlanticaconf.com/img/meta_img.png'
+location: 'A Coruña'
 web: https://atlanticaconf.com/
 twitter: https://twitter.com/atlanticaconf
 tags: [general]
-tagColor: "#0d2935"
+tagColor: '#0d2935'
 ---
-
-import GoogleMap from "../../../core/components/molecules/google-map/google-map.astro";
 
 ## Queremos poner en valor lo que se hace en Galicia
 
@@ -49,7 +47,12 @@ La tecnología tiene que servir para ayudar a la sociedad y este debate tendrá 
 
 Dirección - Facultad Informática - UDC, Campus Elviña - Camiño do Lagar de Castro, 6, 15008 A Coruña, Spain
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d5804.220210379612!2d-8.410934!3d43.332885!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2e7cb3d82865e7%3A0x426ea83b7a5a451f!2sFacultad%20de%20Inform%C3%A1tica%20-%20UDC!5e0!3m2!1sen!2sbg!4v1683709446372!5m2!1sen!2sbg"
-  ariaLabel="Camiño do Lagar de Castro, 6, 15008 A Coruña, Spain"
-/>
+  aria-label="Camiño do Lagar de Castro, 6, 15008 A Coruña, Spain"
+></iframe>

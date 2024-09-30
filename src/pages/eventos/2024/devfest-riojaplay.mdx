@@ -14,8 +14,6 @@ tags: [devs]
 tagColor: '#4285F4'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## DevFest [riojaplay]
 
 Nuestra visión consiste en retomar la excelente labor del Instituto con la organización de una gran LAN party, y añadirle una zona pública que permita disfrutar a todo el que quiera de RiojaPlay, con simuladores, experiencias de realidad virtual y torneos de diversos videojuegos, además de las ya clásicas charlas y talleres, barbacoa y demás actividades.
@@ -26,7 +24,12 @@ Nuestra visión consiste en retomar la excelente labor del Instituto con la orga
 
 Dirección: I.E.S. Manuel Bartolomé Cossío, 11 Calle Mazo, Haro, 26200
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2938.2572305503168!2d-2.8505773000000003!3d42.5710624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4f8bdc5c6971cb%3A0x1ee027c5d0d2b5a3!2sI.%20E.%20S.%20Manuel%20Bartolom%C3%A9%20Coss%C3%ADo!5e0!3m2!1ses!2ses!4v1727503508256!5m2!1ses!2ses"
-  ariaLabel=" I.E.S. Manuel Bartolomé Cossío, 11 Calle Mazo, Haro, 26200"
-/>
+  aria-label=" I.E.S. Manuel Bartolomé Cossío, 11 Calle Mazo, Haro, 26200"
+></iframe>

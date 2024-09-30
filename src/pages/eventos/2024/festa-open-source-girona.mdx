@@ -13,8 +13,6 @@ tags: [general]
 tagColor: '#10b981'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## Únete a la 'Fiesta Open Source Girona 2024'
 
 Una jornada llena de actividades para todos los niveles y perfiles. Disfruta de charlas inspiradoras, talleres prácticos, lightning talks, networking y una maratón de Pull Requests (PRs).
@@ -37,7 +35,12 @@ Si quieres compartir algo con el resto podrás hacerlo en una lightning talk.
 
 Dirección: Casa de Cultura de Girona, Pl. de l'Hospital, 6, 17002 Girona
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d379632.05653020955!2d2.821188!3d41.981484!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12bae6def75615a5%3A0x5ca81fd3c312edd4!2sCasa%20de%20Cultura%20de%20Girona!5e0!3m2!1ses!2ses!4v1726461725228!5m2!1ses!2ses"
-  ariaLabel="Casa de Cultura de Girona, Pl. de l'Hospital, 6, 17002 Girona"
-/>
+  aria-label="Casa de Cultura de Girona, Pl. de l'Hospital, 6, 17002 Girona"
+></iframe>

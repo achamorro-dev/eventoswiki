@@ -14,8 +14,6 @@ tags: [devs]
 tagColor: '#4285F4'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## DevFest Santiago de Compostela 2024
 
 🎉 El DevFest 2024 llega a Santiago de Compostela!
@@ -30,7 +28,12 @@ import GoogleMap from '../../../core/components/molecules/google-map/google-map.
 
 Dirección: USC ~ Escola Técnica Superior de Enxeñaría, s/n Rúa de Lope Gómez de Marzoa, Santiago de Compostela, 15705
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2923.976341353455!2d-8.56296282311141!3d42.8733435025185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2efe72a954b9a9%3A0x33af61a845699b5d!2sUSC%20~%20Escuela%20T%C3%A9cnica%20Superior%20de%20Ingenier%C3%ADa!5e0!3m2!1ses!2ses!4v1727504219006!5m2!1ses!2ses"
-  ariaLabel="USC ~ Escola Técnica Superior de Enxeñaría, s/n Rúa de Lope Gómez de Marzoa, Santiago de Compostela, 15705"
-/>
+  aria-label="USC ~ Escola Técnica Superior de Enxeñaría, s/n Rúa de Lope Gómez de Marzoa, Santiago de Compostela, 15705"
+></iframe>

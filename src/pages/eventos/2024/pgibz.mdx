@@ -14,8 +14,6 @@ tags: [database, postgres]
 tagColor: '#22C8B2'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## About Postgres Ibiza
 
 ### International conference
@@ -66,7 +64,12 @@ Bring Your Own Family. Come earlier, stay for longer. Best time of the year in o
 
 Address: Palacio de Congresos de Ibiza, Carrer Salvador Camacho, 9-11, 07840 Santa Eulària des Riu, Illes Balears
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6202.605785797532!2d1.544316!3d38.985583!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12993ffaaaaaaaab%3A0x5105da1da1daf52!2sPalacio%20de%20Congresos%20de%20Ibiza!5e0!3m2!1sen!2ses!4v1725342735782!5m2!1sen!2ses"
-  ariaLabel="Palacio de Congresos de Ibiza, Carrer Salvador Camacho, 9-11, 07840 Santa Eulària des Riu, Illes Balears"
-/>
+  aria-label="Palacio de Congresos de Ibiza, Carrer Salvador Camacho, 9-11, 07840 Santa Eulària des Riu, Illes Balears"
+></iframe>

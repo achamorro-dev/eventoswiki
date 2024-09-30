@@ -14,8 +14,6 @@ tags: [devs]
 tagColor: '#4285F4'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## DevFest Aranjuez
 
 DevFest Aranjuez 2024 llega como uno de los eventos más esperados organizado por el GDG Aranjuez en la ciudad. 🎉
@@ -32,7 +30,12 @@ Todos los eventos organizados por el GDG Aranjuez están sujetos al código de c
 
 Dirección: Salesianos Loyola, 24 Calle Valeras, Aranjuez, 28300
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3055.123079315276!2d-3.6094297999999996!3d40.028031399999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4205b8f7b5cef5%3A0x8d6f905b2691f166!2sSalesianos%20Loyola!5e0!3m2!1ses!2ses!4v1727504580268!5m2!1ses!2ses"
-  ariaLabel="Salesianos Loyola, 24 Calle Valeras, Aranjuez, 28300"
-/>
+  aria-label="Salesianos Loyola, 24 Calle Valeras, Aranjuez, 28300"
+></iframe>

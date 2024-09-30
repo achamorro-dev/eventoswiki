@@ -15,8 +15,6 @@ tags: [general, devs]
 tagColor: '#4798ca'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## The Barcelona Developers Conference 2024
 
 Three days to share knowledge and experiences, meet enthusiasts and geeks and learn about new technologies related to Backend and frontend development, Agile, DevOps, Cloud, and many others.
@@ -28,7 +26,7 @@ This conference is the perfect stage to discover how others are using your favou
 ### Last DevBcn edition
 
 <iframe
-  className="w-full mt-4"
+  className="mt-4 w-full"
   height="400px"
   allow="picture-in-picture"
   allowfullscreen=""
@@ -41,7 +39,12 @@ This conference is the perfect stage to discover how others are using your favou
 
 Address: La Farga - Carrer de Barcelona, 2, 08901 L'Hospitalet de Llobregat, Barcelona
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d741.1515132849064!2d2.1041213707265563!3d41.362165375061295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4992001aa263d%3A0x312616335de46b3a!2sCarrer%20de%20Barcelona%2C%202%2C%2008901%20L&#39;Hospitalet%20de%20Llobregat%2C%20Barcelona!5e0!3m2!1sen!2ses!4v1703841974763!5m2!1sen!2ses"
-  ariaLabel="La Farga - Carrer de Barcelona, 2, 08901 L'Hospitalet de Llobregat, Barcelona"
-/>
+  aria-label="La Farga - Carrer de Barcelona, 2, 08901 L'Hospitalet de Llobregat, Barcelona"
+></iframe>

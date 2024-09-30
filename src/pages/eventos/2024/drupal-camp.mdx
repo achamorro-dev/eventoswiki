@@ -16,8 +16,6 @@ tags: [drupal, devs]
 tagColor: '#6778ef'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## Sobre DrupalCamp España
 
 La DrupalCamp es un encuentro organizado por voluntarios de la comunidad de software libre Drupal.
@@ -30,7 +28,12 @@ El propósito del evento es fomentar el aprendizaje, la colaboración y la innov
 
 Dirección: Hotel Deloix Aqua Center, Av. Dr. Severo Ochoa, 34, 03503 Benidorm, Alicante
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3120.448643609198!2d-0.10145942329093836!3d38.54647596733245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd620442158523fd%3A0xe87dfe26322f7a71!2sHotel%20Deloix%20Aqua%20Center!5e0!3m2!1ses!2ses!4v1715920671287!5m2!1ses!2ses"
-  ariaLabel="Hotel Deloix Aqua Center, Av. Dr. Severo Ochoa, 34, 03503 Benidorm, Alicante"
-/>
+  aria-label="Hotel Deloix Aqua Center, Av. Dr. Severo Ochoa, 34, 03503 Benidorm, Alicante"
+></iframe>

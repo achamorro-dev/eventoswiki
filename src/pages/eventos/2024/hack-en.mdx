@@ -16,8 +16,6 @@ tags: [security]
 tagColor: '#aa64d6'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## Sobre el congreso
 
 Hack-én es el evento líder en ciberseguridad de ámbito nacional desarrollado en Jaén, donde se abordarán las últimas tendencias y soluciones en tecnología de la información.
@@ -47,7 +45,12 @@ Con un enfoque en las demandas actuales en materia tecnológica, este congreso o
 
 Dirección: IFEJA Palacio de Ferias y Congresos de Jaén - Ctra. Granada, s/n, 23003 Jaén
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6307.156796314223!2d-3.760361022684299!3d37.77648271205912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6dd7c45b66bad9%3A0xa04ba465acbd94dd!2sIFEJA%20Palacio%20de%20Ferias%20y%20Congresos%20de%20Ja%C3%A9n!5e0!3m2!1ses!2ses!4v1714985402336!5m2!1ses!2ses"
-  ariaLabel="IFEJA Palacio de Ferias y Congresos de Jaén - Ctra. Granada, s/n, 23003 Jaén"
-/>
+  aria-label="IFEJA Palacio de Ferias y Congresos de Jaén - Ctra. Granada, s/n, 23003 Jaén"
+></iframe>

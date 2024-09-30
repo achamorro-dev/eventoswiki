@@ -16,8 +16,6 @@ tags: [devs]
 tagColor: '#4285F4'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## DevFest Jaén
 
 Un evento en el que aprender, compartir conocimientos y hacer networking con la comunidad de desarrolladores de Jaén.
@@ -51,7 +49,12 @@ Tendrá lugar en la Universidad de Jaén, Campus Las Lagunillas Edificio A4.
 
 Dirección: Universidad de Jaén, Campus de las Lagunillas Edificio C1, Jaén, 23071
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.069844727252!2d-3.7772167999999997!3d37.7884029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6dd7abfa6a10df%3A0xf05fe5191735ab43!2sUniversidad%20de%20Ja%C3%A9n!5e0!3m2!1ses!2ses!4v1727505134528!5m2!1ses!2ses"
-  ariaLabel="Universidad de Jaén, Campus de las Lagunillas Edificio C1, Jaén, 23071"
-/>
+  aria-label="Universidad de Jaén, Campus de las Lagunillas Edificio C1, Jaén, 23071"
+></iframe>

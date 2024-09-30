@@ -14,8 +14,6 @@ tags: [devs, design, frontend, ui/ux]
 tagColor: '#f9104a'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## The Event
 
 **Whaaaat the WEB!**
@@ -52,7 +50,12 @@ This event is committed to social inclusion, and we actively encourage underrepr
 
 Address: Teatro Esad Málaga,C. Béla Bartók, 2, Puerto de la Torre, 29010 Málaga
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12792.502930756993!2d-4.47199176909919!3d36.71954145810609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f74076d47853%3A0x90834e9ebacb7fb!2sTeatro%20Esad%20M%C3%A1laga!5e0!3m2!1ses!2ses!4v1716875571575!5m2!1ses!2ses"
-  ariaLabel="Teatro Esad Málaga, C. Béla Bartók, 2, Puerto de la Torre, 29010 Málaga"
-/>
+  aria-label="Teatro Esad Málaga, C. Béla Bartók, 2, Puerto de la Torre, 29010 Málaga"
+></iframe>
