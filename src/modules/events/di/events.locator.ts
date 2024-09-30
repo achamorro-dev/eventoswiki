@@ -2,6 +2,7 @@ import { GetLastEventsQuery } from '../application/get-last-events.query'
 import { GetNextEventsQuery } from '../application/get-next-events.query'
 import type { EventsRepository } from '../domain/events.repository'
 import { AstroDbEventsRepository } from '../infrastructure/astro-db-events.repository'
+import { GetEventQuery } from '@/events/application/get-event.query.ts'
 
 export class EventsLocator {
   static getNextEventsQuery = (): GetNextEventsQuery => {
@@ -10,6 +11,10 @@ export class EventsLocator {
 
   static getLastEventsQuery = (): GetLastEventsQuery => {
     return new GetLastEventsQuery(EventsLocator.createEventsRepository())
+  }
+
+  static getEventQuery = (): GetEventQuery => {
+    return new GetEventQuery(EventsLocator.createEventsRepository())
   }
 
   private static createEventsRepository(): EventsRepository {

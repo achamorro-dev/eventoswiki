@@ -1,0 +1,21 @@
+---
+interface Props {
+  maxSize?: 's' | 'm' | 'l'
+  className?: string
+}
+
+const CONTAINER_MAX_SIZES: { [key: string]: string } = {
+  s: 'max-w-3xl',
+  m: 'max-w-5xl',
+  l: 'max-w-7xl',
+}
+const { maxSize = 'l', className } = Astro.props
+
+const maxSizeClass = CONTAINER_MAX_SIZES[maxSize]
+---
+
+<div class:list="w-full bg-white px-4 pb-12 antialiased dark:bg-slate-900">
+  <div class:list={['mx-auto', maxSizeClass, className]}>
+    <slot />
+  </div>
+</div>

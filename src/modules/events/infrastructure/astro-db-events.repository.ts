@@ -1,17 +1,32 @@
 import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
-import { Event, and, asc, db, desc, gte, lte } from 'astro:db'
+import { and, asc, db, desc, eq, Event, gte, lte } from 'astro:db'
 import type { EventsCriteria } from '../domain/criterias/events-criteria'
 import type { EventsOrder } from '../domain/criterias/events-order'
 import { Event as EventEntity } from '../domain/event'
 import type { EventsRepository } from '../domain/events.repository'
 import { AstroEventMapper } from './mappers/astro-db-event.mapper'
+import { EventNotFound } from '@/events/domain/errors/event-not-found.ts'
 
 export class AstroDbEventsRepository implements EventsRepository {
   async match(criteria: EventsCriteria): Promise<EventEntity[]> {
-    const events = await this.getEventsWithCriteria(criteria).orderBy(...this.getOrderBy(criteria.order))
+    const eventsQuery = this.getEventsWithCriteria(criteria).orderBy(...this.getOrderBy(criteria.order))
+    if (criteria.limit) {
+      eventsQuery.limit(criteria.limit)
+    }
+    const events = await eventsQuery
 
     return AstroEventMapper.toDomainList(events)
+  }
+
+  async find(id: string): Promise<EventEntity> {
+    const result = await db.select().from(Event).where(eq(Event.slug, id)).limit(1)
+    const event = result.at(0)
+    if (!event) {
+      throw new EventNotFound()
+    }
+
+    return AstroEventMapper.toDomain(event)
   }
 
   private getOrderBy(order: Partial<EventsOrder> | undefined) {

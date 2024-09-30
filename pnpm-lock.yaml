@@ -44,6 +44,9 @@ dependencies:
   dayjs:
     specifier: 1.11.5
     version: 1.11.5
+  marked:
+    specifier: ^14.1.2
+    version: 14.1.2
   moment:
     specifier: 2.30.1
     version: 2.30.1
@@ -4095,6 +4098,13 @@ packages:
   /markdown-table@3.0.3:
     resolution:
       { integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw== }
+    dev: false
+
+  /marked@14.1.2:
+    resolution:
+      { integrity: sha512-f3r0yqpz31VXiDB/wj9GaOB0a2PRLQl6vJmXiFrniNwjkKdvakqJRULhjFKJpxOchlCRiG5fcacoUZY5Xa6PEQ== }
+    engines: { node: '>= 18' }
+    hasBin: true
     dev: false
 
   /mdast-util-definitions@6.0.0:

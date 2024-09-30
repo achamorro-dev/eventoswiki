@@ -1,0 +1,57 @@
+---
+import { Datetime } from '@/core/datetime/datetime'
+import { AddToCalendarButton as AddToCalendar } from 'add-to-calendar-button-react'
+
+interface Props {
+  title: string
+  description?: string
+  location?: string
+  startsAt: Date
+  endsAt: Date
+}
+
+const { title, description, location, startsAt, endsAt } = Astro.props
+const startDate = Datetime.toDateIsoString(startsAt)
+const endDate = Datetime.toDateIsoString(endsAt)
+const startTime = Datetime.toTimeIsoString(startsAt)
+const endTime = Datetime.toTimeIsoString(endsAt)
+---
+
+<AddToCalendar
+  client:load
+  name={title}
+  description={description}
+  location={location}
+  startDate={startDate}
+  endDate={endDate}
+  startTime={startTime}
+  endTime={endTime}
+  listStyle="dropdown"
+  trigger="click"
+  iCalFileName={title}
+  label="Añadir a calendario"
+  options={['Apple', 'Google', 'iCal', 'Microsoft365', 'Outlook.com']}
+  timeZone="Europe/Madrid"
+  buttonStyle="round"
+  size="4"
+/>
+
+<style is:global>
+  .atcb-light {
+    --btn-background: white;
+    --btn-background-hover: #f8fafc;
+    --btn-text: #e11d48;
+    --btn-text-hover: #e11d48;
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  :is(.dark .atcb-light) {
+    --btn-background: rgb(30 41 59);
+    --btn-background-hover: rgb(30 41 65);
+    --btn-text: #f43f5e;
+    --btn-text-hover: #f43f5e;
+    display: inline-block;
+    margin: 0 auto;
+  }
+</style>
