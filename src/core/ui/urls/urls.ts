@@ -11,5 +11,6 @@ export const Urls = {
 export const NewUrls = {
   HOME: '/',
   EVENTS: '/eventos/',
+  EVENT: (slug: string) => `/eventos/v2/${slug}`,
   PAST_EVENTS: '/eventos/pasados/',
 }
