@@ -5,12 +5,11 @@ import { EventsCriteria } from './events-criteria'
 export class PastEventsCriteria extends EventsCriteria {
   static withCount(count: number): PastEventsCriteria {
     const now = new Date()
-    return new PastEventsCriteria(
+    return EventsCriteria.create(
       {
         endsAt: { operator: RelationalOperator.LOWER_THAN_OR_EQUAL, value: now },
       },
       { endsAt: OrderDirection.DESC },
-      count,
-    )
+    ).withCount(count)
   }
 }

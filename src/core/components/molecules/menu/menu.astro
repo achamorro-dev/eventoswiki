@@ -1,6 +1,6 @@
 ---
 import { Calendar, Chalkboard, Users } from '../../../ui/icons'
-import { Urls } from '../../../ui/urls/urls'
+import { NewUrls, Urls } from '../../../ui/urls/urls'
 import { Link } from '../../atoms/link/link'
 
 const pathname = Astro.url.pathname
@@ -15,7 +15,7 @@ const urlSections = {
 <nav class="desktop-menu">
   <ul class="menu-list">
     <li class="menu-list-item">
-      <Link selected={pathname.includes(urlSections.EVENTS)} href={Urls.EVENTS(1)}>Eventos</Link>
+      <Link selected={pathname.includes(urlSections.EVENTS)} href={NewUrls.EVENTS}>Eventos</Link>
     </li>
     <li class="menu-list-item">
       <Link selected={pathname.includes(urlSections.MEETUPS)} href={Urls.MEETUPS(1)}>Meetups</Link>
@@ -29,7 +29,7 @@ const urlSections = {
 <nav class="mobile-menu">
   <ul class="menu-list">
     <li>
-      <Link selected={pathname.includes(urlSections.EVENTS)} className="mobile-link" href={Urls.EVENTS(1)}>
+      <Link selected={pathname.includes(urlSections.EVENTS)} className="mobile-link" href={NewUrls.EVENTS}>
         <Chalkboard className="link-icon" />Eventos
       </Link>
     </li>

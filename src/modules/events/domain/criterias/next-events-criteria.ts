@@ -5,10 +5,9 @@ import { EventsCriteria } from './events-criteria'
 export class NextEventsCriteria extends EventsCriteria {
   static withCount(count: number): NextEventsCriteria {
     const now = new Date()
-    return new NextEventsCriteria(
+    return EventsCriteria.create(
       { startsAt: { operator: RelationalOperator.GREATER_THAN_OR_EQUAL, value: now } },
       { startsAt: OrderDirection.ASC },
-      count,
-    )
+    ).withCount(count)
   }
 }
