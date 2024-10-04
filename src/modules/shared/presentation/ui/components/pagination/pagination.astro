@@ -1,0 +1,113 @@
+---
+import { CaretLeft, CaretRight } from '@/core/ui/icons'
+
+interface Props {
+  page: number
+  totalPages: number
+}
+
+const { page, totalPages } = Astro.props
+const isFirstPage = page === 1
+const isLastPage = page === totalPages
+
+const prevPage = page > 1 ? page - 1 : 1
+const nextPage = page < totalPages ? page + 1 : totalPages
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1)
+const pagesToTheLeft = pages.slice(page - 4 < 0 ? 0 : page - 4, page)
+const pagesToTheRight = pages.slice(page, page + 3)
+const pagesToShow = pagesToTheLeft.concat(pagesToTheRight)
+const shouldShowFirstPage = pagesToShow.at(0) !== pages.at(0)
+const shouldShowLastPage = pagesToShow.at(-1) !== pages.at(-1)
+
+const getRewritedSearchParams = (page: number) => {
+  const searchParams = new URL(Astro.request.url).searchParams
+  searchParams.set('page', page.toString())
+  return `?${searchParams.toString()}`
+}
+---
+
+{
+  pagesToShow.length > 0 && (
+    <nav class="pagination-bar">
+      {!isFirstPage && (
+        <a href={getRewritedSearchParams(prevPage)} aria-label="Página anterior" class:list={['link', 'page-left']}>
+          <CaretLeft className="text-2xl" />
+        </a>
+      )}
+      <ul class="pages">
+        {shouldShowFirstPage && (
+          <>
+            <li>
+              <a
+                href={getRewritedSearchParams(pages.at(0) as number)}
+                aria-label={`Página ${pages.at(0)}`}
+                class:list={['link', 'page']}
+              >
+                {pages.at(0)}
+              </a>
+            </li>
+            <li>...</li>
+          </>
+        )}
+        {pagesToShow.map(p => {
+          return (
+            <li>
+              <a
+                href={getRewritedSearchParams(p)}
+                aria-label={`Página ${p}`}
+                class:list={['link', 'page', { actual: p === page }]}
+              >
+                {p}
+              </a>
+            </li>
+          )
+        })}
+        {shouldShowLastPage && (
+          <>
+            <li>...</li>
+            <li>
+              <a
+                href={getRewritedSearchParams(pages.at(-1) as number)}
+                aria-label={`Página ${pages.at(-1)}`}
+                class:list={['link', 'page']}
+              >
+                {pages.at(-1)}
+              </a>
+            </li>
+          </>
+        )}
+      </ul>
+      {!isLastPage && (
+        <a href={getRewritedSearchParams(nextPage)} aria-label="Siguiente página" class:list={['link', 'page-right']}>
+          <CaretRight className="text-2xl" />
+        </a>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination-bar {
+    @apply grid w-full grid-cols-3 items-center;
+    grid-template-areas: 'left pages right';
+  }
+  .page-left {
+    grid-area: left;
+    place-self: center start;
+    width: min-content;
+  }
+  .page-right {
+    grid-area: right;
+    place-self: center end;
+  }
+  .pages {
+    @apply flex list-none items-center justify-center gap-1;
+    grid-area: pages;
+  }
+  .link {
+    @apply p-2 hover:underline;
+  }
+  .actual {
+    @apply font-bold text-primary;
+  }
+</style>

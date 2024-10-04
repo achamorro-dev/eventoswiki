@@ -5,8 +5,11 @@ import EventsGrid from '@/events/presentation/server/components/events-grid/even
 import Layout from '@/layouts/layout.astro'
 import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
 import Link from '@/ui/components/link/link.astro'
+import Pagination from '@/ui/components/pagination/pagination.astro'
 
-const { data: events } = await EventsLocator.getNextEventsQuery().execute({ count: 10, page: 1 })
+const searchParams = new URL(Astro.request.url).searchParams
+const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
+const { data: events, totalPages } = await EventsLocator.getNextEventsQuery().execute({ count: 9, page })
 ---
 
 <Layout title="eventos.wiki - Eventos">
@@ -15,4 +18,5 @@ const { data: events } = await EventsLocator.getNextEventsQuery().execute({ coun
     <Link href={NewUrls.PAST_EVENTS} classes="text-right  shrink-0">Ver pasados</Link>
   </div>
   <EventsGrid events={events} />
+  <Pagination totalPages={totalPages} page={page} />
 </Layout>
