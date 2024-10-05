@@ -18,8 +18,6 @@ tags: [AlmeríaTech]
 tagColor: '#91ef5d'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## Detalles
 
 ¿Quién no paga hoy en día online con su tarjeta? 💳 Pedimos a diario comida a domicilio 🍔, reservamos un hotel 🏨, compramos un billete de avión ✈️ o nos damos un caprichito por Amazon 🛒
@@ -56,7 +54,12 @@ No te pierdas la oportunidad de entender el funcionamiento interno de tus transa
 
 Dirección: Workspace Coworking Almería - C. de la Reina, 17, 04007 Almería
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d201.83710911188365!2d-2.468796900689649!3d36.83924886145166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd7077d62dfd7bab%3A0x35b9a5797231d048!2sCoworking%20Almeria%20WorkSpace!5e0!3m2!1ses!2ses!4v1713596330915!5m2!1ses!2ses"
-  ariaLabel="Workspace Coworking Almería - C. de la Reina, 17, 04007 Almería"
-/>
+  aria-label="Workspace Coworking Almería - C. de la Reina, 17, 04007 Almería"
+></iframe>

@@ -1,0 +1,19 @@
+---
+import type { Meetup } from '@/meetups/domain/meetup'
+import MeetupCard from '../meetup-card/meetup-card.astro'
+
+interface Props {
+  meetups: Meetup[]
+}
+
+const { meetups = [] } = Astro.props
+---
+
+<div class="grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+  {
+    meetups.map((meetup: Meetup) => {
+      return <MeetupCard meetup={meetup} classes="inline-grid w-full" />
+    })
+  }
+</div>
+{meetups.length === 0 && <p class="text-xl font-medium">No hay meetups disponibles en estos momentos</p>}

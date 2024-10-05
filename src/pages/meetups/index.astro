@@ -1,0 +1,22 @@
+---
+import { NewUrls } from '@/core/ui/urls/urls'
+import Layout from '@/layouts/layout.astro'
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import MeetupsGrid from '@/meetups/presentation/server/components/meetups-grid/meetups-grid.astro'
+import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
+import Link from '@/ui/components/link/link.astro'
+import Pagination from '@/ui/components/pagination/pagination.astro'
+
+const searchParams = new URL(Astro.request.url).searchParams
+const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
+const { data: meetups, totalPages } = await MeetupsLocator.getNextMeetupsQuery().execute({ count: 9, page })
+---
+
+<Layout title="eventos.wiki - Meetups">
+  <div class="flex items-center justify-between">
+    <GradientTitle>Meetups</GradientTitle>
+    <Link href={NewUrls.PAST_MEETUPS} classes="text-right  shrink-0">Ver pasados</Link>
+  </div>
+  <MeetupsGrid meetups={meetups} />
+  <Pagination totalPages={totalPages} page={page} />
+</Layout>

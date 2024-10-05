@@ -8,6 +8,7 @@
       "@/ui/*": ["./src/modules/shared/presentation/ui/*"],
       "@/shared/*": ["./src/modules/shared/*"],
       "@/events/*": ["./src/modules/events/*"],
+      "@/meetups/*": ["./src/modules/meetups/*"],
       "@/*": ["./src/*"]
     }
   }

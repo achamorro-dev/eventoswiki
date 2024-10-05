@@ -8,9 +8,10 @@ import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-pe
 import { SocialLink } from '@/ui/components/social-link/social-link'
 import { Link, MapPin } from '@/ui/icons'
 import { NewUrls } from '@/core/ui/urls/urls'
+import type { Meetup } from '@/meetups/domain/meetup'
 
 interface Props {
-  event: Event
+  event: Event | Meetup
 }
 const { event } = Astro.props
 

@@ -1,0 +1,39 @@
+---
+import Card from '@/ui/components/card/card.astro'
+import DatePeriod from '@/ui/components/date-period/date-period.astro'
+import Location from '@/ui/components/location/location.astro'
+import Tag from '@/ui/components/tag/tag.astro'
+import { NewUrls } from '../../../../../../core/ui/urls/urls'
+import { Meetup } from '../../../../domain/meetup'
+
+interface Props {
+  meetup: Meetup
+  classes: string
+}
+
+const { meetup, classes } = Astro.props
+---
+
+<a href={NewUrls.MEETUP(meetup.slug)} class:list={classes}>
+  <Card classes="relative transition-shadow duration-300 lg:hover:shadow-md">
+    <img
+      class="object-cover w-full h-56"
+      src={meetup.image}
+      alt={meetup.altImage || `Foto de portada del meetup ${meetup.title}`}
+      loading="lazy"
+      onerror="this.src='/not-found.jpg'"
+      transition:name={`media-image-${meetup.slug}`}
+    />
+    <div class="relative top-0 left-3 -mt-3 flex items-center flex-wrap gap-1 rounded-full">
+      {meetup.tags.map(t => <Tag color={meetup.tagColor}>{t}</Tag>)}
+    </div>
+    <div class="w-full flex flex-col-reverse justify-center items-start px-4 mt-2">
+      <h3 class="text-base font-bold sm:text-lg md:text-xl text-black dark:text-gray-100 p-0 my-2">{meetup.title}</h3>
+      <DatePeriod startDate={meetup.getStartDateFormatted()} endDate={meetup.getEndDateFormatted()} />
+    </div>
+    <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 max-h-[2.35rem]">
+      {meetup.shortDescription}
+    </p>
+    <Location location={meetup.location} />
+  </Card>
+</a>

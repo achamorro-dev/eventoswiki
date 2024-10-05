@@ -11,6 +11,9 @@ export const Urls = {
 export const NewUrls = {
   HOME: '/',
   EVENTS: '/eventos/',
+  MEETUPS: '/meetups/',
   EVENT: (slug: string) => `/eventos/v2/${slug}`,
+  MEETUP: (slug: string) => `/meetups/v2/${slug}`,
   PAST_EVENTS: '/eventos/pasados/',
+  PAST_MEETUPS: '/meetups/pasados/',
 }

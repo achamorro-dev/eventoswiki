@@ -1,0 +1,20 @@
+---
+import EventLayout from '@/layouts/new-event-layout.astro'
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { marked } from 'marked'
+
+const slug = Astro.params.slug
+
+if (!slug) {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Not found'
+  return
+}
+
+const meetup = await MeetupsLocator.getMeetupQuery().execute({ id: slug })
+const content = marked.parse(meetup.content)
+---
+
+<EventLayout event={meetup}>
+  <article set:html={content} />
+</EventLayout>

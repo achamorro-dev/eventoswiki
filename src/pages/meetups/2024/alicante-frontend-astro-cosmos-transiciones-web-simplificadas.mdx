@@ -12,8 +12,6 @@ tags: [Alicante Frontend]
 tagColor: '#3a84d5'
 ---
 
-import GoogleMap from '../../../core/components/molecules/google-map/google-map.astro'
-
 ## Detalles
 
 👋 Hola a tod@s,
@@ -47,7 +45,12 @@ Ingeniera en sistemas de información recibida en 2017. Tiene más de 12 años d
 
 Dirección: ULab, Plaça de San Cristóbal, 14, 03002 Alacant, Alicante
 
-<GoogleMap
+<iframe
+  style="width: 100%; height: 400px;"
+  height="400"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3129.111053439133!2d-0.4887628442576663!3d38.346411606666976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6237b204496f09%3A0x6c8e507cdc82c181!2sULab!5e0!3m2!1ses!2ses!4v1715316151677!5m2!1ses!2ses"
-  ariaLabel="ULab, Plaça de San Cristóbal, 14, 03002 Alacant, Alicante"
-/>
+  aria-label="ULab, Plaça de San Cristóbal, 14, 03002 Alacant, Alicante"
+></iframe>

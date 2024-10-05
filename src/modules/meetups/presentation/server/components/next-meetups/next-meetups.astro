@@ -1,0 +1,17 @@
+---
+import { NewUrls } from '@/core/ui/urls/urls'
+import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
+import Link from '@/ui/components/link/link.astro'
+import { MeetupsLocator } from '../../../../di/meetups.locator'
+import MeetupsGrid from '../meetups-grid/meetups-grid.astro'
+
+const { data: nextMeetups } = await MeetupsLocator.getNextMeetupsQuery().execute({ count: 3 })
+---
+
+<section>
+  <div class="flex items-center justify-between my-4">
+    <GradientTitle>Próximos meetups</GradientTitle>
+    <Link href={NewUrls.MEETUPS} classes="text-right shrink-0">Ver todos</Link>
+  </div>
+  <MeetupsGrid meetups={nextMeetups} />
+</section>
