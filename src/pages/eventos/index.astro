@@ -3,20 +3,34 @@ import { NewUrls } from '@/core/ui/urls/urls'
 import { EventsLocator } from '@/events/di/events.locator'
 import EventsGrid from '@/events/presentation/server/components/events-grid/events-grid.astro'
 import Layout from '@/layouts/layout.astro'
+import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
 import Link from '@/ui/components/link/link.astro'
 import Pagination from '@/ui/components/pagination/pagination.astro'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
-const { data: events, totalPages } = await EventsLocator.getNextEventsQuery().execute({ count: 9, page })
+const provinceParam = searchParams.get('province')
+let province = undefined
+
+if (provinceParam) {
+  province = await ProvincesLocator.getProvinceQuery().execute({ id: provinceParam })
+}
+
+const { data: events, totalPages } = await EventsLocator.getNextEventsQuery().execute({
+  count: 9,
+  page,
+  location: province?.name,
+})
 ---
 
 <Layout title="eventos.wiki - Eventos">
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-2">
     <GradientTitle>Eventos</GradientTitle>
     <Link href={NewUrls.PAST_EVENTS} classes="text-right  shrink-0">Ver pasados</Link>
   </div>
   <EventsGrid events={events} />
-  <Pagination totalPages={totalPages} page={page} />
+  <section class="mt-4">
+    <Pagination totalPages={totalPages} page={page} />
+  </section>
 </Layout>

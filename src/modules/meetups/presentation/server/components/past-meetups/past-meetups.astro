@@ -16,7 +16,9 @@ const { data: pastMeetups } = await MeetupsLocator.getPastMeetupsQuery().execute
 <section class="mt-12">
   <div class="flex items-center justify-between my-4">
     <GradientTitle>Últimos meetups{location && ` en ${location}`}</GradientTitle>
-    <Link href={NewUrls.PAST_MEETUPS} classes="text-right shrink-0">Ver todos</Link>
+    <slot name="actions">
+      <Link href={NewUrls.PAST_MEETUPS} classes="text-right shrink-0">Ver todos</Link>
+    </slot>
   </div>
   <EventsGrid meetups={pastMeetups} />
 </section>

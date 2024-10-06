@@ -16,7 +16,9 @@ const { data: lastEvents } = await EventsLocator.getPastEventsQuery().execute({ 
 <section class="mt-12">
   <div class="flex items-center justify-between my-4">
     <GradientTitle>Últimos eventos{location && ` en ${location}`}</GradientTitle>
-    <Link href={NewUrls.PAST_EVENTS} classes="text-right shrink-0">Ver todos</Link>
+    <slot name="actions">
+      <Link href={NewUrls.PAST_EVENTS} classes="text-right shrink-0">Ver todos</Link>
+    </slot>
   </div>
   <EventsGrid events={lastEvents} />
 </section>

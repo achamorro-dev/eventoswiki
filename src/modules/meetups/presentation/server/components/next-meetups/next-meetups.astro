@@ -16,7 +16,9 @@ const { data: nextMeetups } = await MeetupsLocator.getNextMeetupsQuery().execute
 <section>
   <div class="flex items-center justify-between my-4">
     <GradientTitle>Próximos meetups{location && ` en ${location}`}</GradientTitle>
-    <Link href={NewUrls.MEETUPS} classes="text-right shrink-0">Ver todos</Link>
+    <slot name="actions">
+      <Link href={NewUrls.MEETUPS} classes="text-right shrink-0">Ver todos</Link>
+    </slot>
   </div>
   <MeetupsGrid meetups={nextMeetups} />
 </section>

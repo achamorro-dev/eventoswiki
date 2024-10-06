@@ -16,7 +16,9 @@ const { data: nextEvents } = await EventsLocator.getNextEventsQuery().execute({ 
 <section>
   <div class="flex items-center justify-between my-4">
     <GradientTitle>Próximos eventos{location && ` en ${location}`}</GradientTitle>
-    <Link href={NewUrls.EVENTS} classes="text-right shrink-0">Ver todos</Link>
+    <slot name="actions">
+      <Link href={NewUrls.EVENTS} classes="text-right shrink-0">Ver todos</Link>
+    </slot>
   </div>
   <EventsGrid events={nextEvents} />
 </section>
