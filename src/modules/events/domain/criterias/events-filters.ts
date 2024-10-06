@@ -9,4 +9,8 @@ export interface EventsFilters {
     operator: RelationalOperator
     value: Date
   }
+  location: {
+    operator: RelationalOperator
+    value: string
+  }
 }

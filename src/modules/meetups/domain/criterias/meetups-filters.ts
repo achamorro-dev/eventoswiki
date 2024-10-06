@@ -9,4 +9,8 @@ export interface MeetupsFilters {
     operator: RelationalOperator
     value: Date
   }
+  location: {
+    operator: RelationalOperator
+    value: string
+  }
 }

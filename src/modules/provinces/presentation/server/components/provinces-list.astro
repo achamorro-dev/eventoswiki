@@ -1,0 +1,21 @@
+---
+import { NewUrls } from '@/core/ui/urls/urls'
+import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+
+const provinces = await ProvincesLocator.getProvincesQuery().execute()
+---
+
+<section class="container mx-auto max-w-7xl py-4 text-center">
+  <h2 class="py-2 font-bold text-3xl">Eventos por ciudad</h2>
+  <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 list-none p-0 mt-2">
+    {
+      provinces.map(province => (
+        <li class="m-0">
+          <a href={NewUrls.PROVINCE(province.slug)} class="text-sm hover:text-primary dark:hover:text-primary-light">
+            {province.name}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

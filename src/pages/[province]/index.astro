@@ -1,0 +1,19 @@
+---
+import NextEvents from '@/events/presentation/server/components/next-events/next-events.astro'
+import PastEvents from '@/events/presentation/server/components/past-events/past-events.astro'
+import NextMeetups from '@/meetups/presentation/server/components/next-meetups/next-meetups.astro'
+import PastMeetups from '@/meetups/presentation/server/components/past-meetups/past-meetups.astro'
+import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import Layout from '../../layouts/layout.astro'
+
+const { province = '' } = Astro.params
+
+const location = await ProvincesLocator.getProvinceQuery().execute({ id: province })
+---
+
+<Layout title={`eventos.wiki - Eventos en ${location.name}`}>
+  <NextEvents location={location.name} />
+  <NextMeetups location={location.name} />
+  <PastEvents location={location.name} />
+  <PastMeetups location={location.name} />
+</Layout>

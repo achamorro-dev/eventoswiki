@@ -3,11 +3,11 @@ import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-
 import { EventsCriteria } from './events-criteria'
 
 export class NextEventsCriteria extends EventsCriteria {
-  static withCount(count: number): NextEventsCriteria {
+  static create(): NextEventsCriteria {
     const now = new Date()
     return EventsCriteria.create(
       { startsAt: { operator: RelationalOperator.GREATER_THAN_OR_EQUAL, value: now } },
       { startsAt: OrderDirection.ASC },
-    ).withCount(count)
+    )
   }
 }

@@ -2,7 +2,7 @@ import { EventNotFound } from '@/events/domain/errors/event-not-found.ts'
 import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
-import { and, asc, count, db, desc, eq, Event, gte, lte } from 'astro:db'
+import { and, asc, count, db, desc, eq, Event, gte, like, lte } from 'astro:db'
 import type { EventsCriteria } from '../domain/criterias/events-criteria'
 import type { EventsOrder } from '../domain/criterias/events-order'
 import { Event as EventEntity } from '../domain/event'
@@ -11,8 +11,8 @@ import { AstroEventMapper } from './mappers/astro-db-event.mapper'
 
 export class AstroDbEventsRepository implements EventsRepository {
   async match(criteria: EventsCriteria): Promise<PaginatedResult<EventEntity>> {
-    const eventsQuery = this.getEventsWithCriteria(criteria).orderBy(...this.getOrderBy(criteria.order))
-    const countQuery = this.getCountEventsWithCriteria(criteria)
+    const eventsQuery = this.getEventsQueryWithCriteria(criteria).orderBy(...this.getOrderBy(criteria.order))
+    const countQuery = this.getCountEventsQueryWithCriteria(criteria)
 
     if (criteria.limit) {
       eventsQuery.limit(criteria.limit)
@@ -29,7 +29,7 @@ export class AstroDbEventsRepository implements EventsRepository {
     return new PaginatedResult(AstroEventMapper.toDomainList(events), totalPages, criteria.page, criteria.limit)
   }
 
-  async find(id: string): Promise<EventEntity> {
+  async find(id: EventEntity['slug']): Promise<EventEntity> {
     const result = await db.select().from(Event).where(eq(Event.slug, id)).limit(1)
     const event = result.at(0)
     if (!event) {
@@ -37,6 +37,11 @@ export class AstroDbEventsRepository implements EventsRepository {
     }
 
     return AstroEventMapper.toDomain(event)
+  }
+
+  async findAll(): Promise<EventEntity[]> {
+    const events = await db.select().from(Event)
+    return AstroEventMapper.toDomainList(events)
   }
 
   private getOrderBy(order: Partial<EventsOrder> | undefined) {
@@ -61,18 +66,25 @@ export class AstroDbEventsRepository implements EventsRepository {
     return orderBy
   }
 
-  private getEventsWithCriteria(criteria: EventsCriteria) {
-    return db
-      .select()
-      .from(Event)
-      .where(and(this.getFilterByStartsAt(criteria), this.getFilterByEndsAt(criteria)))
+  private getEventsQueryWithCriteria(criteria: EventsCriteria) {
+    return db.select().from(Event).where(this.getEventsFiltersByCriteria(criteria))
   }
 
-  private getCountEventsWithCriteria(criteria: EventsCriteria) {
-    return db
-      .select({ count: count() })
-      .from(Event)
-      .where(and(this.getFilterByStartsAt(criteria), this.getFilterByEndsAt(criteria)))
+  private getCountEventsQueryWithCriteria(criteria: EventsCriteria) {
+    return db.select({ count: count() }).from(Event).where(this.getEventsFiltersByCriteria(criteria))
+  }
+
+  private getEventsFiltersByCriteria(criteria: EventsCriteria) {
+    return and(this.getFilterByStartsAt(criteria), this.getFilterByEndsAt(criteria), this.getFilterByLocation(criteria))
+  }
+
+  private getFilterByLocation(criteria: EventsCriteria) {
+    const hasLocationFilter = criteria.filters?.location !== undefined
+    if (!hasLocationFilter) return undefined
+
+    if (criteria.filters!.location!.operator === RelationalOperator.EQUALS) {
+      return like(Event.location, criteria.filters!.location!.value)
+    }
   }
 
   private getFilterByStartsAt(criteria: EventsCriteria) {

@@ -5,12 +5,17 @@ import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
 import Link from '@/ui/components/link/link.astro'
 import EventsGrid from '../events-grid/events-grid.astro'
 
-const { data: nextEvents } = await EventsLocator.getNextEventsQuery().execute({ count: 3 })
+interface Props {
+  location?: string
+}
+
+const { location } = Astro.props
+const { data: nextEvents } = await EventsLocator.getNextEventsQuery().execute({ count: 3, location })
 ---
 
 <section>
   <div class="flex items-center justify-between my-4">
-    <GradientTitle>Próximos eventos</GradientTitle>
+    <GradientTitle>Próximos eventos{location && ` en ${location}`}</GradientTitle>
     <Link href={NewUrls.EVENTS} classes="text-right shrink-0">Ver todos</Link>
   </div>
   <EventsGrid events={nextEvents} />

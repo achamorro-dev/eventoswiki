@@ -9,7 +9,7 @@ import Pagination from '@/ui/components/pagination/pagination.astro'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
-const { data: events, totalPages } = await EventsLocator.getLastEventsQuery().execute({ count: 9, page })
+const { data: events, totalPages } = await EventsLocator.getPastEventsQuery().execute({ count: 9, page })
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">

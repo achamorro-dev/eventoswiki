@@ -11,12 +11,17 @@ export abstract class Criteria<Filters, Order> {
     this.page = page
   }
 
-  withCount(count: number): Criteria<Filters, Order> {
+  addFilter(filter: Filters) {
+    this.filters = { ...this.filters, ...filter }
+    return this
+  }
+
+  withCount(count: number) {
     this.limit = count
     return this
   }
 
-  andPage(page: number): Criteria<Filters, Order> {
+  andPage(page: number) {
     this.page = page
     return this
   }

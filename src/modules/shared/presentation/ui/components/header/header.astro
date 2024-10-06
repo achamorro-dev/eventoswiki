@@ -1,0 +1,15 @@
+---
+import Logo from '@/ui/components/logo/logo.astro'
+import Menu from '@/ui/components/menu/menu.astro'
+import { ThemeModeToggle } from '../theme-mode-toggle/theme-mode-toggle'
+---
+
+<nav class="relative z-50 h-20 select-none">
+  <div
+    class="container relative max-w-7xl flex flex-wrap items-center justify-between h-20 mx-auto overflow-hidden font-medium md:overflow-visible px-4 xl:px-0"
+  >
+    <Logo />
+    <Menu />
+    <ThemeModeToggle client:only="react" />
+  </div>
+</nav>

@@ -1,4 +1,5 @@
 import { GetMeetupQuery } from '../application/get-meetup.query'
+import { GetMeetupsQuery } from '../application/get-meetups.query'
 import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
 import type { MeetupsRepository } from '../domain/meetups.repository'
@@ -15,6 +16,9 @@ export class MeetupsLocator {
 
   static getMeetupQuery = (): GetMeetupQuery => {
     return new GetMeetupQuery(MeetupsLocator.createMeetupsRepository())
+  }
+  static getMeetupsQuery = (): GetMeetupsQuery => {
+    return new GetMeetupsQuery(MeetupsLocator.createMeetupsRepository())
   }
 
   private static createMeetupsRepository(): MeetupsRepository {

@@ -5,12 +5,17 @@ import Link from '@/ui/components/link/link.astro'
 import { MeetupsLocator } from '../../../../di/meetups.locator'
 import MeetupsGrid from '../meetups-grid/meetups-grid.astro'
 
-const { data: nextMeetups } = await MeetupsLocator.getNextMeetupsQuery().execute({ count: 3 })
+interface Props {
+  location?: string
+}
+
+const { location } = Astro.props
+const { data: nextMeetups } = await MeetupsLocator.getNextMeetupsQuery().execute({ count: 3, location })
 ---
 
 <section>
   <div class="flex items-center justify-between my-4">
-    <GradientTitle>Próximos meetups</GradientTitle>
+    <GradientTitle>Próximos meetups{location && ` en ${location}`}</GradientTitle>
     <Link href={NewUrls.MEETUPS} classes="text-right shrink-0">Ver todos</Link>
   </div>
   <MeetupsGrid meetups={nextMeetups} />

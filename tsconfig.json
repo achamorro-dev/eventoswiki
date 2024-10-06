@@ -9,6 +9,7 @@
       "@/shared/*": ["./src/modules/shared/*"],
       "@/events/*": ["./src/modules/events/*"],
       "@/meetups/*": ["./src/modules/meetups/*"],
+      "@/provinces/*": ["./src/modules/provinces/*"],
       "@/*": ["./src/*"]
     }
   }

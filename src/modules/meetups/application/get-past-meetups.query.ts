@@ -7,6 +7,7 @@ import type { MeetupsRepository } from '../domain/meetups.repository'
 interface GetPastMeetupsRequest {
   count: number
   page?: number
+  location?: string
 }
 
 export class GetPastMeetupsQuery extends Query<PaginatedResult<Meetup>, GetPastMeetupsRequest> {
@@ -14,8 +15,8 @@ export class GetPastMeetupsQuery extends Query<PaginatedResult<Meetup>, GetPastM
     super()
   }
 
-  execute({ count, page = 1 }: GetPastMeetupsRequest): Promise<PaginatedResult<Meetup>> {
-    const criteria = PastMeetupsCriteria.withCount(count).andPage(page)
+  execute({ count, page = 1, location }: GetPastMeetupsRequest): Promise<PaginatedResult<Meetup>> {
+    const criteria = PastMeetupsCriteria.create().withLocation(location).withCount(count).andPage(page)
     return this.meetupsRepository.match(criteria)
   }
 }

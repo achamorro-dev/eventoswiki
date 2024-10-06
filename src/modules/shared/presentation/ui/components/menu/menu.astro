@@ -1,0 +1,77 @@
+---
+import { NewUrls, Urls } from '@/core/ui/urls/urls'
+import { Calendar, Chalkboard, Users } from '../../../ui/icons'
+import Link from '../link/link.astro'
+
+const pathname = Astro.url.pathname
+
+const urlSections = {
+  EVENTS: '/evento',
+  MEETUPS: '/meetup',
+  CALENDAR: '/calendario',
+}
+---
+
+<nav class="desktop-menu">
+  <ul class="menu-list">
+    <li class="menu-list-item">
+      <Link selected={pathname.includes(urlSections.EVENTS)} href={NewUrls.EVENTS}>Eventos</Link>
+    </li>
+    <li class="menu-list-item">
+      <Link selected={pathname.includes(urlSections.MEETUPS)} href={NewUrls.MEETUPS}>Meetups</Link>
+    </li>
+    <li class="menu-list-item">
+      <Link selected={pathname.includes(urlSections.CALENDAR)} href={Urls.CALENDAR}>Calendario</Link>
+    </li>
+  </ul>
+</nav>
+
+<nav class="mobile-menu">
+  <ul class="menu-list">
+    <li>
+      <Link selected={pathname.includes(urlSections.EVENTS)} classes="mobile-link" href={NewUrls.EVENTS}>
+        <Chalkboard className="link-icon" />Eventos
+      </Link>
+    </li>
+    <li>
+      <Link selected={pathname.includes(urlSections.MEETUPS)} classes="mobile-link" href={Urls.MEETUPS(1)}>
+        <Users className="link-icon" />Meetups</Link
+      >
+    </li>
+    <li>
+      <Link selected={pathname.includes(urlSections.CALENDAR)} classes="mobile-link" href={Urls.CALENDAR}>
+        <Calendar className="link-icon" />Calendario
+      </Link>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .desktop-menu {
+    @apply hidden flex-1 md:block;
+
+    .menu-list {
+      @apply mx-auto flex w-full list-none justify-center gap-6;
+
+      .menu-list-item {
+        @apply !mb-0;
+      }
+    }
+  }
+
+  .mobile-menu {
+    @apply fixed bottom-0 left-0 z-20 h-24 w-full bg-menu-background pb-4 pt-4 text-menu-foreground dark:bg-menu-dark dark:text-menu-dark-foreground md:hidden;
+
+    .menu-list {
+      @apply flex list-none flex-row justify-around p-0;
+
+      .mobile-link {
+        @apply ml-0 grid grid-rows-2 place-content-center place-items-center text-sm font-medium;
+      }
+
+      .link-icon {
+        @apply text-2xl;
+      }
+    }
+  }
+</style>

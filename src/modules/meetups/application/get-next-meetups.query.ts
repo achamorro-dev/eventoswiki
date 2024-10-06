@@ -7,6 +7,7 @@ import type { MeetupsRepository } from '../domain/meetups.repository'
 interface GetNextMeetupsRequest {
   count: number
   page?: number
+  location?: string
 }
 
 export class GetNextMeetupsQuery extends Query<PaginatedResult<Meetup>, GetNextMeetupsRequest> {
@@ -14,8 +15,8 @@ export class GetNextMeetupsQuery extends Query<PaginatedResult<Meetup>, GetNextM
     super()
   }
 
-  execute({ count, page = 1 }: GetNextMeetupsRequest): Promise<PaginatedResult<Meetup>> {
-    const criteria = NextMeetupsCriteria.withCount(count).andPage(page)
+  execute({ count, page = 1, location }: GetNextMeetupsRequest): Promise<PaginatedResult<Meetup>> {
+    const criteria = NextMeetupsCriteria.create().withLocation(location).withCount(count).andPage(page)
     return this.meetupsRepository.match(criteria)
   }
 }

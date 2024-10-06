@@ -5,12 +5,17 @@ import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
 import Link from '@/ui/components/link/link.astro'
 import EventsGrid from '../meetups-grid/meetups-grid.astro'
 
-const { data: pastMeetups } = await MeetupsLocator.getPastMeetupsQuery().execute({ count: 3 })
+interface Props {
+  location?: string
+}
+
+const { location } = Astro.props
+const { data: pastMeetups } = await MeetupsLocator.getPastMeetupsQuery().execute({ count: 3, location })
 ---
 
 <section class="mt-12">
   <div class="flex items-center justify-between my-4">
-    <GradientTitle>Últimos meetups</GradientTitle>
+    <GradientTitle>Últimos meetups{location && ` en ${location}`}</GradientTitle>
     <Link href={NewUrls.PAST_MEETUPS} classes="text-right shrink-0">Ver todos</Link>
   </div>
   <EventsGrid meetups={pastMeetups} />

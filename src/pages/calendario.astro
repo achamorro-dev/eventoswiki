@@ -1,24 +1,28 @@
 ---
+import { NewUrls } from '@/core/ui/urls/urls'
+import { EventsLocator } from '@/events/di/events.locator'
+import { Event } from '@/events/domain/event'
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { Meetup } from '@/meetups/domain/meetup'
 import { GradientTitle } from '../core/components/atoms/gradient-title/gradient-title'
 import { BigCalendar } from '../core/components/organisms/calendar/big-calendar'
 import type { CalendarEvent } from '../core/components/organisms/calendar/calendar-event'
-import { Datetime } from '../core/datetime/datetime'
-import type { AstroEvent } from '../core/events/astro-event'
 import Layout from '../layouts/layout.astro'
 
-const events = (await Astro.glob('./eventos/**/*.mdx')) as AstroEvent[]
-const meetups = (await Astro.glob('./meetups/**/*.mdx')) as AstroEvent[]
-const calendarEvents = Array.from(events).concat(meetups).map(
-  (event, index) =>
-    ({
-      id: index,
-      title: event.frontmatter.title,
-      start: Datetime.toDate(event.frontmatter.startDate),
-      end: Datetime.toDate(event.frontmatter.endDate),
-      url: event.url,
-      color: event.frontmatter.tagColor,
-    }) as CalendarEvent,
-)
+const events = await EventsLocator.getEventsQuery().execute()
+const meetups = await MeetupsLocator.getMeetupsQuery().execute()
+
+const calendarEvents = events.concat(meetups).map<CalendarEvent>((event: Meetup | Event, index) => {
+  const isMeetup = event instanceof Meetup
+  return {
+    id: index,
+    title: event.title,
+    start: event.startsAt,
+    end: event.endsAt,
+    url: isMeetup ? NewUrls.MEETUP(event.slug) : NewUrls.EVENT(event.slug),
+    color: event.tagColor,
+  } as CalendarEvent
+})
 ---
 
 <Layout

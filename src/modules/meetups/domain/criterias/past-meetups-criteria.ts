@@ -3,13 +3,13 @@ import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-
 import { MeetupsCriteria } from './meetups-criteria'
 
 export class PastMeetupsCriteria extends MeetupsCriteria {
-  static withCount(count: number): PastMeetupsCriteria {
+  static create(): PastMeetupsCriteria {
     const now = new Date()
     return MeetupsCriteria.create(
       {
         endsAt: { operator: RelationalOperator.LOWER_THAN_OR_EQUAL, value: now },
       },
       { endsAt: OrderDirection.DESC },
-    ).withCount(count)
+    )
   }
 }

@@ -58,9 +58,17 @@ export const Meetup = defineTable({
   },
 })
 
+export const Province = defineTable({
+  columns: {
+    slug: column.text({ primaryKey: true }),
+    name: column.text(),
+  },
+})
+
 export default defineDb({
   tables: {
     Event,
     Meetup,
+    Province,
   },
 })

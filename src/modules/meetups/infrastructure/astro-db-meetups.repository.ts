@@ -1,7 +1,7 @@
 import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
-import { Meetup, and, asc, count, db, desc, eq, gte, lte } from 'astro:db'
+import { Meetup, and, asc, count, db, desc, eq, gte, like, lte } from 'astro:db'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
@@ -39,6 +39,24 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     return AstroDbMeetupMapper.toDomain(meetup)
   }
 
+  async findAll(): Promise<MeetupEntity[]> {
+    const meetups = await db.select().from(Meetup)
+    return AstroDbMeetupMapper.toDomainList(meetups)
+  }
+
+  private getMeetupsFiltersByCriteria(criteria: MeetupsCriteria) {
+    return and(this.getFilterByStartsAt(criteria), this.getFilterByEndsAt(criteria), this.getFilterByLocation(criteria))
+  }
+
+  private getFilterByLocation(criteria: MeetupsCriteria) {
+    const hasLocationFilter = criteria.filters?.location !== undefined
+    if (!hasLocationFilter) return undefined
+
+    if (criteria.filters!.location!.operator === RelationalOperator.EQUALS) {
+      return like(Meetup.location, criteria.filters!.location!.value)
+    }
+  }
+
   private getOrderBy(order: Partial<MeetupsOrder> | undefined) {
     const orderBy = []
 
@@ -65,14 +83,14 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     return db
       .select()
       .from(Meetup)
-      .where(and(this.getFilterByStartsAt(criteria), this.getFilterByEndsAt(criteria)))
+      .where(and(this.getMeetupsFiltersByCriteria(criteria)))
   }
 
   private getCountEventsWithCriteria(criteria: MeetupsCriteria) {
     return db
       .select({ count: count() })
       .from(Meetup)
-      .where(and(this.getFilterByStartsAt(criteria), this.getFilterByEndsAt(criteria)))
+      .where(and(this.getMeetupsFiltersByCriteria(criteria)))
   }
 
   private getFilterByStartsAt(criteria: MeetupsCriteria) {
