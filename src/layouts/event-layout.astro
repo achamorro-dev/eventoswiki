@@ -1,30 +1,30 @@
 ---
-import type { MarkdownLayoutProps } from 'astro'
-import { Container } from '../core/components/atoms/container/container'
-import { Tag } from '../core/components/atoms/tag/tag'
-import BaseHead from '../core/components/base-head.astro'
-import { AddToCalendarButton } from '../core/components/molecules/add-to-calendar-button/add-to-calendar-button'
-import { EventDatePeriod } from '../core/components/molecules/event-date-period/event-date-period'
-import { SocialLink } from '../core/components/molecules/social-link/social-link'
-import Footer from '../core/components/organisms/footer/footer.astro'
-import Header from '../core/components/organisms/header/header.astro'
-import { Datetime } from '../core/datetime/datetime'
-import type { Event } from '../core/events/event'
-import { Link, MapPin } from '../core/ui/icons'
+import { Event } from '@/modules/events/domain/event'
 import BaseLayout from './base-layout.astro'
+import AddToCalendarButton from '@/ui/components/add-to-calendar-button/add-to-calendar-button.astro'
+import Container from '@/ui/components/container/container.astro'
+import Tag from '@/ui/components/tag/tag.astro'
+import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
+import { SocialLink } from '@/ui/components/social-link/social-link'
+import { Link, MapPin } from '@/ui/icons'
+import { NewUrls } from '@/ui/urls/urls'
+import type { Meetup } from '@/meetups/domain/meetup'
 
-type Props = MarkdownLayoutProps<Event>
+interface Props {
+  event: Event | Meetup
+}
+const { event } = Astro.props
 
-const { frontmatter, url } = Astro.props
 const {
+  slug,
   title,
   shortDescription,
   image,
   tags,
   tagColor,
   altImage,
-  startDate,
-  endDate,
+  startsAt,
+  endsAt,
   twitter,
   twitch,
   instagram,
@@ -37,7 +37,8 @@ const {
   discord,
   web,
   location,
-} = frontmatter
+} = event
+const url = NewUrls.EVENT(slug)
 ---
 
 <BaseLayout
@@ -66,7 +67,7 @@ const {
         <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
           {title}
         </h1>
-        <EventDatePeriod startDate={startDate} endDate={endDate} client:load transition:animate="fade" />
+        <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
         {
           web && (
             <div class="flex items-center gap-1 text-black dark:text-white" transition:animate="fade">
@@ -108,97 +109,94 @@ const {
     </Container>
     <div class="sticky bottom-2 w-full text-center p-4">
       <AddToCalendarButton
-        client:load
         title={title}
         description={shortDescription}
-        startDate={Datetime.toDateIsoString(startDate!)}
-        endDate={Datetime.toDateIsoString(endDate!)}
-        startTime={Datetime.toTimeIsoString(startDate!)}
-        endTime={Datetime.toTimeIsoString(endDate!)}
+        startsAt={startsAt}
+        endsAt={endsAt}
         location={location}
       />
     </div>
   </main>
-
-  <style is:global>
-    html {
-      font-family: system-ui, sans-serif;
-      font-size: var(--font-size-base);
-      height: 100%;
-    }
-
-    body {
-      @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] scroll-smooth bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
-    }
-
-    p,
-    span {
-      @apply text-xl text-gray-900 dark:text-gray-50;
-    }
-
-    small {
-      @apply text-sm text-gray-900 dark:text-gray-50;
-    }
-
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      @apply !font-bold;
-    }
-
-    h2 {
-      @apply py-4 !text-3xl text-slate-900 dark:text-gray-200;
-    }
-
-    h3 {
-      @apply py-3 !text-2xl text-slate-900 dark:text-gray-200;
-    }
-
-    p {
-      @apply py-4;
-    }
-
-    table {
-      @apply mb-10;
-    }
-
-    table tr {
-      @apply border-b dark:border-b-gray-50;
-    }
-
-    table td {
-      @apply p-4 text-gray-900 dark:text-gray-50;
-    }
-
-    table th {
-      @apply p-4 !text-gray-900 dark:!text-gray-50;
-    }
-
-    ol,
-    ul {
-      @apply p-4 font-sans text-base;
-    }
-
-    ol {
-      @apply list-decimal;
-    }
-
-    ul {
-      @apply list-disc;
-    }
-
-    ul li {
-      @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
-    }
-
-    ol li {
-      @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
-    }
-
-    .event-container a {
-      @apply underline;
-    }
-  </style>
 </BaseLayout>
+
+<style is:global>
+  html {
+    font-family: system-ui, sans-serif;
+    font-size: var(--font-size-base);
+    height: 100%;
+  }
+
+  body {
+    @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] scroll-smooth bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+  }
+
+  p,
+  span {
+    @apply text-xl text-gray-900 dark:text-gray-50;
+  }
+
+  small {
+    @apply text-sm text-gray-900 dark:text-gray-50;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply !font-bold;
+  }
+
+  h2 {
+    @apply py-4 !text-3xl text-slate-900 dark:text-gray-200;
+  }
+
+  h3 {
+    @apply py-3 !text-2xl text-slate-900 dark:text-gray-200;
+  }
+
+  p {
+    @apply py-4;
+  }
+
+  table {
+    @apply mb-10;
+  }
+
+  table tr {
+    @apply border-b dark:border-b-gray-50;
+  }
+
+  table td {
+    @apply p-4 text-gray-900 dark:text-gray-50;
+  }
+
+  table th {
+    @apply p-4 !text-gray-900 dark:!text-gray-50;
+  }
+
+  ol,
+  ul {
+    @apply p-4 font-sans text-base;
+  }
+
+  ol {
+    @apply list-decimal;
+  }
+
+  ul {
+    @apply list-disc;
+  }
+
+  ul li {
+    @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
+  }
+
+  ol li {
+    @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
+  }
+
+  .event-container a {
+    @apply underline;
+  }
+</style>
