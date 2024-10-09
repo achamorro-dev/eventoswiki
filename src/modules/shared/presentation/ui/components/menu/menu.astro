@@ -1,5 +1,5 @@
 ---
-import { NewUrls, Urls } from '@/core/ui/urls/urls'
+import { Urls } from '@/ui/urls/urls'
 import { Calendar, Chalkboard, Users } from '../../../ui/icons'
 import Link from '../link/link.astro'
 
@@ -15,10 +15,10 @@ const urlSections = {
 <nav class="desktop-menu">
   <ul class="menu-list">
     <li class="menu-list-item">
-      <Link selected={pathname.includes(urlSections.EVENTS)} href={NewUrls.EVENTS}>Eventos</Link>
+      <Link selected={pathname.includes(urlSections.EVENTS)} href={Urls.EVENTS}>Eventos</Link>
     </li>
     <li class="menu-list-item">
-      <Link selected={pathname.includes(urlSections.MEETUPS)} href={NewUrls.MEETUPS}>Meetups</Link>
+      <Link selected={pathname.includes(urlSections.MEETUPS)} href={Urls.MEETUPS}>Meetups</Link>
     </li>
     <li class="menu-list-item">
       <Link selected={pathname.includes(urlSections.CALENDAR)} href={Urls.CALENDAR}>Calendario</Link>
@@ -29,12 +29,12 @@ const urlSections = {
 <nav class="mobile-menu">
   <ul class="menu-list">
     <li>
-      <Link selected={pathname.includes(urlSections.EVENTS)} classes="mobile-link" href={NewUrls.EVENTS}>
+      <Link selected={pathname.includes(urlSections.EVENTS)} classes="mobile-link" href={Urls.EVENTS}>
         <Chalkboard className="link-icon" />Eventos
       </Link>
     </li>
     <li>
-      <Link selected={pathname.includes(urlSections.MEETUPS)} classes="mobile-link" href={Urls.MEETUPS(1)}>
+      <Link selected={pathname.includes(urlSections.MEETUPS)} classes="mobile-link" href={Urls.MEETUPS}>
         <Users className="link-icon" />Meetups</Link
       >
     </li>

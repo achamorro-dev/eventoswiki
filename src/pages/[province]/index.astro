@@ -1,11 +1,11 @@
 ---
-import { NewUrls } from '@/core/ui/urls/urls'
 import NextEvents from '@/events/presentation/server/components/next-events/next-events.astro'
 import PastEvents from '@/events/presentation/server/components/past-events/past-events.astro'
 import NextMeetups from '@/meetups/presentation/server/components/next-meetups/next-meetups.astro'
 import PastMeetups from '@/meetups/presentation/server/components/past-meetups/past-meetups.astro'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import Link from '@/ui/components/link/link.astro'
+import { Urls } from '@/ui/urls/urls'
 import Layout from '../../layouts/layout.astro'
 
 const { province = '' } = Astro.params
@@ -15,19 +15,15 @@ const location = await ProvincesLocator.getProvinceQuery().execute({ id: provinc
 
 <Layout title={`eventos.wiki - Eventos en ${location.name}`}>
   <NextEvents location={location.name}>
-    <Link slot="actions" href={NewUrls.EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <Link slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
   </NextEvents>
   <NextMeetups location={location.name}>
-    <Link slot="actions" href={NewUrls.MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <Link slot="actions" href={Urls.MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
   </NextMeetups>
   <PastEvents location={location.name}>
-    <Link slot="actions" href={NewUrls.PAST_EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0"
-      >Ver todos</Link
-    >
+    <Link slot="actions" href={Urls.PAST_EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
   </PastEvents>
   <PastMeetups location={location.name}>
-    <Link slot="actions" href={NewUrls.PAST_MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0"
-      >Ver todos</Link
-    >
+    <Link slot="actions" href={Urls.PAST_MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
   </PastMeetups>
 </Layout>

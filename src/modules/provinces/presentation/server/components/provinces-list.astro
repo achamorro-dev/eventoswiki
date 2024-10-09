@@ -1,6 +1,6 @@
 ---
-import { NewUrls } from '@/core/ui/urls/urls'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { Urls } from '@/ui/urls/urls'
 
 const provinces = await ProvincesLocator.getProvincesQuery().execute()
 ---
@@ -11,7 +11,7 @@ const provinces = await ProvincesLocator.getProvincesQuery().execute()
     {
       provinces.map(province => (
         <li class="m-0">
-          <a href={NewUrls.PROVINCE(province.slug)} class="text-sm hover:text-primary dark:hover:text-primary-light">
+          <a href={Urls.PROVINCE(province.slug)} class="text-sm hover:text-primary dark:hover:text-primary-light">
             {province.name}
           </a>
         </li>

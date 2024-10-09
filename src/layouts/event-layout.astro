@@ -7,7 +7,7 @@ import Tag from '@/ui/components/tag/tag.astro'
 import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
 import { SocialLink } from '@/ui/components/social-link/social-link'
 import { Link, MapPin } from '@/ui/icons'
-import { NewUrls } from '@/ui/urls/urls'
+import { Urls } from '@/ui/urls/urls'
 import type { Meetup } from '@/meetups/domain/meetup'
 
 interface Props {
@@ -38,7 +38,7 @@ const {
   web,
   location,
 } = event
-const url = NewUrls.EVENT(slug)
+const url = Urls.EVENT(slug)
 ---
 
 <BaseLayout

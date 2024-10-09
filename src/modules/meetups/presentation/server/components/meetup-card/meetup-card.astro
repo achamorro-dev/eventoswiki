@@ -3,7 +3,7 @@ import Card from '@/ui/components/card/card.astro'
 import DatePeriod from '@/ui/components/date-period/date-period.astro'
 import Location from '@/ui/components/location/location.astro'
 import Tag from '@/ui/components/tag/tag.astro'
-import { NewUrls } from '../../../../../../core/ui/urls/urls'
+import { Urls } from '../../../../../shared/presentation/ui/urls/urls'
 import { Meetup } from '../../../../domain/meetup'
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 const { meetup, classes } = Astro.props
 ---
 
-<a href={NewUrls.MEETUP(meetup.slug)} class:list={classes}>
+<a href={Urls.MEETUP(meetup.slug)} class:list={classes}>
   <Card classes="relative transition-shadow duration-300 lg:hover:shadow-md">
     <img
       class="object-cover w-full h-56"

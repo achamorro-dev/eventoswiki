@@ -4,7 +4,7 @@ import Card from '@/ui/components/card/card.astro'
 import DatePeriod from '@/ui/components/date-period/date-period.astro'
 import Location from '@/ui/components/location/location.astro'
 import Tag from '@/ui/components/tag/tag.astro'
-import { NewUrls } from '../../../../../../core/ui/urls/urls'
+import { Urls } from '../../../../../shared/presentation/ui/urls/urls'
 
 interface Props {
   event: Event
@@ -14,7 +14,7 @@ interface Props {
 const { event, classes } = Astro.props
 ---
 
-<a href={NewUrls.EVENT(event.slug)} class:list={classes}>
+<a href={Urls.EVENT(event.slug)} class:list={classes}>
   <Card classes="relative transition-shadow duration-300 lg:hover:shadow-md">
     <img
       class="object-cover w-full h-56"

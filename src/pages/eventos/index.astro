@@ -1,5 +1,4 @@
 ---
-import { NewUrls } from '@/core/ui/urls/urls'
 import { EventsLocator } from '@/events/di/events.locator'
 import EventsGrid from '@/events/presentation/server/components/events-grid/events-grid.astro'
 import Layout from '@/layouts/layout.astro'
@@ -7,6 +6,7 @@ import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
 import Link from '@/ui/components/link/link.astro'
 import Pagination from '@/ui/components/pagination/pagination.astro'
+import { Urls } from '@/ui/urls/urls'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
@@ -27,7 +27,7 @@ const { data: events, totalPages } = await EventsLocator.getNextEventsQuery().ex
 <Layout title="eventos.wiki - Eventos">
   <div class="flex items-center justify-between mb-2">
     <GradientTitle>Eventos</GradientTitle>
-    <Link href={NewUrls.PAST_EVENTS} classes="text-right  shrink-0">Ver pasados</Link>
+    <Link href={Urls.PAST_EVENTS} classes="text-right  shrink-0">Ver pasados</Link>
   </div>
   <EventsGrid events={events} />
   <section class="mt-4">
