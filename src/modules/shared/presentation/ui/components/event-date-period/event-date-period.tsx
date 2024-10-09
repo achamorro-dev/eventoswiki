@@ -1,4 +1,4 @@
-import { Datetime } from '@/core/datetime/datetime'
+import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Calendar } from '@/ui/icons'
 import type { FC } from 'react'
 

@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { Datetime } from '../../../datetime/datetime'
+import { Datetime } from '../../../../domain/datetime/datetime'
 import './big-calendar.css'
 import type { CalendarEvent } from './calendar-event'
 

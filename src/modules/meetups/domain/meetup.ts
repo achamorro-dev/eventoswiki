@@ -1,4 +1,4 @@
-import { Datetime } from '@/core/datetime/datetime'
+import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
 
 export class Meetup implements MeetupProps {

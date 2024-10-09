@@ -3,12 +3,10 @@ import NextEvents from '@/events/presentation/server/components/next-events/next
 import PastEvents from '@/events/presentation/server/components/past-events/past-events.astro'
 import NextMeetups from '@/meetups/presentation/server/components/next-meetups/next-meetups.astro'
 import PastMeetups from '@/meetups/presentation/server/components/past-meetups/past-meetups.astro'
-import Hero from '../core/components/organisms/hero/hero.astro'
 import Layout from '../layouts/layout.astro'
 ---
 
 <Layout title="eventos.wiki - Todos los eventos tecnológicos en un mismo lugar">
-  <Hero />
   <NextEvents />
   <NextMeetups />
   <PastEvents />

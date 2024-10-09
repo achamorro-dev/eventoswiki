@@ -1,4 +1,4 @@
-import { Datetime } from '@/core/datetime/datetime'
+import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Event } from '../../domain/event'
 import type { AstroDbEventDto } from '../dtos/astro-db-event.dto'
 

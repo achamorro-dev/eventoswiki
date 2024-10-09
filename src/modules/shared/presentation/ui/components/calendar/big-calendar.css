@@ -12,7 +12,7 @@
 .big-calendar .rbc-month-header span,
 .big-calendar .rbc-time-header-cell span,
 .big-calendar .rbc-time-slot span {
-  @apply text-base font-sans;
+  @apply font-sans text-base;
 }
 
 .big-calendar span {
@@ -46,7 +46,7 @@
 .rbc-agenda-date-cell,
 .rbc-agenda-event-cell,
 .rbc-agenda-time-cell span {
-  @apply font-medium text-base;
+  @apply text-base font-medium;
 }
 
 .rbc-agenda-event-cell {

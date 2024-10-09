@@ -3,11 +3,11 @@ import { EventsLocator } from '@/events/di/events.locator'
 import { Event } from '@/events/domain/event'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { Meetup } from '@/meetups/domain/meetup'
+import { BigCalendar } from '@/ui/components/calendar/big-calendar'
+import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
 import { Urls } from '@/ui/urls/urls'
-import { GradientTitle } from '../core/components/atoms/gradient-title/gradient-title'
-import { BigCalendar } from '../core/components/organisms/calendar/big-calendar'
-import type { CalendarEvent } from '../core/components/organisms/calendar/calendar-event'
 import Layout from '../layouts/layout.astro'
+import type { CalendarEvent } from '../modules/shared/presentation/ui/components/calendar/calendar-event'
 
 const events = await EventsLocator.getEventsQuery().execute()
 const meetups = await MeetupsLocator.getMeetupsQuery().execute()
