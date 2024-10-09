@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions'
+import { ClientRouter } from 'astro:transitions'
 type BaseHeadProps = {
   title?: string
   description?: string
@@ -42,7 +42,7 @@ const {
   <meta name="twitter:image" content={image} />
   <link rel="canonical" href={url} />
   <title>{title}</title>
-  <ViewTransitions />
+  <ClientRouter />
 
   <script is:inline>
     document.addEventListener('astro:after-swap', () => {

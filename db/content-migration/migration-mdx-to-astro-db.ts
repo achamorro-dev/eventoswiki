@@ -20,7 +20,7 @@ async function processFiles(folder: string, year: string) {
 function getParsedEvents(eventsMdxFiles: string[], folder: string, year: string) {
   return eventsMdxFiles.map(file => {
     console.log('Reading file:', file)
-    const mdx = readFileSync(`src/content/data/${folder}/${year}/${file}`, 'utf-8')
+    const mdx = readFileSync(`src/old-content/data/${folder}/${year}/${file}`, 'utf-8')
     const mdxContent = mdx.split('---').slice(1)
     const [metadata, content] = mdxContent
 
@@ -62,5 +62,5 @@ function getParsedEvents(eventsMdxFiles: string[], folder: string, year: string)
 }
 
 function getListOfMdxFiles(folder: string, year: string) {
-  return readdirSync(`src/content/data/${folder}/${year}`).filter(file => file.endsWith('.mdx'))
+  return readdirSync(`src/old-content/data/${folder}/${year}`).filter(file => file.endsWith('.mdx'))
 }
