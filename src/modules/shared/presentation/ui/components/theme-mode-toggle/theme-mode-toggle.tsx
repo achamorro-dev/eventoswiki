@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Laptop, Moon, Sun } from '../../../../../../core/ui/icons'
+import { Laptop, Moon, Sun } from '@/ui/icons'
 import { useTheme } from './use-theme'
 
 type ThemeModeToggleProps = {}

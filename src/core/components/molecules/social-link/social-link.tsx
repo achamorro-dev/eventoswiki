@@ -1,5 +1,3 @@
-import type { FC, ReactNode } from 'react'
-import type { SocialNetwork } from '../../../social/social-network'
 import {
   Discord,
   Facebook,
@@ -11,7 +9,9 @@ import {
   Twitter,
   Whatsapp,
   Youtube,
-} from '../../../ui/icons'
+} from '@/ui/icons'
+import type { FC, ReactNode } from 'react'
+import type { SocialNetwork } from '../../../social/social-network'
 
 type SocialLinkProps = {
   href: string

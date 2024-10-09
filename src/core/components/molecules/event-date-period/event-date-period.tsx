@@ -1,6 +1,6 @@
+import { Calendar } from '@/ui/icons'
 import type { FC } from 'react'
 import { Datetime } from '../../../datetime/datetime'
-import { Calendar } from '../../../ui/icons'
 
 export const EventDatePeriod: FC<{ startDate: string; endDate?: string }> = ({ startDate, endDate }) => {
   const startDateHumanized = Datetime.toDateTimeString(startDate)

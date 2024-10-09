@@ -1,6 +1,8 @@
 export {
   PiCalendar as Calendar,
   PiCalendarBlank as CalendarBlank,
+  PiCaretLeft as CaretLeft,
+  PiCaretRight as CaretRight,
   PiChalkboard as Chalkboard,
   PiDiscordLogoFill as Discord,
   PiFacebookLogoFill as Facebook,
