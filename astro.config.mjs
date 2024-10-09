@@ -9,15 +9,10 @@ import { defineConfig } from 'astro/config'
 export default defineConfig({
   site: 'https://eventos.wiki',
   output: 'server',
-  integrations: [
-    tailwind(),
-    react(),
-    db(),
-    mdx(),
-    vercel({
-      webAnalytics: {
-        enabled: true,
-      },
-    }),
-  ],
+  integrations: [tailwind(), react(), db(), mdx()],
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
 })
