@@ -19,7 +19,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     }
 
     if (criteria.page) {
-      meetupsQuery.offset(criteria.page)
+      meetupsQuery.offset(criteria.offset)
     }
 
     const meetups = await meetupsQuery

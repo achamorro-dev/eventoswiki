@@ -22,7 +22,15 @@ export abstract class Criteria<Filters, Order> {
   }
 
   andPage(page: number) {
+    if (page < 1) {
+      throw new Error('Page must be greater than 0')
+    }
+
     this.page = page
     return this
+  }
+
+  get offset() {
+    return (this.page - 1) * this.limit
   }
 }

@@ -19,7 +19,7 @@ export class AstroDbEventsRepository implements EventsRepository {
     }
 
     if (criteria.page) {
-      eventsQuery.offset(criteria.page)
+      eventsQuery.offset(criteria.offset)
     }
 
     const events = await eventsQuery
