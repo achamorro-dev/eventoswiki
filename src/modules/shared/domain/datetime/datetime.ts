@@ -5,6 +5,10 @@ import 'dayjs/locale/es'
 type ValidDate = string | Date
 
 export class Datetime {
+  static now(): Date {
+    return dayjs().locale('es').toDate()
+  }
+
   static compare(dateA: Date, dateB: Date): number {
     return dayjs(dateA).diff(dateB, 'minute')
   }
