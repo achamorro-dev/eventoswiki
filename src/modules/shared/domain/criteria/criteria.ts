@@ -1,18 +1,26 @@
+import { FilterType } from './filter-type'
+
 export abstract class Criteria<Filters, Order> {
+  filters: Array<{ type: FilterType; filters: Filters }>
+
   protected constructor(
-    public filters?: Filters,
     public order?: Order,
     public limit: number = 9,
     public page: number = 1,
   ) {
-    this.filters = filters
+    this.filters = []
     this.order = order
     this.limit = limit
     this.page = page
   }
 
-  addFilter(filter: Filters) {
-    this.filters = { ...this.filters, ...filter }
+  and(filter: Filters) {
+    this.filters.push({ type: FilterType.AND, filters: filter })
+    return this
+  }
+
+  or(filter: Filters) {
+    this.filters.push({ type: FilterType.OR, filters: filter })
     return this
   }
 
@@ -27,6 +35,11 @@ export abstract class Criteria<Filters, Order> {
     }
 
     this.page = page
+    return this
+  }
+
+  orderBy(order: Order) {
+    this.order = order
     return this
   }
 

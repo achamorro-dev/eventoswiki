@@ -1,10 +1,10 @@
 export enum RelationalOperator {
-  EQUALS,
-  NOT_EQUALS,
-  GREATER_THAN,
-  LOWER_THAN,
-  GREATER_THAN_OR_EQUAL,
-  LOWER_THAN_OR_EQUAL,
-  LIKE,
-  LIKE_NOT_SENSITIVE,
+  EQUALS = 'equals',
+  NOT_EQUALS = 'notEquals',
+  GREATER_THAN = 'greaterThan',
+  LOWER_THAN = 'lowerThan',
+  GREATER_THAN_OR_EQUAL = 'greaterThanOrEqual',
+  LOWER_THAN_OR_EQUAL = 'lowerThanOrEqual',
+  LIKE = 'like',
+  LIKE_NOT_SENSITIVE = 'likeNotSensitive',
 }
