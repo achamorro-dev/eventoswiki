@@ -1,13 +1,19 @@
 import { OrderDirection } from '@/modules/shared/domain/criteria/order-direction'
-import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
+import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
+import { Datetime } from '@/shared/domain/datetime/datetime'
 import { MeetupsCriteria } from './meetups-criteria'
 
 export class NextMeetupsCriteria extends MeetupsCriteria {
   static create(): NextMeetupsCriteria {
-    const now = new Date()
-    return MeetupsCriteria.create(
-      { startsAt: { operator: RelationalOperator.GREATER_THAN_OR_EQUAL, value: now } },
-      { startsAt: OrderDirection.ASC },
-    )
+    const now = Datetime.now()
+
+    return MeetupsCriteria.create({ startsAt: OrderDirection.ASC })
+      .or({
+        endsAt: { operator: RelationalOperator.GREATER_THAN_OR_EQUAL, value: now },
+      })
+      .or({
+        startsAt: { operator: RelationalOperator.LOWER_THAN_OR_EQUAL, value: now },
+        endsAt: { operator: RelationalOperator.LOWER_THAN, value: now },
+      })
   }
 }
