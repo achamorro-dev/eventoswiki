@@ -20,6 +20,9 @@ dependencies:
   '@astrojs/vercel':
     specifier: 8.0.0-beta.2
     version: 8.0.0-beta.2(astro@5.0.0-beta.4)(react@18.2.0)
+  '@fontsource-variable/inter':
+    specifier: ^5.1.0
+    version: 5.1.0
   '@types/react':
     specifier: 18.2.21
     version: 18.2.21
@@ -1234,6 +1237,11 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@fontsource-variable/inter@5.1.0:
+    resolution:
+      { integrity: sha512-Wj2dUGP0vUpxRGQTXQTCNJO+aLcFcQm+gUPXfj/aS877bQkEPBPv9JvZJpwdm2vzelt8NTZ+ausKlBCJjh2XIg== }
+    dev: false
 
   /@img/sharp-darwin-arm64@0.33.5:
     resolution:
