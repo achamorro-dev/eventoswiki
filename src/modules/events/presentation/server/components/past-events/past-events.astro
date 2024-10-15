@@ -1,24 +1,19 @@
 ---
 import { EventsLocator } from '@/events/di/events.locator'
-import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
-import Link from '@/ui/components/link/link.astro'
+import EventsSlider from '@/ui/components/events-slider/events-slider.astro'
 import { Urls } from '@/ui/urls/urls'
-import EventsGrid from '../events-grid/events-grid.astro'
 
 interface Props {
   location?: string
 }
 
 const { location } = Astro.props
-const { data: lastEvents } = await EventsLocator.getPastEventsQuery().execute({ count: 3, location })
+const { data: pastEvents } = await EventsLocator.getPastEventsQuery().execute({ count: 10, location })
 ---
 
-<section class="mt-12">
-  <div class="flex items-center justify-between my-4">
-    <GradientTitle>Últimos eventos{location && ` en ${location}`}</GradientTitle>
-    <slot name="actions">
-      <Link href={Urls.PAST_EVENTS} classes="text-right shrink-0">Ver todos</Link>
-    </slot>
-  </div>
-  <EventsGrid events={lastEvents} />
-</section>
+<EventsSlider
+  title={'Últimos eventos' + (location ? ` en ${location}` : '')}
+  seeMoreLink={Urls.EVENTS}
+  goToEvent={Urls.EVENT}
+  events={pastEvents}
+/>

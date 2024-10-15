@@ -120,19 +120,13 @@ const url = Urls.EVENT(slug)
 </BaseLayout>
 
 <style is:global>
-  html {
-    font-family: system-ui, sans-serif;
-    font-size: var(--font-size-base);
-    height: 100%;
-  }
-
   body {
     @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] scroll-smooth bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
   }
 
   p,
   span {
-    @apply text-xl text-gray-900 dark:text-gray-50;
+    @apply text-lg text-gray-900 dark:text-gray-50;
   }
 
   small {
@@ -156,7 +150,7 @@ const url = Urls.EVENT(slug)
   }
 
   p {
-    @apply py-4;
+    @apply py-2;
   }
 
   table {

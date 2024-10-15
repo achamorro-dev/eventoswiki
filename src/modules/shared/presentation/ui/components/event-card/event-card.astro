@@ -1,0 +1,74 @@
+---
+import { Datetime } from '@/shared/domain/datetime/datetime'
+import Card from '@/ui/components/card/card.astro'
+import DatePeriod from '@/ui/components/date-period/date-period.astro'
+import Location from '@/ui/components/location/location.astro'
+import Tag from '@/ui/components/tag/tag.astro'
+
+interface CardEvent {
+  slug: string
+  title: string
+  image: string
+  tags: string[]
+  tagColor: string
+  altImage?: string
+  startsAt: Date
+  endsAt: Date
+  location?: string
+}
+interface Props {
+  event: CardEvent
+  classes?: string
+  goToEvent: (slug: string) => string
+}
+
+const { event, classes, goToEvent } = Astro.props
+---
+
+<a href={goToEvent(event.slug)} class:list={classes} title={event.title}>
+  <Card>
+    <div class="event-cover-container">
+      <img
+        class="event-cover"
+        src={event.image}
+        alt={event.altImage || `Foto de portada del evento ${event.title}`}
+        loading="lazy"
+        onerror="this.src='/not-found.jpg'"
+        transition:name={`media-image-${event.slug}`}
+      />
+    </div>
+    <div class="event-tags">
+      {event.tags.map(t => <Tag color={event.tagColor}>{t}</Tag>)}
+    </div>
+    <h3 class="event-title">{event.title}</h3>
+    <section class="event-date-location">
+      <Location location={event.location} />
+      <DatePeriod startDate={Datetime.toDateString(event.startsAt)} endDate={Datetime.toDateString(event.endsAt)} />
+    </section>
+  </Card>
+</a>
+
+<style>
+  .event-cover-container {
+    @apply w-full overflow-hidden rounded-xl;
+
+    @media (prefers-reduced-motion: no-preference) {
+      img:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+  .event-cover {
+    @apply h-40 w-full object-cover;
+    transition: 0.4s ease;
+  }
+  .event-tags {
+    @apply mt-2 flex flex-wrap items-center gap-1;
+  }
+  .event-date-location {
+    @apply flex w-full items-center justify-between gap-1 text-gray-500 dark:text-gray-50;
+  }
+  .event-title {
+    @apply mt-2 line-clamp-1 p-0 text-xl font-semibold text-black dark:text-gray-100;
+  }
+</style>

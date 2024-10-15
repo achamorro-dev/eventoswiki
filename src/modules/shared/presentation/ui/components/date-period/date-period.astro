@@ -12,17 +12,21 @@ const shouldShowEndDate = startDate && endDate && startDate !== endDate
 
 {
   startDate && (
-    <div class="flex items-center gap-1">
+    <div class="date-period">
       <Calendar />
-      <div class="flex items-center content-center">
-        <p class="text-sm text-gray-500 dark:text-gray-50 p-0">{startDate}</p>
-        {shouldShowEndDate && (
-          <p class="text-sm text-gray-500 dark:text-gray-50 p-0">
-            &nbsp;-&nbsp;
-            {endDate}
-          </p>
-        )}
-      </div>
+      <p class="dates">
+        {startDate}
+        {shouldShowEndDate ? ` - ${endDate}` : ''}
+      </p>
     </div>
   )
 }
+
+<style>
+  .date-period {
+    @apply flex shrink-0 items-center gap-px;
+  }
+  .dates {
+    @apply text-sm;
+  }
+</style>

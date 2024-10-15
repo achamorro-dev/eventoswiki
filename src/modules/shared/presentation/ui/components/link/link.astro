@@ -4,16 +4,17 @@ interface Props {
   classes?: string
   selected?: boolean
 }
-const { href, classes = '', selected = false } = Astro.props
+const { href, classes = '', selected = false, ...rest } = Astro.props
 ---
 
 <a
   href={href}
   class:list={[
-    'inline-block text-left font-medium md:text-center',
+    'inline-block text-left text-sm hover:underline font-medium md:text-center',
     { 'text-primary dark:text-primary-light': selected },
     classes,
   ]}
+  {...rest}
 >
   <slot />
 </a>

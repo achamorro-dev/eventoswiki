@@ -6,12 +6,12 @@ interface Props {
 const { classes } = Astro.props
 ---
 
-<div class:list={['card', classes]}>
+<article class:list={['card', classes]}>
   <slot />
-</div>
+</article>
 
 <style>
   .card {
-    @apply col-span-12 flex flex-col items-start overflow-hidden rounded-xl border shadow-sm dark:border-white dark:border-opacity-10 dark:bg-slate-800 md:col-span-6 lg:col-span-4;
+    @apply flex flex-col items-start overflow-hidden;
   }
 </style>

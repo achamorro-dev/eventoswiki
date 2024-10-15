@@ -1,0 +1,17 @@
+---
+interface Props {
+  classes?: string
+}
+
+const { classes, ...rest } = Astro.props
+---
+
+<ul class:list={['slider', classes]} {...rest}>
+  <slot />
+</ul>
+
+<style>
+  .slider {
+    @apply flex snap-x gap-4 overflow-x-scroll;
+  }
+</style>

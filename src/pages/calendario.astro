@@ -4,7 +4,7 @@ import { Event } from '@/events/domain/event'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { Meetup } from '@/meetups/domain/meetup'
 import { BigCalendar } from '@/ui/components/calendar/big-calendar'
-import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
+import SectionTitle from '@/ui/components/section-title/section-title.astro'
 import { Urls } from '@/ui/urls/urls'
 import Layout from '../layouts/layout.astro'
 import type { CalendarEvent } from '../modules/shared/presentation/ui/components/calendar/calendar-event'
@@ -28,9 +28,10 @@ const calendarEvents = events.concat(meetups).map<CalendarEvent>((event: Meetup 
 <Layout
   title="eventos.wiki - Calendario"
   description="En eventos.wiki encontrarás el calendario de eventos sobre desarrollo y tecnología definitivo. Pasa y echa un vistazo a la gran variedad de eventos y, si falta el tuyo, sólo tienes que pedírnoslo."
+  classes="px-4 lg:px-12"
 >
   <div class="flex items-center justify-between mt-4 mb-10">
-    <GradientTitle>Calendario</GradientTitle>
+    <SectionTitle>Calendario</SectionTitle>
   </div>
   <BigCalendar client:load events={calendarEvents} />
 </Layout>

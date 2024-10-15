@@ -1,20 +1,18 @@
 ---
-import Container from '@/ui/components/container/container.astro'
 import BaseLayout from './base-layout.astro'
 
 interface Props {
   title: string
   description?: string
+  classes?: string
 }
 
-const { title, description } = Astro.props
+const { title, description, classes, ...rest } = Astro.props
 ---
 
 <BaseLayout title={title} description={description}>
-  <main>
-    <Container>
-      <slot />
-    </Container>
+  <main class:list={['pb-12', classes]} {...rest}>
+    <slot />
   </main>
   <style is:global>
     body {

@@ -6,7 +6,10 @@ import PastMeetups from '@/meetups/presentation/server/components/past-meetups/p
 import Layout from '../layouts/layout.astro'
 ---
 
-<Layout title="eventos.wiki - Todos los eventos tecnológicos en un mismo lugar">
+<Layout
+  title="eventos.wiki - Todos los eventos tecnológicos en un mismo lugar"
+  classes="flex flex-col w-full gap-8 pb-24"
+>
   <NextEvents />
   <NextMeetups />
   <PastEvents />

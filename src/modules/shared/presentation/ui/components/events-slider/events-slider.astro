@@ -1,0 +1,71 @@
+---
+import EventCard from '../event-card/event-card.astro'
+import Link from '../link/link.astro'
+import SectionTitle from '../section-title/section-title.astro'
+import Slide from '../slider/slide.astro'
+import Slider from '../slider/slider.astro'
+
+interface SliderEvent {
+  slug: string
+  title: string
+  image: string
+  tags: string[]
+  tagColor: string
+  altImage?: string
+  startsAt: Date
+  endsAt: Date
+  location?: string
+}
+
+interface Props {
+  events: SliderEvent[]
+  title: string
+  seeMoreLink: string
+  goToEvent: (slug: string) => string
+}
+
+const { events = [], title, seeMoreLink, goToEvent } = Astro.props
+---
+
+<article class="events-slider">
+  <header class="header">
+    <SectionTitle>{title}</SectionTitle>
+    <Link href={seeMoreLink} classes="link">Ver más</Link>
+  </header>
+  {events.length === 0 && <p class="empty-message">No hay eventos disponibles en estos momentos</p>}
+  {
+    events.length > 0 && (
+      <Slider classes="event-slider">
+        {events.map(event => {
+          return (
+            <Slide>
+              <EventCard event={event} goToEvent={goToEvent} />
+            </Slide>
+          )
+        })}
+      </Slider>
+    )
+  }
+</article>
+
+<style>
+  .events-slider {
+    @apply w-screen;
+  }
+  .header {
+    @apply my-4 flex items-center justify-between px-4 lg:px-12;
+  }
+  .link {
+    @apply shrink-0 text-right;
+  }
+  .empty-message {
+    @apply px-4 text-xl font-medium lg:px-12;
+  }
+  .event-slider {
+    @apply ml-4 lg:ml-12;
+
+    li:last-child {
+      @apply mr-4 lg:mr-12;
+    }
+  }
+</style>

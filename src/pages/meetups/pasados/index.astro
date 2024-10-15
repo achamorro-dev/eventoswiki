@@ -1,11 +1,8 @@
 ---
 import Layout from '@/layouts/layout.astro'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
-import MeetupsGrid from '@/meetups/presentation/server/components/meetups-grid/meetups-grid.astro'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
-import GradientTitle from '@/ui/components/gradient-title/gradient-title.astro'
-import Link from '@/ui/components/link/link.astro'
-import Pagination from '@/ui/components/pagination/pagination.astro'
+import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
 import { Urls } from '@/ui/urls/urls'
 
 const searchParams = new URL(Astro.request.url).searchParams
@@ -18,19 +15,20 @@ if (provinceParam) {
 }
 
 const { data: meetups, totalPages } = await MeetupsLocator.getPastMeetupsQuery().execute({
-  count: 9,
+  count: 12,
   page,
   location: province?.name,
 })
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">
-  <div class="flex items-center justify-between mb-2">
-    <GradientTitle>Meetups pasados</GradientTitle>
-    <Link href={Urls.MEETUPS} classes="text-right shrink-0">Ver próximos</Link>
-  </div>
-  <MeetupsGrid meetups={meetups} />
-  <section class="mt-4">
-    <Pagination totalPages={totalPages} page={page} />
-  </section>
+  <EventsGrid
+    actionLink={Urls.MEETUPS}
+    actionText="Ver pasados"
+    title="Meetups pasados"
+    events={meetups}
+    page={page}
+    totalPages={totalPages}
+    goToEvent={Urls.MEETUP}
+  />
 </Layout>
