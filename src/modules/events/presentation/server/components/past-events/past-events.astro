@@ -12,7 +12,7 @@ const { data: pastEvents } = await EventsLocator.getPastEventsQuery().execute({ 
 ---
 
 <EventsSlider
-  title={'Últimos eventos' + (location ? ` en ${location}` : '')}
+  title={'Eventos pasados' + (location ? ` en ${location}` : '')}
   seeMoreLink={Urls.EVENTS}
   goToEvent={Urls.EVENT}
   events={pastEvents}

@@ -24,7 +24,7 @@ const { data: meetups, totalPages } = await MeetupsLocator.getNextMeetupsQuery()
 <Layout title="eventos.wiki - Meetups" classes="px-4 lg:px-12">
   <EventsGrid
     actionLink={Urls.PAST_MEETUPS}
-    actionText="Ver próximos"
+    actionText="Ver pasados"
     title="Meetups"
     events={meetups}
     page={page}

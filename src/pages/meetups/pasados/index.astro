@@ -21,10 +21,10 @@ const { data: meetups, totalPages } = await MeetupsLocator.getPastMeetupsQuery()
 })
 ---
 
-<Layout title="eventos.wiki - Eventos pasados">
+<Layout title="eventos.wiki - Eventos pasados" classes="px-4 lg:px-12">
   <EventsGrid
     actionLink={Urls.MEETUPS}
-    actionText="Ver pasados"
+    actionText="Ver próximos"
     title="Meetups pasados"
     events={meetups}
     page={page}
