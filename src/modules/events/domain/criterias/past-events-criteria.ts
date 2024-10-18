@@ -4,9 +4,12 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import { EventsCriteria } from './events-criteria'
 
 export class PastEventsCriteria extends EventsCriteria {
-  static create(): PastEventsCriteria {
-    return EventsCriteria.create({ endsAt: OrderDirection.DESC }).and({
-      startsAt: { operator: RelationalOperator.LOWER_THAN, value: Datetime.now() },
-    })
+  static createWith({ location }: { location?: string }): PastEventsCriteria {
+    return EventsCriteria.create()
+      .orderBy({ endsAt: OrderDirection.DESC, startsAt: OrderDirection.DESC })
+      .and({
+        startsAt: { operator: RelationalOperator.LOWER_THAN, value: Datetime.now() },
+        location: location ? { operator: RelationalOperator.EQUALS, value: location } : undefined,
+      })
   }
 }

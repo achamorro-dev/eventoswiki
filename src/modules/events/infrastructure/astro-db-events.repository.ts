@@ -1,11 +1,12 @@
 import { EventNotFound } from '@/events/domain/errors/event-not-found.ts'
+import type { Filter } from '@/shared/domain/criteria/filter'
+import { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
-import { and, asc, count, db, desc, eq, Event, gt, gte, lt, lte, or } from 'astro:db'
+import { and, asc, count, db, desc, eq, Event, gt, gte, like, lt, lte, ne, or } from 'astro:db'
 import type { EventsCriteria } from '../domain/criterias/events-criteria'
-import type { EventsFilters } from '../domain/criterias/events-filters'
 import type { EventsOrder } from '../domain/criterias/events-order'
 import { Event as EventEntity } from '../domain/event'
 import type { EventsRepository } from '../domain/events.repository'
@@ -89,30 +90,52 @@ export class AstroDbEventsRepository implements EventsRepository {
   }
 
   private getEventsFiltersByCriteria(criteria: EventsCriteria) {
-    return criteria.filters.map(({ type, filters }) => {
-      const filtersToApply = this.getFiltersToApply(filters)
-      return type === FilterType.AND ? and(...filtersToApply) : or(...filtersToApply)
-    })
+    return this.getFiltersToApply(criteria.filters)
   }
 
-  private getFiltersToApply(filters: Partial<EventsFilters> | undefined) {
-    if (!filters) return []
+  //@ts-expect-error
+  private getFiltersToApply<F>(parentFilters: F | Array<Filter<F>>) {
+    if (!parentFilters) return []
 
-    return Object.entries(filters).map(([key, value]) => {
-      //@ts-expect-error
-      const tableKey = Event[key]
-      switch (value.operator) {
-        case RelationalOperator.EQUALS:
-          return eq(tableKey, value.value)
-        case RelationalOperator.GREATER_THAN_OR_EQUAL:
-          return gte(tableKey, value.value)
-        case RelationalOperator.LOWER_THAN_OR_EQUAL:
-          return lte(tableKey, value.value)
-        case RelationalOperator.GREATER_THAN:
-          return gt(tableKey, value.value)
-        case RelationalOperator.LOWER_THAN:
-          return lt(tableKey, value.value)
-      }
-    })
+    if (Array.isArray(parentFilters)) {
+      return parentFilters.map((parentFilter: Filter<F>) => {
+        const { type, filters } = parentFilter
+        //@ts-ignore
+        const criterias = this.getFiltersToApply(filters)
+        return type === FilterType.AND ? and(...criterias) : or(...criterias)
+      })
+    }
+
+    //@ts-ignore
+    return Object.entries<FilterCriteria | undefined>(parentFilters)
+      .filter(([_, value]) => value !== undefined)
+      .map(([key, eventFilter]) => {
+        if (!eventFilter) return
+
+        switch (eventFilter.operator) {
+          case RelationalOperator.EQUALS:
+            //@ts-ignore
+            return eq(Event[key], eventFilter.value)
+          case RelationalOperator.GREATER_THAN_OR_EQUAL:
+            //@ts-ignore
+            return gte(Event[key], eventFilter.value)
+          case RelationalOperator.LOWER_THAN_OR_EQUAL:
+            //@ts-ignore
+            return lte(Event[key], eventFilter.value)
+          case RelationalOperator.GREATER_THAN:
+            //@ts-ignore
+            return gt(Event[key], eventFilter.value)
+          case RelationalOperator.LOWER_THAN:
+            //@ts-ignore
+            return lt(Event[key], eventFilter.value)
+          case RelationalOperator.LIKE:
+          case RelationalOperator.LIKE_NOT_SENSITIVE:
+            //@ts-ignore
+            return like(Event[key], eventFilter.value)
+          case RelationalOperator.NOT_EQUALS:
+            //@ts-ignore
+            return ne(Event[key], eventFilter.value)
+        }
+      })
   }
 }

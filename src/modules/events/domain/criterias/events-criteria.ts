@@ -4,7 +4,7 @@ import type { EventsFilters } from './events-filters'
 import type { EventsOrder } from './events-order'
 
 export class EventsCriteria extends Criteria<Partial<EventsFilters>, Partial<EventsOrder>> {
-  static create(order: Partial<EventsOrder>): EventsCriteria {
+  static create(order?: Partial<EventsOrder>): EventsCriteria {
     return new EventsCriteria(order)
   }
 

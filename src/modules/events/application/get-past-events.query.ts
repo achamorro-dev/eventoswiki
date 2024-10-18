@@ -16,7 +16,7 @@ export class GetPastEventsQuery extends Query<PaginatedResult<Event>, GetLastEve
   }
 
   execute({ count, page = 1, location }: GetLastEventsRequest): Promise<PaginatedResult<Event>> {
-    const criteria = PastEventsCriteria.create().withLocation(location).withCount(count).andPage(page)
+    const criteria = PastEventsCriteria.createWith({ location }).withCount(count).withPage(page)
 
     return this.eventRepository.match(criteria)
   }

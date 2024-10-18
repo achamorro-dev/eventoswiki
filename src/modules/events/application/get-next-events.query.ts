@@ -17,7 +17,7 @@ export class GetNextEventsQuery extends Query<PaginatedResult<Event>, GetNextEve
 
   execute(request: GetNextEventsRequest): Promise<PaginatedResult<Event>> {
     const { count, page = 1, location } = request
-    const criteria = NextEventsCriteria.create().withLocation(location).withCount(count).andPage(page)
+    const criteria = NextEventsCriteria.createWith({ location }).withCount(count).withPage(page)
 
     return this.eventRepository.match(criteria)
   }
