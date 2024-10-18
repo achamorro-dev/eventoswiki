@@ -1,7 +1,8 @@
+import type { Filter } from './filter'
 import { FilterType } from './filter-type'
 
 export abstract class Criteria<Filters, Order> {
-  filters: Array<{ type: FilterType; filters: Filters }>
+  filters: Array<Filter<Filters>>
 
   protected constructor(
     public order?: Order,
@@ -14,13 +15,13 @@ export abstract class Criteria<Filters, Order> {
     this.page = page
   }
 
-  and(filter: Filters) {
-    this.filters.push({ type: FilterType.AND, filters: filter })
+  and(filters: Filters | Array<Filter<Filters>>) {
+    this.filters.push({ type: FilterType.AND, filters: filters })
     return this
   }
 
-  or(filter: Filters) {
-    this.filters.push({ type: FilterType.OR, filters: filter })
+  or(filters: Filters | Array<Filter<Filters>>) {
+    this.filters.push({ type: FilterType.OR, filters: filters })
     return this
   }
 
@@ -29,7 +30,7 @@ export abstract class Criteria<Filters, Order> {
     return this
   }
 
-  andPage(page: number) {
+  withPage(page: number) {
     if (page < 1) {
       throw new Error('Page must be greater than 0')
     }
