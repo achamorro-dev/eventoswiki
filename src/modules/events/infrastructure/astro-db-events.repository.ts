@@ -1,6 +1,6 @@
 import { EventNotFound } from '@/events/domain/errors/event-not-found.ts'
 import type { Filter } from '@/shared/domain/criteria/filter'
-import { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
+import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
