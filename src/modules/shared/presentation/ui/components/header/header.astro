@@ -1,17 +1,33 @@
 ---
 import Logo from '@/ui/components/logo/logo.astro'
 import Menu from '@/ui/components/menu/menu.astro'
+import Link from '../link/link.astro'
 import { ThemeModeToggle } from '../theme-mode-toggle/theme-mode-toggle'
 ---
 
 <header class="header">
   <Logo />
   <Menu />
-  <ThemeModeToggle client:only="react" />
+  <section class="actions">
+    <Link
+      classes="add-event-link"
+      href="https://github.com/achamorro-dev/eventoswiki/issues/new?assignees=achamorro-dev&labels=enhancement&projects=&template=solicitud-nuevo-evento.yaml&title=A%C3%B1adir+nuevo+evento%3A+"
+      >Añadir evento</Link
+    >
+    <ThemeModeToggle client:only="react" />
+  </section>
 </header>
 
 <style>
   .header {
     @apply flex h-14 items-center justify-between px-4 lg:h-20 lg:px-12;
+  }
+
+  .actions {
+    @apply flex items-center gap-4;
+  }
+
+  .add-event-link {
+    @apply hidden rounded-xl border border-primary px-4 py-2 text-primary dark:border-primary-light dark:text-primary-light md:block;
   }
 </style>
