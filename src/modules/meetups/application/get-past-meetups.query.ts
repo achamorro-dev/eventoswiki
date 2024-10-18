@@ -16,7 +16,7 @@ export class GetPastMeetupsQuery extends Query<PaginatedResult<Meetup>, GetPastM
   }
 
   execute({ count, page = 1, location }: GetPastMeetupsRequest): Promise<PaginatedResult<Meetup>> {
-    const criteria = PastMeetupsCriteria.create().withLocation(location).withCount(count).andPage(page)
+    const criteria = PastMeetupsCriteria.createWith({ location }).withCount(count).withPage(page)
     return this.meetupsRepository.match(criteria)
   }
 }

@@ -1,10 +1,10 @@
 import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
+import type { Filter } from '@/shared/domain/criteria/filter'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import { Meetup, and, asc, count, db, desc, eq, gt, gte, lt, lte, or } from 'astro:db'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
-import type { MeetupsFilters } from '../domain/criterias/meetups-filters'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
 import { Meetup as MeetupEntity } from '../domain/meetup'
@@ -89,30 +89,52 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
   }
 
   private getMeetupsFiltersByCriteria(criteria: MeetupsCriteria) {
-    return criteria.filters.map(({ type, filters }) => {
-      const filtersToApply = this.getFiltersToApply(filters)
-      return type === FilterType.AND ? and(...filtersToApply) : or(...filtersToApply)
-    })
+    return this.getFiltersToApply(criteria.filters)
   }
 
-  private getFiltersToApply(filters: Partial<MeetupsFilters> | undefined) {
-    if (!filters) return []
+  //@ts-expect-error
+  private getFiltersToApply<F>(parentFilters: F | Array<Filter<F>>) {
+    if (!parentFilters) return []
 
-    return Object.entries(filters).map(([key, value]) => {
-      //@ts-expect-error
-      const tableKey = Meetup[key]
-      switch (value.operator) {
-        case RelationalOperator.EQUALS:
-          return eq(tableKey, value.value)
-        case RelationalOperator.GREATER_THAN_OR_EQUAL:
-          return gte(tableKey, value.value)
-        case RelationalOperator.LOWER_THAN_OR_EQUAL:
-          return lte(tableKey, value.value)
-        case RelationalOperator.GREATER_THAN:
-          return gt(tableKey, value.value)
-        case RelationalOperator.LOWER_THAN:
-          return lt(tableKey, value.value)
-      }
-    })
+    if (Array.isArray(parentFilters)) {
+      return parentFilters.map((parentFilter: Filter<F>) => {
+        const { type, filters } = parentFilter
+        //@ts-ignore
+        const criterias = this.getFiltersToApply(filters)
+        return type === FilterType.AND ? and(...criterias) : or(...criterias)
+      })
+    }
+
+    //@ts-ignore
+    return Object.entries<FilterCriteria | undefined>(parentFilters)
+      .filter(([_, value]) => value !== undefined)
+      .map(([key, eventFilter]) => {
+        if (!eventFilter) return
+
+        switch (eventFilter.operator) {
+          case RelationalOperator.EQUALS:
+            //@ts-ignore
+            return eq(Meetup[key], eventFilter.value)
+          case RelationalOperator.GREATER_THAN_OR_EQUAL:
+            //@ts-ignore
+            return gte(Meetup[key], eventFilter.value)
+          case RelationalOperator.LOWER_THAN_OR_EQUAL:
+            //@ts-ignore
+            return lte(Meetup[key], eventFilter.value)
+          case RelationalOperator.GREATER_THAN:
+            //@ts-ignore
+            return gt(Meetup[key], eventFilter.value)
+          case RelationalOperator.LOWER_THAN:
+            //@ts-ignore
+            return lt(Meetup[key], eventFilter.value)
+          case RelationalOperator.LIKE:
+          case RelationalOperator.LIKE_NOT_SENSITIVE:
+            //@ts-ignore
+            return like(Meetup[key], eventFilter.value)
+          case RelationalOperator.NOT_EQUALS:
+            //@ts-ignore
+            return ne(Meetup[key], eventFilter.value)
+        }
+      })
   }
 }

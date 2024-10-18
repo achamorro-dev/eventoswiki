@@ -4,7 +4,7 @@ import type { MeetupsFilters } from './meetups-filters'
 import type { MeetupsOrder } from './meetups-order'
 
 export class MeetupsCriteria extends Criteria<Partial<MeetupsFilters>, Partial<MeetupsOrder>> {
-  static create(order: Partial<MeetupsOrder>): MeetupsCriteria {
+  static create(order?: Partial<MeetupsOrder>): MeetupsCriteria {
     return new MeetupsCriteria(order)
   }
 
