@@ -72,7 +72,13 @@ const url = Urls.EVENT(slug)
           web && (
             <div class="flex items-center gap-1 text-black dark:text-white" transition:animate="fade">
               <Link size="1.2rem" />
-              <a href={web} target="_blank" rel="nofollow" class="text-sm" aria-label={`Link al evento ${title}`}>
+              <a
+                href={web}
+                target="_blank"
+                rel="nofollow"
+                class="text-sm line-clamp-1"
+                aria-label={`Link al evento ${title}`}
+              >
                 {web}
               </a>
             </div>
