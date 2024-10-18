@@ -1,5 +1,6 @@
 import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
 import type { Filter } from '@/shared/domain/criteria/filter'
+import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
@@ -105,7 +106,6 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       })
     }
 
-    //@ts-ignore
     return Object.entries<FilterCriteria | undefined>(parentFilters)
       .filter(([_, value]) => value !== undefined)
       .map(([key, eventFilter]) => {
