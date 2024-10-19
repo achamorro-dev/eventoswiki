@@ -13,7 +13,7 @@ const { province = '' } = Astro.params
 const location = await ProvincesLocator.getProvinceQuery().execute({ id: province })
 ---
 
-<Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-8 pb-24">
+<Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-2 lg:gap-8 pb-24">
   <NextEvents location={location.name}>
     <Link slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
   </NextEvents>
