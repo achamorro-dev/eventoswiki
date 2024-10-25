@@ -1,5 +1,5 @@
 ---
-import ProvincesList from '@/provinces/presentation/server/components/provinces-list.astro'
+import ProvincesList from '@/provinces/presentation/server/components/provinces-list/provinces-list.astro'
 import Footer from '@/ui/components/footer/footer.astro'
 import Header from '@/ui/components/header/header.astro'
 import '@fontsource-variable/inter'
@@ -24,9 +24,14 @@ const { title, description, image, url } = Astro.props
     <Footer transition:persist>
       <ProvincesList />
     </Footer>
-    <style>
+    <style is:global>
       html {
         @apply scroll-smooth;
+      }
+
+      html *:focus-visible,
+      body *:focus-visible {
+        @apply outline-primary;
       }
     </style>
   </body>
