@@ -1,0 +1,22 @@
+---
+interface Props {
+  label: string
+  classes?: string
+}
+
+const { label, classes, ...rest } = Astro.props
+---
+
+<label class:list={['base-input', classes]} {...rest}>
+  <span class="label">{label}</span>
+  <slot />
+</label>
+
+<style>
+  .base-input {
+    @apply flex flex-col gap-px;
+  }
+  .label {
+    @apply text-sm font-medium text-label dark:text-label-dark;
+  }
+</style>

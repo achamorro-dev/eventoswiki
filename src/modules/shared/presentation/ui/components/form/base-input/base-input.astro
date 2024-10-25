@@ -1,0 +1,26 @@
+---
+import Label from '../label/label.astro'
+
+interface Props {
+  label?: string
+  classes?: string
+}
+
+const { label, classes } = Astro.props
+---
+
+{
+  label ? (
+    <Label label={label} classes={classes}>
+      <slot />
+    </Label>
+  ) : (
+    <slot />
+  )
+}
+
+<style is:global>
+  input.input {
+    @apply w-full rounded-lg px-4 py-2 text-sm font-medium ring-1 ring-border placeholder:text-placeholder placeholder:text-opacity-50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary;
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+import type { ClassesComponent } from '@/ui/classnames/classes-component'
+
+interface Props extends astroHTML.JSX.ButtonHTMLAttributes, ClassesComponent {}
+
+const { classes, ...rest } = Astro.props
+---
+
+<button class:list={['icon-button', classes]} {...rest}>
+  <slot />
+</button>
+
+<style>
+  .icon-button {
+    @apply flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-black;
+  }
+</style>

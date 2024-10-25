@@ -1,0 +1,13 @@
+---
+import type { ClassesComponent } from '@/ui/classnames/classes-component'
+import BaseInput from '../base-input/base-input.astro'
+import type { Input } from '../types/input'
+
+interface Props extends Input, ClassesComponent {}
+
+const { label, classes, ...rest } = Astro.props
+---
+
+<BaseInput label={label}>
+  <input type="text" class:list={['input', classes]} {...rest} />
+</BaseInput>

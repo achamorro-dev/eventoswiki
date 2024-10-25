@@ -43,6 +43,21 @@ module.exports = {
           },
           foreground: colors.black,
         },
+        border: {
+          DEFAULT: colors.gray[300],
+          dark: colors.white,
+        },
+        label: {
+          DEFAULT: colors.zinc[900],
+          dark: {
+            DEFAULT: colors.white,
+          },
+        },
+        placeholder: {
+          DEFAULT: colors.gray[400],
+          dark: colors.gray[600],
+        },
+        input: {},
       },
     },
   },

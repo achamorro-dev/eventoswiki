@@ -20,4 +20,5 @@ export {
   PiUsersFour as Users,
   PiWhatsappLogoFill as Whatsapp,
   PiYoutubeLogoFill as Youtube,
+  PiCaretUpDown as CaretUpDown,
 } from 'react-icons/pi'
