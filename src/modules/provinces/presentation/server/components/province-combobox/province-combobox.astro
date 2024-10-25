@@ -1,0 +1,32 @@
+---
+import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import Combobox from '@/ui/components/form/combobox/combobox.astro'
+
+interface Props {
+  province?: string
+}
+
+const { province } = Astro.props
+const provinces = await ProvincesLocator.getProvincesQuery().execute()
+---
+
+<Combobox
+  id="provincia"
+  placeholder="Provincia"
+  options={provinces.map(province => ({ label: province.name, value: province.slug }))}
+  value={province}
+/>
+
+<script>
+  import { navigate } from 'astro:transitions/client'
+
+  document.addEventListener('astro:page-load', () => {
+    initializeListeners()
+  })
+
+  const initializeListeners = () => {
+    ;(document.querySelector('#provincia') as HTMLElement).addEventListener('change', (event: any) => {
+      navigate(`?province=${event.target.value}`, { history: 'push' })
+    })
+  }
+</script>
