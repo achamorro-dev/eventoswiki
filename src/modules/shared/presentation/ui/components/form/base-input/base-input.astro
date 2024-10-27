@@ -21,6 +21,9 @@ const { label, classes } = Astro.props
 
 <style is:global>
   input.input {
-    @apply w-full rounded-lg px-4 py-2 text-sm font-medium ring-1 ring-border placeholder:text-placeholder placeholder:text-opacity-50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary;
+    @apply w-full rounded-lg bg-input px-4 py-2 text-sm font-medium text-input-foreground ring-1 ring-border placeholder:text-placeholder placeholder:text-opacity-50 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary dark:bg-input-dark dark:text-input-foreground-dark;
+  }
+  input.input.input-chip {
+    @apply rounded-full;
   }
 </style>

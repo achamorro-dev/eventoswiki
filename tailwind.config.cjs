@@ -57,7 +57,16 @@ module.exports = {
           DEFAULT: colors.gray[400],
           dark: colors.gray[600],
         },
-        input: {},
+        input: {
+          DEFAULT: colors.white,
+          dark: {
+            DEFAULT: colors.slate[800],
+          },
+        },
+        'input-foreground': {
+          DEFAULT: colors.black,
+          dark: colors.white,
+        },
       },
     },
   },
