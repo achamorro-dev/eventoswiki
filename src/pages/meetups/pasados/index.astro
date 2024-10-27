@@ -3,6 +3,7 @@ import Layout from '@/layouts/layout.astro'
 import PastMeetupsGrid from '@/meetups/presentation/server/components/past-meetups/past-meetups-grid.astro'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
+import EventsGridSkeleton from '@/ui/components/events-grid/events-grid-skeleton.astro'
 import EventsHeader from '@/ui/components/events-header/events-header.astro'
 import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { Urls } from '@/ui/urls/urls'
@@ -24,5 +25,7 @@ if (provinceParam) {
     </SearchFiltersBar>
   </EventsHeader>
 
-  <PastMeetupsGrid location={province?.name} page={page} server:defer />
+  <PastMeetupsGrid location={province?.name} page={page} server:defer>
+    <EventsGridSkeleton slot="fallback" />
+  </PastMeetupsGrid>
 </Layout>

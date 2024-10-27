@@ -1,0 +1,29 @@
+---
+import EventCardSkeleton from '../event-card/event-card-skeleton.astro'
+
+interface Props {
+  totalElements?: number
+}
+
+const { totalElements = 9 } = Astro.props
+---
+
+<article>
+  <ul class="grid-list">
+    {
+      new Array(totalElements).fill(0).map((_, index) => {
+        return (
+          <li>
+            <EventCardSkeleton />
+          </li>
+        )
+      })
+    }
+  </ul>
+</article>
+
+<style>
+  .grid-list {
+    @apply grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 2xl:grid-cols-4;
+  }
+</style>
