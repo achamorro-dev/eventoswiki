@@ -6,12 +6,12 @@ interface GetProvinceRequest {
   id: Province['slug']
 }
 
-export class GetProvinceQuery extends Query<Province, GetProvinceRequest> {
+export class GetProvinceQuery extends Query<Province | null, GetProvinceRequest> {
   constructor(private readonly provinceRepository: ProvincesRepository) {
     super()
   }
 
-  execute({ id }: GetProvinceRequest): Promise<Province> {
+  execute({ id }: GetProvinceRequest): Promise<Province | null> {
     return this.provinceRepository.find(id)
   }
 }

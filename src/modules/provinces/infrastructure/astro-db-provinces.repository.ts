@@ -1,5 +1,4 @@
 import { db, eq, Province } from 'astro:db'
-import { ProvinceNotFound } from '../domain/errors/province-not-found'
 import { Province as ProvinceEntity } from '../domain/province'
 import type { ProvincesRepository } from '../domain/provinces.repository'
 
@@ -9,11 +8,11 @@ export class AstroDbProvincesRepository implements ProvincesRepository {
     return provinces.map(ProvinceEntity.fromPrimitives)
   }
 
-  async find(id: ProvinceEntity['slug']): Promise<ProvinceEntity> {
+  async find(id: ProvinceEntity['slug']): Promise<ProvinceEntity | null> {
     const provinces = await db.select().from(Province).where(eq(Province.slug, id)).orderBy(Province.name)
 
     if (!provinces.length) {
-      throw new ProvinceNotFound()
+      return null
     }
 
     return ProvinceEntity.fromPrimitives(provinces[0])
