@@ -1,34 +1,29 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
+import NextEventsGrid from '@/events/presentation/server/components/next-events/next-events-grid.astro'
 import Layout from '@/layouts/layout.astro'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
-import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
+import type { Province } from '@/provinces/domain/province'
+import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
+import EventsHeader from '@/ui/components/events-header/events-header.astro'
+import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { Urls } from '@/ui/urls/urls'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
 const provinceParam = searchParams.get('province')
-let province = undefined
 
+let province: Province | null = null
 if (provinceParam) {
   province = await ProvincesLocator.getProvinceQuery().execute({ id: provinceParam })
 }
-
-const { data: events, totalPages } = await EventsLocator.getNextEventsQuery().execute({
-  count: 12,
-  page,
-  location: province?.name,
-})
 ---
 
-<Layout title="eventos.wiki - Eventos" classes="px-4 lg:px-12">
-  <EventsGrid
-    actionLink={Urls.PAST_EVENTS}
-    actionText="Ver pasados"
-    title="Eventos"
-    events={events}
-    page={page}
-    totalPages={totalPages}
-    goToEvent={Urls.EVENT}
-  />
+<Layout title="eventos.wiki - Eventos">
+  <EventsHeader title="Eventos" actionLink={Urls.PAST_EVENTS} actionText="Ver eventos pasados" transition:persist>
+    <SearchFiltersBar>
+      <ProvinceComboboxFilter value={province?.slug} />
+    </SearchFiltersBar>
+  </EventsHeader>
+
+  <NextEventsGrid location={province?.name} page={page} server:defer />
 </Layout>

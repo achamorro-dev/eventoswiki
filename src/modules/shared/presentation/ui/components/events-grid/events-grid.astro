@@ -1,28 +1,19 @@
 ---
 import type { Event } from '@/events/domain/event'
 import EventCard from '@/ui/components/event-card/event-card.astro'
-import Link from '../link/link.astro'
 import Pagination from '../pagination/pagination.astro'
-import SectionTitle from '../section-title/section-title.astro'
 
 interface Props {
-  title: string
-  actionLink: string
-  actionText: string
   page: number
   totalPages: number
   events: Event[]
   goToEvent: (slug: string) => string
 }
 
-const { events = [], title, actionLink, actionText, page, totalPages, goToEvent } = Astro.props
+const { events = [], page, totalPages, goToEvent } = Astro.props
 ---
 
 <article>
-  <header class="header">
-    <SectionTitle>{title}</SectionTitle>
-    <Link href={actionLink} classes="action-link">{actionText}</Link>
-  </header>
   <ul class="grid-list">
     {
       events.map((event: Event) => {
@@ -42,17 +33,11 @@ const { events = [], title, actionLink, actionText, page, totalPages, goToEvent 
 </article>
 
 <style>
-  .header {
-    @apply mb-4 flex items-center justify-between lg:mb-8;
-  }
-  .action-link {
-    @apply shrink-0 text-right;
-  }
   .grid-list {
     @apply grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 2xl:grid-cols-4;
   }
   .empty-message {
-    @apply text-xl font-medium;
+    @apply mt-4 text-lg;
   }
   .footer {
     @apply mt-8;

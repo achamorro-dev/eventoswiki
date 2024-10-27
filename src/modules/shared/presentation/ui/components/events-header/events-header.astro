@@ -1,0 +1,27 @@
+---
+import Link from '../link/link.astro'
+import SectionTitle from '../section-title/section-title.astro'
+
+interface Props {
+  title: string
+  actionLink: string
+  actionText: string
+}
+
+const { title, actionLink, actionText } = Astro.props
+---
+
+<header class="header">
+  <SectionTitle>{title}</SectionTitle>
+  <Link href={actionLink} classes="action-link">{actionText}</Link>
+</header>
+<slot />
+
+<style>
+  .header {
+    @apply flex items-center justify-between;
+  }
+  .action-link {
+    @apply shrink-0 text-right;
+  }
+</style>

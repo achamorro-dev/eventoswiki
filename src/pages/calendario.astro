@@ -28,10 +28,9 @@ const calendarEvents = events.concat(meetups).map<CalendarEvent>((event: Meetup 
 <Layout
   title="eventos.wiki - Calendario"
   description="En eventos.wiki encontrarás el calendario de eventos sobre desarrollo y tecnología definitivo. Pasa y echa un vistazo a la gran variedad de eventos y, si falta el tuyo, sólo tienes que pedírnoslo."
-  classes="px-4 lg:px-12"
 >
-  <div class="flex items-center justify-between mt-4 mb-10">
-    <SectionTitle>Calendario</SectionTitle>
-  </div>
-  <BigCalendar client:load events={calendarEvents} />
+  <SectionTitle>Calendario</SectionTitle>
+  <article class="mt-4">
+    <BigCalendar client:load events={calendarEvents} />
+  </article>
 </Layout>

@@ -1,0 +1,23 @@
+---
+import { EventsLocator } from '@/events/di/events.locator'
+import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
+import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  location?: string
+  page: number
+}
+
+const { location, page } = Astro.props
+const { data: pastEvents, totalPages } = await EventsLocator.getPastEventsQuery().execute({ count: 10, location })
+---
+
+<EventsGrid
+  actionLink={Urls.EVENTS}
+  actionText="Ver próximos"
+  title="Eventos pasados"
+  events={pastEvents}
+  page={page}
+  totalPages={totalPages}
+  goToEvent={Urls.EVENT}
+/>

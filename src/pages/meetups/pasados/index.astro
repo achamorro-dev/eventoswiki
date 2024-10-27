@@ -1,8 +1,10 @@
 ---
 import Layout from '@/layouts/layout.astro'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import PastMeetupsGrid from '@/meetups/presentation/server/components/past-meetups/past-meetups-grid.astro'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
-import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
+import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
+import EventsHeader from '@/ui/components/events-header/events-header.astro'
+import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { Urls } from '@/ui/urls/urls'
 
 const searchParams = new URL(Astro.request.url).searchParams
@@ -13,22 +15,14 @@ let province = undefined
 if (provinceParam) {
   province = await ProvincesLocator.getProvinceQuery().execute({ id: provinceParam })
 }
-
-const { data: meetups, totalPages } = await MeetupsLocator.getPastMeetupsQuery().execute({
-  count: 12,
-  page,
-  location: province?.name,
-})
 ---
 
-<Layout title="eventos.wiki - Eventos pasados" classes="px-4 lg:px-12">
-  <EventsGrid
-    actionLink={Urls.MEETUPS}
-    actionText="Ver próximos"
-    title="Meetups pasados"
-    events={meetups}
-    page={page}
-    totalPages={totalPages}
-    goToEvent={Urls.MEETUP}
-  />
+<Layout title="eventos.wiki - Meetups pasados" classes="px-4 lg:px-12">
+  <EventsHeader title="Meetups pasados" actionLink={Urls.MEETUPS} actionText="Ver próximos meetups" transition:persist>
+    <SearchFiltersBar>
+      <ProvinceComboboxFilter value={province?.slug} />
+    </SearchFiltersBar>
+  </EventsHeader>
+
+  <PastMeetupsGrid location={province?.name} page={page} server:defer />
 </Layout>
