@@ -3,6 +3,7 @@ import NextEventsSlider from '@/events/presentation/server/components/next-event
 import PastEventsSlider from '@/events/presentation/server/components/past-events/past-events-slider.astro'
 import NextMeetupsSlider from '@/meetups/presentation/server/components/next-meetups/next-meetups-slider.astro'
 import PastMeetupsSlider from '@/meetups/presentation/server/components/past-meetups/past-meetups-slider.astro'
+import EventsSliderSkeleton from '@/ui/components/events-slider/events-slider-skeleton.astro'
 import Layout from '../layouts/layout.astro'
 ---
 
@@ -10,8 +11,16 @@ import Layout from '../layouts/layout.astro'
   title="eventos.wiki - Todos los eventos tecnológicos en un mismo lugar"
   classes="flex flex-col w-full gap-2 lg:gap-8 pb-24 !px-0"
 >
-  <NextEventsSlider server:defer />
-  <NextMeetupsSlider server:defer />
-  <PastEventsSlider server:defer />
-  <PastMeetupsSlider server:defer />
+  <NextEventsSlider server:defer>
+    <EventsSliderSkeleton slot="fallback" />
+  </NextEventsSlider>
+  <NextMeetupsSlider server:defer>
+    <EventsSliderSkeleton slot="fallback" />
+  </NextMeetupsSlider>
+  <PastEventsSlider server:defer>
+    <EventsSliderSkeleton slot="fallback" />
+  </PastEventsSlider>
+  <PastMeetupsSlider server:defer>
+    <EventsSliderSkeleton slot="fallback" />
+  </PastMeetupsSlider>
 </Layout>

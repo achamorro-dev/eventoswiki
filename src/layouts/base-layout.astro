@@ -33,6 +33,10 @@ const { title, description, image, url } = Astro.props
       body *:focus-visible {
         @apply outline-none ring-2 ring-primary;
       }
+
+      .skeleton {
+        @apply animate-pulse bg-gray-200 dark:bg-gray-700;
+      }
     </style>
   </body>
 </html>

@@ -4,6 +4,7 @@ import PastEventsSlider from '@/events/presentation/server/components/past-event
 import NextMeetupsSlider from '@/meetups/presentation/server/components/next-meetups/next-meetups-slider.astro'
 import PastMeetupsSlider from '@/meetups/presentation/server/components/past-meetups/past-meetups-slider.astro'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import EventsSliderSkeleton from '@/ui/components/events-slider/events-slider-skeleton.astro'
 import Link from '@/ui/components/link/link.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
@@ -22,14 +23,18 @@ if (!location) {
 <Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-2 lg:gap-8 pb-24 !px-0">
   <NextEventsSlider location={location.name} server:defer>
     <Link slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <EventsSliderSkeleton slot="fallback" />
   </NextEventsSlider>
   <NextMeetupsSlider location={location.name} server:defer>
     <Link slot="actions" href={Urls.MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <EventsSliderSkeleton slot="fallback" />
   </NextMeetupsSlider>
   <PastEventsSlider location={location.name}>
     <Link slot="actions" href={Urls.PAST_EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <EventsSliderSkeleton slot="fallback" />
   </PastEventsSlider>
   <PastMeetupsSlider location={location.name}>
     <Link slot="actions" href={Urls.PAST_MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <EventsSliderSkeleton slot="fallback" />
   </PastMeetupsSlider>
 </Layout>

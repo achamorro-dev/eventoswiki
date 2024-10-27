@@ -1,0 +1,30 @@
+---
+import EventCardSkeleton from '../event-card/event-card-skeleton.astro'
+import SectionTitleSkeleton from '../section-title/section-title-skeleton.astro'
+import Slide from '../slider/slide.astro'
+import Slider from '../slider/slider.astro'
+---
+
+<article class="events-slider">
+  <header class="header">
+    <SectionTitleSkeleton />
+    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-16 mb-4"></div>
+  </header>
+  <Slider classes="event-slider">
+    <Slide><EventCardSkeleton /></Slide>
+    <Slide><EventCardSkeleton /></Slide>
+    <Slide><EventCardSkeleton /></Slide>
+  </Slider>
+
+  <style>
+    .events-slider {
+      @apply w-screen animate-pulse;
+    }
+    .header {
+      @apply mb-4 flex items-center justify-between px-4 lg:px-8;
+    }
+    .event-slider {
+      @apply pl-4 lg:pl-8;
+    }
+  </style>
+</article>

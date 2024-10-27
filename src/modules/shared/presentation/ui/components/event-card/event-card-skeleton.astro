@@ -1,0 +1,35 @@
+---
+import Card from '../card/card.astro'
+---
+
+<Card classes="event-card">
+  <div class="event-cover"></div>
+  <div class="event-tags"></div>
+  <div class="event-title"></div>
+  <div class="event-date-location">
+    <div class="date"></div>
+    <div class="location"></div>
+  </div>
+</Card>
+
+<style>
+  .event-card {
+    @apply animate-pulse;
+  }
+  .event-cover {
+    @apply h-56 w-full rounded-xl bg-gray-200 dark:bg-gray-700;
+  }
+  .event-tags {
+    @apply mt-2 h-6 w-28 rounded-xl bg-gray-200 dark:bg-gray-700;
+  }
+  .event-title {
+    @apply mt-2 h-4 w-56 rounded-xl bg-gray-200 dark:bg-gray-700;
+  }
+  .event-date-location {
+    @apply mt-2 flex w-full items-center justify-between;
+  }
+  .date,
+  .location {
+    @apply h-3 w-20 rounded-xl bg-gray-200 dark:bg-gray-700;
+  }
+</style>
