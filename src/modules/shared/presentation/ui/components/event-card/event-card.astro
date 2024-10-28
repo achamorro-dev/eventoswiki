@@ -14,7 +14,7 @@ interface CardEvent {
   altImage?: string
   startsAt: Date
   endsAt: Date
-  location?: string
+  location?: string | null
 }
 interface Props {
   event: CardEvent

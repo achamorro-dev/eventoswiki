@@ -6,7 +6,7 @@ export interface AstroDbEventDto {
   endsAt: Date
   thumbnail: string
   image: string
-  location: string
+  location: string | null
   web: string
   twitter: string | null
   linkedin: string | null

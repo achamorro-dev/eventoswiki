@@ -21,7 +21,7 @@ if (!location) {
 ---
 
 <Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-8 pb-12 !px-0">
-  <NextEventsSlider location={location.name} server:defer>
+  <NextEventsSlider locationId={location.slug} locationName={location.name} server:defer>
     <Link slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
     <EventsSliderSkeleton slot="fallback" />
   </NextEventsSlider>
@@ -29,7 +29,7 @@ if (!location) {
     <Link slot="actions" href={Urls.MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
     <EventsSliderSkeleton slot="fallback" />
   </NextMeetupsSlider>
-  <PastEventsSlider location={location.name}>
+  <PastEventsSlider locationId={location.slug} locationName={location.name}>
     <Link slot="actions" href={Urls.PAST_EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
     <EventsSliderSkeleton slot="fallback" />
   </PastEventsSlider>

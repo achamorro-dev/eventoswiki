@@ -5,7 +5,7 @@ import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
-import { and, asc, count, db, desc, eq, Event, gt, gte, like, lt, lte, ne, or } from 'astro:db'
+import { and, asc, count, db, desc, eq, Event, gt, gte, like, lt, lte, ne, or, Province } from 'astro:db'
 import type { EventsCriteria } from '../domain/criterias/events-criteria'
 import type { EventsOrder } from '../domain/criterias/events-order'
 import { Event as EventEntity } from '../domain/event'
@@ -33,18 +33,22 @@ export class AstroDbEventsRepository implements EventsRepository {
   }
 
   async find(id: EventEntity['slug']): Promise<EventEntity> {
-    const result = await db.select().from(Event).where(eq(Event.slug, id)).limit(1)
-    const event = result.at(0)
-    if (!event) {
+    const result = await db
+      .select()
+      .from(Event)
+      .leftJoin(Province, eq(Province.slug, Event.location))
+      .where(eq(Event.slug, id))
+      .limit(1)
+    if (!result.at(0)) {
       throw new EventNotFound()
     }
 
-    return AstroEventMapper.toDomain(event)
+    return AstroEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
   }
 
   async findAll(): Promise<EventEntity[]> {
-    const events = await db.select().from(Event)
-    return AstroEventMapper.toDomainList(events)
+    const eventsAndProvinces = await db.select().from(Event).leftJoin(Province, eq(Province.slug, Event.location))
+    return AstroEventMapper.toDomainList(eventsAndProvinces)
   }
 
   private getOrderBy(order: Partial<EventsOrder> | undefined) {
@@ -74,6 +78,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       db
         .select()
         .from(Event)
+        .leftJoin(Province, eq(Province.slug, Event.location))
         //@ts-expect-error
         .where(...this.getEventsFiltersByCriteria(criteria))
     )
@@ -84,6 +89,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       db
         .select({ count: count() })
         .from(Event)
+        .leftJoin(Province, eq(Province.slug, Event.location))
         //@ts-ignore
         .where(...this.getEventsFiltersByCriteria(criteria))
     )

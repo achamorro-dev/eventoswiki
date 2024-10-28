@@ -10,7 +10,7 @@ export class Event implements EventProps {
   readonly thumbnail: string
   readonly image: string
   readonly altImage?: string
-  readonly location: string
+  readonly location: string | null
   readonly web?: string
   readonly twitter?: string
   readonly linkedin?: string
@@ -35,7 +35,7 @@ export class Event implements EventProps {
     this.thumbnail = props.thumbnail
     this.image = props.image
     this.altImage = props.altImage
-    this.location = props.location
+    this.location = props.location || null
     this.web = props.web
     this.twitter = props.twitter
     this.linkedin = props.linkedin
@@ -102,7 +102,7 @@ interface EventProps {
   thumbnail: string
   altImage?: string
   image: string
-  location: string
+  location?: string | null
   web?: string
   twitter?: string
   linkedin?: string

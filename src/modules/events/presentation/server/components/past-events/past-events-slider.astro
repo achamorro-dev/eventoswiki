@@ -4,15 +4,16 @@ import EventsSlider from '@/ui/components/events-slider/events-slider.astro'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
-  location?: string
+  locationId?: string
+  locationName?: string
 }
 
-const { location } = Astro.props
-const { data: pastEvents } = await EventsLocator.getPastEventsQuery().execute({ count: 10, location })
+const { locationId, locationName } = Astro.props
+const { data: pastEvents } = await EventsLocator.getPastEventsQuery().execute({ count: 10, location: locationId })
 ---
 
 <EventsSlider
-  title={'Eventos pasados' + (location ? ` en ${location}` : '')}
+  title={'Eventos pasados' + (locationName ? ` en ${locationName}` : '')}
   seeMoreLink={Urls.EVENTS}
   goToEvent={Urls.EVENT}
   events={pastEvents}

@@ -1,8 +1,6 @@
 ---
 import NextEventsGrid from '@/events/presentation/server/components/next-events/next-events-grid.astro'
 import Layout from '@/layouts/layout.astro'
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
-import type { Province } from '@/provinces/domain/province'
 import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
 import EventsGridSkeleton from '@/ui/components/events-grid/events-grid-skeleton.astro'
 import EventsHeader from '@/ui/components/events-header/events-header.astro'
@@ -11,22 +9,17 @@ import { Urls } from '@/ui/urls/urls'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
-const provinceParam = searchParams.get('province')
-
-let province: Province | null = null
-if (provinceParam) {
-  province = await ProvincesLocator.getProvinceQuery().execute({ id: provinceParam })
-}
+const province = searchParams.get('province') || undefined
 ---
 
 <Layout title="eventos.wiki - Eventos">
   <EventsHeader title="Eventos" actionLink={Urls.PAST_EVENTS} actionText="Ver eventos pasados" transition:persist>
     <SearchFiltersBar>
-      <ProvinceComboboxFilter value={province?.slug} />
+      <ProvinceComboboxFilter value={province} />
     </SearchFiltersBar>
   </EventsHeader>
 
-  <NextEventsGrid location={province?.name} page={page} server:defer>
+  <NextEventsGrid location={province} page={page} server:defer>
     <EventsGridSkeleton slot="fallback" />
   </NextEventsGrid>
 </Layout>
