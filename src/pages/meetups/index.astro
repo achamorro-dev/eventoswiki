@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/layout.astro'
 import NextMeetupsGrid from '@/meetups/presentation/server/components/next-meetups/next-meetups-grid.astro'
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
 import EventsGridSkeleton from '@/ui/components/events-grid/events-grid-skeleton.astro'
 import EventsHeader from '@/ui/components/events-header/events-header.astro'
@@ -10,22 +9,17 @@ import { Urls } from '@/ui/urls/urls'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
-const provinceParam = searchParams.get('province')
-let province = undefined
-
-if (provinceParam) {
-  province = await ProvincesLocator.getProvinceQuery().execute({ id: provinceParam })
-}
+const province = searchParams.get('province') || undefined
 ---
 
 <Layout title="eventos.wiki - Meetups">
   <EventsHeader title="Meetups" actionLink={Urls.PAST_MEETUPS} actionText="Ver meetups pasados" transition:persist>
     <SearchFiltersBar>
-      <ProvinceComboboxFilter value={province?.slug} />
+      <ProvinceComboboxFilter value={province} />
     </SearchFiltersBar>
   </EventsHeader>
 
-  <NextMeetupsGrid location={province?.name} page={page} server:defer>
+  <NextMeetupsGrid location={province} page={page} server:defer>
     <EventsGridSkeleton slot="fallback" />
   </NextMeetupsGrid>
 </Layout>

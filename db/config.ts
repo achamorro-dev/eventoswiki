@@ -38,7 +38,7 @@ export const Meetup = defineTable({
     endsAt: column.date(),
     thumbnail: column.text(),
     image: column.text(),
-    location: column.text(),
+    location: column.text({ optional: true }),
     web: column.text(),
     twitter: column.text({ optional: true }),
     linkedin: column.text({ optional: true }),

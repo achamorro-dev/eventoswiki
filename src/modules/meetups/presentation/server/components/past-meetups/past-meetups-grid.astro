@@ -13,7 +13,7 @@ const { location, page } = Astro.props
 const { data: meetups, totalPages } = await MeetupsLocator.getPastMeetupsQuery().execute({
   count: 12,
   page,
-  location: location,
+  location,
 })
 ---
 

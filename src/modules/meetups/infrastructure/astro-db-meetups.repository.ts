@@ -4,7 +4,7 @@ import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
-import { Meetup, and, asc, count, db, desc, eq, gt, gte, lt, lte, or } from 'astro:db'
+import { Meetup, Province, and, asc, count, db, desc, eq, gt, gte, lt, lte, or } from 'astro:db'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
@@ -33,17 +33,22 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
   }
 
   async find(id: string): Promise<MeetupEntity> {
-    const result = await db.select().from(Meetup).where(eq(Meetup.slug, id)).limit(1)
-    const meetup = result.at(0)
-    if (!meetup) {
+    const result = await db
+      .select()
+      .from(Meetup)
+      .leftJoin(Province, eq(Province.slug, Meetup.location))
+      .where(eq(Meetup.slug, id))
+      .limit(1)
+
+    if (!result.at(0)) {
       throw new MeetupNotFound()
     }
 
-    return AstroDbMeetupMapper.toDomain(meetup)
+    return AstroDbMeetupMapper.toDomain(result.at(0)!.Meetup, result.at(0)!.Province)
   }
 
   async findAll(): Promise<MeetupEntity[]> {
-    const meetups = await db.select().from(Meetup)
+    const meetups = await db.select().from(Meetup).leftJoin(Province, eq(Province.slug, Meetup.location))
     return AstroDbMeetupMapper.toDomainList(meetups)
   }
 
@@ -74,6 +79,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       db
         .select()
         .from(Meetup)
+        .leftJoin(Province, eq(Province.slug, Meetup.location))
         //@ts-ignore
         .where(...this.getMeetupsFiltersByCriteria(criteria))
     )
@@ -84,6 +90,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       db
         .select({ count: count() })
         .from(Meetup)
+        .leftJoin(Province, eq(Province.slug, Meetup.location))
         //@ts-ignore
         .where(...this.getMeetupsFiltersByCriteria(criteria))
     )

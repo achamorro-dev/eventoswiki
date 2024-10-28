@@ -25,15 +25,15 @@ if (!location) {
     <Link slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
     <EventsSliderSkeleton slot="fallback" />
   </NextEventsSlider>
-  <NextMeetupsSlider location={location.name} server:defer>
+  <NextMeetupsSlider locationId={location.slug} locationName={location.name} server:defer>
     <Link slot="actions" href={Urls.MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
     <EventsSliderSkeleton slot="fallback" />
   </NextMeetupsSlider>
-  <PastEventsSlider locationId={location.slug} locationName={location.name}>
+  <PastEventsSlider locationId={location.slug} locationName={location.name} server:defer>
     <Link slot="actions" href={Urls.PAST_EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
     <EventsSliderSkeleton slot="fallback" />
   </PastEventsSlider>
-  <PastMeetupsSlider location={location.name}>
+  <PastMeetupsSlider locationId={location.slug} locationName={location.name} server:defer>
     <Link slot="actions" href={Urls.PAST_MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
     <EventsSliderSkeleton slot="fallback" />
   </PastMeetupsSlider>

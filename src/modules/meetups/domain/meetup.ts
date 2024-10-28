@@ -10,7 +10,7 @@ export class Meetup implements MeetupProps {
   readonly thumbnail: string
   readonly image: string
   readonly altImage?: string
-  readonly location: string
+  readonly location: string | null
   readonly web?: string
   readonly twitter?: string
   readonly linkedin?: string
@@ -62,7 +62,7 @@ export class Meetup implements MeetupProps {
       thumbnail: primitives.thumbnail,
       image: primitives.image,
       altImage: primitives.altImage,
-      location: primitives.location,
+      location: primitives.location || null,
       web: primitives.web,
       twitter: primitives.twitter,
       linkedin: primitives.linkedin,
@@ -102,7 +102,7 @@ interface MeetupProps {
   thumbnail: string
   altImage?: string
   image: string
-  location: string
+  location: string | null
   web?: string
   twitter?: string
   linkedin?: string
