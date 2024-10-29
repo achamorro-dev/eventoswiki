@@ -1,5 +1,6 @@
 ---
 import EventCardSkeleton from '../event-card/event-card-skeleton.astro'
+import VisuallyHidden from '../visually-hidden/visually-hidden.astro'
 
 interface Props {
   totalElements?: number
@@ -9,6 +10,7 @@ const { totalElements = 9 } = Astro.props
 ---
 
 <article>
+  <VisuallyHidden>Cargando eventos</VisuallyHidden>
   <ul class="grid-list">
     {
       new Array(totalElements).fill(0).map((_, index) => {

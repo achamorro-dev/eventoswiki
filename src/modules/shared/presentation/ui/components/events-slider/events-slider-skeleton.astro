@@ -3,9 +3,11 @@ import EventCardSkeleton from '../event-card/event-card-skeleton.astro'
 import SectionTitleSkeleton from '../section-title/section-title-skeleton.astro'
 import Slide from '../slider/slide.astro'
 import Slider from '../slider/slider.astro'
+import VisuallyHidden from '../visually-hidden/visually-hidden.astro'
 ---
 
 <article class="events-slider">
+  <VisuallyHidden>Cargando eventos</VisuallyHidden>
   <header class="header">
     <SectionTitleSkeleton />
     <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-16 mb-4"></div>
