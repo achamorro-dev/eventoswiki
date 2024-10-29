@@ -11,7 +11,7 @@ const { title, description, classes, ...rest } = Astro.props
 ---
 
 <BaseLayout title={title} description={description}>
-  <main class:list={['pb-12 px-4 lg:px-8 pt-4 md:pt-8', classes]} {...rest}>
+  <main id="main" class:list={['pb-12 px-4 lg:px-8 pt-4 md:pt-8', classes]} {...rest}>
     <slot />
   </main>
   <style is:global>

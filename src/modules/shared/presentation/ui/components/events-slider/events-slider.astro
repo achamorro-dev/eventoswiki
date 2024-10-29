@@ -30,7 +30,7 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
 <article class="events-slider">
   <header class="header">
     <SectionTitle>{title}</SectionTitle>
-    <Link href={seeMoreLink} classes="link">Ver más</Link>
+    <Link href={seeMoreLink} classes="link" aria-label={`${title} Ver más`}>Ver más</Link>
   </header>
   {events.length === 0 && <p class="empty-message">No hay eventos disponibles en estos momentos</p>}
   {

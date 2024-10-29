@@ -2,6 +2,7 @@
 import ProvincesList from '@/provinces/presentation/server/components/provinces-list/provinces-list.astro'
 import Footer from '@/ui/components/footer/footer.astro'
 import Header from '@/ui/components/header/header.astro'
+import SkipToContent from '@/ui/components/skip-to-content/skip-to-content.astro'
 import '@fontsource-variable/inter'
 import BaseHead from './components/base-head.astro'
 
@@ -10,15 +11,17 @@ interface Props {
   description?: string
   image?: string
   url?: string
+  mainContentId?: string
 }
 
-const { title, description, image, url } = Astro.props
+const { title, description, image, url, mainContentId } = Astro.props
 ---
 
 <!doctype html>
 <html lang="es">
   <BaseHead title={`${title} - eventos.wiki`} description={description} image={image} url={url} />
   <body>
+    <SkipToContent contentId={mainContentId} />
     <Header transition:persist />
     <slot />
     <Footer transition:persist>

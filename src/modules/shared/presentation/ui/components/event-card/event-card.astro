@@ -25,7 +25,12 @@ interface Props {
 const { event, classes, goToEvent } = Astro.props
 ---
 
-<a href={goToEvent(event.slug)} class:list={classes} title={event.title}>
+<a
+  href={goToEvent(event.slug)}
+  class:list={['event-card-link', classes]}
+  title={event.title}
+  aria-label={`Ver evento ${event.title}`}
+>
   <Card>
     <div class="event-cover-container">
       <img
@@ -49,6 +54,9 @@ const { event, classes, goToEvent } = Astro.props
 </a>
 
 <style>
+  .event-card-link {
+    @apply block;
+  }
   .event-cover-container {
     @apply w-full overflow-hidden rounded-xl;
 
