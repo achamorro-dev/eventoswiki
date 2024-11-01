@@ -1,20 +1,48 @@
 ---
-interface Props {
-  href: string
-  classes?: string
+import { type ClassesComponent } from '../../classnames/classes-component'
+interface Props extends astroHTML.JSX.AnchorHTMLAttributes, ClassesComponent {
   selected?: boolean
+  variant?: 'primary' | 'outline' | 'subtle' | 'ghost'
 }
-const { href, classes = '', selected = false, ...rest } = Astro.props
+const { classes, selected = false, variant = 'ghost', ...rest } = Astro.props
 ---
 
-<a
-  href={href}
-  class:list={[
-    'inline-block text-left text-sm hover:underline font-medium md:text-center',
-    { 'text-primary dark:text-primary-light': selected },
-    classes,
-  ]}
-  {...rest}
->
+<a class:list={['link', `link-${variant}`, `link-${variant}-${selected ? 'selected' : ''}`, classes]} {...rest}>
   <slot />
 </a>
+
+<style>
+  .link {
+    @apply inline-block rounded-xl text-center text-sm font-medium hover:underline;
+  }
+
+  .link-ghost {
+    @apply text-foreground dark:text-foreground-dark;
+  }
+
+  .link-ghost-selected {
+    @apply text-primary dark:text-primary-light;
+  }
+
+  .link-primary,
+  .link-outline,
+  .link-subtle {
+    @apply border border-transparent px-4 py-2;
+  }
+
+  .link-primary {
+    @apply border-primary bg-primary text-white hover:bg-primary-light dark:border-primary-light dark:bg-primary-light dark:text-white dark:hover:bg-primary-dark;
+  }
+
+  .link-primary-selected {
+    @apply text-white dark:text-white;
+  }
+
+  .link-outline {
+    @apply border-primary bg-background text-primary;
+  }
+
+  .link-subtle {
+    @apply border-border bg-background text-foreground hover:bg-background-light dark:border-border-dark dark:bg-background-dark dark:text-foreground-dark dark:hover:bg-background-dark-light;
+  }
+</style>
