@@ -1,0 +1,17 @@
+---
+import type { ClassesComponent } from '@/ui/classnames/classes-component'
+
+interface Props extends ClassesComponent {}
+
+const { classes, ...rest } = Astro.props
+---
+
+<p class:list={['caption', classes]} {...rest}>
+  <slot />
+</p>
+
+<style>
+  .caption {
+    @apply text-xs text-caption dark:text-caption-dark;
+  }
+</style>

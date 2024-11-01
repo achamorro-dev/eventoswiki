@@ -67,6 +67,10 @@ module.exports = {
           DEFAULT: colors.black,
           dark: colors.white,
         },
+        caption: {
+          DEFAULT: colors.zinc[500],
+          dark: colors.zinc[400],
+        },
       },
     },
   },
