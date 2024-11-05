@@ -2,7 +2,7 @@ import { NOW, column, defineDb, defineTable } from 'astro:db'
 
 export const Event = defineTable({
   columns: {
-    slug: column.text({ primaryKey: true }),
+    slug: column.text({ primaryKey: true, optional: false, unique: true }),
     title: column.text(),
     shortDescription: column.text(),
     startsAt: column.date(),
@@ -31,7 +31,7 @@ export const Event = defineTable({
 
 export const Meetup = defineTable({
   columns: {
-    slug: column.text({ primaryKey: true }),
+    slug: column.text({ primaryKey: true, optional: false, unique: true }),
     title: column.text(),
     shortDescription: column.text(),
     startsAt: column.date(),
@@ -60,8 +60,30 @@ export const Meetup = defineTable({
 
 export const Province = defineTable({
   columns: {
-    slug: column.text({ primaryKey: true }),
+    slug: column.text({ primaryKey: true, optional: false, unique: true }),
     name: column.text(),
+  },
+})
+
+export const User = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    username: column.text(),
+    name: column.text(),
+    email: column.text({ optional: true }),
+    avatar: column.text(),
+    githubId: column.text({ optional: true }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const Session = defineTable({
+  columns: {
+    id: column.text({ optional: false, unique: true }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    createdAt: column.date({ default: NOW }),
+    expiresAt: column.number({ optional: false }),
   },
 })
 
@@ -70,5 +92,7 @@ export default defineDb({
     Event,
     Meetup,
     Province,
+    User,
+    Session,
   },
 })
