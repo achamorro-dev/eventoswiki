@@ -1,0 +1,64 @@
+---
+import Caption from '@/ui/components/caption/caption.astro'
+import SectionTitle from '@/ui/components/section-title/section-title.astro'
+import Facebook from '@/ui/social-icons/facebook.astro'
+import GitHub from '@/ui/social-icons/github.astro'
+import Google from '@/ui/social-icons/google.astro'
+import X from '@/ui/social-icons/x.astro'
+import { Urls } from '@/ui/urls/urls'
+import Link from '../../../../shared/presentation/ui/components/link/link.astro'
+---
+
+<article class="login">
+  <section class="login-access">
+    <img src="/icon.png" alt="Logo" width="180" height="180" class="icon" />
+    <SectionTitle>Iniciar sesión</SectionTitle>
+    <nav class="social-links">
+      <Link href="" variant="subtle" classes="social-link"
+        ><Google classes="social-link-icon" /> Continuar con Google</Link
+      >
+      <Link href={Urls.LOGIN_GITHUB} variant="subtle" classes="social-link" data-astro-prefetch="false"
+        ><GitHub classes="social-link-icon" /> Continuar con GitHub</Link
+      >
+      <Link href="" variant="subtle" classes="social-link"><X classes="social-link-icon" /> Continuar con X</Link>
+      <Link href="" variant="subtle" classes="social-link"
+        ><Facebook classes="social-link-icon" /> Continuar con Facebook</Link
+      >
+    </nav>
+    <Caption classes="caption"
+      >Al continuar, acepta las <a href="#" target="_blank">Condiciones de servicio</a> y la <a href="#" target="_blank"
+        >Política de privacidad</a
+      > de Eventos.wiki.
+    </Caption>
+  </section>
+</article>
+
+<style>
+  .login {
+    @apply grid place-content-center;
+  }
+
+  .login-access {
+    @apply flex flex-col items-center justify-center gap-8;
+  }
+
+  .icon {
+    @apply h-16 w-16;
+  }
+
+  .social-links {
+    @apply flex w-full flex-col items-stretch justify-center gap-4;
+  }
+
+  .social-link {
+    @apply flex flex-1 items-center justify-center gap-2;
+  }
+
+  .social-link-icon {
+    @apply h-6;
+  }
+
+  .caption a {
+    @apply underline;
+  }
+</style>

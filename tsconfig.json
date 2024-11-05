@@ -12,6 +12,7 @@
       "@/events/*": ["./src/modules/events/*"],
       "@/meetups/*": ["./src/modules/meetups/*"],
       "@/provinces/*": ["./src/modules/provinces/*"],
+      "@/authentication/*": ["./src/modules/authentication/*"],
       "@/*": ["./src/*"]
     }
   }

@@ -15,4 +15,6 @@ export const Urls = {
   PROVINCE: (slug: Slug) => `/${slug}`,
   CALENDAR: '/calendario',
   LOGIN: '/login',
+  LOGIN_GITHUB: '/login/github',
+  LOGOUT: '/logout',
 }

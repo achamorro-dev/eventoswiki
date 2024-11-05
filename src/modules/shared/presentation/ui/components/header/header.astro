@@ -1,10 +1,11 @@
 ---
 import Logo from '@/ui/components/logo/logo.astro'
 import Menu from '@/ui/components/menu/menu.astro'
+import { Urls } from '../../urls/urls'
 import Link from '../link/link.astro'
 import { ThemeModeToggle } from '../theme-mode-toggle/theme-mode-toggle'
-import Button from '../buttons/button.astro'
-import { Urls } from '../../urls/urls'
+
+const hasActiveSession = Astro.locals.user !== null
 ---
 
 <header class="header">
@@ -18,7 +19,20 @@ import { Urls } from '../../urls/urls'
     >
       Añadir evento
     </Link>
-    <Link href={Urls.LOGIN} variant="primary">Iniciar sesión</Link>
+    {
+      !hasActiveSession && (
+        <Link href={Urls.LOGIN} variant="primary">
+          Iniciar sesión
+        </Link>
+      )
+    }
+    {
+      hasActiveSession && (
+        <Link href={Urls.LOGOUT} variant="primary" data-astro-prefetch="false">
+          Cerrar sesión
+        </Link>
+      )
+    }
 
     <ThemeModeToggle client:only="react" />
   </section>

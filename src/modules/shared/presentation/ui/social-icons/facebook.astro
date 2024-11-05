@@ -1,0 +1,42 @@
+---
+import type { ClassesComponent } from '../classnames/classes-component'
+
+interface Props extends ClassesComponent {}
+
+const { classes, ...rest } = Astro.props
+---
+
+<svg
+  width="21"
+  height="20"
+  viewBox="0 0 21 20"
+  fill="none"
+  aria-hidden="true"
+  xmlns="http://www.w3.org/2000/svg"
+  class:list={[classes]}
+  {...rest}
+>
+  <g clip-path="url(#clip0_9_612)" data-sentry-element="g" data-sentry-source-file="FacebookIcon.tsx">
+    <path
+      d="M20.5 10C20.5 4.47715 16.0229 0 10.5 0C4.97715 0 0.5 4.47715 0.5 10C0.5 14.9912 4.15684 19.1283 8.9375 19.8785V12.8906H6.39844V10H8.9375V7.79688C8.9375 5.29063 10.4305 3.90625 12.7146 3.90625C13.8084 3.90625 14.9531 4.10156 14.9531 4.10156V6.5625H13.6922C12.45 6.5625 12.0625 7.3334 12.0625 8.125V10H14.8359L14.3926 12.8906H12.0625V19.8785C16.8432 19.1283 20.5 14.9912 20.5 10Z"
+      fill="#1877F2"
+      data-sentry-element="path"
+      data-sentry-source-file="FacebookIcon.tsx"></path>
+    <path
+      d="M14.3926 12.8906L14.8359 10H12.0625V8.125C12.0625 7.33418 12.45 6.5625 13.6922 6.5625H14.9531V4.10156C14.9531 4.10156 13.8088 3.90625 12.7146 3.90625C10.4305 3.90625 8.9375 5.29063 8.9375 7.79688V10H6.39844V12.8906H8.9375V19.8785C9.97287 20.0405 11.0271 20.0405 12.0625 19.8785V12.8906H14.3926Z"
+      fill="white"
+      data-sentry-element="path"
+      data-sentry-source-file="FacebookIcon.tsx"></path>
+  </g>
+  <defs data-sentry-element="defs" data-sentry-source-file="FacebookIcon.tsx">
+    <clipPath id="clip0_9_612" data-sentry-element="clipPath" data-sentry-source-file="FacebookIcon.tsx">
+      <rect
+        width="20"
+        height="20"
+        fill="white"
+        transform="translate(0.5)"
+        data-sentry-element="rect"
+        data-sentry-source-file="FacebookIcon.tsx"></rect>
+    </clipPath>
+  </defs>
+</svg>
