@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
 import vercel from '@astrojs/vercel/serverless'
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,5 +17,13 @@ export default defineConfig({
   }),
   security: {
     checkOrigin: true,
+  },
+  env: {
+    schema: {
+      ASTRO_DB_REMOTE_URL: envField.string({ context: 'server', access: 'secret' }),
+      ASTRO_DB_APP_TOKEN: envField.string({ context: 'server', access: 'secret' }),
+      GITHUB_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
+      GITHUB_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
+    },
   },
 })

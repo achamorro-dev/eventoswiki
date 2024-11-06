@@ -3,6 +3,7 @@ import type { OAuth2Tokens } from '@/authentication/domain/oauth2-tokens'
 import { RemoteUser } from '@/authentication/domain/remote-user'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
 import { GitHub, generateState } from 'arctic'
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from 'astro:env/server'
 
 export class GitHubAuthenticationProvider implements AuthenticationProvider {
   github: GitHub
@@ -11,7 +12,7 @@ export class GitHubAuthenticationProvider implements AuthenticationProvider {
   userUrl = 'https://api.github.com/user'
 
   constructor() {
-    this.github = new GitHub(import.meta.env.GITHUB_CLIENT_ID, import.meta.env.GITHUB_CLIENT_SECRET, null)
+    this.github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, null)
   }
 
   async getRemoteUser(tokens: OAuth2Tokens): Promise<RemoteUser> {
