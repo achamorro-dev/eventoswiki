@@ -43,13 +43,17 @@ export class CreateSessionCommand extends Command<Params, void> {
     tokens: OAuth2Tokens,
   ): Promise<LoggedUser> {
     const remoteUser = await authenticationProvider.getRemoteUser(tokens)
-    let loggedUser = await this.authenticationRepository.getLoggedUser({ githubId: remoteUser.githubId })
+    let loggedUser = await this.authenticationRepository.getLoggedUser({
+      githubId: remoteUser.githubId,
+      googleId: remoteUser.googleId,
+    })
 
     if (!loggedUser) {
       const userId = this.authenticationRepository.generateId()
       const user = new LoggedUser({
         id: userId,
         githubId: remoteUser.githubId,
+        googleId: remoteUser.googleId,
         name: remoteUser.name,
         username: remoteUser.username,
         email: remoteUser.email,
@@ -68,7 +72,7 @@ export class CreateSessionCommand extends Command<Params, void> {
   }
 
   private ensureIsValidState(authenticationProvider: AuthenticationProvider, state: string) {
-    const storedState = authenticationProvider.getStoredState(this.cookiesManager)
+    const storedState = authenticationProvider.getStoredState()
 
     if (storedState !== state) {
       throw new Error('Invalid state')

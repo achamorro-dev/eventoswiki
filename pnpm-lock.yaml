@@ -26,6 +26,9 @@ dependencies:
   '@lucia-auth/adapter-drizzle':
     specifier: ^1.1.0
     version: 1.1.0(drizzle-orm@0.31.4)(lucia@3.2.2)
+  '@pilcrowjs/object-parser':
+    specifier: ^0.0.4
+    version: 0.0.4
   '@types/react':
     specifier: 18.2.21
     version: 18.2.21
@@ -1741,6 +1744,11 @@ packages:
       { integrity: sha512-bLE7BtHrURedCn4Mco3ma9L4Y1GR2SMBuIvjWr7rmQ4/W/4Jy70TIAgZ+0nIlk0xHz1vNP8x8DCns45Sb2XRbg== }
     dependencies:
       '@oslojs/encoding': 0.4.1
+    dev: false
+
+  /@pilcrowjs/object-parser@0.0.4:
+    resolution:
+      { integrity: sha512-mBy3FMv2lvl/sZX/q03wvl3Km8FWg7kbrqQ/qMxK49uZcBssD76Js5k+o7VuCDJI8SNvsrbIX8y6vclx7bWeSg== }
     dev: false
 
   /@pkgjs/parseargs@0.11.0:

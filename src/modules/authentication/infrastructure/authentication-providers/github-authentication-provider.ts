@@ -3,7 +3,7 @@ import type { OAuth2Tokens } from '@/authentication/domain/oauth2-tokens'
 import { RemoteUser } from '@/authentication/domain/remote-user'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
 import { GitHub, generateState } from 'arctic'
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from 'astro:env/server'
+import { BASE_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from 'astro:env/server'
 
 export class GitHubAuthenticationProvider implements AuthenticationProvider {
   github: GitHub
@@ -11,8 +11,9 @@ export class GitHubAuthenticationProvider implements AuthenticationProvider {
   stateCookie = 'github_oauth_state'
   userUrl = 'https://api.github.com/user'
 
-  constructor() {
-    this.github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, null)
+  constructor(private readonly cookiesManager: CookiesManager) {
+    const redirectUri = `${BASE_URL}/login/github/callback`
+    this.github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, redirectUri)
   }
 
   async getRemoteUser(tokens: OAuth2Tokens): Promise<RemoteUser> {
@@ -32,15 +33,15 @@ export class GitHubAuthenticationProvider implements AuthenticationProvider {
     })
   }
 
-  getStoredState(cookiesManager: CookiesManager): string | null {
-    return cookiesManager.get(this.stateCookie)?.value ?? null
+  getStoredState(): string | null {
+    return this.cookiesManager.get(this.stateCookie)?.value ?? null
   }
 
-  async createAuthorizationCookie(cookiesManager: CookiesManager): Promise<URL> {
+  async createAuthorizationCookie(): Promise<URL> {
     const state = generateState()
     const url = this.github.createAuthorizationURL(state, this.scopes)
 
-    cookiesManager.set(this.stateCookie, state, {
+    this.cookiesManager.set(this.stateCookie, state, {
       path: '/',
       secure: import.meta.env.PROD,
       httpOnly: true,

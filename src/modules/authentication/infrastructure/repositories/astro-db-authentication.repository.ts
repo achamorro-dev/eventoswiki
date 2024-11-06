@@ -34,6 +34,10 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
       filters.push(eq(User.githubId, loggedUserFilters.githubId))
     }
 
+    if (loggedUserFilters.googleId) {
+      filters.push(eq(User.googleId, loggedUserFilters.googleId))
+    }
+
     return filters
   }
 
@@ -42,6 +46,7 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
       {
         id: user.id,
         githubId: user.githubId,
+        googleId: user.googleId,
         name: user.name,
         username: user.username,
         email: user.email ?? undefined,

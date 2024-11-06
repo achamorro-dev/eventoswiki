@@ -3,6 +3,7 @@ import { CreateSessionCommand } from '@/authentication/application/create-sessio
 import { InvalidateSessionCommand } from '@/authentication/application/invalidate-session.command'
 import type { AuthenticationProvider } from '@/authentication/domain/authentication-provider'
 import { GitHubAuthenticationProvider } from '@/authentication/infrastructure/authentication-providers/github-authentication-provider'
+import { GoogleAuthenticationProvider } from '@/authentication/infrastructure/authentication-providers/google-authentication-provider'
 import { AstroDbAuthenticationRepository } from '@/authentication/infrastructure/repositories/astro-db-authentication.repository'
 import { LuciaSessionManager } from '@/authentication/infrastructure/session/lucia-session-manager'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
@@ -11,12 +12,16 @@ export class AuthenticationLocator {
   static sessionManager = new LuciaSessionManager()
   static authenticationRepository = new AstroDbAuthenticationRepository()
 
-  static githubProvider() {
-    return new GitHubAuthenticationProvider()
+  static githubProvider(cookiesManager: CookiesManager) {
+    return new GitHubAuthenticationProvider(cookiesManager)
   }
 
-  static createAuthorizationUrlCommand(authenticationProvider: AuthenticationProvider, cookiesManager: CookiesManager) {
-    return new CreateAuthorizationUrlCommand(authenticationProvider, cookiesManager)
+  static googleProvider(cookiesManager: CookiesManager) {
+    return new GoogleAuthenticationProvider(cookiesManager)
+  }
+
+  static createAuthorizationUrlCommand(authenticationProvider: AuthenticationProvider) {
+    return new CreateAuthorizationUrlCommand(authenticationProvider)
   }
 
   static invalidateSessionCommand(cookiesManager: CookiesManager) {

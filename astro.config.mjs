@@ -20,10 +20,13 @@ export default defineConfig({
   },
   env: {
     schema: {
+      BASE_URL: envField.string({ context: 'server', access: 'public', url: true }),
       ASTRO_DB_REMOTE_URL: envField.string({ context: 'server', access: 'secret' }),
       ASTRO_DB_APP_TOKEN: envField.string({ context: 'server', access: 'secret' }),
       GITHUB_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
       GITHUB_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
+      GOOGLE_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
+      GOOGLE_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
     },
   },
 })

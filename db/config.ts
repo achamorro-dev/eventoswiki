@@ -73,6 +73,7 @@ export const User = defineTable({
     email: column.text({ optional: true }),
     avatar: column.text(),
     githubId: column.text({ optional: true }),
+    googleId: column.text({ optional: true }),
     createdAt: column.date({ default: NOW }),
     updatedAt: column.date({ default: NOW }),
   },

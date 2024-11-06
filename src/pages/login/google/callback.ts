@@ -6,6 +6,7 @@ import type { APIContext } from 'astro'
 export async function GET(context: APIContext): Promise<Response> {
   const code = context.url.searchParams.get('code')
   const state = context.url.searchParams.get('state')
+
   if (!code || !state) {
     return new Response(null, {
       status: 400,
@@ -14,7 +15,7 @@ export async function GET(context: APIContext): Promise<Response> {
 
   try {
     await AuthenticationLocator.createSessionCommand(context.cookies).execute({
-      authenticationProvider: AuthenticationLocator.githubProvider(context.cookies),
+      authenticationProvider: AuthenticationLocator.googleProvider(context.cookies),
       code,
       state,
     })

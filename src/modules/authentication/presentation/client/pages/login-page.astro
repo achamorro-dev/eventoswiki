@@ -14,7 +14,7 @@ import Link from '../../../../shared/presentation/ui/components/link/link.astro'
     <img src="/icon.png" alt="Logo" width="180" height="180" class="icon" />
     <SectionTitle>Iniciar sesión</SectionTitle>
     <nav class="social-links">
-      <Link href="" variant="subtle" classes="social-link"
+      <Link href={Urls.LOGIN_GOOGLE} variant="subtle" classes="social-link" data-astro-prefetch="false"
         ><Google classes="social-link-icon" /> Continuar con Google</Link
       >
       <Link href={Urls.LOGIN_GITHUB} variant="subtle" classes="social-link" data-astro-prefetch="false"

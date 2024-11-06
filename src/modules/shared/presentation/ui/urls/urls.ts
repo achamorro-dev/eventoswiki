@@ -16,5 +16,6 @@ export const Urls = {
   CALENDAR: '/calendario',
   LOGIN: '/login',
   LOGIN_GITHUB: '/login/github',
+  LOGIN_GOOGLE: '/login/google',
   LOGOUT: '/logout',
 }
