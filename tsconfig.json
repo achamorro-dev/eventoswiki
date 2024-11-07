@@ -13,6 +13,7 @@
       "@/meetups/*": ["./src/modules/meetups/*"],
       "@/provinces/*": ["./src/modules/provinces/*"],
       "@/authentication/*": ["./src/modules/authentication/*"],
+      "@/users/*": ["./src/modules/users/*"],
       "@/*": ["./src/*"]
     }
   }
