@@ -3,6 +3,7 @@
  *
  * We work with Date as a string to allow serialization and deserialization
  */
+
 /* eslint-disable @typescript-eslint/ban-types */
 type Methods<T> = {
   [P in keyof T]: T[P] extends Function ? P : never
@@ -26,9 +27,11 @@ type ValueObjectValue<T> = T extends PrimitiveTypes
           ? Array<ValueObjectValue<U>>
           : T extends { [K in keyof Properties<T>]: unknown }
             ? { [K in keyof Properties<T>]: ValueObjectValue<Properties<T>[K]> }
-            : T extends unknown
-              ? T
-              : never
+            : T extends URL
+              ? string
+              : T extends unknown
+                ? T
+                : never
 
 export type Primitives<T> = {
   [key in keyof Properties<T>]: ValueObjectValue<T[key]>
