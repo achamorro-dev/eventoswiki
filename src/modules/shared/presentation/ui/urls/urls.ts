@@ -17,5 +17,6 @@ export const Urls = {
   LOGIN: '/login',
   LOGIN_GITHUB: '/login/github',
   LOGIN_GOOGLE: '/login/google',
+  LOGIN_TWITTER: '/login/twitter',
   LOGOUT: '/logout',
 }

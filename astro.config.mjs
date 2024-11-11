@@ -27,6 +27,8 @@ export default defineConfig({
       GITHUB_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
       GOOGLE_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
       GOOGLE_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
+      TWITTER_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
+      TWITTER_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
     },
   },
 })

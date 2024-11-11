@@ -1,7 +1,6 @@
 ---
 import Caption from '@/ui/components/caption/caption.astro'
 import SectionTitle from '@/ui/components/section-title/section-title.astro'
-import Facebook from '@/ui/social-icons/facebook.astro'
 import GitHub from '@/ui/social-icons/github.astro'
 import Google from '@/ui/social-icons/google.astro'
 import X from '@/ui/social-icons/x.astro'
@@ -20,9 +19,8 @@ import Link from '../../../../shared/presentation/ui/components/link/link.astro'
       <Link href={Urls.LOGIN_GITHUB} variant="subtle" classes="social-link" data-astro-prefetch="false"
         ><GitHub classes="social-link-icon" /> Continuar con GitHub</Link
       >
-      <Link href="" variant="subtle" classes="social-link"><X classes="social-link-icon" /> Continuar con X</Link>
-      <Link href="" variant="subtle" classes="social-link"
-        ><Facebook classes="social-link-icon" /> Continuar con Facebook</Link
+      <Link href={Urls.LOGIN_TWITTER} variant="subtle" classes="social-link" data-astro-prefetch="false"
+        ><X classes="social-link-icon" /> Continuar con X</Link
       >
     </nav>
     <Caption classes="caption"

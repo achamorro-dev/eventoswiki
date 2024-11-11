@@ -4,6 +4,7 @@ import { InvalidateSessionCommand } from '@/authentication/application/invalidat
 import type { AuthenticationProvider } from '@/authentication/domain/authentication-provider'
 import { GitHubAuthenticationProvider } from '@/authentication/infrastructure/authentication-providers/github-authentication-provider'
 import { GoogleAuthenticationProvider } from '@/authentication/infrastructure/authentication-providers/google-authentication-provider'
+import { TwitterAuthenticationProvider } from '@/authentication/infrastructure/authentication-providers/twitter-authentication-provider'
 import { AstroDbAuthenticationRepository } from '@/authentication/infrastructure/repositories/astro-db-authentication.repository'
 import { LuciaSessionManager } from '@/authentication/infrastructure/session/lucia-session-manager'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
@@ -18,6 +19,10 @@ export class AuthenticationLocator {
 
   static googleProvider(cookiesManager: CookiesManager) {
     return new GoogleAuthenticationProvider(cookiesManager)
+  }
+
+  static twitterProvider(cookiesManager: CookiesManager) {
+    return new TwitterAuthenticationProvider(cookiesManager)
   }
 
   static createAuthorizationUrlCommand(authenticationProvider: AuthenticationProvider) {
