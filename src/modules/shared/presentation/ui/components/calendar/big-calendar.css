@@ -62,7 +62,7 @@
 }
 
 .rbc-off-range-bg {
-  @apply dark:bg-primary-dark;
+  @apply dark:bg-background-dark-light;
 }
 
 .rbc-today {
