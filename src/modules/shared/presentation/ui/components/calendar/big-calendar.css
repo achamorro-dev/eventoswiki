@@ -66,7 +66,7 @@
 }
 
 .rbc-today {
-  @apply !bg-primary !bg-opacity-50;
+  @apply bg-primary bg-opacity-50;
 }
 
 .rbc-btn-group .rbc-active,
