@@ -62,11 +62,11 @@
 }
 
 .rbc-off-range-bg {
-  @apply dark:bg-primary-dark;
+  @apply dark:bg-background-dark-light;
 }
 
 .rbc-today {
-  @apply bg-primary bg-opacity-50;
+  @apply !bg-primary !bg-opacity-50;
 }
 
 .rbc-btn-group .rbc-active,
