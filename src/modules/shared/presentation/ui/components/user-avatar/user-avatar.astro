@@ -1,0 +1,24 @@
+---
+import type { ClassesComponent } from '@/ui/classnames/classes-component'
+
+interface Props extends ClassesComponent {
+  userName: string
+  image: URL
+}
+
+const { userName, image: imageUrl, classes, ...rest } = Astro.props as Props
+---
+
+<img
+  src={imageUrl.toString()}
+  alt={`Avatar de ${userName}`}
+  title={userName}
+  class:list={['avatar', classes]}
+  {...rest}
+/>
+
+<style>
+  .avatar {
+    @apply h-10 w-10 rounded-full object-cover;
+  }
+</style>
