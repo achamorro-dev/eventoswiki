@@ -1,5 +1,5 @@
+import { LaptopBold, MoonBold, SunBold } from '@/ui/icons'
 import type { FC } from 'react'
-import { Laptop, Moon, Sun } from '@/ui/icons'
 import { useTheme } from './use-theme'
 
 type ThemeModeToggleProps = {}
@@ -20,7 +20,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = () => {
       aria-label="Cambiar tema de la web"
       onClick={onButtonClick}
     >
-      {isDarkSelected ? <Moon /> : isSystemSelected ? <Laptop /> : <Sun />}
+      {isDarkSelected ? <MoonBold /> : isSystemSelected ? <LaptopBold /> : <SunBold />}
     </button>
   )
 }
