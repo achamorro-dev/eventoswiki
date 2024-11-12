@@ -1,0 +1,23 @@
+---
+interface Props {
+  align?: 'left' | 'right'
+}
+
+const { align = 'left' } = Astro.props
+---
+
+<div class:list={['content', `${align}-align`]}>
+  <slot />
+</div>
+
+<style>
+  .content {
+    @apply absolute top-full z-10 w-max rounded-xl border border-background-light bg-background px-2 shadow-2xl dark:border-0 dark:bg-background-dark-light;
+  }
+  .left-align {
+    @apply left-0;
+  }
+  .right-align {
+    @apply right-0;
+  }
+</style>

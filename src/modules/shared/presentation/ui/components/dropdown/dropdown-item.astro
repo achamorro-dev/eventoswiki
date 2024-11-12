@@ -1,0 +1,14 @@
+<li class="item" role="menuitem">
+  <slot />
+</li>
+
+<style>
+  .item {
+    @apply block rounded-lg  hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white;
+  }
+</style>
+<style is:global>
+  .item[role='menuitem'] *:first-child {
+    @apply block px-4 py-2;
+  }
+</style>

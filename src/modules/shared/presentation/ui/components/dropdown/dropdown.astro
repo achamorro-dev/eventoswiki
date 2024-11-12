@@ -1,0 +1,160 @@
+---
+interface Props {
+  id?: string
+}
+
+const { id = 'dropdown' } = Astro.props
+---
+
+<ew-dropdown id={id}>
+  <section class="dropdown" data-open="false">
+    <button
+      id={`${id}-button`}
+      aria-haspopup="true"
+      aria-expanded="false"
+      aria-controls={`${id}-content`}
+      role="button"
+      class="dropdown-button"
+    >
+      <slot name="trigger" />
+    </button>
+    <ul class="content" role="menu" aria-labeledby={`${id}-button`} id={`${id}-content`} tabindex="-1">
+      <li role="none">
+        <slot name="content" />
+      </li>
+    </ul>
+  </section>
+</ew-dropdown>
+
+<style>
+  .dropdown {
+    @apply relative;
+  }
+
+  .dropdown-button {
+    @apply block;
+  }
+
+  .content {
+    @apply hidden;
+  }
+
+  .dropdown-button[aria-expanded='true'] ~ .content {
+    @apply block;
+  }
+</style>
+
+<script>
+  class Dropdown extends HTMLElement {
+    isOpen: boolean
+    dropdown: HTMLInputElement | null
+    menu: HTMLUListElement | null
+    dropdownButton: HTMLButtonElement | null
+    menuItems?: NodeListOf<HTMLElement>
+    indexFocused: number
+
+    constructor() {
+      super()
+      this.isOpen = false
+
+      this.dropdown = this.querySelector(`[role='dropdown']`)
+      this.dropdownButton = this.querySelector(`[role='button']`)
+      this.menu = this.querySelector(`[role='menu']`)
+      this.menuItems = this.menu?.querySelectorAll('li[role="menuitem"] a, li[role="menuitem"] button')
+      this.indexFocused = -1
+
+      this.addListeners()
+    }
+
+    open = () => {
+      this.isOpen = true
+      this.dropdownButton?.setAttribute('aria-expanded', 'true')
+    }
+
+    close() {
+      this.isOpen = false
+      this.dropdownButton?.setAttribute('aria-expanded', 'false')
+      this.dropdownButton?.focus()
+    }
+
+    private addListeners() {
+      if (this.dropdownButton?.disabled) return
+
+      this.dropdownButton!.addEventListener('click', this.onDropdownButtonClick.bind(this))
+      this.dropdownButton!.addEventListener('keydown', this.onKeyDown.bind(this))
+      this.menuItems?.forEach(item => item.addEventListener('keydown', this.onKeyDown.bind(this)))
+      document.addEventListener('click', this.onDocumentClick.bind(this))
+    }
+
+    private onDropdownButtonClick() {
+      this.isOpen ? this.close() : this.open()
+    }
+
+    private onDocumentClick(event: MouseEvent) {
+      if (this.isOpen && this.contains(event.target as HTMLElement)) return
+
+      if (this.isOpen) this.close()
+    }
+
+    private onKeyDown(event: KeyboardEvent) {
+      const { ctrlKey, shiftKey, altKey, key } = event
+      let shouldStopPropagation = false
+
+      if (ctrlKey || shiftKey) return
+
+      switch (key) {
+        case 'Esc':
+        case 'Escape':
+          if (this.isOpen) {
+            this.close()
+            this.dropdownButton?.focus()
+          }
+
+          shouldStopPropagation = true
+          break
+        case 'Down':
+        case 'ArrowDown':
+          if (!this.isOpen) {
+            this.open()
+          }
+
+          this.focusNextMenuItem()
+          shouldStopPropagation = true
+          break
+        case 'Up':
+        case 'ArrowUp':
+          if (!this.isOpen) {
+            this.open()
+          }
+
+          this.focusPreviousMenuItem()
+          shouldStopPropagation = true
+          break
+      }
+
+      if (shouldStopPropagation) {
+        event.stopPropagation()
+        event.preventDefault()
+      }
+    }
+
+    private focusNextMenuItem() {
+      if (!this.menuItems) return
+      this.indexFocused = (this.indexFocused + 1) % this.menuItems.length
+
+      this.menuItems[this.indexFocused].focus()
+    }
+
+    private focusPreviousMenuItem() {
+      if (!this.menuItems) return
+      this.indexFocused =
+        this.indexFocused === -1
+          ? this.menuItems.length - 1
+          : (this.indexFocused - 1 + this.menuItems.length) % this.menuItems.length
+
+      this.menuItems[this.indexFocused].focus()
+    }
+  }
+
+  customElements.define('ew-dropdown', Dropdown)
+</script>

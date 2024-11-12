@@ -1,0 +1,20 @@
+---
+interface Props {
+  isLast?: boolean
+}
+
+const { isLast = false } = Astro.props
+---
+
+<ul class:list={['section', { 'last-section': isLast }]}>
+  <slot />
+</ul>
+
+<style>
+  .section {
+    @apply border-b border-border py-2 text-sm text-foreground  dark:text-foreground-dark;
+  }
+  .last-section {
+    @apply border-b-0;
+  }
+</style>
