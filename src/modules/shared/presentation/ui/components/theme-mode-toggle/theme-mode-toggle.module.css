@@ -3,7 +3,7 @@
 }
 
 .title {
-  @apply text-sm font-medium;
+  @apply text-sm;
 }
 
 .buttons {
