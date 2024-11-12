@@ -5,6 +5,7 @@ import UserMenu from '@/users/presentation/server/components/user-menu/user-menu
 import { Urls } from '../../urls/urls'
 import Link from '../link/link.astro'
 import MobileMenu from '../menu/mobile-menu.astro'
+import UserAvatarSkeleton from '../user-avatar/user-avatar-skeleton.astro'
 
 const hasActiveSession = Astro.locals.user !== null
 const userId = Astro.locals.user?.id
@@ -29,7 +30,13 @@ const userId = Astro.locals.user?.id
         </Link>
       )
     }
-    {hasActiveSession && userId && <UserMenu userId={userId} />}
+    {
+      hasActiveSession && userId && (
+        <UserMenu userId={userId} server:defer>
+          <UserAvatarSkeleton slot="fallback" />
+        </UserMenu>
+      )
+    }
   </section>
 </header>
 <MobileMenu />
