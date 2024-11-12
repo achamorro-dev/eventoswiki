@@ -1,9 +1,10 @@
 ---
 import Logo from '@/ui/components/logo/logo.astro'
-import Menu from '@/ui/components/menu/menu.astro'
+import DesktopMenu from '@/ui/components/menu/desktop-menu.astro'
 import UserMenu from '@/users/presentation/server/components/user-menu/user-menu.astro'
 import { Urls } from '../../urls/urls'
 import Link from '../link/link.astro'
+import MobileMenu from '../menu/mobile-menu.astro'
 
 const hasActiveSession = Astro.locals.user !== null
 const userId = Astro.locals.user?.id
@@ -11,7 +12,7 @@ const userId = Astro.locals.user?.id
 
 <header class="header">
   <Logo />
-  <Menu />
+  <DesktopMenu />
   <section class="actions">
     <Link
       classes="add-event-link"
@@ -31,6 +32,7 @@ const userId = Astro.locals.user?.id
     {hasActiveSession && userId && <UserMenu userId={userId} />}
   </section>
 </header>
+<MobileMenu />
 
 <style>
   .header {

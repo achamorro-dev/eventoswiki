@@ -1,0 +1,40 @@
+---
+import { Urls } from '@/ui/urls/urls'
+import Link from '../link/link.astro'
+
+const pathname = Astro.url.pathname
+
+const urlSections = {
+  EVENTS: '/evento',
+  MEETUPS: '/meetup',
+  CALENDAR: '/calendario',
+}
+---
+
+<nav class="desktop-menu">
+  <ul class="menu-list">
+    <li class="menu-list-item">
+      <Link selected={pathname.includes(urlSections.EVENTS)} href={Urls.EVENTS}>Eventos</Link>
+    </li>
+    <li class="menu-list-item">
+      <Link selected={pathname.includes(urlSections.MEETUPS)} href={Urls.MEETUPS}>Meetups</Link>
+    </li>
+    <li class="menu-list-item">
+      <Link selected={pathname.includes(urlSections.CALENDAR)} href={Urls.CALENDAR}>Calendario</Link>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .desktop-menu {
+    @apply hidden flex-1 lg:block;
+  }
+
+  .menu-list-item {
+    @apply !mb-0;
+  }
+
+  .menu-list {
+    @apply mx-auto flex w-full list-none justify-center gap-6;
+  }
+</style>

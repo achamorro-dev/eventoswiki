@@ -1,0 +1,42 @@
+---
+import { Urls } from '@/ui/urls/urls'
+import Link from '../link/link.astro'
+
+const pathname = Astro.url.pathname
+
+const urlSections = {
+  EVENTS: '/evento',
+  MEETUPS: '/meetup',
+  CALENDAR: '/calendario',
+}
+---
+
+<nav class="mobile-menu">
+  <ul class="menu-list">
+    <li>
+      <Link selected={pathname.includes(urlSections.EVENTS)} classes="mobile-link" href={Urls.EVENTS}>Eventos</Link>
+    </li>
+    <li>
+      <Link selected={pathname.includes(urlSections.MEETUPS)} classes="mobile-link" href={Urls.MEETUPS}>Meetups</Link>
+    </li>
+    <li>
+      <Link selected={pathname.includes(urlSections.CALENDAR)} classes="mobile-link" href={Urls.CALENDAR}
+        >Calendario</Link
+      >
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .mobile-menu {
+    @apply block w-full border-b border-gray-200 px-4 py-2 text-menu-foreground dark:border-border-dark lg:hidden;
+  }
+
+  .menu-list {
+    @apply flex list-none flex-row items-center justify-start gap-4 p-0;
+  }
+
+  .mobile-link {
+    @apply ml-0 text-base font-medium;
+  }
+</style>
