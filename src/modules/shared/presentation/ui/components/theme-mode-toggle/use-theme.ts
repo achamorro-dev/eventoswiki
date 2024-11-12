@@ -7,7 +7,7 @@ export enum ThemeMode {
   system = 'system',
 }
 export const useTheme = () => {
-  const [theme, setTheme] = useState(ThemeMode.light)
+  const [theme, setTheme] = useState<string>(ThemeMode.light)
 
   const toggleTheme = (newTheme?: ThemeMode) => {
     if (newTheme) {
@@ -31,19 +31,13 @@ export const useTheme = () => {
   useEffect(() => {
     const setInitialThemeState = () => {
       const localStorageValue = localStorage?.getItem(themeModeKey)
-      const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
       if (localStorageValue) {
         setTheme(localStorageValue)
         return
       }
 
-      if (preferDark) {
-        setTheme(ThemeMode.dark)
-        return
-      }
-
-      setTheme(ThemeMode.system)
+      setTheme(ThemeMode.light)
     }
 
     setInitialThemeState()

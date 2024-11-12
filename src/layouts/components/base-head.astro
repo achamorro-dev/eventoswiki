@@ -45,18 +45,19 @@ const {
   <ClientRouter />
 
   <script is:inline>
-    document.addEventListener('astro:after-swap', () => {
+    const setTheme = () => {
       const localStorageValue = localStorage.getItem('theme-mode')
-      const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches
       const darkTheme = 'dark'
 
-      if (preferDark || localStorageValue === darkTheme) {
+      if (localStorageValue === darkTheme) {
         document.documentElement.classList.add(darkTheme)
-        localStorage.setItem('theme-mode', 'dark')
       } else {
         document.documentElement.classList.remove(darkTheme)
       }
-    })
+    }
+
+    document.addEventListener('astro:after-swap', setTheme)
+    setTheme()
   </script>
 </head>
 <slot />
