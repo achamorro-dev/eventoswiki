@@ -1,0 +1,46 @@
+---
+import Caption from '@/ui/components/caption/caption.astro'
+import DropdownContent from '@/ui/components/dropdown/dropdown-content.astro'
+import DropdownItem from '@/ui/components/dropdown/dropdown-item.astro'
+import DropdownSection from '@/ui/components/dropdown/dropdown-section.astro'
+import Dropdown from '@/ui/components/dropdown/dropdown.astro'
+import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
+import { Urls } from '@/ui/urls/urls'
+import { UsersLocator } from '@/users/di/users.locator'
+
+interface Props {
+  userId: string
+}
+
+const { userId } = Astro.props
+const user = await UsersLocator.getUserQuery().execute({ id: userId })
+---
+
+<Dropdown>
+  <UserAvatar slot="trigger" userName={user.name} image={user.avatar} classes="hover:opacity-90" />
+  <DropdownContent slot="content" align="right">
+    <DropdownSection>
+      <DropdownItem>
+        <section class="user-info">
+          <h2 class="user-name">{user.name}</h2>
+          <Caption>{user.email}</Caption>
+        </section>
+      </DropdownItem>
+    </DropdownSection>
+
+    <DropdownSection isLast>
+      <DropdownItem>
+        <a href={Urls.LOGOUT} data-astro-prefetch="false">Cerrar sesión</a>
+      </DropdownItem>
+    </DropdownSection>
+  </DropdownContent>
+</Dropdown>
+
+<style>
+  .user-info {
+    @apply flex flex-col gap-2 text-left;
+  }
+  .user-name {
+    @apply !p-0 text-base font-medium;
+  }
+</style>
