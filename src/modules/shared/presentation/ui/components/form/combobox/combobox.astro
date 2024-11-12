@@ -294,7 +294,7 @@ const { label, placeholder, value, options = [], id = 'combobox', ...rest } = As
     private onDocumentClick(event: MouseEvent) {
       if (this.isOpen && this.contains(event.target as HTMLElement)) return
 
-      this.close()
+      if (this.isOpen) this.close()
     }
 
     private initializeInputValue() {
