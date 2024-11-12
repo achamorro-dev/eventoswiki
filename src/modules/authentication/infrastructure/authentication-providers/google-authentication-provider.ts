@@ -11,7 +11,6 @@ export class GoogleAuthenticationProvider implements AuthenticationProvider {
   scopes: string[] = ['openid', 'profile', 'email']
   stateCookie = 'google_oauth_state'
   codeVerifierCookie = 'google_code_verifier'
-  userUrl = 'https://api.github.com/user'
 
   constructor(private readonly cookiesManager: CookiesManager) {
     const redirectUri = `${BASE_URL}/login/google/callback`
