@@ -7,7 +7,7 @@ export enum ThemeMode {
   system = 'system',
 }
 export const useTheme = () => {
-  const [theme, setTheme] = useState('')
+  const [theme, setTheme] = useState(ThemeMode.light)
 
   const toggleTheme = (newTheme?: ThemeMode) => {
     if (newTheme) {
