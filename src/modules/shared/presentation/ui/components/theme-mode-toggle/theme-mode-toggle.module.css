@@ -1,0 +1,33 @@
+.theme-toggle {
+  @apply flex items-center justify-between gap-4 px-4;
+}
+
+.title {
+  @apply text-sm font-medium;
+}
+
+.buttons {
+  @apply flex items-center justify-between gap-2 rounded-full bg-background-light p-1;
+}
+
+.button {
+  @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-transparent text-xl hover:bg-background;
+}
+
+.selected {
+  @apply bg-background;
+}
+
+:global(.dark) {
+  .buttons {
+    @apply bg-background-dark;
+  }
+
+  .button {
+    @apply text-foreground-dark  hover:bg-background-dark-light;
+  }
+
+  .selected {
+    @apply bg-background-dark-light;
+  }
+}

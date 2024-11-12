@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 const themeModeKey = 'theme-mode'
-enum ThemeModes {
+export enum ThemeMode {
   light = 'light',
   dark = 'dark',
   system = 'system',
@@ -9,17 +9,22 @@ enum ThemeModes {
 export const useTheme = () => {
   const [theme, setTheme] = useState('')
 
-  const toggleTheme = () => {
-    if (theme === ThemeModes.system) {
-      setTheme(ThemeModes.light)
-      return
-    }
-    if (theme === ThemeModes.light) {
-      setTheme(ThemeModes.dark)
+  const toggleTheme = (newTheme?: ThemeMode) => {
+    if (newTheme) {
+      setTheme(newTheme)
       return
     }
 
-    setTheme(ThemeModes.system)
+    if (theme === ThemeMode.system) {
+      setTheme(ThemeMode.light)
+      return
+    }
+    if (theme === ThemeMode.light) {
+      setTheme(ThemeMode.dark)
+      return
+    }
+
+    setTheme(ThemeMode.system)
     return
   }
 
@@ -34,35 +39,35 @@ export const useTheme = () => {
       }
 
       if (preferDark) {
-        setTheme(ThemeModes.dark)
+        setTheme(ThemeMode.dark)
         return
       }
 
-      setTheme(ThemeModes.system)
+      setTheme(ThemeMode.system)
     }
 
     setInitialThemeState()
   }, [])
 
   const removeDarkClass = () => {
-    return document.documentElement.classList.remove(ThemeModes.dark)
+    return document.documentElement.classList.remove(ThemeMode.dark)
   }
 
   const addDarkClass = () => {
-    document.documentElement.classList.add(ThemeModes.dark)
+    document.documentElement.classList.add(ThemeMode.dark)
   }
 
   const isDarkSelected = useMemo(() => {
-    return theme === ThemeModes.dark
+    return theme === ThemeMode.dark
   }, [theme])
 
   const isSystemSelected = useMemo(() => {
-    return theme === ThemeModes.system
+    return theme === ThemeMode.system
   }, [theme])
 
   const onColorSchemeChange = useCallback(
     ({ matches }: MediaQueryListEvent): void => {
-      if (theme !== ThemeModes.system) return
+      if (theme !== ThemeMode.system) return
 
       if (matches) {
         addDarkClass()

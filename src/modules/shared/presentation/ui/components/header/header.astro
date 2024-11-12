@@ -4,7 +4,6 @@ import Menu from '@/ui/components/menu/menu.astro'
 import UserMenu from '@/users/presentation/server/components/user-menu/user-menu.astro'
 import { Urls } from '../../urls/urls'
 import Link from '../link/link.astro'
-import { ThemeModeToggle } from '../theme-mode-toggle/theme-mode-toggle'
 
 const hasActiveSession = Astro.locals.user !== null
 const userId = Astro.locals.user?.id
@@ -21,7 +20,6 @@ const userId = Astro.locals.user?.id
     >
       Añadir evento
     </Link>
-    <ThemeModeToggle client:only="react" />
     {
       !hasActiveSession && (
         <Link href={Urls.LOGIN} variant="primary">

@@ -4,6 +4,7 @@ import DropdownContent from '@/ui/components/dropdown/dropdown-content.astro'
 import DropdownItem from '@/ui/components/dropdown/dropdown-item.astro'
 import DropdownSection from '@/ui/components/dropdown/dropdown-section.astro'
 import Dropdown from '@/ui/components/dropdown/dropdown.astro'
+import { ThemeModeToggle } from '@/ui/components/theme-mode-toggle/theme-mode-toggle'
 import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
 import { Urls } from '@/ui/urls/urls'
 import { UsersLocator } from '@/users/di/users.locator'
@@ -26,6 +27,10 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
           <Caption>{user.email}</Caption>
         </section>
       </DropdownItem>
+    </DropdownSection>
+
+    <DropdownSection>
+      <ThemeModeToggle client:idle />
     </DropdownSection>
 
     <DropdownSection isLast>
