@@ -1,0 +1,85 @@
+<article class="content"><slot /></article>
+
+<style is:global>
+  .content {
+    @apply mx-auto max-w-3xl;
+
+    body {
+      @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] scroll-smooth bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+    }
+
+    p,
+    span {
+      @apply text-lg text-gray-900 dark:text-gray-50;
+    }
+
+    small {
+      @apply text-sm text-gray-900 dark:text-gray-50;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply !font-bold;
+    }
+
+    h1 {
+      @apply text-3xl  text-foreground dark:text-foreground-dark;
+    }
+    h2 {
+      @apply py-4 !text-3xl text-foreground dark:text-foreground-dark;
+    }
+
+    h3 {
+      @apply py-3 !text-2xl text-foreground dark:text-foreground-dark;
+    }
+
+    p {
+      @apply py-2;
+    }
+
+    table {
+      @apply mb-10;
+    }
+
+    table tr {
+      @apply border-b dark:border-b-gray-50;
+    }
+
+    table td {
+      @apply p-4 text-gray-900 dark:text-gray-50;
+    }
+
+    table th {
+      @apply p-4 !text-gray-900 dark:!text-gray-50;
+    }
+
+    ol,
+    ul {
+      @apply p-4 font-sans text-base;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ul li {
+      @apply mb-2 !text-lg text-foreground dark:text-foreground-dark;
+    }
+
+    ol li {
+      @apply mb-2 !text-lg text-foreground dark:text-foreground-dark;
+    }
+
+    a {
+      @apply underline;
+    }
+  }
+</style>
