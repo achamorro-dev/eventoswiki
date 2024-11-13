@@ -1,0 +1,15 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { Urls } from '@/ui/urls/urls'
+import ProfilePage from '@/users/presentation/server/components/profile-page/profile-page.astro'
+
+const userId = Astro.locals.user?.id
+
+if (!userId) {
+  return Astro.redirect(Urls.HOME)
+}
+---
+
+<Layout title="Perfil">
+  <ProfilePage userId={userId} />
+</Layout>

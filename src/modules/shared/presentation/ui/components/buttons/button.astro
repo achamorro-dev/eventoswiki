@@ -1,7 +1,7 @@
 ---
 import { type ClassesComponent } from '../../classnames/classes-component'
 interface Props extends astroHTML.JSX.ButtonHTMLAttributes, ClassesComponent {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'subtle'
 }
 
 const { classes, variant = 'primary', ...rest } = Astro.props
@@ -26,5 +26,9 @@ const { classes, variant = 'primary', ...rest } = Astro.props
 
   .button-outline {
     @apply border-primary text-primary dark:border-primary-light dark:text-primary-light;
+  }
+
+  .button-subtle {
+    @apply border-border bg-background text-foreground hover:bg-background-light dark:border-border-dark dark:bg-background-dark dark:text-foreground-dark dark:hover:bg-background-dark-light;
   }
 </style>

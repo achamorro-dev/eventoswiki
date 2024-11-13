@@ -4,21 +4,34 @@ import type { ClassesComponent } from '@/ui/classnames/classes-component'
 interface Props extends ClassesComponent {
   userName: string
   image: URL
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-const { userName, image: imageUrl, classes, ...rest } = Astro.props as Props
+const { userName, image: imageUrl, classes, size = 'md', ...rest } = Astro.props as Props
 ---
 
 <img
   src={imageUrl.toString()}
   alt={`Avatar de ${userName}`}
   title={userName}
-  class:list={['avatar', classes]}
+  class:list={['avatar', `avatar-${size}`, classes]}
   {...rest}
 />
 
 <style>
   .avatar {
-    @apply h-10 w-10 rounded-full object-cover;
+    @apply rounded-full object-cover;
+  }
+  .avatar-sm {
+    @apply h-6 w-6;
+  }
+  .avatar-md {
+    @apply h-10 w-10;
+  }
+  .avatar-lg {
+    @apply h-16 w-16;
+  }
+  .avatar-xl {
+    @apply h-24 w-24;
   }
 </style>

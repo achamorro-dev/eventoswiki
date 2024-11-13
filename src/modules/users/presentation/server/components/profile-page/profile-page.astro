@@ -1,0 +1,33 @@
+---
+import Button from '@/ui/components/buttons/button.astro'
+import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
+import { UsersLocator } from '@/users/di/users.locator'
+
+interface Props {
+  userId: string
+}
+
+const { userId } = Astro.props
+const user = await UsersLocator.getUserQuery().execute({ id: userId })
+---
+
+<article>
+  <header class="header">
+    <UserAvatar userName={user.name} image={user.avatar} size="xl" />
+    <h1 class="text-3xl font-medium text-black dark:text-white">{user.name}</h1>
+    <span class="username">@{user.username}</span>
+    <div></div>
+    <!-- <Button variant="subtle">Editar perfil</Button> -->
+    <Button variant="outline">Eliminar cuenta</Button>
+  </header>
+</article>
+
+<style>
+  .header {
+    @apply flex flex-col items-center gap-4;
+  }
+
+  .username {
+    @apply font-medium;
+  }
+</style>
