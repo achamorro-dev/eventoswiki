@@ -1,0 +1,227 @@
+---
+import { XBold } from '@/ui/icons'
+import Button from '../buttons/button.astro'
+import IconButton from '../buttons/icon-button.astro'
+
+interface Props {
+  id?: string
+  closeLabel?: string
+  acceptLabel?: string
+  title: string
+  dismissible?: boolean
+}
+
+const { id = 'modal', title, closeLabel = 'Cancelar', acceptLabel = 'Aceptar', dismissible = true } = Astro.props
+---
+
+<ew-modal id={id} data-id={id} data-dismissible={dismissible}>
+  <dialog>
+    <header>
+      <h1>{title}</h1>
+      {
+        dismissible && (
+          <IconButton classes="icon-close-button" id={`${id}-icon-close-button`} aria-label={closeLabel}>
+            <XBold />
+          </IconButton>
+        )
+      }
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <menu>
+        <Button id={`${id}-close-button`} variant="outline">{closeLabel}</Button>
+        <slot name="actions" />
+        <Button id={`${id}-accept-button`} variant="primary">{acceptLabel}</Button>
+      </menu>
+    </footer>
+  </dialog>
+</ew-modal>
+
+<style>
+  dialog {
+    @apply fixed z-50 mb-0 flex w-full max-w-lg translate-y-full scale-75 flex-col overflow-hidden rounded-tl-3xl rounded-tr-3xl bg-background p-4 pt-0 opacity-0 dark:bg-background-dark-light md:inset-0 md:m-auto md:rounded-3xl;
+  }
+
+  dialog[open] {
+    @apply translate-y-0 opacity-100;
+    animation: openMobile 0.25s ease-out forwards;
+  }
+
+  dialog.closing {
+    animation: closeMobile 0.25s ease-out forwards;
+  }
+
+  dialog::backdrop {
+    @apply fixed inset-0 z-40 bg-backdrop opacity-0 transition-opacity dark:bg-background/80;
+  }
+
+  dialog[open]::backdrop {
+    opacity: 0.5;
+    animation: backdropFadeIn 0.15s ease-out forwards;
+  }
+
+  dialog.closing::backdrop {
+    animation: backdropFadeOut 0.15s ease-out forwards;
+  }
+
+  header {
+    @apply relative grid h-14 w-full grid-cols-[1fr] items-center text-center text-lg font-medium text-foreground dark:text-foreground-dark;
+  }
+
+  main {
+    @apply flex-1 overflow-auto pb-8 pt-4;
+  }
+
+  footer {
+    @apply py-2;
+  }
+
+  menu {
+    @apply flex w-full items-center justify-between gap-4;
+  }
+
+  menu > * {
+    @apply flex-1;
+  }
+
+  .icon-close-button {
+    @apply absolute right-0 text-foreground dark:text-foreground-dark;
+  }
+
+  @media (min-width: 768px) {
+    dialog[open] {
+      animation: openDesktop 0.15s ease-out forwards;
+    }
+
+    dialog.closing {
+      animation: closeDesktop 0.15s ease-out forwards;
+    }
+  }
+
+  @keyframes openMobile {
+    from {
+      transform: translateY(100%);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes closeMobile {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 1;
+    }
+  }
+
+  @keyframes openDesktop {
+    from {
+      transform: scale(0.75);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes closeDesktop {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: scale(0.75);
+      opacity: 0;
+    }
+  }
+
+  @keyframes backdropFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes backdropFadeOut {
+    from {
+      opacity: 0.5;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  class EwModal extends HTMLElement implements EwModal {
+    id: string
+    dialog: HTMLDialogElement | null
+    acceptButton: HTMLButtonElement | null
+    closeButton: HTMLButtonElement | null
+    iconCloseButton: HTMLButtonElement | null
+    dismissible: boolean
+
+    constructor() {
+      super()
+
+      this.id = this.dataset.id as string
+      this.dismissible = Boolean(this.dataset.dismissible)
+      this.dialog = this.querySelector('dialog')
+      this.acceptButton = this.querySelector(`#${this.id}-accept-button`)
+      this.closeButton = this.querySelector(`#${this.id}-close-button`)
+      this.iconCloseButton = this.querySelector(`#${this.id}-icon-close-button`)
+
+      this.initialize()
+    }
+
+    initialize() {
+      this.acceptButton?.addEventListener('click', this.onAcceptButtonClick.bind(this))
+      this.closeButton?.addEventListener('click', this.onCloseButtonClick.bind(this))
+      if (this.dismissible) {
+        this.iconCloseButton?.addEventListener('click', this.onCloseButtonClick.bind(this))
+      }
+    }
+
+    open() {
+      document.body.style.overflow = 'hidden'
+      this.dialog?.showModal()
+
+      if (this.dismissible) {
+        this.querySelector('dialog::backdrop')?.addEventListener('click', this.onCloseButtonClick.bind(this))
+      }
+    }
+
+    close() {
+      document.body.style.overflow = 'auto'
+      this.dialog?.classList.add('closing')
+
+      setTimeout(() => {
+        this.dialog?.close()
+        this.dialog?.classList.remove('closing')
+      }, 350)
+    }
+
+    onAcceptButtonClick() {
+      this.dispatchEvent(new Event('accept'))
+    }
+
+    onCloseButtonClick() {
+      this.dispatchEvent(new Event('close'))
+    }
+  }
+
+  customElements.define('ew-modal', EwModal)
+</script>

@@ -21,4 +21,5 @@ export {
   PiUsersFour as Users,
   PiWhatsappLogoFill as Whatsapp,
   PiYoutubeLogoFill as Youtube,
+  PiXBold as XBold,
 } from 'react-icons/pi'

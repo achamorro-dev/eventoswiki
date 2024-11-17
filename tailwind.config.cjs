@@ -71,6 +71,9 @@ module.exports = {
           DEFAULT: colors.zinc[500],
           dark: colors.zinc[400],
         },
+        backdrop: {
+          DEFAULT: colors.black,
+        },
       },
     },
   },
