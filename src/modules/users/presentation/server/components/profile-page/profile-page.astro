@@ -1,5 +1,4 @@
 ---
-import Button from '@/ui/components/buttons/button.astro'
 import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
 import { UsersLocator } from '@/users/di/users.locator'
 
@@ -18,7 +17,7 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
     <span class="username">@{user.username}</span>
     <div></div>
     <!-- <Button variant="subtle">Editar perfil</Button> -->
-    <Button variant="outline">Eliminar cuenta</Button>
+    <slot name="header" />
   </header>
 </article>
 
