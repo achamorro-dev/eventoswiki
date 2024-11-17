@@ -1,15 +1,38 @@
 ---
+import DeleteLoggedUserModal from '@/authentication/presentation/client/components/delete-logged-user-modal/delete-logged-user-modal.astro'
 import Layout from '@/layouts/layout.astro'
+import Button from '@/ui/components/buttons/button.astro'
 import { Urls } from '@/ui/urls/urls'
 import ProfilePage from '@/users/presentation/server/components/profile-page/profile-page.astro'
 
 const userId = Astro.locals.user?.id
 
 if (!userId) {
-  return Astro.redirect(Urls.HOME)
+  return Astro.redirect(Urls.LOGIN)
 }
 ---
 
 <Layout title="Perfil">
-  <ProfilePage userId={userId} />
+  <ProfilePage userId={userId}>
+    <section slot="header">
+      <Button variant="outline" id="delete-account-button">Eliminar cuenta</Button>
+      <DeleteLoggedUserModal id="user-delete-modal" />
+    </section>
+  </ProfilePage>
 </Layout>
+
+<script>
+  import type { EwModal } from '@/ui/components/modal/modal'
+
+  const initializeListeners = () => {
+    const deleteAccountButton = document.querySelector('#delete-account-button')
+    const modal = document.querySelector<EwModal>('#user-delete-modal')
+    deleteAccountButton?.addEventListener('click', () => {
+      modal?.open()
+    })
+  }
+
+  document.addEventListener('astro:after-swap', initializeListeners)
+
+  initializeListeners()
+</script>

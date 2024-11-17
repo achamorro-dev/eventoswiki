@@ -1,4 +1,4 @@
-import { AuthenticationLocator } from '@/authentication/presentation/server/di/authentication.locator'
+import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
 
 import type { APIContext } from 'astro'
 

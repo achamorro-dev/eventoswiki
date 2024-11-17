@@ -8,6 +8,7 @@ import { TwitterAuthenticationProvider } from '@/authentication/infrastructure/a
 import { AstroDbAuthenticationRepository } from '@/authentication/infrastructure/repositories/astro-db-authentication.repository'
 import { LuciaSessionManager } from '@/authentication/infrastructure/session/lucia-session-manager'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
+import { DeleteLoggedUserCommand } from '../application/delete-logged-user.command'
 
 export class AuthenticationLocator {
   static sessionManager = new LuciaSessionManager()
@@ -35,5 +36,12 @@ export class AuthenticationLocator {
 
   static createSessionCommand(cookiesManager: CookiesManager) {
     return new CreateSessionCommand(cookiesManager, this.sessionManager, this.authenticationRepository)
+  }
+
+  static deleteLoggedUserCommand(cookiesManager: CookiesManager) {
+    return new DeleteLoggedUserCommand(
+      this.invalidateSessionCommand(cookiesManager),
+      AuthenticationLocator.authenticationRepository,
+    )
   }
 }

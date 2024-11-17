@@ -1,6 +1,7 @@
 import type { AuthenticationRepository } from '@/authentication/domain/authentication.repository'
 import { LoggedUser } from '@/authentication/domain/logged-user'
 import type { LoggedUserFilters } from '@/authentication/domain/logged-user-filters'
+import type { LoggedUserId } from '@/authentication/domain/logged-user-id'
 import { User, db, eq } from 'astro:db'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -57,5 +58,10 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
 
   generateId(): string {
     return uuidv4()
+  }
+
+  async deleteLoggedUser(userId: LoggedUserId): Promise<void> {
+    await db.delete(User).where(eq(User.id, userId.value))
+    return
   }
 }
