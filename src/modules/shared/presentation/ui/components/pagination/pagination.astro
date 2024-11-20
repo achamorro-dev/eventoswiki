@@ -1,4 +1,5 @@
 ---
+import { knownSearchParams } from '@/shared/presentation/search-params/known-search-params'
 import { CaretLeft, CaretRight } from '@/ui/icons'
 
 interface Props {
@@ -20,9 +21,11 @@ const shouldShowFirstPage = pagesToShow.at(0) !== pages.at(0)
 const shouldShowLastPage = pagesToShow.at(-1) !== pages.at(-1)
 
 const getRewritedSearchParams = (page: number) => {
-  const searchParams = new URL(Astro.request.url).searchParams
+  const url = Astro.request.headers.get('Referer') || Astro.request.url
+  const searchParams = new URL(url).searchParams
   searchParams.set('page', page.toString())
-  return `?${searchParams.toString()}`
+  const filteredSearchParams = Array.from(searchParams.entries()).filter(([key]) => knownSearchParams.includes(key))
+  return `?${new URLSearchParams(filteredSearchParams).toString()}`
 }
 ---
 
