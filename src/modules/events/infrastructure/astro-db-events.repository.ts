@@ -99,7 +99,7 @@ export class AstroDbEventsRepository implements EventsRepository {
     return this.getFiltersToApply(criteria.filters)
   }
 
-  //@ts-expect-error
+  //@ts-expect-error return any, pending fix types
   private getFiltersToApply<F>(parentFilters: F | Array<Filter<F>>) {
     if (!parentFilters) return []
 

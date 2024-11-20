@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { location, page } = Astro.props
-const { data: pastEvents, totalPages } = await EventsLocator.getPastEventsQuery().execute({ count: 12, location })
+const { data: pastEvents, totalPages } = await EventsLocator.getPastEventsQuery().execute({ count: 12, page, location })
 ---
 
 <EventsGrid events={pastEvents} page={page} totalPages={totalPages} goToEvent={Urls.EVENT} />
