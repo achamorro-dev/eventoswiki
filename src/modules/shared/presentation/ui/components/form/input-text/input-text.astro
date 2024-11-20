@@ -5,9 +5,9 @@ import type { Input } from '../types/input'
 
 interface Props extends Input, ClassesComponent {}
 
-const { label, classes, variant = 'default', ...rest } = Astro.props
+const { label, classes, variant = 'default', error, ...rest } = Astro.props
 ---
 
-<BaseInput label={label}>
-  <input type="text" class:list={['input', `input-${variant}`, classes]} {...rest} />
+<BaseInput label={label} error={error}>
+  <input type="text" class:list={['input', `input-${variant}`, { 'input-with-error': error }, classes]} {...rest} />
 </BaseInput>

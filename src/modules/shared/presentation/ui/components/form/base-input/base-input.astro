@@ -1,21 +1,27 @@
 ---
+import InputError from '../input-error/input-error.astro'
 import Label from '../label/label.astro'
 
 interface Props {
   label?: string
   classes?: string
+  error?: string
 }
 
-const { label, classes } = Astro.props
+const { label, classes, error } = Astro.props
 ---
 
 {
   label ? (
     <Label label={label} classes={classes}>
       <slot />
+      {error && <InputError>{error}</InputError>}
     </Label>
   ) : (
-    <slot />
+    <Fragment>
+      <slot />
+      {error && <InputError>{error}</InputError>}
+    </Fragment>
   )
 }
 
@@ -25,5 +31,8 @@ const { label, classes } = Astro.props
   }
   input.input.input-chip {
     @apply rounded-full;
+  }
+  input.input-with-error {
+    @apply text-error-dark ring-error dark:text-error-dark dark:ring-error-dark;
   }
 </style>

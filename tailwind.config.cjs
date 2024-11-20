@@ -74,6 +74,10 @@ module.exports = {
         backdrop: {
           DEFAULT: colors.black,
         },
+        error: {
+          DEFAULT: colors.red[500],
+          dark: colors.red[400],
+        },
       },
     },
   },
