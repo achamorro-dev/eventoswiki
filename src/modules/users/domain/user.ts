@@ -35,4 +35,18 @@ export class User {
       avatar: this.avatar.toString(),
     }
   }
+
+  getId(): string {
+    return this.id.value
+  }
+
+  updateProfile(profile: { name: string; email: string; username: string }) {
+    this.name = profile.name
+    this.email = profile.email
+    this.username = profile.username
+  }
+
+  getAvatarUrlString() {
+    return this.avatar.toString()
+  }
 }

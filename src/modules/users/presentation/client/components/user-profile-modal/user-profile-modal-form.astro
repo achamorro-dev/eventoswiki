@@ -1,0 +1,66 @@
+---
+import Modal from '@/ui/components/modal/modal.astro'
+import InputText from '@/ui/components/form/input-text/input-text.astro'
+import { UsersLocator } from '@/users/di/users.locator'
+
+interface Props {
+  id: string
+  userId: string
+}
+
+const { id, userId } = Astro.props
+
+const user = await UsersLocator.getUserQuery().execute({ id: userId })
+---
+
+<Modal id={id} title="Editar perfil" acceptLabel="Guardar">
+  <form id="user-profile-form" method="dialog" class="form">
+    <section>
+      <img src={user.avatar.toString()} alt="Logo" width="180" height="180" class="icon" />
+    </section>
+    <section class="form-inputs">
+      <InputText label="Nombre" name="name" value={user.name} required />
+      <InputText type="email" label="Email" name="email" value={user.email} required />
+      <InputText label="Usuario" name="username" value={user.username} required />
+    </section>
+  </form>
+</Modal>
+
+<style>
+  .form {
+    @apply flex flex-col items-center gap-8 p-1;
+  }
+
+  .form-inputs {
+    @apply grid w-full grid-cols-2 gap-4;
+  }
+</style>
+
+<script>
+  import type { EwModal } from '@/ui/components/modal/modal'
+  import { actions } from 'astro:actions'
+
+  function initializeListeners() {
+    const modal = document.querySelector(`#user-profile-modal`) as EwModal
+    const form = document.querySelector('#user-profile-form') as HTMLFormElement
+
+    modal?.addEventListener('accept', async () => {
+      form.dispatchEvent(new Event('submit'))
+    })
+
+    modal?.addEventListener('close', () => {
+      console.log('close')
+      modal.close()
+    })
+
+    form?.addEventListener('submit', async e => {
+      e.preventDefault()
+      const formData = new FormData(form)
+      const { error } = await actions.user.saveProfileAction(formData)
+      console.log({ formData, error })
+    })
+  }
+
+  document.addEventListener('astro:after-swap', initializeListeners)
+  initializeListeners()
+</script>

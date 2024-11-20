@@ -15,4 +15,16 @@ export class AstroDbUsersRepository implements UsersRepository {
 
     return User.fromPrimitives(user)
   }
+
+  async save(user: User): Promise<void> {
+    await db
+      .update(UserTable)
+      .set({
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        avatar: user.getAvatarUrlString(),
+      })
+      .where(eq(UserTable.id, user.id.value))
+  }
 }

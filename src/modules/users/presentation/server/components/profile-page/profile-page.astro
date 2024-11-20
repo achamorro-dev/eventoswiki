@@ -16,7 +16,6 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
     <h1 class="text-3xl font-medium text-black dark:text-white">{user.name}</h1>
     <span class="username">@{user.username}</span>
     <div></div>
-    <!-- <Button variant="subtle">Editar perfil</Button> -->
     <slot name="header" />
   </header>
 </article>
