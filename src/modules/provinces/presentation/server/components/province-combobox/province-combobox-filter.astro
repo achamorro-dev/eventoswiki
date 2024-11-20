@@ -15,14 +15,16 @@ const { value } = Astro.props
 <script>
   import { navigate } from 'astro:transitions/client'
 
+  const initializeListeners = () => {
+    const provinceCombobox = document.querySelector('#province-filter') as HTMLElement
+    provinceCombobox?.addEventListener('change', (event: any) => {
+      navigate(`?province=${event.target.value}`, { history: 'replace' })
+    })
+  }
+
   document.addEventListener('astro:page-load', () => {
     initializeListeners()
   })
 
-  const initializeListeners = () => {
-    const provinceCombobox = document.querySelector('#province-filter') as HTMLElement
-    provinceCombobox.addEventListener('change', (event: any) => {
-      navigate(`?province=${event.target.value}`, { history: 'replace' })
-    })
-  }
+  initializeListeners()
 </script>
