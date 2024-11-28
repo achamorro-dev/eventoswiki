@@ -17,6 +17,7 @@
     "@astrojs/vercel": "8.0.0-beta.2",
     "@fontsource-variable/inter": "^5.1.0",
     "@lucia-auth/adapter-drizzle": "^1.1.0",
+    "@mantine/form": "^7.14.1",
     "@pilcrowjs/object-parser": "^0.0.4",
     "@types/react": "18.2.21",
     "@types/react-big-calendar": "1.8.8",
