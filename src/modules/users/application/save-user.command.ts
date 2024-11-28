@@ -5,7 +5,7 @@ import type { UsersRepository } from '../domain/users.repository'
 interface Param {
   userId: string
   name: string
-  email: string
+  email: string | null
   username: string
 }
 export class SaveUserCommand extends Command<Param, void> {

@@ -1,0 +1,6 @@
+.label-container {
+  @apply flex flex-col gap-px;
+}
+.label {
+  @apply text-sm font-medium text-label dark:text-label-dark;
+}

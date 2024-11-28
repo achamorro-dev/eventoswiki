@@ -40,9 +40,9 @@ export class User {
     return this.id.value
   }
 
-  updateProfile(profile: { name: string; email: string; username: string }) {
-    this.name = profile.name
+  updateProfile(profile: { name: string; email: string | null; username: string }) {
     this.email = profile.email
+    this.name = profile.name
     this.username = profile.username
   }
 
