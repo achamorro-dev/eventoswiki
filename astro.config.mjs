@@ -2,7 +2,7 @@ import db from '@astrojs/db'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
-import vercel from '@astrojs/vercel/serverless'
+import vercel from '@astrojs/vercel'
 import { defineConfig, envField } from 'astro/config'
 
 // https://astro.build/config
