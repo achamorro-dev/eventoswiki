@@ -10,7 +10,7 @@ export default async function seed() {
     getEventsFor('eventos', '2025'),
   ])
 
-  const meetups = await Promise.all([getEventsFor('meetups', '2024')])
+  const meetups = await Promise.all([getEventsFor('meetups', '2024'), getEventsFor('meetups', '2025')])
 
   await db.delete(Event).run()
   for (const event of events) {
