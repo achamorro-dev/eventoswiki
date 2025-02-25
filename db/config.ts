@@ -68,9 +68,9 @@ export const Province = defineTable({
 export const User = defineTable({
   columns: {
     id: column.text({ primaryKey: true, optional: false, unique: true }),
-    username: column.text(),
+    username: column.text({ unique: true }),
     name: column.text(),
-    email: column.text({ optional: true, unique: true }),
+    email: column.text({ optional: true, unique: false }),
     avatar: column.text(),
     githubId: column.text({ optional: true }),
     googleId: column.text({ optional: true }),
