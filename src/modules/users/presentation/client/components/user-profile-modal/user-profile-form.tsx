@@ -1,10 +1,16 @@
 import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { ErrorMessage } from '@/ui/components/error-message/error-message'
 import { InputText } from '@/ui/components/form/input-text/input-text'
 import type { User } from '@/users/domain/user'
+import { UserEmailValidator } from '@/users/domain/validators/user-email.validator'
+import { UserNameValidator } from '@/users/domain/validators/user-name.validator'
+import { UserUsernameValidator } from '@/users/domain/validators/user-username.validator'
 import { useForm, zodResolver } from '@mantine/form'
 import { z } from 'astro/zod'
 import { actions } from 'astro:actions'
-import { useEffect, type FC } from 'react'
+import { useEffect, useState, type FC } from 'react'
+import { StringFormField } from '../../../../../shared/presentation/forms/string-form-field'
+import { UserProfileEvents } from '../../events/user-profile-events'
 import styles from './user-profile-form.module.css'
 
 interface Props {
@@ -13,32 +19,39 @@ interface Props {
 
 export const UserProfileForm: FC<Props> = props => {
   const { user } = props
+  const [error, setError] = useState<string | null>(null)
 
   const userSchema = z.object({
-    name: z.string().min(3),
-    email: z.string().email().nullable(),
-    username: z.string().min(3),
+    name: StringFormField(UserNameValidator),
+    email: StringFormField<string | null>(UserEmailValidator),
+    username: StringFormField(UserUsernameValidator),
   })
   const form = useForm({ initialValues: user, validate: zodResolver(userSchema) })
 
   useEffect(() => {
     const validateForm = async () => {
+      setError(null)
       const { hasErrors } = form.validate()
       if (hasErrors) return
 
-      await actions.user.saveUserAction({
+      const { error } = await actions.user.saveUserAction({
         name: form.values.name,
         email: form.values.email,
         username: form.values.username,
       })
 
-      document.dispatchEvent(new Event('user-profile-form-saved'))
+      if (error) {
+        setError(error.message)
+        return
+      }
+
+      document.dispatchEvent(new Event(UserProfileEvents.SAVED))
     }
 
-    document.addEventListener('user-profile-form-save-clicked', validateForm)
+    document.addEventListener(UserProfileEvents.SAVE_CLICKED, validateForm)
 
     return () => {
-      document.removeEventListener('user-profile-form-save-clicked', validateForm)
+      document.removeEventListener(UserProfileEvents.SAVE_CLICKED, validateForm)
     }
   }, [form])
 
@@ -46,13 +59,13 @@ export const UserProfileForm: FC<Props> = props => {
     const resetForm = () => {
       form.reset()
       form.setValues(user)
-      document.dispatchEvent(new Event('user-profile-form-canceled'))
+      document.dispatchEvent(new Event(UserProfileEvents.CANCELED))
     }
 
-    document.addEventListener('user-profile-form-cancel-clicked', resetForm)
+    document.addEventListener(UserProfileEvents.CANCEL_CLICKED, resetForm)
 
     return () => {
-      document.removeEventListener('user-profile-form-cancel-clicked', resetForm)
+      document.removeEventListener(UserProfileEvents.CANCEL_CLICKED, resetForm)
     }
   }, [form, user])
 
@@ -66,6 +79,7 @@ export const UserProfileForm: FC<Props> = props => {
         <InputText type="email" label="Email" name="email" {...form.getInputProps('email')} />
         <InputText label="Usuario" name="username" {...form.getInputProps('username')} />
       </section>
+      {error && <ErrorMessage message={error} />}
     </form>
   )
 }

@@ -23,7 +23,7 @@ const userId = Astro.locals.user?.id
     >
       Añadir evento
     </Link>
-    <!-- {
+    {
       !hasActiveSession && (
         <Link href={Urls.LOGIN} variant="primary">
           Iniciar sesión
@@ -36,7 +36,7 @@ const userId = Astro.locals.user?.id
           <UserAvatarSkeleton slot="fallback" />
         </UserMenu>
       )
-    } -->
+    }
   </section>
 </header>
 <MobileMenu />

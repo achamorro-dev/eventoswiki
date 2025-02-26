@@ -21,24 +21,25 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
   import type { EwModal } from '@/ui/components/modal/modal'
   import { Urls } from '@/ui/urls/urls'
   import { navigate } from 'astro:transitions/client'
+  import { UserProfileEvents } from '../../events/user-profile-events'
 
   function initializeListeners() {
     const modal = document.querySelector(`#user-profile-modal`) as EwModal
 
     modal.addEventListener('accept', async () => {
-      document.dispatchEvent(new Event('user-profile-form-save-clicked'))
+      document.dispatchEvent(new Event(UserProfileEvents.SAVE_CLICKED))
     })
 
-    document.addEventListener('user-profile-form-saved', () => {
+    document.addEventListener(UserProfileEvents.SAVED, () => {
       modal.close()
       navigate(Urls.PROFILE)
     })
 
     modal.addEventListener('close', () => {
-      document.dispatchEvent(new Event('user-profile-form-cancel-clicked'))
+      document.dispatchEvent(new Event(UserProfileEvents.CANCEL_CLICKED))
     })
 
-    document.addEventListener('user-profile-form-canceled', () => {
+    document.addEventListener(UserProfileEvents.CANCELED, () => {
       modal.close()
     })
   }

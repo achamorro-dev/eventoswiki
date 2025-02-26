@@ -9,3 +9,7 @@
 .avatar {
   @apply rounded-full;
 }
+
+.error {
+  @apply text-error;
+}

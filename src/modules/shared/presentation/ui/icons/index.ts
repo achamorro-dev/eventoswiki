@@ -19,7 +19,8 @@ export {
   PiTwitchLogoFill as Twitch,
   PiTwitterLogoFill as Twitter,
   PiUsersFour as Users,
+  PiWarningCircle as WarningCircle,
   PiWhatsappLogoFill as Whatsapp,
-  PiYoutubeLogoFill as Youtube,
   PiXBold as XBold,
+  PiYoutubeLogoFill as Youtube,
 } from 'react-icons/pi'

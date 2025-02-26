@@ -1,5 +1,8 @@
 import type { Primitives, Properties } from '@/shared/domain/primitives/primitives'
+import { InvalidUserProfileError } from './errors/invalid-user-profile.error'
+import { Profile } from './profile'
 import { UserId } from './user-id'
+import { UserProfileValidator } from './validators/user-profile.validator'
 
 export class User {
   id: UserId
@@ -40,10 +43,19 @@ export class User {
     return this.id.value
   }
 
-  updateProfile(profile: { name: string; email: string | null; username: string }) {
+  updateProfile(profile: Profile) {
+    this.ensureIsValidProfile(profile)
+
     this.email = profile.email
     this.name = profile.name
     this.username = profile.username
+  }
+
+  private ensureIsValidProfile(profile: Profile) {
+    const validator = new UserProfileValidator(profile)
+    const error = validator.validate()
+
+    if (error) throw new InvalidUserProfileError(error)
   }
 
   getAvatarUrlString() {
