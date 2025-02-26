@@ -78,6 +78,10 @@ module.exports = {
           DEFAULT: colors.red[500],
           dark: colors.red[400],
         },
+        'error-background': {
+          DEFAULT: colors.red[100],
+          dark: colors.red[900],
+        },
       },
     },
   },
