@@ -1,6 +1,7 @@
 import { UsersLocator } from '@/users/di/users.locator'
 import { InvalidUserProfileError } from '@/users/domain/errors/invalid-user-profile.error'
 import { UserNotFoundError } from '@/users/domain/errors/user-not-found.error'
+import { UsernameAlreadyExistError } from '@/users/domain/errors/username-already-exist.error'
 import { z } from 'astro/zod'
 import { ActionError, defineAction } from 'astro:actions'
 
@@ -33,6 +34,11 @@ export const saveUserAction = defineAction({
           throw new ActionError({
             code: 'BAD_REQUEST',
             message: 'El formato del nuevo perfil del usuario no es válido',
+          })
+        case error instanceof UsernameAlreadyExistError:
+          throw new ActionError({
+            code: 'BAD_REQUEST',
+            message: 'El nombre de usuario no está disponible',
           })
 
         default:

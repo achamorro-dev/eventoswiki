@@ -1,3 +1,4 @@
+import { GetUserByUsernameQuery } from '../application/get-user-by-username.query'
 import { GetUserQuery } from '../application/get-user.query'
 import { SaveUserCommand } from '../application/save-user.command'
 import type { UsersRepository } from '../domain/users.repository'
@@ -12,11 +13,11 @@ export class UsersLocator {
     return new GetUserQuery(UsersLocator.getUserRepository())
   }
 
-  static saveProfileCommand() {
-    return new SaveUserCommand(UsersLocator.getUserRepository())
+  static getUserByUsernameQuery(): GetUserByUsernameQuery {
+    return new GetUserByUsernameQuery(UsersLocator.getUserRepository())
   }
 
   static saveUserCommand() {
-    return new SaveUserCommand(UsersLocator.getUserRepository())
+    return new SaveUserCommand(UsersLocator.getUserRepository(), UsersLocator.getUserByUsernameQuery())
   }
 }
