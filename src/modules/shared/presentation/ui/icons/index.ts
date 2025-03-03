@@ -16,6 +16,7 @@ export {
   PiMoonBold as MoonBold,
   PiSunBold as SunBold,
   PiTelegramLogoFill as Telegram,
+  PiTiktokLogoFill as Tiktok,
   PiTwitchLogoFill as Twitch,
   PiTwitterLogoFill as Twitter,
   PiUsersFour as Users,

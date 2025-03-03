@@ -22,6 +22,7 @@ export class Meetup implements MeetupProps {
   readonly telegram?: string
   readonly whatsapp?: string
   readonly discord?: string
+  readonly tiktok?: string
   readonly tags: string[]
   readonly tagColor: string
   readonly content: string
@@ -47,6 +48,7 @@ export class Meetup implements MeetupProps {
     this.telegram = props.telegram
     this.whatsapp = props.whatsapp
     this.discord = props.discord
+    this.tiktok = props.tiktok
     this.tags = props.tags
     this.tagColor = props.tagColor
     this.content = props.content
@@ -74,6 +76,7 @@ export class Meetup implements MeetupProps {
       telegram: primitives.telegram,
       whatsapp: primitives.whatsapp,
       discord: primitives.discord,
+      tiktok: primitives.tiktok,
       tags: primitives.tags,
       tagColor: primitives.tagColor,
       content: primitives.content,
@@ -114,6 +117,7 @@ interface MeetupProps {
   telegram?: string
   whatsapp?: string
   discord?: string
+  tiktok?: string
   tags: string[]
   tagColor: string
   content: string
