@@ -51,6 +51,7 @@ export const Meetup = defineTable({
     telegram: column.text({ optional: true }),
     whatsapp: column.text({ optional: true }),
     discord: column.text({ optional: true }),
+    tiktok: column.text({ optional: true }),
     tags: column.text(),
     tagColor: column.text(),
     createdAt: column.date({ default: NOW }),
