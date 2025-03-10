@@ -80,8 +80,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-icons:
-        specifier: 5.0.1
-        version: 5.0.1(react@18.2.0)
+        specifier: 5.5.0
+        version: 5.5.0(react@18.2.0)
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
@@ -3421,9 +3421,9 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
-  react-icons@5.0.1:
+  react-icons@5.5.0:
     resolution:
-      { integrity: sha512-WqLZJ4bLzlhmsvme6iFdgO8gfZP17rfjYEJ2m9RsZjZ+cc4k1hTzknEz63YS1MeT50kVzoa1Nz36f4BEx+Wigw== }
+      { integrity: sha512-MEFcXdkP3dLo8uumGI5xN3lDFNsRtrjbOEKDLD7yv76v4wpnEq2Lt2qeHaQOr34I/wPN3s3+N08WkQ+CW37Xiw== }
     peerDependencies:
       react: '*'
 
@@ -7118,7 +7118,7 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.2
 
-  react-icons@5.0.1(react@18.2.0):
+  react-icons@5.5.0(react@18.2.0):
     dependencies:
       react: 18.2.0
 
