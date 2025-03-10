@@ -91,6 +91,40 @@ export const Session = defineTable({
   },
 })
 
+export const Organization = defineTable({
+  columns: {
+    id: column.text({ optional: false, unique: true }),
+    handle: column.text({ optional: false, unique: true }),
+    name: column.text(),
+    bio: column.text(),
+    image: column.text({ optional: true }),
+    location: column.text({ optional: true }),
+    web: column.text({ optional: true }),
+    twitter: column.text({ optional: true }),
+    linkedin: column.text({ optional: true }),
+    youtube: column.text({ optional: true }),
+    twitch: column.text({ optional: true }),
+    facebook: column.text({ optional: true }),
+    instagram: column.text({ optional: true }),
+    github: column.text({ optional: true }),
+    telegram: column.text({ optional: true }),
+    whatsapp: column.text({ optional: true }),
+    discord: column.text({ optional: true }),
+    tiktok: column.text({ optional: true }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const OrganizationUser = defineTable({
+  columns: {
+    organizationId: column.text({ optional: false, references: () => Organization.columns.id }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
 export default defineDb({
   tables: {
     Event,
@@ -98,5 +132,7 @@ export default defineDb({
     Province,
     User,
     Session,
+    Organization,
+    OrganizationUser,
   },
 })

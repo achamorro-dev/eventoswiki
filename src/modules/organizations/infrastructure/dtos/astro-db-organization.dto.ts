@@ -1,13 +1,11 @@
-export interface AstroDbEventDto {
-  slug: string
-  title: string
-  shortDescription: string
-  startsAt: Date
-  endsAt: Date
-  thumbnail: string
-  image: string
+export interface AstroDbOrganizationDto {
+  id: string
+  handle: string
+  name: string
+  bio: string
+  image: string | null
   location: string | null
-  web: string
+  web: string | null
   twitter: string | null
   linkedin: string | null
   youtube: string | null
@@ -19,9 +17,6 @@ export interface AstroDbEventDto {
   whatsapp: string | null
   discord: string | null
   tiktok: string | null
-  tags: string
-  tagColor: string
   createdAt: Date
   updatedAt: Date
-  content: string
 }

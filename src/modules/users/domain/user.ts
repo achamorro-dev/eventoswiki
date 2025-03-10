@@ -4,12 +4,22 @@ import { Profile } from './profile'
 import { UserId } from './user-id'
 import { UserProfileValidator } from './validators/user-profile.validator'
 
-export class User {
+export interface UserProps {
   id: UserId
   name: string
   username: string
   email: string | null
   avatar: URL
+  readonly organizations: string[]
+}
+
+export class User implements UserProps {
+  id: UserId
+  name: string
+  username: string
+  email: string | null
+  avatar: URL
+  organizations: string[]
 
   constructor(user: Properties<User>) {
     this.id = user.id
@@ -17,6 +27,7 @@ export class User {
     this.username = user.username
     this.email = user.email
     this.avatar = user.avatar
+    this.organizations = user.organizations
   }
 
   static fromPrimitives(primitives: Primitives<User>): User {
@@ -26,6 +37,7 @@ export class User {
       username: primitives.username,
       email: primitives.email,
       avatar: new URL(primitives.avatar),
+      organizations: primitives.organizations,
     })
   }
 
@@ -36,6 +48,7 @@ export class User {
       username: this.username,
       email: this.email,
       avatar: this.avatar.toString(),
+      organizations: this.organizations,
     }
   }
 

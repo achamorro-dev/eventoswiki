@@ -29,6 +29,7 @@ export class AstroEventMapper {
       telegram: eventDto.telegram || undefined,
       whatsapp: eventDto.whatsapp || undefined,
       discord: eventDto.discord || undefined,
+      tiktok: eventDto.tiktok || undefined,
       tags: eventDto.tags.split(','),
       tagColor: eventDto.tagColor,
       content: eventDto.content,

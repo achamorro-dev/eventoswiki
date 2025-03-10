@@ -29,6 +29,7 @@ export class AstroDbMeetupMapper {
       telegram: meetupDto.telegram || undefined,
       whatsapp: meetupDto.whatsapp || undefined,
       discord: meetupDto.discord || undefined,
+      tiktok: meetupDto.tiktok || undefined,
       tags: meetupDto.tags.split(','),
       tagColor: meetupDto.tagColor,
       content: meetupDto.content,

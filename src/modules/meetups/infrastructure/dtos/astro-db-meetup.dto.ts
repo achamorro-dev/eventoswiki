@@ -18,6 +18,7 @@ export interface AstroDbMeetupDto {
   telegram: string | null
   whatsapp: string | null
   discord: string | null
+  tiktok: string | null
   tags: string
   tagColor: string
   createdAt: Date

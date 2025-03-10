@@ -11,12 +11,12 @@ const { title, description, classes, ...rest } = Astro.props
 ---
 
 <BaseLayout title={title} description={description}>
-  <main id="main" class:list={['pb-12 px-4 lg:px-8 pt-4 md:pt-8', classes]} {...rest}>
+  <main id="main" class:list={['h-full min-h-[calc(100vh-12rem)] pb-12 px-4 lg:px-8 pt-4 md:pt-8', classes]} {...rest}>
     <slot />
   </main>
   <style is:global>
     body {
-      @apply m-0 grid min-h-full grid-rows-[auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+      @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
     }
   </style>
 </BaseLayout>

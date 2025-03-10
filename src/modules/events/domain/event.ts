@@ -96,7 +96,7 @@ export class Event implements EventProps {
   }
 }
 
-interface EventProps {
+export interface EventProps {
   slug: string
   title: string
   shortDescription: string

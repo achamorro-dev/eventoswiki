@@ -14,6 +14,7 @@ export {
   PiLinkedinLogoFill as Linkedin,
   PiMapPin as MapPin,
   PiMoonBold as MoonBold,
+  PiSmileyStickerThin as SmileyStickerThin,
   PiSunBold as SunBold,
   PiTelegramLogoFill as Telegram,
   PiTiktokLogoFill as Tiktok,

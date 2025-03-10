@@ -96,7 +96,7 @@ export class Meetup implements MeetupProps {
   }
 }
 
-interface MeetupProps {
+export interface MeetupProps {
   slug: string
   title: string
   shortDescription: string

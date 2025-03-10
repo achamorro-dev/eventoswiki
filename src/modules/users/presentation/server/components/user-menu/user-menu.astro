@@ -37,14 +37,19 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
 
     <DropdownSection isLast>
       <DropdownItem>
-        <a href={Urls.LOGOUT} data-astro-prefetch="false">Cerrar sesión</a>
+        <Link href={Urls.MY_ORGANIZATIONS} classes="organizations-link">Mis organizaciones</Link>
+      </DropdownItem>
+      <DropdownItem>
+        <Link href={Urls.LOGOUT} classes="logout-link" data-astro-prefetch="false">Cerrar sesión</Link>
       </DropdownItem>
     </DropdownSection>
   </DropdownContent>
 </Dropdown>
 
 <style>
-  .user-info {
+  .user-info,
+  .logout-link,
+  .organizations-link {
     @apply text-left;
   }
 

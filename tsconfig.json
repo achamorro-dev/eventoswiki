@@ -14,6 +14,7 @@
       "@/provinces/*": ["./src/modules/provinces/*"],
       "@/authentication/*": ["./src/modules/authentication/*"],
       "@/users/*": ["./src/modules/users/*"],
+      "@/organizations/*": ["./src/modules/organizations/*"],
       "@/*": ["./src/*"]
     }
   }
