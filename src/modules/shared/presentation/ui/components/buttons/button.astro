@@ -12,16 +12,18 @@ const { classes, variant = 'primary', ...rest } = Astro.props
 </button>
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .button {
     @apply inline-block rounded-full border border-transparent px-4 py-2 text-center text-sm font-medium;
   }
 
   .button-primary {
-    @apply bg-primary text-white hover:bg-primary-light dark:bg-primary-light dark:text-white dark:hover:bg-primary-dark;
+    @apply bg-primary hover:bg-primary dark:bg-primary dark:hover:bg-primary text-white dark:text-white;
   }
 
   .button-secondary {
-    @apply bg-background-light text-primary dark:bg-background-dark dark:text-primary-light;
+    @apply bg-background text-primary dark:bg-background dark:text-primary;
   }
 
   .button-outline {
@@ -29,6 +31,6 @@ const { classes, variant = 'primary', ...rest } = Astro.props
   }
 
   .button-subtle {
-    @apply border-border bg-background text-foreground hover:bg-background-light dark:border-border-dark dark:bg-background-dark dark:text-foreground-dark dark:hover:bg-background-dark-light;
+    @apply border-border bg-background text-foreground hover:bg-background dark:border-border dark:bg-background dark:text-foreground dark:hover:bg-background;
   }
 </style>

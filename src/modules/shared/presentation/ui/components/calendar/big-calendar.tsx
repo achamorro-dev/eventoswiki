@@ -6,7 +6,6 @@ import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { Datetime } from '../../../../domain/datetime/datetime'
-import './big-calendar.css'
 import type { CalendarEvent } from './calendar-event'
 
 moment.locale('es', {

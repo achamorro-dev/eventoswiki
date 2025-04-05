@@ -3,14 +3,10 @@ import CopyrightFooter from './copyright-footer.astro'
 import SponsorsFooter from './sponsors-footer.astro'
 ---
 
-<footer class="footer">
+<footer
+  class="border-border bg-background text-foreground dark:bg-background dark:text-foreground border-t dark:border-transparent"
+>
   <SponsorsFooter />
   <slot />
   <CopyrightFooter />
 </footer>
-
-<style>
-  .footer {
-    @apply border-t border-gray-200 bg-background-light text-foreground dark:border-transparent dark:bg-background-dark-light dark:text-foreground-dark;
-  }
-</style>

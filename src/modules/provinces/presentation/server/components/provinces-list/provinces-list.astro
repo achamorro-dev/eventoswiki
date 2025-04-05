@@ -13,7 +13,7 @@ const provinces = await ProvincesLocator.getProvincesQuery().execute()
         <li class="m-0">
           <a
             href={Urls.PROVINCE(province.slug)}
-            class="text-sm hover:text-primary dark:hover:text-primary-light"
+            class="text-sm hover:text-primary dark:hover:text-primary"
             aria-label={`Ver eventos en ${province.name}`}
           >
             {province.name}

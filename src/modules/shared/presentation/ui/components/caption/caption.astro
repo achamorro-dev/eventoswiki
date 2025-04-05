@@ -11,7 +11,9 @@ const { classes, ...rest } = Astro.props
 </p>
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .caption {
-    @apply text-xs text-caption dark:text-caption-dark;
+    @apply text-caption text-xs;
   }
 </style>

@@ -4,6 +4,7 @@ import Footer from '@/ui/components/footer/footer.astro'
 import Header from '@/ui/components/header/header.astro'
 import SkipToContent from '@/ui/components/skip-to-content/skip-to-content.astro'
 import '@fontsource-variable/inter'
+import '../styles/global.css'
 import BaseHead from './components/base-head.astro'
 
 interface Props {
@@ -28,13 +29,15 @@ const { title, description, image, url, mainContentId } = Astro.props
       <ProvincesList />
     </Footer>
     <style is:global>
+      @reference "../styles/global.css";
+
       html {
         @apply h-full scroll-smooth;
       }
 
       html *:focus-visible,
       body *:focus-visible {
-        @apply outline-none ring-2 ring-primary;
+        @apply ring-primary outline-none ring-2;
       }
 
       .skeleton {

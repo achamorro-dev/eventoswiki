@@ -127,73 +127,75 @@ const url = Urls.EVENT(slug)
 </BaseLayout>
 
 <style is:global>
+  @reference "../styles/global.css";
+
   body {
-    @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] scroll-smooth bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+    @apply bg-background text-foreground dark:bg-background dark:text-foreground m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] scroll-smooth;
   }
 
-  p,
-  span {
+  article p,
+  article span {
     @apply text-lg text-gray-900 dark:text-gray-50;
   }
 
-  small {
+  article small {
     @apply text-sm text-gray-900 dark:text-gray-50;
   }
 
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  article h2,
+  article h3,
+  article h4,
+  article h5,
+  article h6 {
     @apply !font-bold;
   }
 
-  h2 {
+  article h2 {
     @apply py-4 !text-3xl text-slate-900 dark:text-gray-200;
   }
 
-  h3 {
+  article h3 {
     @apply py-3 !text-2xl text-slate-900 dark:text-gray-200;
   }
 
-  p {
+  article p {
     @apply py-2;
   }
 
-  table {
+  article table {
     @apply mb-10;
   }
 
-  table tr {
+  article table tr {
     @apply border-b dark:border-b-gray-50;
   }
 
-  table td {
+  article table td {
     @apply p-4 text-gray-900 dark:text-gray-50;
   }
 
-  table th {
+  article table th {
     @apply p-4 !text-gray-900 dark:!text-gray-50;
   }
 
-  ol,
-  ul {
+  article ol,
+  article ul {
     @apply p-4 font-sans text-base;
   }
 
-  ol {
+  article ol {
     @apply list-decimal;
   }
 
-  ul {
+  article ul {
     @apply list-disc;
   }
 
-  ul li {
+  article ul li {
     @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
   }
 
-  ol li {
+  article ol li {
     @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
   }
 

@@ -11,8 +11,10 @@ const { isLast = false } = Astro.props
 </ul>
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .section {
-    @apply border-b border-border py-2 text-sm text-foreground  dark:text-foreground-dark;
+    @apply border-border text-foreground dark:text-foreground border-b py-2  text-sm;
   }
   .last-section {
     @apply border-b-0;
