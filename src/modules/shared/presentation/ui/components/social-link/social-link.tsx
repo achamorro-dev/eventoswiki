@@ -1,5 +1,5 @@
+import type { SocialNetwork } from '@/shared/domain/social/social-network'
 import type { FC, ReactNode } from 'react'
-import type { SocialNetwork } from '../../../social/social-network'
 import {
   Discord,
   Facebook,
@@ -7,7 +7,7 @@ import {
   Instagram,
   Linkedin,
   Telegram,
-  TikTok,
+  Tiktok,
   Twitch,
   Twitter,
   Whatsapp,
@@ -31,7 +31,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   telegram: <Telegram style={{ color: '#2481cc' }} />,
   whatsapp: <Whatsapp style={{ color: '#25d366' }} />,
   discord: <Discord style={{ color: '#7289da' }} />,
-  tiktok: <TikTok style={{ color: '#000' }} />,
+  tiktok: <Tiktok style={{ color: '#000' }} />,
 }
 
 export const SocialLink: FC<SocialLinkProps> = props => {
