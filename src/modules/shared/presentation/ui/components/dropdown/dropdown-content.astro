@@ -11,8 +11,10 @@ const { align = 'left' } = Astro.props
 </div>
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .content {
-    @apply absolute top-full z-10 w-max rounded-xl border border-background-light bg-background px-2 shadow-2xl dark:border-0 dark:bg-background-dark-light;
+    @apply border-border bg-background dark:bg-background absolute top-full z-10 w-max rounded-xl border px-2 shadow-2xl dark:border-0;
   }
   .left-align {
     @apply left-0;

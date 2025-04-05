@@ -42,8 +42,10 @@ const userId = Astro.locals.user?.id
 <MobileMenu />
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .header {
-    @apply z-20 flex h-14 items-center justify-between bg-background px-4 dark:bg-background-dark md:sticky md:top-0 lg:h-16 lg:px-8;
+    @apply bg-background dark:bg-background z-20 flex h-14 items-center justify-between px-4 md:sticky md:top-0 lg:h-16 lg:px-8;
   }
 
   .actions {

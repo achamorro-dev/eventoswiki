@@ -55,6 +55,8 @@ const { label, placeholder, value, options = [], id = 'combobox', ...rest } = As
     </BaseInput>
 
     <style>
+      @reference "../../../../../../../styles/global.css";
+
       .combobox {
         @apply relative flex cursor-default flex-col gap-px;
       }
@@ -68,16 +70,16 @@ const { label, placeholder, value, options = [], id = 'combobox', ...rest } = As
         @apply cursor-default pr-6;
       }
       .input-combobox-button {
-        @apply pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-input-foreground dark:text-input-foreground-dark;
+        @apply text-input  pointer-events-none absolute right-1 top-1/2 -translate-y-1/2;
       }
       .combobox-options {
-        @apply absolute left-0 top-full z-10 mt-1 hidden max-h-56 w-full list-none overflow-y-scroll rounded-md bg-input text-input-foreground shadow-lg ring-1 ring-border dark:bg-input-dark dark:text-input-foreground-dark;
+        @apply bg-input text-input ring-border   absolute left-0 top-full z-10 mt-1 hidden max-h-56 w-full list-none overflow-y-scroll rounded-md shadow-lg ring-1;
       }
       .combobox-options[aria-expanded='true'] {
         @apply block;
       }
       .combobox-options [role='option'] {
-        @apply px-2 py-1 hover:bg-primary-light hover:text-primary-foreground focus:bg-primary-light focus:text-primary-foreground;
+        @apply hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground px-2 py-1;
       }
       .combobox-options [role='option'][aria-selected='true'] {
         @apply bg-primary text-primary-foreground;

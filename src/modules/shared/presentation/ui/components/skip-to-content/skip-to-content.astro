@@ -6,10 +6,8 @@ interface Props {
 const { contentId = 'main' } = Astro.props
 ---
 
-<a class="skip-to-content-link" href={`#${contentId}`} tabindex="0">Ir al contenido</a>
-
-<style>
-  .skip-to-content-link {
-    @apply absolute -left-full -top-full z-50 border border-primary bg-background px-4 py-2 text-primary focus:left-0 focus:top-0 dark:bg-background-dark dark:text-primary-dark dark:focus:text-gray-200;
-  }
-</style>
+<a
+  class="absolute -left-full -top-full z-50 border border-primary bg-background px-4 py-2 text-primary focus:left-0 focus:top-0 dark:bg-background dark:text-primary dark:focus:text-gray-200"
+  href={`#${contentId}`}
+  tabindex="0">Ir al contenido</a
+>

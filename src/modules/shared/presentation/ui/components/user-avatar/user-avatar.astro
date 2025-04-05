@@ -19,6 +19,8 @@ const { userName, image: imageUrl, classes, size = 'md', ...rest } = Astro.props
 />
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .avatar {
     @apply rounded-full object-cover;
   }

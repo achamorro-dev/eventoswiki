@@ -49,6 +49,8 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
 </article>
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .events-slider {
     @apply w-screen;
   }
@@ -59,7 +61,7 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
     @apply shrink-0 text-right;
   }
   .empty-message {
-    @apply p-4 text-xl font-normal text-foreground dark:text-foreground-dark lg:p-8;
+    @apply text-foreground dark:text-foreground p-4 text-xl font-normal lg:p-8;
   }
   .event-slider {
     @apply pl-4 lg:pl-8;

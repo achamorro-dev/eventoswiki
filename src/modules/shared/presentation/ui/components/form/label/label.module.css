@@ -1,6 +1,8 @@
+@reference "../../../../../../../styles/global.css";
+
 .label-container {
   @apply flex flex-col gap-px;
 }
 .label {
-  @apply text-sm font-medium text-label dark:text-label-dark;
+  @apply text-foreground  text-sm font-medium;
 }

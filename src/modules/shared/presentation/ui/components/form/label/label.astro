@@ -13,10 +13,12 @@ const { label, classes, ...rest } = Astro.props
 </label>
 
 <style>
+  @reference "../../../../../../../styles/global.css";
+
   .base-input {
     @apply flex flex-col gap-px;
   }
   .label {
-    @apply text-sm font-medium text-label dark:text-label-dark;
+    @apply text-foreground  text-sm font-medium;
   }
 </style>

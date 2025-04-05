@@ -12,16 +12,18 @@ const { classes, selected = false, variant = 'ghost', ...rest } = Astro.props
 </a>
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .link {
     @apply inline-block rounded-full text-center text-sm font-medium hover:underline;
   }
 
   .link-ghost {
-    @apply text-foreground dark:text-foreground-dark;
+    @apply text-foreground dark:text-foreground;
   }
 
   .link-ghost-selected {
-    @apply text-primary dark:text-primary-light;
+    @apply text-primary dark:text-primary;
   }
 
   .link-primary,
@@ -31,7 +33,7 @@ const { classes, selected = false, variant = 'ghost', ...rest } = Astro.props
   }
 
   .link-primary {
-    @apply border-primary bg-primary text-white hover:bg-primary-light dark:border-primary-light dark:bg-primary-light dark:text-white dark:hover:bg-primary-dark;
+    @apply border-primary bg-primary hover:bg-primary dark:border-primary dark:bg-primary dark:hover:bg-primary text-white dark:text-white;
   }
 
   .link-primary-selected {
@@ -43,6 +45,6 @@ const { classes, selected = false, variant = 'ghost', ...rest } = Astro.props
   }
 
   .link-subtle {
-    @apply border-border bg-background text-foreground hover:bg-background-light dark:border-border-dark dark:bg-background-dark dark:text-foreground-dark dark:hover:bg-background-dark-light;
+    @apply border-border bg-background text-foreground hover:bg-background dark:border-border dark:bg-background dark:text-foreground dark:hover:bg-background;
   }
 </style>

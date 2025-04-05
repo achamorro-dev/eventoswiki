@@ -1,3 +1,5 @@
+@reference "../../../../../../styles/global.css";
+
 .form {
   @apply flex flex-col items-center gap-8 p-1;
 }
@@ -11,5 +13,5 @@
 }
 
 .error {
-  @apply text-error;
+  @apply text-destructive;
 }

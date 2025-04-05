@@ -90,6 +90,8 @@ const getRewritedSearchParams = (page: number) => {
 }
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .pagination-bar {
     @apply grid w-full grid-cols-3 items-center;
     grid-template-areas: 'left pages right';
@@ -111,6 +113,6 @@ const getRewritedSearchParams = (page: number) => {
     @apply p-2 hover:underline;
   }
   .actual {
-    @apply font-bold text-primary;
+    @apply text-primary font-bold;
   }
 </style>

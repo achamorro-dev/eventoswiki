@@ -15,8 +15,10 @@ const { title, description, classes, ...rest } = Astro.props
     <slot />
   </main>
   <style is:global>
+    @reference "../styles/global.css";
+
     body {
-      @apply m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] bg-background text-foreground dark:bg-background-dark dark:text-foreground-dark;
+      @apply bg-background text-foreground dark:bg-background dark:text-foreground m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto];
     }
   </style>
 </BaseLayout>
