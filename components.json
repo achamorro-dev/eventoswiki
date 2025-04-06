@@ -13,7 +13,7 @@
   "aliases": {
     "components": "@/modules/shared/presentation/ui/components",
     "utils": "@/modules/shared/presentation/ui/lib/utils",
-    "ui": "@/modules/shared/presentation/ui/components/ui",
+    "ui": "@/modules/shared/presentation/ui",
     "lib": "@/modules/shared/presentation/ui/lib",
     "hooks": "@/modules/shared/presentation/ui/hooks"
   },
