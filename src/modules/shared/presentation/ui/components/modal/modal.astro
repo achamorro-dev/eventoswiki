@@ -1,7 +1,7 @@
 ---
 import { XBold } from '@/ui/icons'
-import Button from '../buttons/button.astro'
 import IconButton from '../buttons/icon-button.astro'
+import { Button } from '../button'
 
 interface Props {
   id?: string
@@ -35,7 +35,7 @@ const { id = 'modal', title, closeLabel = 'Cancelar', acceptLabel = 'Aceptar', d
       <menu>
         <Button id={`${id}-close-button`} variant="outline">{closeLabel}</Button>
         <slot name="actions" />
-        <Button id={`${id}-accept-button`} variant="primary">{acceptLabel}</Button>
+        <Button id={`${id}-accept-button`} variant="default">{acceptLabel}</Button>
       </menu>
     </footer>
   </dialog>

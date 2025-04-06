@@ -1,6 +1,6 @@
 ---
 import EventCard from '../event-card/event-card.astro'
-import Link from '../link/link.astro'
+import { Link } from '../link'
 import SectionTitle from '../section-title/section-title.astro'
 import Slide from '../slider/slide.astro'
 import Slider from '../slider/slider.astro'
@@ -30,7 +30,7 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
 <article class="events-slider">
   <header class="header">
     <SectionTitle>{title}</SectionTitle>
-    <Link href={seeMoreLink} classes="link" aria-label={`${title} Ver más`}>Ver más</Link>
+    <Link href={seeMoreLink} variant="link" className="link" aria-label={`${title} Ver más`}>Ver más</Link>
   </header>
   {events.length === 0 && <p class="empty-message">No hay eventos disponibles en estos momentos</p>}
   {

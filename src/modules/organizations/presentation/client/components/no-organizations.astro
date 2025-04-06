@@ -1,5 +1,5 @@
 ---
-import Link from '@/ui/components/link/link.astro'
+import { Link } from '@/ui/components/link'
 import { SmileyStickerThin } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 ---
@@ -8,11 +8,11 @@ import { Urls } from '@/ui/urls/urls'
   <SmileyStickerThin size="6rem" color="#444" />
   <h3 class="title">Conecta</h3>
   <p class="empty-message">Aún no sigues ni participas en ninguna organización.</p>
-  <Link variant="outline" href={Urls.CREATE_ORGANIZATION} classes="create-link">Crear organización</Link>
+  <Link variant="outline" href={Urls.CREATE_ORGANIZATION} className="create-link">Crear organización</Link>
 </section>
 
 <style>
-  @reference "../../../../../../styles/global.css";
+  @reference "../../../../../styles/global.css";
 
   .no-organizations {
     @apply mt-8 flex flex-col items-center gap-2;
