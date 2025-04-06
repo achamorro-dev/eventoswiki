@@ -1,11 +1,11 @@
 ---
 import Caption from '@/ui/components/caption/caption.astro'
+import { Link } from '@/ui/components/link'
 import SectionTitle from '@/ui/components/section-title/section-title.astro'
 import GitHub from '@/ui/social-icons/github.astro'
 import Google from '@/ui/social-icons/google.astro'
 import X from '@/ui/social-icons/x.astro'
 import { Urls } from '@/ui/urls/urls'
-import Link from '../../../../shared/presentation/ui/components/link/link.astro'
 ---
 
 <article class="login">
@@ -13,13 +13,13 @@ import Link from '../../../../shared/presentation/ui/components/link/link.astro'
     <img src="/icon.png" alt="Logo" width="180" height="180" class="icon" />
     <SectionTitle>Iniciar sesión</SectionTitle>
     <nav class="social-links">
-      <Link href={Urls.LOGIN_GOOGLE} variant="subtle" classes="social-link" data-astro-prefetch="false"
+      <Link href={Urls.LOGIN_GOOGLE} variant="outline" className="social-link" data-astro-prefetch="false"
         ><Google classes="social-link-icon" /> Continuar con Google</Link
       >
-      <Link href={Urls.LOGIN_GITHUB} variant="subtle" classes="social-link" data-astro-prefetch="false"
+      <Link href={Urls.LOGIN_GITHUB} variant="outline" className="social-link" data-astro-prefetch="false"
         ><GitHub classes="social-link-icon" /> Continuar con GitHub</Link
       >
-      <Link href={Urls.LOGIN_TWITTER} variant="subtle" classes="social-link" data-astro-prefetch="false"
+      <Link href={Urls.LOGIN_TWITTER} variant="outline" className="social-link" data-astro-prefetch="false"
         ><X classes="social-link-icon" /> Continuar con X</Link
       >
     </nav>

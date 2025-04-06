@@ -1,6 +1,7 @@
 ---
+import { cn } from '@/ui/lib/utils'
 import { Urls } from '@/ui/urls/urls'
-import Link from '../link/link.astro'
+import { Link } from '../link'
 
 const pathname = Astro.url.pathname
 
@@ -14,13 +15,25 @@ const urlSections = {
 <nav class="desktop-menu">
   <ul class="menu-list">
     <li class="menu-list-item">
-      <Link selected={pathname.includes(urlSections.EVENTS)} href={Urls.EVENTS}>Eventos</Link>
+      <Link
+        href={Urls.EVENTS}
+        variant="link"
+        className={cn({ 'text-foreground': !pathname.includes(urlSections.EVENTS) })}>Eventos</Link
+      >
     </li>
     <li class="menu-list-item">
-      <Link selected={pathname.includes(urlSections.MEETUPS)} href={Urls.MEETUPS}>Meetups</Link>
+      <Link
+        href={Urls.MEETUPS}
+        variant="link"
+        className={cn({ 'text-foreground': !pathname.includes(urlSections.MEETUPS) })}>Meetups</Link
+      >
     </li>
     <li class="menu-list-item">
-      <Link selected={pathname.includes(urlSections.CALENDAR)} href={Urls.CALENDAR}>Calendario</Link>
+      <Link
+        href={Urls.CALENDAR}
+        variant="link"
+        className={cn({ 'text-foreground': !pathname.includes(urlSections.CALENDAR) })}>Calendario</Link
+      >
     </li>
   </ul>
 </nav>

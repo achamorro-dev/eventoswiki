@@ -5,7 +5,7 @@ import NextMeetupsSlider from '@/meetups/presentation/server/components/next-mee
 import PastMeetupsSlider from '@/meetups/presentation/server/components/past-meetups/past-meetups-slider.astro'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import EventsSliderSkeleton from '@/ui/components/events-slider/events-slider-skeleton.astro'
-import Link from '@/ui/components/link/link.astro'
+import { Link } from '@/ui/components/link'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
 import Layout from '../../layouts/layout.astro'
@@ -22,19 +22,27 @@ if (!location) {
 
 <Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-8 pb-12 !px-0">
   <NextEventsSlider locationId={location.slug} locationName={location.name} server:defer>
-    <Link slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <Link variant="link" slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} className="text-right shrink-0"
+      >Ver todos</Link
+    >
     <EventsSliderSkeleton slot="fallback" />
   </NextEventsSlider>
   <NextMeetupsSlider locationId={location.slug} locationName={location.name} server:defer>
-    <Link slot="actions" href={Urls.MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <Link variant="link" slot="actions" href={Urls.MEETUPS_WITH_PROVINCE(province)} className="text-right shrink-0"
+      >Ver todos</Link
+    >
     <EventsSliderSkeleton slot="fallback" />
   </NextMeetupsSlider>
   <PastEventsSlider locationId={location.slug} locationName={location.name} server:defer>
-    <Link slot="actions" href={Urls.PAST_EVENTS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <Link variant="link" slot="actions" href={Urls.PAST_EVENTS_WITH_PROVINCE(province)} className="text-right shrink-0"
+      >Ver todos</Link
+    >
     <EventsSliderSkeleton slot="fallback" />
   </PastEventsSlider>
   <PastMeetupsSlider locationId={location.slug} locationName={location.name} server:defer>
-    <Link slot="actions" href={Urls.PAST_MEETUPS_WITH_PROVINCE(province)} classes="text-right shrink-0">Ver todos</Link>
+    <Link variant="link" slot="actions" href={Urls.PAST_MEETUPS_WITH_PROVINCE(province)} className="text-right shrink-0"
+      >Ver todos</Link
+    >
     <EventsSliderSkeleton slot="fallback" />
   </PastMeetupsSlider>
 </Layout>

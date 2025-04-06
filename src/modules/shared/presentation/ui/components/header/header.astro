@@ -3,7 +3,7 @@ import Logo from '@/ui/components/logo/logo.astro'
 import DesktopMenu from '@/ui/components/menu/desktop-menu.astro'
 import { Urls } from '@/ui/urls/urls'
 import UserMenu from '@/users/presentation/server/components/user-menu/user-menu.astro'
-import Link from '../link/link.astro'
+import { Link } from '../link'
 import MobileMenu from '../menu/mobile-menu.astro'
 import UserAvatarSkeleton from '../user-avatar/user-avatar-skeleton.astro'
 
@@ -16,7 +16,7 @@ const userId = Astro.locals.user?.id
   <DesktopMenu />
   <section class="actions">
     <Link
-      classes="add-event-link"
+      className="add-event-link"
       variant="outline"
       href="https://github.com/achamorro-dev/eventoswiki/issues/new?assignees=achamorro-dev&labels=enhancement&projects=&template=solicitud-nuevo-evento.yaml&title=A%C3%B1adir+nuevo+evento%3A+"
       target={'_blank'}
@@ -25,7 +25,7 @@ const userId = Astro.locals.user?.id
     </Link>
     {
       !hasActiveSession && (
-        <Link href={Urls.LOGIN} variant="primary">
+        <Link href={Urls.LOGIN} variant="default">
           Iniciar sesión
         </Link>
       )

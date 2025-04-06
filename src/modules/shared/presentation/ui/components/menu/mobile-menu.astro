@@ -1,6 +1,7 @@
 ---
+import { cn } from '@/ui/lib/utils'
 import { Urls } from '@/ui/urls/urls'
-import Link from '../link/link.astro'
+import { Link } from '../link'
 
 const pathname = Astro.url.pathname
 
@@ -14,15 +15,34 @@ const urlSections = {
 <nav class="mobile-menu">
   <ul class="menu-list">
     <li>
-      <Link selected={pathname.includes(urlSections.EVENTS)} classes="mobile-link" href={Urls.EVENTS}>Eventos</Link>
-    </li>
-    <li>
-      <Link selected={pathname.includes(urlSections.MEETUPS)} classes="mobile-link" href={Urls.MEETUPS}>Meetups</Link>
-    </li>
-    <li>
-      <Link selected={pathname.includes(urlSections.CALENDAR)} classes="mobile-link" href={Urls.CALENDAR}
-        >Calendario</Link
+      <Link
+        variant={'link'}
+        size={'sm'}
+        className={cn('mobile-link', { 'text-foreground': !pathname.includes(urlSections.EVENTS) })}
+        href={Urls.EVENTS}
       >
+        Eventos
+      </Link>
+    </li>
+    <li>
+      <Link
+        variant={'link'}
+        size={'sm'}
+        className={cn('mobile-link', { 'text-foreground': !pathname.includes(urlSections.MEETUPS) })}
+        href={Urls.MEETUPS}
+      >
+        Meetups
+      </Link>
+    </li>
+    <li>
+      <Link
+        variant={'link'}
+        size={'sm'}
+        className={cn('mobile-link', { 'text-foreground': !pathname.includes(urlSections.CALENDAR) })}
+        href={Urls.CALENDAR}
+      >
+        Calendario
+      </Link>
     </li>
   </ul>
 </nav>
@@ -31,14 +51,10 @@ const urlSections = {
   @reference "../../../../../../styles/global.css";
 
   .mobile-menu {
-    @apply text-foreground dark:border-border block w-full border-b border-gray-200 px-4 py-2 lg:hidden;
+    @apply text-foreground dark:border-border w-full border-b border-gray-200 lg:hidden;
   }
 
   .menu-list {
-    @apply flex list-none flex-row items-center justify-start gap-4 p-0;
-  }
-
-  .mobile-link {
-    @apply ml-0 text-base font-medium;
+    @apply flex list-none flex-row items-center justify-start gap-0 p-0;
   }
 </style>

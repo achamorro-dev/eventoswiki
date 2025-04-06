@@ -4,7 +4,7 @@ import DropdownContent from '@/ui/components/dropdown/dropdown-content.astro'
 import DropdownItem from '@/ui/components/dropdown/dropdown-item.astro'
 import DropdownSection from '@/ui/components/dropdown/dropdown-section.astro'
 import Dropdown from '@/ui/components/dropdown/dropdown.astro'
-import Link from '@/ui/components/link/link.astro'
+import { Link } from '@/ui/components/link'
 import { ThemeModeToggle } from '@/ui/components/theme-mode-toggle/theme-mode-toggle'
 import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
 import { Urls } from '@/ui/urls/urls'
@@ -26,7 +26,7 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
         <section class="user-info">
           <h2 class="user-name">{user.name}</h2>
           <Caption>{user.email}</Caption>
-          <Link href={Urls.PROFILE} variant="primary" classes="profile-link">Mi perfil</Link>
+          <Link href={Urls.PROFILE} variant="link" className="profile-link">Mi perfil</Link>
         </section>
       </DropdownItem>
     </DropdownSection>
@@ -37,10 +37,10 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
 
     <DropdownSection isLast>
       <DropdownItem>
-        <Link href={Urls.MY_ORGANIZATIONS} classes="organizations-link">Mis organizaciones</Link>
+        <Link href={Urls.MY_ORGANIZATIONS} className="organizations-link">Mis organizaciones</Link>
       </DropdownItem>
       <DropdownItem>
-        <Link href={Urls.LOGOUT} classes="logout-link" data-astro-prefetch="false">Cerrar sesión</Link>
+        <Link href={Urls.LOGOUT} className="logout-link" data-astro-prefetch="false">Cerrar sesión</Link>
       </DropdownItem>
     </DropdownSection>
   </DropdownContent>
