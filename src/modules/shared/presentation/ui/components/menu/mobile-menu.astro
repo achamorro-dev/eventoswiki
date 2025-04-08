@@ -17,8 +17,7 @@ const urlSections = {
     <li>
       <Link
         variant={'link'}
-        size={'sm'}
-        className={cn('mobile-link', { 'text-foreground': !pathname.includes(urlSections.EVENTS) })}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.includes(urlSections.EVENTS) })}
         href={Urls.EVENTS}
       >
         Eventos
@@ -27,8 +26,7 @@ const urlSections = {
     <li>
       <Link
         variant={'link'}
-        size={'sm'}
-        className={cn('mobile-link', { 'text-foreground': !pathname.includes(urlSections.MEETUPS) })}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.includes(urlSections.MEETUPS) })}
         href={Urls.MEETUPS}
       >
         Meetups
@@ -37,8 +35,7 @@ const urlSections = {
     <li>
       <Link
         variant={'link'}
-        size={'sm'}
-        className={cn('mobile-link', { 'text-foreground': !pathname.includes(urlSections.CALENDAR) })}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.includes(urlSections.CALENDAR) })}
         href={Urls.CALENDAR}
       >
         Calendario
@@ -51,10 +48,18 @@ const urlSections = {
   @reference "../../../../../../styles/global.css";
 
   .mobile-menu {
-    @apply text-foreground dark:border-border w-full border-b border-gray-200 lg:hidden;
+    @apply border-muted w-full border-b lg:hidden;
   }
 
   .menu-list {
     @apply flex list-none flex-row items-center justify-start gap-0 p-0;
+  }
+
+  .mobile-link {
+    @apply text-muted-foreground hover:text-primary px-2 font-medium no-underline;
+  }
+
+  .mobile-link-active {
+    @apply text-primary;
   }
 </style>
