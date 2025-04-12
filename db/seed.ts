@@ -12,6 +12,9 @@ export default async function seed() {
 
   const meetups = await Promise.all([getEventsFor('meetups', '2024'), getEventsFor('meetups', '2025')])
 
+  await db.delete(Province).run()
+  await Promise.all(provinces.map(async province => await db.insert(Province).values(province as any)))
+
   await db.delete(Event).run()
   for (const event of events) {
     await db.insert(Event).values(event as any)
@@ -20,10 +23,5 @@ export default async function seed() {
   await db.delete(Meetup).run()
   for (const meetup of meetups) {
     await db.insert(Meetup).values(meetup as any)
-  }
-
-  await db.delete(Province).run()
-  for (const province of provinces) {
-    await db.insert(Province).values(province as any)
   }
 }
