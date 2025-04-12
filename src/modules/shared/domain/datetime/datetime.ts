@@ -4,6 +4,20 @@ import 'dayjs/locale/es'
 
 type ValidDate = string | Date
 
+export enum DateFormat {
+  DD_MM_YYYY = 'DD/MM/YYYY',
+  DD_MMM_YYYY = 'DD MMM YYYY',
+  DD_MMMM_YYYY = 'DD MMMM YYYY',
+  DDD_MMM_YYYY = 'ddd MMM YYYY',
+}
+
+export enum DateTimeFormat {
+  DD_MM_YYYY_HH_MM = 'DD/MM/YYYY HH:mm',
+  DD_MMM_YYYY_HH_MM = 'DD MMM YYYY HH:mm',
+  DD_MMMM_YYYY_HH_MM = 'DD MMMM YYYY HH:mm',
+  DDD_MMM_YYYY_HH_MM = 'ddd DD MMM YYYY HH:mm',
+}
+
 export class Datetime {
   static now(): Date {
     return dayjs().locale('es').toDate()
@@ -12,20 +26,21 @@ export class Datetime {
   static compare(dateA: Date, dateB: Date): number {
     return dayjs(dateA).diff(dateB, 'minute')
   }
+
   static toDate(dateString: string): Date {
     return dayjs(dateString).locale('es').toDate()
   }
 
-  static toDateString(dateToFormat: ValidDate): string {
+  static toDateString(dateToFormat: ValidDate, format = 'DD/MM/YYYY'): string {
     if (!dateToFormat) return ''
 
-    return dayjs(dateToFormat).locale('es').format('DD/MM/YYYY')
+    return dayjs(dateToFormat).locale('es').format(format)
   }
 
-  static toDateTimeString(dateToFormat: ValidDate): string {
+  static toDateTimeString(dateToFormat: ValidDate, format = DateTimeFormat.DD_MM_YYYY_HH_MM): string {
     if (!dateToFormat) return ''
 
-    return dayjs(dateToFormat).locale('es').format('DD/MM/YYYY HH:mm')
+    return dayjs(dateToFormat).locale('es').format(format)
   }
 
   static toIsoString(dateToFormat: ValidDate): string {

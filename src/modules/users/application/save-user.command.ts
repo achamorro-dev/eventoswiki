@@ -32,7 +32,7 @@ export class SaveUserCommand extends Command<Param, void> {
   private async ensureUsernameIsAvailable(username: string, originalUserId: UserId): Promise<void> {
     try {
       const user = await this.getUserByUsernameQuery.execute({ username })
-      if (user.id !== originalUserId) {
+      if (!user.id.equals(originalUserId)) {
         throw new UsernameAlreadyExistError(username)
       }
     } catch (error) {

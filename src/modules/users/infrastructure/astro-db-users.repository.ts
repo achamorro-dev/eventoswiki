@@ -22,7 +22,11 @@ export class AstroDbUsersRepository implements UsersRepository {
       throw new UserNotFoundError(id.value)
     }
 
-    return User.fromPrimitives(user)
+    // FIXME: Pending to fix this
+    return User.fromPrimitives({
+      ...user,
+      organizations: [],
+    })
   }
 
   async save(user: User): Promise<void> {
@@ -53,26 +57,31 @@ export class AstroDbUsersRepository implements UsersRepository {
     const count = await countQuery
     const totalPages = Math.ceil(count[0].count / criteria.limit)
 
-    const userEntities = users.map(user => User.fromPrimitives(user))
+    const userEntities = users.map(user =>
+      User.fromPrimitives({
+        ...user,
+        organizations: [],
+      }),
+    )
     return new PaginatedResultImpl(userEntities, totalPages, criteria.page, criteria.limit)
   }
 
   private getOrderBy(order: Partial<UsersOrder> | undefined) {
     const orderBy = []
 
-    if (order?.createdAt === OrderDirection.ASC) {
+    if (order && 'createdAt' in order && order.createdAt === OrderDirection.ASC) {
       orderBy.push(asc(UserTable.createdAt))
     }
 
-    if (order?.createdAt === OrderDirection.DESC) {
+    if (order && 'createdAt' in order && order.createdAt === OrderDirection.DESC) {
       orderBy.push(desc(UserTable.createdAt))
     }
 
-    if (order?.username === OrderDirection.ASC) {
+    if (order && 'username' in order && order.username === OrderDirection.ASC) {
       orderBy.push(asc(UserTable.username))
     }
 
-    if (order?.username === OrderDirection.DESC) {
+    if (order && 'username' in order && order.username === OrderDirection.DESC) {
       orderBy.push(desc(UserTable.username))
     }
 

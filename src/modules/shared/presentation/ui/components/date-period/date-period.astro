@@ -1,22 +1,24 @@
 ---
+import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
 import { Calendar } from '@/ui/icons'
 
 interface Props {
-  startDate?: string
-  endDate?: string
+  startsAt?: Date
+  endsAt?: Date
+  format?: string
 }
 
-const { startDate, endDate } = Astro.props
-const shouldShowEndDate = startDate && endDate && startDate !== endDate
+const { startsAt, endsAt, format = DateFormat.DD_MM_YYYY } = Astro.props
+const shouldShowEndDate = startsAt && endsAt && startsAt !== endsAt
 ---
 
 {
-  startDate && (
+  startsAt && (
     <div class="date-period">
       <Calendar />
       <p class="dates">
-        {startDate}
-        {shouldShowEndDate ? ` - ${endDate}` : ''}
+        {Datetime.toDateString(startsAt, format)}
+        {shouldShowEndDate ? ` · ${Datetime.toDateString(endsAt, format)}` : ''}
       </p>
     </div>
   )

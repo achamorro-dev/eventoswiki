@@ -18,21 +18,21 @@ const urlSections = {
       <Link
         href={Urls.EVENTS}
         variant="link"
-        className={cn({ 'text-foreground': !pathname.includes(urlSections.EVENTS) })}>Eventos</Link
+        className={cn('menu-link', { 'menu-link-active': pathname.includes(urlSections.EVENTS) })}>Eventos</Link
       >
     </li>
     <li class="menu-list-item">
       <Link
         href={Urls.MEETUPS}
         variant="link"
-        className={cn({ 'text-foreground': !pathname.includes(urlSections.MEETUPS) })}>Meetups</Link
+        className={cn('menu-link', { 'menu-link-active': pathname.includes(urlSections.MEETUPS) })}>Meetups</Link
       >
     </li>
     <li class="menu-list-item">
       <Link
         href={Urls.CALENDAR}
         variant="link"
-        className={cn({ 'text-foreground': !pathname.includes(urlSections.CALENDAR) })}>Calendario</Link
+        className={cn('menu-link', { 'menu-link-active': pathname.includes(urlSections.CALENDAR) })}>Calendario</Link
       >
     </li>
   </ul>
@@ -51,5 +51,13 @@ const urlSections = {
 
   .menu-list {
     @apply mx-auto flex w-full list-none justify-center gap-6;
+  }
+
+  .menu-link {
+    @apply text-muted-foreground hover:text-primary no-underline;
+  }
+
+  .menu-link-active {
+    @apply text-primary;
   }
 </style>

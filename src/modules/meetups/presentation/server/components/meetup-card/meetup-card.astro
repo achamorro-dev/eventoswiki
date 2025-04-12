@@ -5,6 +5,8 @@ import Location from '@/ui/components/location/location.astro'
 import Tag from '@/ui/components/tag/tag.astro'
 import { Urls } from '../../../../../shared/presentation/ui/urls/urls'
 import { Meetup } from '../../../../domain/meetup'
+import { Badge } from '@/ui/badge'
+import { DateFormat } from '@/shared/domain/datetime/datetime'
 
 interface Props {
   meetup: Meetup
@@ -25,11 +27,11 @@ const { meetup, classes } = Astro.props
       transition:name={`media-image-${meetup.slug}`}
     />
     <div class="relative top-0 left-3 -mt-3 flex items-center flex-wrap gap-1 rounded-full">
-      {meetup.tags.map(t => <Tag color={meetup.tagColor}>{t}</Tag>)}
+      {meetup.tags.map(t => <Badge color={meetup.tagColor}>{t.toUpperCase()}</Badge>)}
     </div>
     <div class="w-full flex flex-col-reverse justify-center items-start px-4 mt-2">
       <h3 class="text-base font-bold sm:text-lg md:text-xl text-black dark:text-gray-100 p-0 my-2">{meetup.title}</h3>
-      <DatePeriod startDate={meetup.getStartDateFormatted()} endDate={meetup.getEndDateFormatted()} />
+      <DatePeriod startsAt={meetup.startsAt} endsAt={meetup.endsAt} format={DateFormat.DD_MMM_YYYY} />
     </div>
     <p class="py-0 px-4 mt-2 text-sm text-gray-500 line-clamp-2 dark:text-gray-50 max-h-[2.35rem]">
       {meetup.shortDescription}

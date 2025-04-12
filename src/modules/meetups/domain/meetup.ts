@@ -1,4 +1,4 @@
-import { Datetime } from '@/shared/domain/datetime/datetime'
+import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
 
 export class Meetup implements MeetupProps {
@@ -84,7 +84,7 @@ export class Meetup implements MeetupProps {
   }
 
   getStartDateFormatted(): string {
-    return Datetime.toDateString(this.startsAt)
+    return Datetime.toDateString(this.startsAt, DateFormat.DD_MMM_YYYY)
   }
 
   getEndDateFormatted(): string {

@@ -1,10 +1,10 @@
-import { Datetime } from '@/shared/domain/datetime/datetime'
+import { DateTimeFormat, Datetime } from '@/shared/domain/datetime/datetime'
 import { Calendar } from '@/ui/icons'
 import type { FC } from 'react'
 
 export const EventDatePeriod: FC<{ startDate: Date; endDate?: Date }> = ({ startDate, endDate }) => {
-  const startDateHumanized = Datetime.toDateTimeString(startDate)
-  const endDateHumanized = endDate && Datetime.toDateTimeString(endDate)
+  const startDateHumanized = Datetime.toDateTimeString(startDate, DateTimeFormat.DDD_MMM_YYYY_HH_MM)
+  const endDateHumanized = endDate && Datetime.toDateTimeString(endDate, DateTimeFormat.DDD_MMM_YYYY_HH_MM)
 
   return (
     <div className="flex text-black dark:text-white">
