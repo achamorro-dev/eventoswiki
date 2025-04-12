@@ -33,7 +33,7 @@ const { id = 'modal', title, closeLabel = 'Cancelar', acceptLabel = 'Aceptar', d
 
     <footer>
       <menu>
-        <Button id={`${id}-close-button`} variant="outline">{closeLabel}</Button>
+        <Button id={`${id}-close-button`} variant="ghost">{closeLabel}</Button>
         <slot name="actions" />
         <Button id={`${id}-accept-button`} variant="default">{acceptLabel}</Button>
       </menu>
@@ -45,7 +45,7 @@ const { id = 'modal', title, closeLabel = 'Cancelar', acceptLabel = 'Aceptar', d
   @reference "../../../../../../styles/global.css";
 
   dialog {
-    @apply bg-background dark:bg-background fixed z-50 mb-0 flex w-full max-w-lg translate-y-full scale-75 flex-col overflow-hidden rounded-tl-3xl rounded-tr-3xl p-4 pt-0 opacity-0 md:inset-0 md:m-auto md:rounded-3xl;
+    @apply bg-background dark:bg-background fixed z-50 mb-0 flex w-full max-w-lg translate-y-full flex-col overflow-hidden rounded-tl-3xl rounded-tr-3xl p-4 pt-0 opacity-0 md:inset-0 md:m-auto md:rounded-3xl;
   }
 
   dialog[open] {

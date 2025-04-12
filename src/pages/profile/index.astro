@@ -1,0 +1,34 @@
+---
+import { DeleteLoggedUserModal } from '@/authentication/presentation/client/components/delete-logged-user-modal/delete-logged-user-modal'
+import Layout from '@/layouts/layout.astro'
+import { Urls } from '@/ui/urls/urls'
+import { UsersLocator } from '@/users/di/users.locator'
+import { UserProfileModalForm } from '@/users/presentation/client/components/user-profile-modal/user-profile-modal-form'
+import ProfilePage from '@/users/presentation/server/components/profile-page/profile-page.astro'
+
+const userId = Astro.locals.user?.id
+
+if (!userId) {
+  return Astro.redirect(Urls.LOGIN)
+}
+
+const user = await UsersLocator.getUserQuery().execute({ id: userId })
+const userPrimitives = user.toPrimitives()
+---
+
+<Layout title="Perfil">
+  <ProfilePage userId={userId}>
+    <section slot="header" class="actions">
+      <UserProfileModalForm client:idle user={userPrimitives} />
+      <DeleteLoggedUserModal client:idle userId={userId} />
+    </section>
+  </ProfilePage>
+</Layout>
+
+<style>
+  @reference "../../styles/global.css";
+
+  .actions {
+    @apply flex flex-col gap-2;
+  }
+</style>

@@ -9,27 +9,9 @@
 }
 
 .buttons {
-  @apply bg-background flex items-center justify-between gap-2 rounded-full p-1;
-}
-
-.button {
-  @apply hover:bg-background flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-transparent text-xl;
+  @apply bg-background flex items-center justify-between gap-1 rounded-full p-1;
 }
 
 .selected {
-  @apply bg-background;
-}
-
-:global(.dark) {
-  .buttons {
-    @apply bg-background;
-  }
-
-  .button {
-    @apply text-foreground  hover:bg-background;
-  }
-
-  .selected {
-    @apply bg-background;
-  }
+  @apply bg-accent dark:hover:bg-accent/50;
 }

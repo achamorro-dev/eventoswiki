@@ -26,7 +26,7 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
         <section class="user-info">
           <h2 class="user-name">{user.name}</h2>
           <Caption>{user.email}</Caption>
-          <Link href={Urls.PROFILE} variant="link" className="profile-link">Mi perfil</Link>
+          <Link href={Urls.PROFILE} variant="secondary" className="profile-link">Mi perfil</Link>
         </section>
       </DropdownItem>
     </DropdownSection>
@@ -37,10 +37,10 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
 
     <DropdownSection isLast>
       <DropdownItem>
-        <Link href={Urls.MY_ORGANIZATIONS} className="organizations-link">Mis organizaciones</Link>
+        <Link href={Urls.MY_ORGANIZATIONS} variant="ghost">Mis organizaciones</Link>
       </DropdownItem>
       <DropdownItem>
-        <Link href={Urls.LOGOUT} className="logout-link" data-astro-prefetch="false">Cerrar sesión</Link>
+        <Link href={Urls.LOGOUT} variant="ghost" data-astro-prefetch="false">Cerrar sesión</Link>
       </DropdownItem>
     </DropdownSection>
   </DropdownContent>
@@ -48,18 +48,11 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
 
 <style>
   @reference "../../../../../../styles/global.css";
-
-  .user-info,
-  .logout-link,
-  .organizations-link {
-    @apply text-left;
-  }
-
   .user-name {
     @apply !p-0 text-base font-medium;
   }
 
   .profile-link {
-    @apply mt-2 block w-full;
+    @apply mt-2 block w-full text-center;
   }
 </style>

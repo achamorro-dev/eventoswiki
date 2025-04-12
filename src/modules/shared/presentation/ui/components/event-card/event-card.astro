@@ -1,5 +1,6 @@
 ---
-import { Datetime } from '@/shared/domain/datetime/datetime'
+import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
+import { Badge } from '@/ui/badge'
 import Card from '@/ui/components/card/card.astro'
 import DatePeriod from '@/ui/components/date-period/date-period.astro'
 import Location from '@/ui/components/location/location.astro'
@@ -43,12 +44,12 @@ const { event, classes, goToEvent } = Astro.props
       />
     </div>
     <div class="event-tags">
-      {event.tags.map(t => <Tag color={event.tagColor}>{t}</Tag>)}
+      {event.tags.map(t => <Badge color={event.tagColor}>{t.toUpperCase()}</Badge>)}
     </div>
     <h3 class="event-title">{event.title}</h3>
     <section class="event-date-location">
       <Location location={event.location} />
-      <DatePeriod startDate={Datetime.toDateString(event.startsAt)} endDate={Datetime.toDateString(event.endsAt)} />
+      <DatePeriod startsAt={event.startsAt} endsAt={event.endsAt} format={DateFormat.DD_MMM_YYYY} />
     </section>
   </Card>
 </a>
@@ -76,9 +77,9 @@ const { event, classes, goToEvent } = Astro.props
     @apply mt-2 flex flex-wrap items-center gap-1;
   }
   .event-date-location {
-    @apply flex w-full items-center justify-between gap-1 text-gray-500 dark:text-gray-50;
+    @apply text-muted-foreground flex w-full items-center justify-between gap-1 font-light;
   }
   .event-title {
-    @apply mt-2 line-clamp-1 p-0 text-xl font-semibold text-black dark:text-gray-100;
+    @apply text-foreground mt-2 line-clamp-1 p-0 text-xl font-semibold dark:text-gray-100;
   }
 </style>

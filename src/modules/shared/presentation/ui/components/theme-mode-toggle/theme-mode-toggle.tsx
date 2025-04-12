@@ -2,7 +2,8 @@ import { LaptopBold, MoonBold, SunBold } from '@/ui/icons'
 import type { FC } from 'react'
 import { ThemeMode, useTheme } from './use-theme'
 
-import { classnames } from '@/ui/classnames/classnames'
+import { cn } from '@/ui/lib/utils'
+import { Button } from '../button'
 import styles from './theme-mode-toggle.module.css'
 
 type ThemeModeToggleProps = {}
@@ -16,24 +17,30 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = () => {
     <section className={styles['theme-toggle']}>
       <h3 className={styles.title}>Tema</h3>
       <div className={styles.buttons}>
-        <button
-          className={classnames(styles.button, { [styles.selected]: !isDarkSelected && !isSystemSelected })}
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn({ [styles.selected]: !isDarkSelected && !isSystemSelected })}
           onClick={() => toggleTheme(ThemeMode.light)}
         >
           <SunBold />
-        </button>
-        <button
-          className={classnames(styles.button, { [styles.selected]: isDarkSelected })}
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn({ [styles.selected]: isDarkSelected })}
           onClick={() => toggleTheme(ThemeMode.dark)}
         >
           <MoonBold />
-        </button>
-        <button
-          className={classnames(styles.button, { [styles.selected]: isSystemSelected })}
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn({ [styles.selected]: isSystemSelected })}
           onClick={() => toggleTheme(ThemeMode.system)}
         >
           <LaptopBold />
-        </button>
+        </Button>
       </div>
     </section>
   )

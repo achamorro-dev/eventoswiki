@@ -9,6 +9,8 @@ import { SocialLink } from '@/ui/components/social-link/social-link'
 import { Link, MapPin } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 import type { Meetup } from '@/meetups/domain/meetup'
+import { Badge } from '@/ui/badge'
+import { DateFormat } from '@/shared/domain/datetime/datetime'
 
 interface Props {
   event: Event | Meetup
@@ -63,7 +65,7 @@ const url = Urls.EVENT(slug)
     <div>
       <div class="w-full lg:px-6 max-w-5xl xl:px-0">
         <div class="flex items-center gap-2" transition:animate="fade">
-          {tags.map((t: string) => <Tag color={tagColor}>{t}</Tag>)}
+          {tags.map((t: string) => <Badge color={tagColor}>{t.toUpperCase()}</Badge>)}
         </div>
         <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
           {title}

@@ -13,7 +13,7 @@ const { title, actionLink, actionText } = Astro.props
 
 <header class="header">
   <SectionTitle>{title}</SectionTitle>
-  <Link href={actionLink} className="action-link" variant={'link'}>{actionText}</Link>
+  <Link href={actionLink} className="action-link" variant={'ghost'}>{actionText}</Link>
 </header>
 <slot />
 

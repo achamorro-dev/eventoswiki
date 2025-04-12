@@ -21,7 +21,7 @@ export const Urls = {
   LOGIN_GOOGLE: '/login/google',
   LOGIN_TWITTER: '/login/twitter',
   LOGOUT: '/logout',
-  PROFILE: '/perfil',
+  PROFILE: '/profile',
   PRIVACY: '/privacidad',
   TERMS: '/terminos',
 }
