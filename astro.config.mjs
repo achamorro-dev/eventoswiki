@@ -27,6 +27,13 @@ export default defineConfig({
       },
     },
   },
+  redirects: {
+    '/eventos': '/events',
+    '/eventos/[...slug]': '/events/[...slug]',
+    '/calendario': '/calendar',
+    '/privacidad': '/privacy',
+    '/terminos': '/terms',
+  },
   env: {
     schema: {
       BASE_URL: envField.string({ context: 'server', access: 'public', url: true }),

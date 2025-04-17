@@ -6,9 +6,9 @@ import { Link } from '../link'
 const pathname = Astro.url.pathname
 
 const urlSections = {
-  EVENTS: '/evento',
-  MEETUPS: '/meetup',
-  CALENDAR: '/calendario',
+  EVENTS: Urls.EVENTS.slice(0, -1),
+  MEETUPS: Urls.MEETUPS.slice(0, -1),
+  CALENDAR: Urls.CALENDAR.slice(0, -1),
 }
 ---
 
@@ -17,7 +17,7 @@ const urlSections = {
     <li>
       <Link
         variant={'link'}
-        className={cn('mobile-link', { 'mobile-link-active': pathname.includes(urlSections.EVENTS) })}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.EVENTS) })}
         href={Urls.EVENTS}
       >
         Eventos
@@ -26,7 +26,7 @@ const urlSections = {
     <li>
       <Link
         variant={'link'}
-        className={cn('mobile-link', { 'mobile-link-active': pathname.includes(urlSections.MEETUPS) })}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.MEETUPS) })}
         href={Urls.MEETUPS}
       >
         Meetups
@@ -35,7 +35,7 @@ const urlSections = {
     <li>
       <Link
         variant={'link'}
-        className={cn('mobile-link', { 'mobile-link-active': pathname.includes(urlSections.CALENDAR) })}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.CALENDAR) })}
         href={Urls.CALENDAR}
       >
         Calendario
