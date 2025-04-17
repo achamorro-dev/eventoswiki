@@ -3,6 +3,7 @@ import ProvincesList from '@/provinces/presentation/server/components/provinces-
 import Footer from '@/ui/components/footer/footer.astro'
 import Header from '@/ui/components/header/header.astro'
 import SkipToContent from '@/ui/components/skip-to-content/skip-to-content.astro'
+import { Toaster } from '@/ui/sonner'
 import '@fontsource-variable/inter'
 import '../styles/global.css'
 import BaseHead from './components/base-head.astro'
@@ -28,6 +29,7 @@ const { title, description, image, url, mainContentId } = Astro.props
     <Footer transition:persist>
       <ProvincesList />
     </Footer>
+    <Toaster client:only />
     <style is:global>
       @reference "../styles/global.css";
 
