@@ -3,7 +3,7 @@ import { DeleteLoggedUserModal } from '@/authentication/presentation/client/comp
 import Layout from '@/layouts/layout.astro'
 import { Urls } from '@/ui/urls/urls'
 import { UsersLocator } from '@/users/di/users.locator'
-import { UserProfileModalForm } from '@/users/presentation/client/components/user-profile-modal/user-profile-modal-form'
+import { EditUserProfileModalForm } from '@/users/presentation/client/components/user-profile-modal/edit-user-profile-modal'
 import ProfilePage from '@/users/presentation/server/components/profile-page/profile-page.astro'
 
 const userId = Astro.locals.user?.id
@@ -19,7 +19,7 @@ const userPrimitives = user.toPrimitives()
 <Layout title="Perfil">
   <ProfilePage userId={userId}>
     <section slot="header" class="actions">
-      <UserProfileModalForm client:idle user={userPrimitives} />
+      <EditUserProfileModalForm client:idle user={userPrimitives} />
       <DeleteLoggedUserModal client:idle userId={userId} />
     </section>
   </ProfilePage>
