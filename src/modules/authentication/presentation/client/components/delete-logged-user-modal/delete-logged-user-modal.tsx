@@ -14,6 +14,7 @@ import { Urls } from '@/ui/urls/urls'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
 import type { FC } from 'react'
+import { toast } from 'sonner'
 
 interface Props {
   userId: string
@@ -27,6 +28,7 @@ export const DeleteLoggedUserModal: FC<Props> = ({ userId }) => {
       return
     }
 
+    toast.success('Cuenta eliminada correctamente')
     navigate(Urls.HOME)
   }
 
