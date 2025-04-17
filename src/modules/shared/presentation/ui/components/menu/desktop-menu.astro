@@ -6,9 +6,9 @@ import { Link } from '../link'
 const pathname = Astro.url.pathname
 
 const urlSections = {
-  EVENTS: '/evento',
-  MEETUPS: '/meetup',
-  CALENDAR: '/calendario',
+  EVENTS: Urls.EVENTS.slice(0, -1),
+  MEETUPS: Urls.MEETUPS.slice(0, -1),
+  CALENDAR: Urls.CALENDAR.slice(0, -1),
 }
 ---
 
