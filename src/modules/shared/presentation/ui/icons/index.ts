@@ -1,4 +1,5 @@
 export {
+  PiAtBold as At,
   PiCalendar as Calendar,
   PiCalendarBlank as CalendarBlank,
   PiCaretLeft as CaretLeft,
@@ -6,6 +7,7 @@ export {
   PiCaretUpDown as CaretUpDown,
   PiChalkboard as Chalkboard,
   PiDiscordLogoFill as Discord,
+  PiEnvelopeSimpleBold as Envelope,
   PiFacebookLogoFill as Facebook,
   PiGithubLogoFill as Github,
   PiInstagramLogoFill as Instagram,
@@ -20,6 +22,7 @@ export {
   PiTiktokLogoFill as Tiktok,
   PiTwitchLogoFill as Twitch,
   PiTwitterLogoFill as Twitter,
+  PiUserBold as User,
   PiUsersFour as Users,
   PiWarningCircle as WarningCircle,
   PiWhatsappLogoFill as Whatsapp,
