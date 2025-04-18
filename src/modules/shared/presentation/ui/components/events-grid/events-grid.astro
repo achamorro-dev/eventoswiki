@@ -1,6 +1,8 @@
 ---
 import type { Event } from '@/events/domain/event'
 import EventCard from '@/ui/components/event-card/event-card.astro'
+import { Search } from 'lucide-react'
+import { EmptyMessage } from '../empty-message/empty-message'
 import Pagination from '../pagination/pagination.astro'
 
 interface Props {
@@ -26,7 +28,15 @@ const { events = [], page, totalPages, goToEvent } = Astro.props
     }
   </ul>
 
-  {events.length === 0 && <p class="empty-message">No hay eventos disponibles en estos momentos</p>}
+  {
+    events.length === 0 && (
+      <EmptyMessage
+        icon={Search}
+        title="No se encontraron resultados"
+        description="Intenta con otros términos de búsqueda o filtros diferentes."
+      />
+    )
+  }
   <nav class="footer">
     <Pagination totalPages={totalPages} page={page} />
   </nav>
@@ -39,7 +49,7 @@ const { events = [], page, totalPages, goToEvent } = Astro.props
     @apply grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 2xl:grid-cols-4;
   }
   .empty-message {
-    @apply mt-4 text-lg;
+    @apply text-muted-foreground mt-4 text-sm;
   }
   .footer {
     @apply mt-8;
