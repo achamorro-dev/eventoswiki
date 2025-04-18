@@ -1,7 +1,6 @@
 ---
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
-import SectionTitle from '@/ui/components/section-title/section-title.astro'
-import NoOrganizations from '../no-organizations.astro'
+import { OrganizationTabs } from '../organization-tabs/organization-tabs'
 
 interface Props {
   userId: string
@@ -9,18 +8,7 @@ interface Props {
 
 const { userId } = Astro.props
 
-const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
 ---
 
-<header class="header">
-  <SectionTitle>Mis organizaciones</SectionTitle>
-</header>
-<section class="organizations">
-  {organizations.length === 0 && <NoOrganizations />}
-</section>
-
-<style>
-  .organizations {
-    @apply h-full;
-  }
-</style>
+<OrganizationTabs client:idle userOrganizations={userOrganizations} />

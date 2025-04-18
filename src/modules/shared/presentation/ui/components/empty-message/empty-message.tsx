@@ -1,11 +1,13 @@
-import type { ReactNode } from 'react'
+import type { PropsWithChildren, ReactNode } from 'react'
 
 interface Props {
   title: ReactNode
   description: ReactNode
   icon?: React.ElementType
 }
-export const EmptyMessage = ({ title, description, icon }: Props) => {
+export const EmptyMessage = (props: PropsWithChildren<Props>) => {
+  const { title, description, icon, children } = props
+
   const Comp = (icon as React.ElementType) || undefined
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center">
@@ -16,6 +18,7 @@ export const EmptyMessage = ({ title, description, icon }: Props) => {
       )}
       <h3 className="mb-2 text-xl font-medium">{title}</h3>
       <p className="text-muted-foreground text-sm">{description}</p>
+      {children}
     </div>
   )
 }
