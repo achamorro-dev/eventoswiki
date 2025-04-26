@@ -8,18 +8,26 @@ interface Props {
   placeholder?: string
   value?: string
   provinces: Province[]
+  className?: string
+  size?: 'sm' | 'default'
+  onChange?: (value: string) => void
 }
 
 export const ProvinceSelect: FC<Props> = props => {
-  const { id, placeholder, value, provinces } = props
+  const { id, placeholder, value, provinces, className, size = 'default', onChange } = props
 
-  const onChange = (value: string) => {
+  const handleChange = (value: string) => {
+    if (onChange) {
+      onChange(value)
+      return
+    }
+
     navigate(`?province=${value}`, { history: 'replace' })
   }
 
   return (
-    <Select defaultValue={value} onValueChange={onChange}>
-      <SelectTrigger id={id} size="sm">
+    <Select defaultValue={value} onValueChange={handleChange}>
+      <SelectTrigger id={id} size={size} className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
