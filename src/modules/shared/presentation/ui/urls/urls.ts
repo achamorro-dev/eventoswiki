@@ -13,6 +13,7 @@ export const Urls = {
   PAST_MEETUPS: '/meetups/past/',
   PAST_MEETUPS_WITH_PROVINCE: (province: string) => `${Urls.PAST_MEETUPS}?province=${province}`,
   PROVINCE: (slug: Slug) => `/${slug}`,
+  ORGANIZATION: (handle: string) => `/organizations/${handle}`,
   MY_ORGANIZATIONS: '/me/organizations/',
   CREATE_ORGANIZATION: '/me/organizations/create',
   CALENDAR: '/calendar',

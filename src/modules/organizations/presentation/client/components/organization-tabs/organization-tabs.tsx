@@ -1,14 +1,16 @@
-import type { Organization } from '@/organizations/domain/organization'
+import { Organization } from '@/organizations/domain/organization'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import { Link } from '@/ui/components/link'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs'
 import { Urls } from '@/ui/urls/urls'
 import { Heart, Users } from 'lucide-react'
+import { OrganizationCard } from '../organization-card/organization-card'
 import styles from './organization-tabs.module.css'
 
 interface Props {
-  userOrganizations: Organization[]
+  userOrganizations: Primitives<Organization>[]
 }
 
 export const OrganizationTabs = ({ userOrganizations }: Props) => {
@@ -29,21 +31,30 @@ export const OrganizationTabs = ({ userOrganizations }: Props) => {
         />
       </TabsContent>
       <TabsContent value="my-organizations">
-        {userOrganizations.length === 0 && (
+        {userOrganizations.length === 0 ? (
           <EmptyMessage
             icon={Users}
             title="Aún no participas en ninguna organización"
             description="Únete como organizador a una comunidad o crea tu propia organización para verla aquí."
           >
-            <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className="my-4">
+            <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className={styles['create-organization-link']}>
               Crear organización
             </Link>
           </EmptyMessage>
+        ) : (
+          <article className={styles['my-organizations']}>
+            <ul className={styles['organizations-grid']}>
+              {userOrganizations.map(organization => (
+                <li key={organization.id}>
+                  <OrganizationCard organization={Organization.fromPrimitives(organization)} />
+                </li>
+              ))}
+            </ul>
+            <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className={styles['create-organization-link']}>
+              Crear organización
+            </Link>
+          </article>
         )}
-
-        <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className="my-4">
-          Crear organización
-        </Link>
       </TabsContent>
     </Tabs>
   )
