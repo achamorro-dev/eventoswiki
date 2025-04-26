@@ -106,6 +106,14 @@ export class Organization implements OrganizationProps {
     }
   }
 
+  imageUrlString() {
+    return this.image?.toString()
+  }
+
+  get firstNameLetter() {
+    return this.name.charAt(0)
+  }
+
   private static ensureIsValidOrganization(organization: OrganizationData) {
     const validator = new OrganizationValidator(organization)
     const error = validator.validate()
