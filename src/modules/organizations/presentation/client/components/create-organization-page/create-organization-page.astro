@@ -1,0 +1,17 @@
+---
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { OrganizationEditForm } from '../organization-edit-form/organization-edit-form'
+import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+
+interface Props {
+  organizerId: string
+}
+
+const { organizerId } = Astro.props as Props
+const provinces = await ProvincesLocator.getProvincesQuery().execute()
+---
+
+<article>
+  <SectionTitle>Crear Organización</SectionTitle>
+  <OrganizationEditForm client:load organizerId={organizerId} provinces={provinces} />
+</article>

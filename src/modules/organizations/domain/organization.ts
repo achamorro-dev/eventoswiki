@@ -1,6 +1,8 @@
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { InvalidOrganizationError } from './errors/invalid-organization.error'
 import { OrganizationId } from './organization-id'
+import { OrganizationValidator } from './validators/organization.validator'
 
 export interface OrganizationProps {
   readonly id: OrganizationId
@@ -25,6 +27,8 @@ export interface OrganizationProps {
   readonly createdAt: Date
   readonly updatedAt: Date
 }
+
+export type OrganizationData = Primitives<Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt' | 'organizers'>>
 
 export class Organization implements OrganizationProps {
   readonly id: OrganizationId
@@ -73,12 +77,16 @@ export class Organization implements OrganizationProps {
     this.updatedAt = props.updatedAt
   }
 
-  static create(props: Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt'>): Organization {
+  static create(props: OrganizationData): Organization {
+    this.ensureIsValidOrganization(props)
+
     return new Organization({
       ...props,
       id: OrganizationId.create(),
+      image: props.image ? new URL(props.image) : undefined,
       createdAt: new Date(),
       updatedAt: new Date(),
+      organizers: [],
     })
   }
 
@@ -90,5 +98,18 @@ export class Organization implements OrganizationProps {
       createdAt: Datetime.toDate(primitives.createdAt),
       updatedAt: Datetime.toDate(primitives.updatedAt),
     })
+  }
+
+  addOrganizer(organizerId: string) {
+    if (!this.organizers.includes(organizerId)) {
+      this.organizers.push(organizerId)
+    }
+  }
+
+  private static ensureIsValidOrganization(organization: OrganizationData) {
+    const validator = new OrganizationValidator(organization)
+    const error = validator.validate()
+
+    if (error) throw new InvalidOrganizationError(error)
   }
 }

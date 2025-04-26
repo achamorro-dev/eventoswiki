@@ -40,6 +40,10 @@ export const OrganizationTabs = ({ userOrganizations }: Props) => {
             </Link>
           </EmptyMessage>
         )}
+
+        <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className="my-4">
+          Crear organización
+        </Link>
       </TabsContent>
     </Tabs>
   )
