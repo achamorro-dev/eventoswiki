@@ -10,4 +10,11 @@ const { value } = Astro.props
 const provinces = await ProvincesLocator.getProvincesQuery().execute()
 ---
 
-<ProvinceSelect client:load id={'province-filter'} placeholder="Provincia" value={value} provinces={provinces} />
+<ProvinceSelect
+  client:load
+  id={'province-filter'}
+  placeholder="Provincia"
+  value={value}
+  provinces={provinces}
+  size="sm"
+/>
