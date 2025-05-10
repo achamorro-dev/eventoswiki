@@ -1,6 +1,6 @@
 ---
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
-import { OrganizationTabs } from '../organization-tabs/organization-tabs'
+import { OrganizationTabs } from '../../components/organization-tabs/organization-tabs'
 
 interface Props {
   userId: string
@@ -9,6 +9,7 @@ interface Props {
 const { userId } = Astro.props
 
 const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+const organizations = userOrganizations.map(o => o.toPrimitives())
 ---
 
-<OrganizationTabs client:idle userOrganizations={userOrganizations} />
+<OrganizationTabs client:idle userOrganizations={organizations} />
