@@ -14,7 +14,7 @@ export const OrganizationCard = ({ organization }: Props) => {
         <CardHeader className="flex flex-col items-center gap-2">
           <Avatar>
             <AvatarImage src={organization.imageUrlString()} />
-            <AvatarFallback>{organization.firstNameLetter}</AvatarFallback>
+            <AvatarFallback>{organization.firstNameLetter()}</AvatarFallback>
           </Avatar>
           <CardTitle>{organization.name}</CardTitle>
         </CardHeader>

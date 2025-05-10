@@ -20,7 +20,7 @@ export const OrganizationTabs = ({ userOrganizations }: Props) => {
         <SectionTitle>Mis organizaciones</SectionTitle>
         <TabsList>
           <TabsTrigger value="following">Siguiendo</TabsTrigger>
-          <TabsTrigger value="my-organizations">Participando</TabsTrigger>
+          <TabsTrigger value="my-organizations">Organizando</TabsTrigger>
         </TabsList>
       </header>
       <TabsContent value="following">

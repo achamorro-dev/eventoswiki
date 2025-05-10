@@ -100,6 +100,32 @@ export class Organization implements OrganizationProps {
     })
   }
 
+  toPrimitives(): Primitives<Organization> {
+    return {
+      id: this.id.value,
+      handle: this.handle,
+      name: this.name,
+      bio: this.bio,
+      image: this.image?.toString(),
+      organizers: this.organizers,
+      location: this.location,
+      web: this.web,
+      twitter: this.twitter,
+      linkedin: this.linkedin,
+      youtube: this.youtube,
+      twitch: this.twitch,
+      facebook: this.facebook,
+      instagram: this.instagram,
+      github: this.github,
+      telegram: this.telegram,
+      whatsapp: this.whatsapp,
+      discord: this.discord,
+      tiktok: this.tiktok,
+      createdAt: Datetime.toDateIsoString(this.createdAt),
+      updatedAt: Datetime.toDateIsoString(this.updatedAt),
+    }
+  }
+
   addOrganizer(organizerId: string) {
     if (!this.organizers.includes(organizerId)) {
       this.organizers.push(organizerId)
@@ -110,8 +136,12 @@ export class Organization implements OrganizationProps {
     return this.image?.toString()
   }
 
-  get firstNameLetter() {
+  firstNameLetter() {
     return this.name.charAt(0)
+  }
+
+  isOrganizer(organizerId: string) {
+    return this.organizers.includes(organizerId)
   }
 
   private static ensureIsValidOrganization(organization: OrganizationData) {

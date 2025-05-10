@@ -1,4 +1,5 @@
-import { Organization, OrganizationUser, db, eq } from 'astro:db'
+import { Organization, OrganizationUser, Province, db, eq } from 'astro:db'
+import { OrganizationNotFound } from '../domain/errors/organization-not-found.error'
 import { Organization as OrganizationEntity } from '../domain/organization'
 import type { OrganizationsRepository } from '../domain/organizations.repository'
 import { AstroOrganizationMapper } from './mappers/astro-db-organization.mapper'
@@ -19,6 +20,31 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     const hasOrganization = organization.length !== 0
 
     return hasOrganization ? this._updateOrganization(value) : this._insertOrganization(value)
+  }
+
+  async find(handle: OrganizationEntity['handle']): Promise<OrganizationEntity> {
+    const organizationResult = await db
+      .select()
+      .from(Organization)
+      .leftJoin(Province, eq(Province.slug, Organization.location))
+      .where(eq(Organization.handle, handle))
+      .limit(1)
+
+    const organizersResult = await db
+      .select()
+      .from(OrganizationUser)
+      .innerJoin(Organization, eq(OrganizationUser.organizationId, Organization.id))
+      .where(eq(Organization.handle, handle))
+
+    const organization = organizationResult.at(0)?.Organization
+    const province = organizationResult.at(0)?.Province
+    const organizerIds = organizersResult.map(({ OrganizationUser }) => OrganizationUser.userId)
+
+    if (!organization) {
+      throw new OrganizationNotFound(handle)
+    }
+
+    return AstroOrganizationMapper.toDomain({ ...organization, location: province?.name ?? null }, organizerIds)
   }
 
   private async _updateOrganization(value: OrganizationEntity) {
