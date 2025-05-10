@@ -13,7 +13,7 @@ const { totalElements = 9 } = Astro.props
   <VisuallyHidden>Cargando eventos</VisuallyHidden>
   <ul class="grid-list">
     {
-      new Array(totalElements).fill(0).map((_, index) => {
+      new Array(totalElements).fill(0).map(_ => {
         return (
           <li>
             <EventCardSkeleton />
