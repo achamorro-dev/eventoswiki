@@ -4,6 +4,7 @@ import {
   Discord,
   Facebook,
   Github,
+  Globe,
   Instagram,
   Linkedin,
   Telegram,
@@ -32,6 +33,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   whatsapp: <Whatsapp style={{ color: '#25d366' }} />,
   discord: <Discord style={{ color: '#7289da' }} />,
   tiktok: <Tiktok style={{ color: '#000' }} />,
+  web: <Globe style={{ color: '#000' }} />,
 }
 
 export const SocialLink: FC<SocialLinkProps> = props => {
