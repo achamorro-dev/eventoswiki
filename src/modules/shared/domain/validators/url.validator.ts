@@ -1,6 +1,6 @@
 import { Validator } from './validator'
 
-const URL_REGEX = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
+const URL_REGEX = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,})([/\w .-]*)*(\/?|\?[^\s]*)?$/
 
 export class UrlValidator extends Validator<string> {
   constructor(value: string) {
