@@ -23,9 +23,11 @@ import {
 } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
+import { Urls } from '@/ui/urls/urls'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { z } from 'astro/zod'
 import { actions } from 'astro:actions'
+import { navigate } from 'astro:transitions/client'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
@@ -78,7 +80,7 @@ export const OrganizationEditForm = ({ provinces, organizerId }: Props) => {
       toast.error(error.message)
     }
 
-    // navigate(Urls.MY_ORGANIZATIONS)
+    navigate(Urls.ORGANIZATION(values.handle))
   }
 
   const onError = () => {

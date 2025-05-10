@@ -1,6 +1,6 @@
 import type { Primitives, Properties } from '@/shared/domain/primitives/primitives'
 import { InvalidUserProfileError } from './errors/invalid-user-profile.error'
-import { Profile } from './profile'
+import type { Profile } from './profile'
 import { UserId } from './user-id'
 import { UserProfileValidator } from './validators/user-profile.validator'
 

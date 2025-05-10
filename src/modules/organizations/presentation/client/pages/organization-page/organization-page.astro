@@ -1,0 +1,50 @@
+---
+import { Organization } from '@/organizations/domain/organization'
+import { Button } from '@/ui/button'
+import { SocialRow } from '@/ui/components/social-row/social-row'
+import { OrganizationAvatar } from '../../components/organization-avatar/organization-avatar'
+
+interface Props {
+  organization: Organization
+  userId?: string
+}
+
+const { organization, userId } = Astro.props as Props
+const isOrganizer = userId ? organization.isOrganizer(userId) : false
+---
+
+<article class="organization">
+  <header class="header">
+    <OrganizationAvatar client:load organization={organization.toPrimitives()} />
+    <h1 class="text-4xl font-semibold text-foreground">
+      {organization.name}
+    </h1>
+    <span class="handle">
+      @{organization.handle}
+      {organization.location && `· ${organization.location}`}
+    </span>
+    <p class="bio">{organization.bio}</p>
+    <SocialRow {...organization.toPrimitives()} />
+    {isOrganizer && <Button variant="secondary">Editar</Button>}
+  </header>
+</article>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .organization {
+    @apply flex flex-col items-stretch gap-y-16 py-24;
+  }
+
+  .header {
+    @apply flex flex-col items-center gap-4;
+  }
+
+  .handle {
+    @apply font-medium;
+  }
+
+  .bio {
+    @apply max-w-prose whitespace-pre-line text-balance;
+  }
+</style>
