@@ -1,20 +1,48 @@
 ---
+import { EventNotFound } from '@/events/domain/errors/event-not-found'
+import type { Event } from '@/events/domain/event'
+import BaseLayout from '@/layouts/base-layout.astro'
 import EventLayout from '@/layouts/event-layout.astro'
+import NotFound from '@/ui/components/not-found/not-found.astro'
+import { Urls } from '@/ui/urls/urls'
+import { navigate } from 'astro:transitions/client'
 import { marked } from 'marked'
 import { EventsLocator } from '../../modules/events/di/events.locator'
 
 const slug = Astro.params.slug
 
 if (!slug) {
-  Astro.response.status = 404
-  Astro.response.statusText = 'Not found'
+  navigate(Urls.HOME)
   return
 }
 
-const event = await EventsLocator.getEventQuery().execute({ id: slug })
-const content = marked.parse(event.content)
+let event: Event | undefined
+let content: string = ''
+try {
+  event = await EventsLocator.getEventQuery().execute({ id: slug })
+  content = await marked.parse(event.content)
+} catch (error) {
+  switch (true) {
+    case error instanceof EventNotFound:
+      Astro.response.status = 404
+      Astro.response.statusText = 'Not found'
+      break
+    default:
+      Astro.response.status = 500
+      Astro.response.statusText = 'Internal server error'
+      break
+  }
+}
 ---
 
-<EventLayout event={event}>
-  <article set:html={content} />
-</EventLayout>
+{
+  event && content ? (
+    <EventLayout event={event}>
+      <article set:html={content} />
+    </EventLayout>
+  ) : (
+    <BaseLayout title="Evento no encontrado">
+      <NotFound title="Evento no encontrado" />
+    </BaseLayout>
+  )
+}

@@ -1,0 +1,23 @@
+---
+import { Link } from '@/ui/components/link'
+import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  title?: string
+}
+
+const { title = 'Página no encontrada' } = Astro.props
+---
+
+<article class="flex flex-col items-center py-20 md:py-40 lg:py-60">
+  <section class="flex flex-col items-center gap-y-6 px-20 text-center">
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-medium">{title}</h1>
+    <p class="max-w-md text-body !text-muted-foreground">
+      No hemos podido encontrar la página que buscabas, pero si podemos ayudarte a encontrar <a
+        class="text-foreground underline"
+        href={Urls.EVENTS}>eventos</a
+      > o <a class="text-foreground underline" href={Urls.MEETUPS}>meetups</a>.
+    </p>
+    <Link href={Urls.HOME} variant="secondary">Volver al inicio</Link>
+  </section>
+</article>
