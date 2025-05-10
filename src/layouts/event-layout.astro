@@ -3,14 +3,14 @@ import { Event } from '@/modules/events/domain/event'
 import BaseLayout from './base-layout.astro'
 import AddToCalendarButton from '@/ui/components/add-to-calendar-button/add-to-calendar-button.astro'
 import Container from '@/ui/components/container/container.astro'
-import Tag from '@/ui/components/tag/tag.astro'
 import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
 import { SocialLink } from '@/ui/components/social-link/social-link'
 import { Link, MapPin } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { Badge } from '@/ui/badge'
-import { DateFormat } from '@/shared/domain/datetime/datetime'
+import { SocialNetwork } from '@/shared/domain/social/social-network'
+import { SocialRow } from '@/ui/components/social-row/social-row'
 
 interface Props {
   event: Event | Meetup
@@ -98,18 +98,20 @@ const url = Urls.EVENT(slug)
           )
         }
       </div>
-      <div class="flex justify-start gap-1 max-w-5xl left-0 right-0 ml-auto mr-auto xl:px-0">
-        {twitter && <SocialLink name={title} href={twitter} type="twitter" />}
-        {twitch && <SocialLink name={title} href={twitch} type="twitch" />}
-        {instagram && <SocialLink name={title} href={instagram} type="instagram" />}
-        {youtube && <SocialLink name={title} href={youtube} type="youtube" />}
-        {facebook && <SocialLink name={title} href={facebook} type="facebook" />}
-        {linkedin && <SocialLink name={title} href={linkedin} type="linkedin" />}
-        {github && <SocialLink name={title} href={github} type="github" />}
-        {telegram && <SocialLink name={title} href={telegram} type="telegram" />}
-        {whatsapp && <SocialLink name={title} href={whatsapp} type="whatsapp" />}
-        {discord && <SocialLink name={title} href={discord} type="discord" />}
-      </div>
+      <SocialRow
+        name={title}
+        twitter={twitter}
+        twitch={twitch}
+        instagram={instagram}
+        youtube={youtube}
+        facebook={facebook}
+        linkedin={linkedin}
+        github={github}
+        telegram={telegram}
+        whatsapp={whatsapp}
+        discord={discord}
+        web={web}
+      />
     </div>
   </header>
   <main class="lg:mt-4">
