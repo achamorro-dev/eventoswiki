@@ -10,4 +10,5 @@ export enum SocialNetwork {
   whatsapp = 'whatsapp',
   discord = 'discord',
   tiktok = 'tiktok',
+  web = 'web',
 }
