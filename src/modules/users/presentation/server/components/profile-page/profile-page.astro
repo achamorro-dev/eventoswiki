@@ -10,10 +10,10 @@ const { userId } = Astro.props
 const user = await UsersLocator.getUserQuery().execute({ id: userId })
 ---
 
-<article>
+<article class="user-profile">
   <header class="header">
     <UserAvatar userName={user.name} image={user.avatar} size="xl" />
-    <h1 class="text-3xl font-medium text-black dark:text-white">{user.name}</h1>
+    <h1 class="text-4xl font-semibold text-foreground">{user.name}</h1>
     <span class="username">@{user.username}</span>
     <div></div>
     <slot name="header" />
@@ -22,6 +22,10 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
 
 <style>
   @reference "../../../../../../styles/global.css";
+
+  .user-profile {
+    @apply flex flex-col items-stretch gap-y-16 py-24;
+  }
 
   .header {
     @apply flex flex-col items-center gap-4;
