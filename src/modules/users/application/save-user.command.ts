@@ -10,6 +10,7 @@ interface Param {
   name: string
   email: string | null
   username: string
+  avatar: string | null
 }
 export class SaveUserCommand extends Command<Param, void> {
   constructor(
@@ -20,12 +21,12 @@ export class SaveUserCommand extends Command<Param, void> {
   }
 
   async execute(param: Param): Promise<void> {
-    const { userId, name, email, username } = param
+    const { userId, name, email, username, avatar } = param
 
     const user = await this.usersRepository.find(UserId.of(userId))
     await this.ensureUsernameIsAvailable(username, user.id)
 
-    user.updateProfile({ name, email, username })
+    user.updateProfile({ name, email, username, avatar })
     return this.usersRepository.save(user)
   }
 

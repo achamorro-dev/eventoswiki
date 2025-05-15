@@ -1,30 +1,53 @@
-import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
+import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
 import { Button } from '@/ui/components/button'
 import { ErrorMessage } from '@/ui/components/error-message/error-message'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
-import { At, Envelope, User as UserIcon } from '@/ui/icons'
+import { At, Camera, Envelope, Loader, User as UserIcon } from '@/ui/icons'
 import { Input } from '@/ui/input'
-import type { User } from '@/users/domain/user'
-import { type FC } from 'react'
+import { useEffect, useRef, type FC } from 'react'
 import { type UseFormReturn } from 'react-hook-form'
 import styles from './edit-user-profile-form.module.css'
 import type { UserFormSchema } from './user-form-schema'
 
 interface Props {
   form: UseFormReturn<UserFormSchema>
-  user: Primitives<User>
   onSubmit: (values: UserFormSchema) => Promise<void>
   error: string | null
 }
 
 export const EditUserProfileForm: FC<Props> = props => {
-  const { form, onSubmit, user, error } = props
+  const { form, onSubmit, error } = props
+  const { onInputFile, isLoading, image } = useUploadFile()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (image) {
+      form.setValue('avatar', image.toString())
+    }
+  }, [image])
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} id="user-profile-form" className={styles.form}>
         <section>
-          <img src={user.avatar.toString()} alt="Avatar" className={styles.avatar} />
+          <div className="flex flex-col items-center gap-2">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src={form.watch('avatar')} alt="Avatar" />
+              <AvatarFallback>{form.watch('name').slice(0, 2)}</AvatarFallback>
+            </Avatar>
+            <Button
+              variant="outline"
+              type="button"
+              size="icon"
+              className="z-1 -mt-8 ml-12"
+              disabled={isLoading}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+            </Button>
+            <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
+          </div>
         </section>
         <section className={styles['form-inputs']}>
           <FormField

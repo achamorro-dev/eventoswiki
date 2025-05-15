@@ -10,17 +10,18 @@ export const saveUserAction = defineAction({
     name: z.string(),
     email: z.string().email().nullable(),
     username: z.string(),
+    avatar: z.string().nullable(),
   }),
   handler: async (input, context) => {
     try {
-      const { name, email, username } = input
+      const { name, email, username, avatar } = input
       const userId = context.locals.user?.id
 
       if (!userId) {
         return null
       }
 
-      await UsersLocator.saveUserCommand().execute({ userId, name, email, username })
+      await UsersLocator.saveUserCommand().execute({ userId, name, email, username, avatar })
 
       return
     } catch (error) {

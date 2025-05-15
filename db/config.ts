@@ -73,7 +73,7 @@ export const User = defineTable({
     username: column.text({ unique: true }),
     name: column.text(),
     email: column.text({ optional: true, unique: false }),
-    avatar: column.text(),
+    avatar: column.text({ optional: true }),
     githubId: column.text({ optional: true }),
     googleId: column.text({ optional: true }),
     twitterId: column.text({ optional: true }),
