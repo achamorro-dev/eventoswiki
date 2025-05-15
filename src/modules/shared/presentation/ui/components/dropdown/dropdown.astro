@@ -99,7 +99,7 @@ const { id = 'dropdown' } = Astro.props
     }
 
     private onKeyDown(event: KeyboardEvent) {
-      const { ctrlKey, shiftKey, altKey, key } = event
+      const { ctrlKey, shiftKey, key } = event
       let shouldStopPropagation = false
 
       if (ctrlKey || shiftKey) return
