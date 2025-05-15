@@ -9,7 +9,7 @@ export interface UserProps {
   name: string
   username: string
   email: string | null
-  avatar: URL
+  avatar: URL | null
   readonly organizations: string[]
 }
 
@@ -18,7 +18,7 @@ export class User implements UserProps {
   name: string
   username: string
   email: string | null
-  avatar: URL
+  avatar: URL | null
   organizations: string[]
 
   constructor(user: Properties<User>) {
@@ -36,7 +36,7 @@ export class User implements UserProps {
       name: primitives.name,
       username: primitives.username,
       email: primitives.email,
-      avatar: new URL(primitives.avatar),
+      avatar: primitives.avatar ? new URL(primitives.avatar) : null,
       organizations: primitives.organizations,
     })
   }
@@ -47,7 +47,7 @@ export class User implements UserProps {
       name: this.name,
       username: this.username,
       email: this.email,
-      avatar: this.avatar.toString(),
+      avatar: this.avatar?.toString() || null,
       organizations: this.organizations,
     }
   }
@@ -62,6 +62,7 @@ export class User implements UserProps {
     this.email = profile.email
     this.name = profile.name
     this.username = profile.username
+    this.avatar = profile.avatar ? new URL(profile.avatar) : null
   }
 
   private ensureIsValidProfile(profile: Profile) {
@@ -72,6 +73,6 @@ export class User implements UserProps {
   }
 
   getAvatarUrlString() {
-    return this.avatar.toString()
+    return this.avatar?.toString() || null
   }
 }

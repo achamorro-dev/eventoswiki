@@ -3,10 +3,12 @@ import { Button } from '@/ui/components/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/ui/drawer'
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
+import { Urls } from '@/ui/urls/urls'
 import type { User } from '@/users/domain/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'astro/zod'
 import { actions } from 'astro:actions'
+import { navigate } from 'astro:transitions/client'
 import { useCallback, useState, type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -27,6 +29,7 @@ export const EditUserProfileModalForm: FC<Props> = props => {
       name: user.name,
       email: user.email ?? undefined,
       username: user.username,
+      avatar: user.avatar ?? undefined,
     },
     resolver: zodResolver(userFormSchema),
   })
@@ -37,6 +40,7 @@ export const EditUserProfileModalForm: FC<Props> = props => {
       name: values.name,
       email: values.email,
       username: values.username,
+      avatar: values.avatar ?? null,
     })
 
     if (error) {
@@ -45,6 +49,7 @@ export const EditUserProfileModalForm: FC<Props> = props => {
     }
 
     toast.success('Perfil actualizado correctamente')
+    navigate(Urls.PROFILE)
   }
 
   const resetForm = useCallback(() => {
@@ -53,6 +58,7 @@ export const EditUserProfileModalForm: FC<Props> = props => {
     form.setValue('name', user.name)
     form.setValue('email', user.email ?? '')
     form.setValue('username', user.username)
+    form.setValue('avatar', user.avatar ?? '')
   }, [form, user])
 
   const onOpenChange = useCallback(
@@ -75,7 +81,7 @@ export const EditUserProfileModalForm: FC<Props> = props => {
             <DrawerHeader>
               <DrawerTitle>Editar perfil</DrawerTitle>
             </DrawerHeader>
-            <EditUserProfileForm form={form} onSubmit={onSubmit} user={user} error={error} />
+            <EditUserProfileForm form={form} onSubmit={onSubmit} error={error} />
           </DrawerContent>
         </Drawer>
       </>
@@ -91,7 +97,7 @@ export const EditUserProfileModalForm: FC<Props> = props => {
         <DialogHeader>
           <DialogTitle>Editar perfil</DialogTitle>
         </DialogHeader>
-        <EditUserProfileForm form={form} onSubmit={onSubmit} user={user} error={error} />
+        <EditUserProfileForm form={form} onSubmit={onSubmit} error={error} />
       </DialogContent>
     </Dialog>
   )
