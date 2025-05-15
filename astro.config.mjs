@@ -45,6 +45,8 @@ export default defineConfig({
       GOOGLE_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
       TWITTER_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
       TWITTER_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
+      PINATA_JWT: envField.string({ context: 'server', access: 'secret' }),
+      PINATA_GATEWAY_URL: envField.string({ context: 'server', access: 'secret' }),
     },
   },
 })
