@@ -14,7 +14,7 @@ const { maxSize = 'l', className } = Astro.props
 const maxSizeClass = CONTAINER_MAX_SIZES[maxSize]
 ---
 
-<div class:list={'w-full bg-white px-4 pb-12 antialiased dark:bg-slate-900'}>
+<div class:list={'w-full bg-background px-4 pb-12 antialiased'}>
   <div class:list={['mx-auto', maxSizeClass, className]}>
     <slot />
   </div>
