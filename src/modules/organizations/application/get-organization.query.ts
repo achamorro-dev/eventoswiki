@@ -12,6 +12,6 @@ export class GetOrganizationQuery extends Query<Organization, GetOrganizationReq
   }
 
   execute({ handle }: GetOrganizationRequest): Promise<Organization> {
-    return this.organizationRepository.find(handle)
+    return this.organizationRepository.findByHandle(handle)
   }
 }

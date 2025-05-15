@@ -1,5 +1,5 @@
-import { createOrganizationAction } from './create-organization.action'
+import { saveOrganizationAction } from './save-organization.action'
 
 export const organizationServerActions = {
-  createOrganizationAction,
+  saveOrganizationAction,
 }

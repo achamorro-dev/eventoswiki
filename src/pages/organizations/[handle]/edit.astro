@@ -1,0 +1,51 @@
+---
+import BaseLayout from '@/layouts/base-layout.astro'
+import Layout from '@/layouts/layout.astro'
+import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
+import type { Organization } from '@/organizations/domain/organization'
+import EditOrganizationPage from '@/organizations/presentation/client/pages/edit-organization-page/edit-organization-page.astro'
+import NotFound from '@/ui/components/not-found/not-found.astro'
+import { Urls } from '@/ui/urls/urls'
+
+const handle = Astro.params.handle
+
+if (!handle) {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Not found'
+  return
+}
+
+const userId = Astro.locals.user?.id
+let organization: Organization | undefined
+try {
+  organization = await OrganizationsLocator.getOrganizationQuery().execute({ handle })
+
+  if (!userId || !organization.isOrganizer(userId)) {
+    return Astro.redirect(Urls.ORGANIZATION(organization.handle))
+  }
+} catch (error) {
+  switch (true) {
+    case error instanceof OrganizationNotFound:
+      Astro.response.status = 404
+      Astro.response.statusText = 'Not found'
+      break
+    default:
+      Astro.response.status = 500
+      Astro.response.statusText = 'Internal server error'
+      break
+  }
+}
+---
+
+{
+  userId && organization ? (
+    <Layout title={organization.name}>
+      <EditOrganizationPage organization={organization} organizerId={userId} />
+    </Layout>
+  ) : (
+    <BaseLayout title="Organización no encontrada">
+      <NotFound title="Organización no encontrada" />
+    </BaseLayout>
+  )
+}

@@ -1,7 +1,8 @@
 ---
 import { Organization } from '@/organizations/domain/organization'
-import { Button } from '@/ui/button'
+import { Link } from '@/ui/components/link'
 import { SocialRow } from '@/ui/components/social-row/social-row'
+import { Urls } from '@/ui/urls/urls'
 import { OrganizationAvatar } from '../../components/organization-avatar/organization-avatar'
 
 interface Props {
@@ -25,7 +26,13 @@ const isOrganizer = userId ? organization.isOrganizer(userId) : false
     </span>
     <p class="bio">{organization.bio}</p>
     <SocialRow {...organization.toPrimitives()} />
-    {isOrganizer && <Button variant="secondary">Editar</Button>}
+    {
+      isOrganizer && (
+        <Link variant="secondary" href={Urls.ORGANIZATION_EDIT(organization.handle)}>
+          Editar
+        </Link>
+      )
+    }
   </header>
 </article>
 

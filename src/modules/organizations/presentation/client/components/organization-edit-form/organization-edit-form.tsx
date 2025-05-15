@@ -1,7 +1,9 @@
 'use client'
 
+import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
 import { Button } from '@/ui/components/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
@@ -36,14 +38,27 @@ import { organizationFormSchema } from './organization-form-schema'
 
 interface Props {
   provinces: Province[]
+  organization?: Primitives<Organization>
   organizerId: string
 }
 
-export const OrganizationEditForm = ({ provinces, organizerId }: Props) => {
+export const OrganizationEditForm = ({ provinces, organizerId, organization }: Props) => {
   const form = useForm<z.infer<typeof organizationFormSchema>>({
     defaultValues: {
-      name: '',
-      image: 'https://github.com/shadcn.png',
+      name: organization?.name ?? '',
+      image: organization?.image ?? 'https://github.com/shadcn.png',
+      bio: organization?.bio ?? '',
+      handle: organization?.handle,
+      location: organization?.location ?? undefined,
+      web: organization?.web,
+      twitter: organization?.twitter,
+      facebook: organization?.facebook,
+      instagram: organization?.instagram,
+      youtube: organization?.youtube,
+      discord: organization?.discord,
+      telegram: organization?.telegram,
+      whatsapp: organization?.whatsapp,
+      tiktok: organization?.tiktok,
     },
     resolver: zodResolver(organizationFormSchema),
   })
@@ -55,7 +70,7 @@ export const OrganizationEditForm = ({ provinces, organizerId }: Props) => {
   }, [name])
 
   const onSubmit = async (values: z.infer<typeof organizationFormSchema>) => {
-    const { error } = await actions.organization.createOrganizationAction({
+    const organizationValues = {
       name: values.name,
       bio: values.bio,
       handle: values.handle,
@@ -74,10 +89,13 @@ export const OrganizationEditForm = ({ provinces, organizerId }: Props) => {
       github: values.github,
       linkedin: values.linkedin,
       organizerId,
-    })
+      organizationId: organization?.id,
+    }
+    const { error } = await actions.organization.saveOrganizationAction(organizationValues)
 
     if (error) {
       toast.error(error.message)
+      return
     }
 
     navigate(Urls.ORGANIZATION(values.handle))
@@ -96,7 +114,7 @@ export const OrganizationEditForm = ({ provinces, organizerId }: Props) => {
               <div className="flex flex-col items-center gap-2">
                 <Avatar className="h-24 w-24">
                   <AvatarImage src={form.watch('image')} alt="Avatar" />
-                  <AvatarFallback>ORG</AvatarFallback>
+                  <AvatarFallback>{form.watch('name').slice(0, 2)}</AvatarFallback>
                 </Avatar>
                 <Button variant="outline" size="icon" className="z-1 -mt-8 ml-12">
                   <Camera className="h-4 w-4" />
