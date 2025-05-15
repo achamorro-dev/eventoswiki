@@ -1,5 +1,6 @@
 'use client'
 
+import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
@@ -15,6 +16,7 @@ import {
   Globe,
   Instagram,
   Linkedin,
+  Loader,
   MapPin,
   Telegram,
   Tiktok,
@@ -30,7 +32,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { z } from 'astro/zod'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
@@ -43,6 +45,9 @@ interface Props {
 }
 
 export const OrganizationEditForm = ({ provinces, organizerId, organization }: Props) => {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { onInputFile, isLoading, image } = useUploadFile()
+
   const form = useForm<z.infer<typeof organizationFormSchema>>({
     defaultValues: {
       name: organization?.name ?? '',
@@ -105,6 +110,12 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
     toast.error('El formulario contiene errores, por favor, revisa los campos.')
   }
 
+  useEffect(() => {
+    if (image) {
+      form.setValue('image', image.toString())
+    }
+  }, [image])
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit, onError)} id="organization-edit-form">
@@ -116,9 +127,17 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
                   <AvatarImage src={form.watch('image')} alt="Avatar" />
                   <AvatarFallback>{form.watch('name').slice(0, 2)}</AvatarFallback>
                 </Avatar>
-                <Button variant="outline" size="icon" className="z-1 -mt-8 ml-12">
-                  <Camera className="h-4 w-4" />
+                <Button
+                  variant="outline"
+                  type="button"
+                  size="icon"
+                  className="z-1 -mt-8 ml-12"
+                  disabled={isLoading}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
                 </Button>
+                <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
               </div>
 
               <div className="flex-1 space-y-4">

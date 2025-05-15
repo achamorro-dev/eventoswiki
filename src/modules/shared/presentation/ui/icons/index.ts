@@ -31,4 +31,5 @@ export {
   PiXBold as XBold,
   PiXLogoBold as XLogo,
   PiYoutubeLogoFill as Youtube,
+  PiCircleNotch as Loader,
 } from 'react-icons/pi'
