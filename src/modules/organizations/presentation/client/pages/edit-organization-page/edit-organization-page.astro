@@ -6,13 +6,19 @@ import { OrganizationEditForm } from '../../components/organization-edit-form/or
 
 interface Props {
   organizerId: string
+  organization: Organization
 }
 
-const { organizerId } = Astro.props as Props
+const { organizerId, organization } = Astro.props as Props
 const provinces = await ProvincesLocator.getProvincesQuery().execute()
 ---
 
 <article>
-  <SectionTitle>Crear Organización</SectionTitle>
-  <OrganizationEditForm client:load organizerId={organizerId} provinces={provinces} />
+  <SectionTitle>Editar Organización</SectionTitle>
+  <OrganizationEditForm
+    client:load
+    organization={organization.toPrimitives()}
+    organizerId={organizerId}
+    provinces={provinces}
+  />
 </article>

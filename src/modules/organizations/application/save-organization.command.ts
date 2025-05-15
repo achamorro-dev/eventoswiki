@@ -1,21 +1,22 @@
 import { Command } from '@/shared/application/use-case/command'
-import { Organization, type OrganizationData } from '../domain/organization'
+import type { OrganizationData } from '../domain/organization'
+import { OrganizationId } from '../domain/organization-id'
 import type { OrganizationsRepository } from '../domain/organizations.repository'
 
 interface Param {
+  organizationId: string
   data: OrganizationData
-  organizerId: string
 }
-export class CreateOrganizationCommand extends Command<Param, void> {
+export class SaveOrganizationCommand extends Command<Param, void> {
   constructor(private readonly organizationsRepository: OrganizationsRepository) {
     super()
   }
 
   async execute(param: Param): Promise<void> {
-    const { organizerId, data } = param
+    const { organizationId, data } = param
 
-    const organization = Organization.create(data)
-    organization.addOrganizer(organizerId)
+    const organization = await this.organizationsRepository.find(OrganizationId.of(organizationId))
+    organization.update(data)
 
     await this.organizationsRepository.save(organization)
   }

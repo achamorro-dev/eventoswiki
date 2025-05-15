@@ -6,52 +6,52 @@ import { OrganizationValidator } from './validators/organization.validator'
 
 export interface OrganizationProps {
   readonly id: OrganizationId
-  readonly handle: string
-  readonly name: string
-  readonly bio: string
-  readonly image?: URL
-  readonly organizers: string[]
-  readonly location: string | null
-  readonly web?: string
-  readonly twitter?: string
-  readonly linkedin?: string
-  readonly youtube?: string
-  readonly twitch?: string
-  readonly facebook?: string
-  readonly instagram?: string
-  readonly github?: string
-  readonly telegram?: string
-  readonly whatsapp?: string
-  readonly discord?: string
-  readonly tiktok?: string
-  readonly createdAt: Date
-  readonly updatedAt: Date
+  handle: string
+  name: string
+  bio: string
+  image?: URL
+  organizers: string[]
+  location: string | null
+  web?: string
+  twitter?: string
+  linkedin?: string
+  youtube?: string
+  twitch?: string
+  facebook?: string
+  instagram?: string
+  github?: string
+  telegram?: string
+  whatsapp?: string
+  discord?: string
+  tiktok?: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type OrganizationData = Primitives<Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt' | 'organizers'>>
 
 export class Organization implements OrganizationProps {
   readonly id: OrganizationId
-  readonly handle: string
-  readonly name: string
-  readonly bio: string
-  readonly image?: URL
-  readonly organizers: string[]
-  readonly location: string | null
-  readonly web?: string
-  readonly twitter?: string
-  readonly linkedin?: string
-  readonly youtube?: string
-  readonly twitch?: string
-  readonly facebook?: string
-  readonly instagram?: string
-  readonly github?: string
-  readonly telegram?: string
-  readonly whatsapp?: string
-  readonly discord?: string
-  readonly tiktok?: string
-  readonly createdAt: Date
-  readonly updatedAt: Date
+  handle: string
+  name: string
+  bio: string
+  image?: URL
+  organizers: string[]
+  location: string | null
+  web?: string
+  twitter?: string
+  linkedin?: string
+  youtube?: string
+  twitch?: string
+  facebook?: string
+  instagram?: string
+  github?: string
+  telegram?: string
+  whatsapp?: string
+  discord?: string
+  tiktok?: string
+  createdAt: Date
+  updatedAt: Date
 
   private constructor(props: OrganizationProps) {
     this.id = props.id
@@ -142,6 +142,26 @@ export class Organization implements OrganizationProps {
 
   isOrganizer(organizerId: string) {
     return this.organizers.includes(organizerId)
+  }
+
+  update(newOrganizationData: OrganizationData) {
+    this.handle = newOrganizationData.handle ?? this.handle
+    this.name = newOrganizationData.name ?? this.name
+    this.bio = newOrganizationData.bio ?? this.bio
+    this.image = newOrganizationData.image ? new URL(newOrganizationData.image) : this.image
+    this.location = newOrganizationData.location ?? this.location
+    this.web = newOrganizationData.web ?? this.web
+    this.twitter = newOrganizationData.twitter ?? this.twitter
+    this.linkedin = newOrganizationData.linkedin ?? this.linkedin
+    this.youtube = newOrganizationData.youtube ?? this.youtube
+    this.twitch = newOrganizationData.twitch ?? this.twitch
+    this.facebook = newOrganizationData.facebook ?? this.facebook
+    this.instagram = newOrganizationData.instagram ?? this.instagram
+    this.github = newOrganizationData.github ?? this.github
+    this.telegram = newOrganizationData.telegram ?? this.telegram
+    this.whatsapp = newOrganizationData.whatsapp ?? this.whatsapp
+    this.discord = newOrganizationData.discord ?? this.discord
+    this.tiktok = newOrganizationData.tiktok ?? this.tiktok
   }
 
   private static ensureIsValidOrganization(organization: OrganizationData) {
