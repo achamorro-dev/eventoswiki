@@ -65,7 +65,13 @@ const url = Urls.EVENT(slug)
     <div>
       <div class="w-full lg:px-6 max-w-5xl xl:px-0">
         <div class="flex items-center gap-2" transition:animate="fade">
-          {tags.map((t: string) => <Badge color={tagColor}>{t.toUpperCase()}</Badge>)}
+          {
+            tags.map((t: string) => (
+              <Badge color={tagColor} className="text-white">
+                {t.toUpperCase()}
+              </Badge>
+            ))
+          }
         </div>
         <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
           {title}

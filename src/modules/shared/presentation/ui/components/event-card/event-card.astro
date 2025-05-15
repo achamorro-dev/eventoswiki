@@ -4,7 +4,6 @@ import { Badge } from '@/ui/badge'
 import Card from '@/ui/components/card/card.astro'
 import DatePeriod from '@/ui/components/date-period/date-period.astro'
 import Location from '@/ui/components/location/location.astro'
-import Tag from '@/ui/components/tag/tag.astro'
 
 interface CardEvent {
   slug: string
@@ -44,7 +43,13 @@ const { event, classes, goToEvent } = Astro.props
       />
     </div>
     <div class="event-tags">
-      {event.tags.map(t => <Badge color={event.tagColor}>{t.toUpperCase()}</Badge>)}
+      {
+        event.tags.map(t => (
+          <Badge color={event.tagColor} className="text-white">
+            {t.toUpperCase()}
+          </Badge>
+        ))
+      }
     </div>
     <h3 class="event-title">{event.title}</h3>
     <section class="event-date-location">
