@@ -7,7 +7,6 @@ import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import EventsSliderSkeleton from '@/ui/components/events-slider/events-slider-skeleton.astro'
 import { Link } from '@/ui/components/link'
 import { Urls } from '@/ui/urls/urls'
-import { navigate } from 'astro:transitions/client'
 import Layout from '../../layouts/layout.astro'
 
 const { province = '' } = Astro.params
@@ -15,8 +14,7 @@ const { province = '' } = Astro.params
 const location = await ProvincesLocator.getProvinceQuery().execute({ id: province })
 
 if (!location) {
-  navigate(Urls.HOME)
-  return
+  return Astro.redirect(Urls.HOME)
 }
 ---
 
