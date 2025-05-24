@@ -16,7 +16,7 @@ export const eventFormSchema = z.object({
   title: StringFormField(EventTitleValidator),
   slug: StringFormField(EventSlugValidator),
   shortDescription: StringFormField(EventShortDescriptionValidator),
-  image: StringFormField(EventImageValidator),
+  image: StringFormField(EventImageValidator, { requiredError: 'Es obligatorio adjuntar una imagen del evento' }),
   content: StringFormField(EventContentValidator),
   location: NotRequiredStringFormField(EventLocationValidator),
   startsAt: DateFormField(EventStartDateValidator),
