@@ -1,13 +1,13 @@
 export interface AstroDbEventDto {
+  id: string | null
   slug: string
   title: string
   shortDescription: string
   startsAt: Date
   endsAt: Date
-  thumbnail: string
   image: string
   location: string | null
-  web: string
+  web: string | null
   twitter: string | null
   linkedin: string | null
   youtube: string | null

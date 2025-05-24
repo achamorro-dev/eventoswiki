@@ -1,6 +1,6 @@
 ---
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
-import { OrganizationTabs } from '../../components/organization-tabs/organization-tabs'
+import { MyOrganizationTabs } from '../../components/my-organization-tabs/my-organization-tabs'
 
 interface Props {
   userId: string
@@ -12,4 +12,4 @@ const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery()
 const organizations = userOrganizations.map(o => o.toPrimitives())
 ---
 
-<OrganizationTabs client:idle userOrganizations={organizations} />
+<MyOrganizationTabs client:idle userOrganizations={organizations} />
