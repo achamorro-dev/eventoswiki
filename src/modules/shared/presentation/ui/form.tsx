@@ -1,6 +1,6 @@
-import * as React from 'react'
 import * as LabelPrimitive from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
+import * as React from 'react'
 import {
   Controller,
   FormProvider,
@@ -11,8 +11,8 @@ import {
   type FieldValues,
 } from 'react-hook-form'
 
-import { cn } from '@/modules/shared/presentation/ui/lib/utils'
 import { Label } from '@/modules/shared/presentation/ui/label'
+import { cn } from '@/modules/shared/presentation/ui/lib/utils'
 
 const Form = FormProvider
 
@@ -72,7 +72,7 @@ function FormItem({ className, ...props }: React.ComponentProps<'div'>) {
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div data-slot="form-item" className={cn('grid gap-2', className)} {...props} />
+      <div data-slot="form-item" className={cn('flex flex-col items-start gap-2', className)} {...props} />
     </FormItemContext.Provider>
   )
 }
@@ -127,10 +127,15 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   }
 
   return (
-    <p data-slot="form-message" id={formMessageId} className={cn('text-destructive text-sm', className)} {...props}>
+    <p
+      data-slot="form-message"
+      id={formMessageId}
+      className={cn('text-destructive text-xs font-medium', className)}
+      {...props}
+    >
       {body}
     </p>
   )
 }
 
-export { useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField }
+export { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField }
