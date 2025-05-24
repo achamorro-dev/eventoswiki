@@ -1,7 +1,7 @@
 import { Validator } from './validator'
 
 export class SlugStringValidator extends Validator<string> {
-  private readonly slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+  private readonly slugRegex = /^[a-z0-9\/]+(?:-[a-z0-9\/]+)*$/
 
   constructor(
     value: string,
