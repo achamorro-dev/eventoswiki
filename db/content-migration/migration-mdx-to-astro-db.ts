@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync } from 'fs'
+import { v4 as uuidv4 } from 'uuid'
 
 const regexKeyValue = /(\w+):\s*(?:"([^"]*)"|'([^']*)'|(.+))/
 
@@ -49,7 +50,7 @@ function getParsedEvents(eventsMdxFiles: string[], folder: string, year: string)
         value = new Date(value)
       }
 
-      return { ...acc, [key]: value }
+      return { ...acc, [key]: value, id: uuidv4() }
     }, {})
 
     data = {
