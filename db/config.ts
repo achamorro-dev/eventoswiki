@@ -2,15 +2,15 @@ import { NOW, column, defineDb, defineTable } from 'astro:db'
 
 export const Event = defineTable({
   columns: {
+    id: column.text({ optional: true }),
     slug: column.text({ primaryKey: true, optional: false, unique: true }),
     title: column.text(),
     shortDescription: column.text(),
     startsAt: column.date(),
     endsAt: column.date(),
-    thumbnail: column.text(),
     image: column.text(),
     location: column.text({ optional: true }),
-    web: column.text(),
+    web: column.text({ optional: true }),
     twitter: column.text({ optional: true }),
     linkedin: column.text({ optional: true }),
     youtube: column.text({ optional: true }),
@@ -27,6 +27,7 @@ export const Event = defineTable({
     createdAt: column.date({ default: NOW }),
     updatedAt: column.date({ default: NOW }),
     content: column.text(),
+    organizationId: column.text({ optional: true, references: () => Organization.columns.id }),
   },
 })
 
