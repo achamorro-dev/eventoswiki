@@ -24,7 +24,6 @@ const {
   image,
   tags,
   tagColor,
-  altImage,
   startsAt,
   endsAt,
   twitter,
@@ -46,7 +45,7 @@ const url = Urls.EVENT(slug)
 <BaseLayout
   title={`${title} - eventos.wiki`}
   description={shortDescription}
-  image={image}
+  image={image.toString()}
   url={`https://eventos.wiki${url}`}
 >
   <header
@@ -55,8 +54,8 @@ const url = Urls.EVENT(slug)
   >
     <img
       id="event-image"
-      src={image}
-      alt={altImage || `Foto de portada del evento ${title}`}
+      src={image.toString()}
+      alt={`Foto de portada del evento ${title}`}
       class="w-full max-w-[350px] max-h-[300px] min-h-[200px] object-cover rounded-xl shadow-md bg-white"
       loading="lazy"
       onerror="this.src='/not-found.jpg'"
