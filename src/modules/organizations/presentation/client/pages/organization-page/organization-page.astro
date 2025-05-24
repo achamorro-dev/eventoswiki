@@ -4,6 +4,7 @@ import { Link } from '@/ui/components/link'
 import { SocialRow } from '@/ui/components/social-row/social-row'
 import { Urls } from '@/ui/urls/urls'
 import { OrganizationAvatar } from '../../components/organization-avatar/organization-avatar'
+import { OrganizationTabs } from '../../components/organization-tabs/organization-tabs'
 
 interface Props {
   organization: Organization
@@ -34,6 +35,8 @@ const isOrganizer = userId ? organization.isOrganizer(userId) : false
       )
     }
   </header>
+
+  <OrganizationTabs client:idle organization={organization.toPrimitives()} />
 </article>
 
 <style>
@@ -52,6 +55,6 @@ const isOrganizer = userId ? organization.isOrganizer(userId) : false
   }
 
   .bio {
-    @apply max-w-prose whitespace-pre-line text-balance;
+    @apply max-w-prose whitespace-break-spaces text-balance;
   }
 </style>

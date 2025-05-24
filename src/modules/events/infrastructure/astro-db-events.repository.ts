@@ -5,9 +5,10 @@ import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
-import { and, asc, count, db, desc, eq, Event, gt, gte, like, lt, lte, ne, or, Province } from 'astro:db'
+import { and, asc, count, db, desc, eq, Event, gt, gte, isDbError, like, lt, lte, ne, or, Province } from 'astro:db'
 import type { EventsCriteria } from '../domain/criterias/events-criteria'
 import type { EventsOrder } from '../domain/criterias/events-order'
+import { EventAlreadyExists } from '../domain/errors/event-already-exists.error'
 import { Event as EventEntity } from '../domain/event'
 import type { EventsRepository } from '../domain/events.repository'
 import { AstroEventMapper } from './mappers/astro-db-event.mapper'
@@ -32,15 +33,15 @@ export class AstroDbEventsRepository implements EventsRepository {
     return new PaginatedResult(AstroEventMapper.toDomainList(events), totalPages, criteria.page, criteria.limit)
   }
 
-  async find(id: EventEntity['slug']): Promise<EventEntity> {
+  async find(slug: EventEntity['slug']): Promise<EventEntity> {
     const result = await db
       .select()
       .from(Event)
       .leftJoin(Province, eq(Province.slug, Event.location))
-      .where(eq(Event.slug, id))
+      .where(eq(Event.slug, slug))
       .limit(1)
     if (!result.at(0)) {
-      throw new EventNotFound()
+      throw new EventNotFound(slug)
     }
 
     return AstroEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
@@ -49,6 +50,89 @@ export class AstroDbEventsRepository implements EventsRepository {
   async findAll(): Promise<EventEntity[]> {
     const eventsAndProvinces = await db.select().from(Event).leftJoin(Province, eq(Province.slug, Event.location))
     return AstroEventMapper.toDomainList(eventsAndProvinces)
+  }
+
+  async save(value: EventEntity): Promise<void> {
+    const event = await db.select().from(Event).where(eq(Event.id, value.id))
+    const hasEvent = event.length !== 0
+
+    return hasEvent ? this._updateEvent(value) : this._insertEvent(value)
+  }
+
+  private async _updateEvent(value: EventEntity): Promise<void | PromiseLike<void>> {
+    try {
+      await db.update(Event).set({
+        slug: value.slug,
+        title: value.title,
+        shortDescription: value.shortDescription,
+        startsAt: value.startsAt,
+        endsAt: value.endsAt,
+        image: value.image.toString(),
+        location: value.location,
+        web: value.web,
+        twitter: value.twitter,
+        linkedin: value.linkedin,
+        youtube: value.youtube,
+        twitch: value.twitch,
+        facebook: value.facebook,
+        instagram: value.instagram,
+        github: value.github,
+        telegram: value.telegram,
+        whatsapp: value.whatsapp,
+        discord: value.discord,
+        tiktok: value.tiktok,
+        tags: value.tags.join(','),
+        tagColor: value.tagColor,
+        content: value.content,
+      })
+    } catch (error) {
+      this._mapError(error, value)
+    }
+  }
+
+  private async _insertEvent(value: EventEntity): Promise<void | PromiseLike<void>> {
+    try {
+      await db.insert(Event).values({
+        id: value.id,
+        slug: value.slug,
+        title: value.title,
+        shortDescription: value.shortDescription,
+        startsAt: value.startsAt,
+        endsAt: value.endsAt,
+        image: value.image.toString(),
+        location: value.location,
+        web: value.web,
+        twitter: value.twitter,
+        linkedin: value.linkedin,
+        youtube: value.youtube,
+        twitch: value.twitch,
+        facebook: value.facebook,
+        instagram: value.instagram,
+        github: value.github,
+        telegram: value.telegram,
+        whatsapp: value.whatsapp,
+        discord: value.discord,
+        tiktok: value.tiktok,
+        tags: '',
+        tagColor: value.tagColor,
+        content: value.content,
+        organizationId: value.organizationId,
+      })
+    } catch (error) {
+      this._mapError(error, value)
+    }
+  }
+  private _mapError(error: unknown, value: EventEntity) {
+    if (isDbError(error)) {
+      switch (error.code) {
+        case 'SQLITE_CONSTRAINT_UNIQUE':
+          throw new EventAlreadyExists(value.slug)
+        default:
+          throw error
+      }
+    }
+
+    throw error
   }
 
   private getOrderBy(order: Partial<EventsOrder> | undefined) {

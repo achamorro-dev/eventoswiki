@@ -10,15 +10,15 @@ export class AstroEventMapper {
 
   static toDomain(eventDto: AstroDbEventDto, provinceDto: AstroDbEventProvinceDto | null): Event {
     return Event.fromPrimitives({
+      id: eventDto.id ?? '',
       slug: eventDto.slug,
       title: eventDto.title,
       shortDescription: eventDto.shortDescription,
       startsAt: Datetime.toIsoString(eventDto.startsAt),
       endsAt: Datetime.toIsoString(eventDto.endsAt),
-      thumbnail: eventDto.thumbnail,
       image: eventDto.image,
       location: provinceDto?.name || null,
-      web: eventDto.web,
+      web: eventDto.web || undefined,
       twitter: eventDto.twitter || undefined,
       linkedin: eventDto.linkedin || undefined,
       youtube: eventDto.youtube || undefined,

@@ -145,6 +145,8 @@ export class Organization implements OrganizationProps {
   }
 
   update(newOrganizationData: OrganizationData) {
+    Organization.ensureIsValidOrganization(newOrganizationData)
+
     this.handle = newOrganizationData.handle ?? this.handle
     this.name = newOrganizationData.name ?? this.name
     this.bio = newOrganizationData.bio ?? this.bio

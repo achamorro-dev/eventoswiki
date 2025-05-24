@@ -17,6 +17,7 @@ export const Urls = {
   ORGANIZATION_EDIT: (handle: string) => `/organizations/${handle}/edit`,
   MY_ORGANIZATIONS: '/me/organizations/',
   CREATE_ORGANIZATION: '/me/organizations/create',
+  CREATE_EVENT: (handle: string) => `/organizations/${handle}/events/create`,
   CALENDAR: '/calendar',
   LOGIN: '/login',
   LOGIN_GITHUB: '/login/github',
