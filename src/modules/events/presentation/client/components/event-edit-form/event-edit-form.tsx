@@ -59,7 +59,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       content: event?.content ?? '',
       startsAt: event?.startsAt ? Datetime.toDate(event?.startsAt) : undefined,
       endsAt: event?.endsAt ? Datetime.toDate(event?.endsAt) : undefined,
-      image: event?.image ?? 'https://secure.meetupstatic.com/photos/event/9/f/6/5/highres_509200805.webp?w=750',
+      image: event?.image,
       location: event?.location ?? undefined,
       web: event?.web,
       twitter: event?.twitter,
@@ -136,28 +136,42 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
           <div className="space-y-4">
             <div className="flex items-start gap-4">
               <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
-                {image ? (
-                  <img
-                    src={form.watch('image')}
-                    alt={form.watch('title')}
-                    className="h-72 rounded-md border-transparent object-cover"
-                  />
-                ) : (
-                  <div className="flex w-full items-center justify-center rounded-md bg-gray-100">
-                    <CameraSlash className="h-72 w-48 text-gray-400" />
-                  </div>
-                )}
-                <Button
-                  variant="outline"
-                  type="button"
-                  size="icon"
-                  className="z-1 -mt-4 ml-4"
-                  disabled={isLoading}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-                </Button>
-                <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <>
+                      {image ? (
+                        <img
+                          src={field.value}
+                          alt={form.watch('title')}
+                          className="h-72 rounded-md border-transparent object-cover"
+                        />
+                      ) : (
+                        <div
+                          aria-invalid={!!form.formState.errors['image']}
+                          className={
+                            'aria-invalid:border-destructive flex w-full items-center justify-center rounded-md border-2 border-gray-100 bg-gray-100'
+                          }
+                        >
+                          <CameraSlash className="h-72 w-48 text-gray-400" />
+                        </div>
+                      )}
+                      <Button
+                        variant="outline"
+                        type="button"
+                        size="icon"
+                        className="z-1 -mt-7 ml-4"
+                        disabled={isLoading}
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+                      </Button>
+                      <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={field.onChange} />
+                      <FormMessage />
+                    </>
+                  )}
+                />
               </div>
 
               <div className="flex-1 space-y-4">
