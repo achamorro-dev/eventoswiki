@@ -9,25 +9,9 @@ import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Button } from '@/ui/button'
 import { DateTimePicker } from '@/ui/components/date-time-picker'
 import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
+import { SocialForm } from '@/ui/components/social-form/social-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
-import {
-  Camera,
-  CameraSlash,
-  Discord,
-  Facebook,
-  Github,
-  Globe,
-  Instagram,
-  Linkedin,
-  Loader,
-  MapPin,
-  Telegram,
-  Tiktok,
-  Twitch,
-  Whatsapp,
-  XLogo,
-  Youtube,
-} from '@/ui/icons'
+import { Camera, CameraSlash, Loader, MapPin } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
@@ -134,7 +118,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       <form onSubmit={form.handleSubmit(onSubmit, onError)} id="organization-edit-form">
         <div className="space-y-6 py-4">
           <div className="space-y-4">
-            <div className="flex items-start gap-4">
+            <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
               <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
                 <FormField
                   control={form.control}
@@ -174,7 +158,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                 />
               </div>
 
-              <div className="flex-1 space-y-4">
+              <div className="w-full flex-1 space-y-4">
                 <div className="grid gap-4">
                   <FormField
                     control={form.control}
@@ -207,7 +191,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                       </FormItem>
                     )}
                   />
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                     <FormField
                       control={form.control}
                       name="startsAt"
@@ -246,255 +230,34 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                     />
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="grid gap-2">
-              <FormField
-                control={form.control}
-                name="web"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="web" className="flex items-center gap-1">
-                      <Globe className="h-4 w-4" /> Web
-                    </FormLabel>
-                    <FormControl>
-                      <Input id="web" placeholder="https://www.evento.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid gap-2">
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="location" className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" /> Localización
-                    </FormLabel>
-                    <FormControl>
-                      <ProvinceSelect
-                        id="location"
-                        placeholder="Provincia"
-                        provinces={provinces}
-                        className="w-full"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Redes Sociales</h3>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="twitter"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="twitter" className="flex items-center gap-1">
-                        <XLogo className="h-4 w-4" /> Twitter / X
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="twitter" placeholder="https://twitter.com/usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="linkedin"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="linkedin" className="flex items-center gap-1">
-                        <Linkedin className="h-4 w-4" /> LinkedIn
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="linkedin" placeholder="https://linkedin.com/in/usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="youtube"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="youtube" className="flex items-center gap-1">
-                        <Youtube className="h-4 w-4" /> YouTube
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="youtube" placeholder="https://youtube.com/@canal" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="twitch"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="twitch" className="flex items-center gap-1">
-                        <Twitch className="h-4 w-4" /> Twitch
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="twitch" placeholder="https://twitch.tv/usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="facebook"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="facebook" className="flex items-center gap-1">
-                        <Facebook className="h-4 w-4" /> Facebook
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="facebook" placeholder="https://facebook.com/pagina" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="instagram"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="instagram" className="flex items-center gap-1">
-                        <Instagram className="h-4 w-4" /> Instagram
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="instagram" placeholder="https://instagram.com/usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="github"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="github" className="flex items-center gap-1">
-                        <Github className="h-4 w-4" /> GitHub
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="github" placeholder="https://github.com/usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="telegram"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="telegram" className="flex items-center gap-1">
-                        <Telegram className="h-4 w-4" /> Telegram
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="telegram" placeholder="https://t.me/usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="whatsapp"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="whatsapp" className="flex items-center gap-1">
-                        <Whatsapp className="h-4 w-4" /> WhatsApp
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="whatsapp" placeholder="https://wa.me/usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="discord"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="discord" className="flex items-center gap-1">
-                        <Discord className="h-4 w-4" /> Discord
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="discord" placeholder="https://discord.gg/invite" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="tiktok"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="tiktok" className="flex items-center gap-1">
-                        <Tiktok className="h-4 w-4" /> TikTok
-                      </FormLabel>
-                      <FormControl>
-                        <Input id="tiktok" placeholder="https://tiktok.com/@usuario" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="grid gap-2">
+                  <FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="location" className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4" /> Localización
+                        </FormLabel>
+                        <FormControl>
+                          <ProvinceSelect
+                            id="location"
+                            placeholder="Provincia"
+                            provinces={provinces}
+                            className="w-full"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
+
+          <SocialForm control={form.control} />
 
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Detalles del evento</h3>
@@ -512,7 +275,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
             />
           </div>
         </div>
-        <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
+
         <div className="mt-4 flex w-full justify-end">
           <Button type="submit" className="w-full md:w-min">
             Guardar
