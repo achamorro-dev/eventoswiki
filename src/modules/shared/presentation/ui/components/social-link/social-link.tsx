@@ -10,8 +10,8 @@ import {
   Telegram,
   Tiktok,
   Twitch,
-  Twitter,
   Whatsapp,
+  XLogo,
   Youtube,
 } from '../../../ui/icons'
 
@@ -22,18 +22,18 @@ type SocialLinkProps = {
 }
 
 const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
-  twitter: <Twitter style={{ color: '#00acee' }} />,
-  linkedin: <Linkedin style={{ color: '#0072b1' }} />,
-  youtube: <Youtube style={{ color: '#ff0000' }} />,
-  twitch: <Twitch style={{ color: '#6441a5' }} />,
-  facebook: <Facebook style={{ color: '#0866FF' }} />,
-  instagram: <Instagram style={{ color: '#E1306C' }} />,
-  github: <Github style={{ color: '#24292e' }} />,
-  telegram: <Telegram style={{ color: '#2481cc' }} />,
-  whatsapp: <Whatsapp style={{ color: '#25d366' }} />,
-  discord: <Discord style={{ color: '#7289da' }} />,
-  tiktok: <Tiktok style={{ color: '#000' }} />,
-  web: <Globe style={{ color: '#000' }} />,
+  twitter: <XLogo />,
+  linkedin: <Linkedin />,
+  youtube: <Youtube size={24} />,
+  twitch: <Twitch />,
+  facebook: <Facebook size={24} />,
+  instagram: <Instagram />,
+  github: <Github />,
+  telegram: <Telegram />,
+  whatsapp: <Whatsapp />,
+  discord: <Discord />,
+  tiktok: <Tiktok />,
+  web: <Globe />,
 }
 
 export const SocialLink: FC<SocialLinkProps> = props => {
@@ -44,6 +44,7 @@ export const SocialLink: FC<SocialLinkProps> = props => {
       target="_blank"
       className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl"
       rel="nofollow"
+      title={`${type.toUpperCase()}`}
       aria-label={`Enlace a ${type} de ${name}`}
     >
       {SocialLinkIcon[type]}
