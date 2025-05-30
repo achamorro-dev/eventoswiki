@@ -1,3 +1,4 @@
+import { Button } from '@/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import {
   Discord,
@@ -14,7 +15,8 @@ import {
   Youtube,
 } from '@/ui/icons'
 import { Input } from '@/ui/input'
-import type { Control, FieldValues, Path } from 'react-hook-form'
+import { useMemo, useState } from 'react'
+import { useWatch, type Control, type FieldValues, type Path } from 'react-hook-form'
 
 type Social = {
   web?: string
@@ -31,14 +33,16 @@ type Social = {
   linkedin?: string
 }
 
-const socialFields: Record<keyof Social, { label: string; icon: React.ReactNode; placeholder: string }> = {
+type SocialKeys = keyof Social
+
+const socialFields: Record<SocialKeys, { label: string; icon: React.ReactNode; placeholder: string }> = {
   web: {
     label: 'Web',
     icon: <Globe className="h-4 w-4" />,
     placeholder: 'https://www.acme.com',
   },
   twitter: {
-    label: 'X / Twitter',
+    label: 'Twitter / X',
     icon: <XLogo className="h-4 w-4" />,
     placeholder: 'https://x.com/usuario',
   },
@@ -99,31 +103,72 @@ interface Props<T extends FieldValues> {
 }
 
 export const SocialForm = <T extends Social & FieldValues>({ control }: Props<T>) => {
+  const values = useWatch({ control })
+  const [activeFields, setActiveFields] = useState<SocialKeys[]>(getSocialKeysWithValues(values))
+
+  // Campos vacíos y no activados
+  const emptyFields = useMemo(
+    () =>
+      (Object.keys(socialFields) as SocialKeys[]).filter(
+        key => (!values?.[key] || values[key]?.toString().trim() === '') && !activeFields.includes(key),
+      ),
+    [values, activeFields],
+  )
+
   return (
-    <div className="space-y-4">
+    <div>
       <h3 className="text-lg font-medium">Links</h3>
 
+      {emptyFields.length > 0 && (
+        <div className="flex flex-wrap gap-2 pb-4 pt-2">
+          {emptyFields.map(socialKey => {
+            const { icon, label } = socialFields[socialKey]
+            return (
+              <Button
+                type="button"
+                variant="outline"
+                key={socialKey}
+                title={label}
+                aria-label={`Agregar input para ${label}`}
+                onClick={() => setActiveFields(prev => [...prev, socialKey])}
+              >
+                {icon}
+              </Button>
+            )
+          })}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {Object.entries(socialFields).map(([socialKey, { label, icon, placeholder }]) => (
-          <div className="grid gap-2">
-            <FormField
-              control={control}
-              name={socialKey as Path<T>}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={socialKey} className="flex items-center gap-1">
-                    {icon} {label}
-                  </FormLabel>
-                  <FormControl>
-                    <Input id={socialKey} placeholder={placeholder} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        ))}
+        {activeFields.map(socialKey => {
+          const { label, icon, placeholder } = socialFields[socialKey]
+          return (
+            <div className="grid gap-2" key={socialKey}>
+              <FormField
+                control={control}
+                name={socialKey as Path<T>}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={socialKey} className="flex items-center gap-1">
+                      {icon} {label}
+                    </FormLabel>
+                    <FormControl>
+                      <Input id={socialKey} placeholder={placeholder} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )
+        })}
       </div>
     </div>
   )
+}
+function getSocialKeysWithValues(values: Social): SocialKeys[] {
+  return Object.entries(values)
+    .filter(([_, value]) => value && value.toString().trim() !== '')
+    .filter(([key]) => key in socialFields)
+    .map(([key]) => key as keyof Social)
 }
