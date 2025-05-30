@@ -50,4 +50,8 @@ export {
   PiXBold as XBold,
   PiXLogoBold as XLogo,
   PiYoutubeLogo as Youtube,
+  PiTextHOne as TextHOne,
+  PiTextHTwo as TextHTwo,
+  PiTextHThree as TextHThree,
+  PiTextHFour as TextHFour,
 } from 'react-icons/pi'

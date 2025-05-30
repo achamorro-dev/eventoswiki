@@ -8,7 +8,6 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Button } from '@/ui/button'
 import { DateTimePicker } from '@/ui/components/date-time-picker'
-import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Camera, CameraSlash, Loader, MapPin } from '@/ui/icons'
@@ -24,6 +23,7 @@ import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
 import { eventFormSchema } from './event-form-schema'
+import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 
 interface Props {
   provinces: Province[]
@@ -70,26 +70,9 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
 
   const onSubmit = async (values: z.infer<typeof eventFormSchema>) => {
     const eventValues = {
-      title: values.title,
-      slug: values.slug,
-      shortDescription: values.shortDescription,
-      content: values.content,
+      ...values,
       startsAt: values.startsAt.toISOString(),
       endsAt: values.endsAt.toISOString(),
-      image: values.image,
-      location: values.location,
-      web: values.web,
-      twitter: values.twitter,
-      facebook: values.facebook,
-      instagram: values.instagram,
-      youtube: values.youtube,
-      discord: values.discord,
-      telegram: values.telegram,
-      whatsapp: values.whatsapp,
-      tiktok: values.tiktok,
-      twitch: values.twitch,
-      github: values.github,
-      linkedin: values.linkedin,
       organizationId,
       eventId: event?.id,
     }
