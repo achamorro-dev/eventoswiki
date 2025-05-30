@@ -8,6 +8,7 @@ import StarterKit from '@tiptap/starter-kit'
 
 import { RichEditorToolbar } from './rich-editor-toolbar'
 
+import { useMediaQuery } from '@/ui/hooks/use-media-query'
 import './rich-editor.css'
 
 const extensions = [
@@ -33,11 +34,13 @@ interface RichEditorProps {
 }
 export const RichEditor = (props: RichEditorProps) => {
   const { content, onContentChange } = props
+  const isDesktop = useMediaQuery('(min-width: 768px)')
 
   return (
     <div className="border-input w-full rounded border">
       <EditorProvider
-        slotBefore={<RichEditorToolbar />}
+        slotBefore={isDesktop ? <RichEditorToolbar /> : null}
+        slotAfter={!isDesktop ? <RichEditorToolbar /> : null}
         extensions={extensions}
         content={content}
         onUpdate={({ editor }) => {
