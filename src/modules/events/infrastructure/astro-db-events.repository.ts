@@ -113,7 +113,7 @@ export class AstroDbEventsRepository implements EventsRepository {
         whatsapp: value.whatsapp,
         discord: value.discord,
         tiktok: value.tiktok,
-        tags: '',
+        tags: value.tags.length > 0 ? value.tags.join(',') : '',
         tagColor: value.tagColor,
         content: value.content,
         organizationId: value.organizationId,

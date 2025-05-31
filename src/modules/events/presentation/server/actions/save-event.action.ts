@@ -25,6 +25,7 @@ interface EventDataPayload {
   whatsapp?: string | undefined
   discord?: string | undefined
   tiktok?: string | undefined
+  tags: string[]
 }
 
 export const saveEventAction = defineAction({
@@ -51,6 +52,7 @@ export const saveEventAction = defineAction({
     tiktok: z.string().optional(),
     organizationId: z.string(),
     eventId: z.string().optional(),
+    tags: z.array(z.string()).default([]),
   }),
   handler: async input => {
     try {

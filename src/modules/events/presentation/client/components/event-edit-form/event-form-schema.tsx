@@ -33,6 +33,7 @@ export const eventFormSchema = z.object({
   twitch: NotRequiredStringFormField(EventLinkValidator),
   github: NotRequiredStringFormField(EventLinkValidator),
   linkedin: NotRequiredStringFormField(EventLinkValidator),
+  tags: z.array(z.string()).optional(),
 })
 
 export type OrganizationFormSchema = z.infer<typeof eventFormSchema>
