@@ -34,6 +34,7 @@ export const eventFormSchema = z.object({
   github: NotRequiredStringFormField(EventLinkValidator),
   linkedin: NotRequiredStringFormField(EventLinkValidator),
   tags: z.array(z.string()).optional(),
+  tagColor: z.string().optional(),
 })
 
 export type OrganizationFormSchema = z.infer<typeof eventFormSchema>
