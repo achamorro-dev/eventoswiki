@@ -3,6 +3,7 @@
 import type { Event } from '@/events/domain/event'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import type { Province } from '@/provinces/domain/province'
+import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
@@ -46,7 +47,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       startsAt: event?.startsAt ? Datetime.toDate(event?.startsAt) : undefined,
       endsAt: event?.endsAt ? Datetime.toDate(event?.endsAt) : undefined,
       image: event?.image ?? 'https://hacken.es/images/isotipo-negativo-meta.png',
-      location: event?.location ?? undefined,
+      location: new ProvinceCollection(provinces).slugWithName(event?.location ?? undefined),
       web: event?.web,
       twitter: event?.twitter,
       facebook: event?.facebook,

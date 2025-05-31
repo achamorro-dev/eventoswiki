@@ -3,6 +3,7 @@
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
+import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
@@ -39,7 +40,7 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
       image: organization?.image ?? 'https://github.com/shadcn.png',
       bio: organization?.bio ?? '',
       handle: organization?.handle,
-      location: organization?.location ?? undefined,
+      location: new ProvinceCollection(provinces).slugWithName(organization?.location ?? undefined),
       web: organization?.web,
       twitter: organization?.twitter,
       facebook: organization?.facebook,
