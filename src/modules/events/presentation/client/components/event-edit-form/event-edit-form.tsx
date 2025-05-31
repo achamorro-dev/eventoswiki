@@ -13,7 +13,7 @@ import { DateTimePicker } from '@/ui/components/date-time-picker'
 import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
-import { Camera, CameraSlash, Loader, MapPin, X } from '@/ui/icons'
+import { Camera, CameraSlash, Loader, X } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
@@ -125,7 +125,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       <form onSubmit={form.handleSubmit(onSubmit, onError)} id="event-edit-form" className="container mx-auto">
         <div className="space-y-6 py-4">
           <div className="space-y-4">
-            <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
+            <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
               <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
                 <FormField
                   control={form.control}
@@ -244,7 +244,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel htmlFor="location" className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" /> Localización
+                          Localización
                         </FormLabel>
                         <FormControl>
                           <ProvinceSelect
@@ -292,9 +292,6 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                       </FormItem>
                     )}
                   />
-                </div>
-
-                <div className="grid gap-2">
                   <div className="flex flex-wrap gap-2">
                     {form.watch('tags')?.map((tag, index) => (
                       <Badge key={index} className="text-white" style={{ backgroundColor: form.watch('tagColor') }}>
@@ -313,11 +310,11 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                     ))}
                   </div>
                 </div>
+
+                <SocialForm control={form.control} />
               </div>
             </div>
           </div>
-
-          <SocialForm control={form.control} />
 
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Detalles del evento</h3>

@@ -15,6 +15,7 @@ import {
   Youtube,
 } from '@/ui/icons'
 import { Input } from '@/ui/input'
+import { Label } from '@/ui/label'
 import { useMemo, useState } from 'react'
 import { useWatch, type Control, type FieldValues, type Path } from 'react-hook-form'
 
@@ -117,7 +118,7 @@ export const SocialForm = <T extends Social & FieldValues>({ control }: Props<T>
 
   return (
     <div>
-      <h3 className="text-lg font-medium">Links</h3>
+      <Label>Links</Label>
 
       {emptyFields.length > 0 && (
         <div className="flex flex-wrap gap-2 pb-4 pt-2">
