@@ -1,5 +1,6 @@
 import { GetEventQuery } from '@/events/application/get-event.query.ts'
 import { CreateEventCommand } from '../application/create-event.command'
+import { FindEventsQuery } from '../application/find-events.query'
 import { GetEventsQuery } from '../application/get-events.query'
 import { GetNextEventsQuery } from '../application/get-next-events.query'
 import { GetPastEventsQuery } from '../application/get-past-events.query'
@@ -30,6 +31,10 @@ export class EventsLocator {
 
   static createEventCommand() {
     return new CreateEventCommand(EventsLocator.createEventsRepository())
+  }
+
+  static findEventsQuery = (): FindEventsQuery => {
+    return new FindEventsQuery(EventsLocator.createEventsRepository())
   }
 
   private static createEventsRepository(): EventsRepository {

@@ -14,4 +14,9 @@ export class EventsCriteria extends Criteria<Partial<EventsFilters>, Partial<Eve
     this.and({ location: { operator: RelationalOperator.EQUALS, value: location } })
     return this
   }
+
+  withOrganizationId(organizationId: string): EventsCriteria {
+    this.and({ organizationId: { operator: RelationalOperator.EQUALS, value: organizationId } })
+    return this
+  }
 }
