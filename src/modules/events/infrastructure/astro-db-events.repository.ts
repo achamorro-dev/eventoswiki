@@ -126,6 +126,7 @@ export class AstroDbEventsRepository implements EventsRepository {
     if (isDbError(error)) {
       switch (error.code) {
         case 'SQLITE_CONSTRAINT_UNIQUE':
+        case 'SQLITE_CONSTRAINT_PRIMARYKEY':
           throw new EventAlreadyExists(value.slug)
         default:
           throw error
