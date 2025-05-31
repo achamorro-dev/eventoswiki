@@ -6,12 +6,13 @@ import type { Province } from '@/provinces/domain/province'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
 import { DateTimePicker } from '@/ui/components/date-time-picker'
 import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
-import { Camera, CameraSlash, Loader, MapPin } from '@/ui/icons'
+import { Camera, CameraSlash, Loader, MapPin, X } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
@@ -54,6 +55,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       telegram: event?.telegram,
       whatsapp: event?.whatsapp,
       tiktok: event?.tiktok,
+      tags: event?.tags ?? [],
     },
     resolver: zodResolver(eventFormSchema),
   })
@@ -95,6 +97,27 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       form.setValue('image', image.toString())
     }
   }, [image])
+
+  const onAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      const input = e.currentTarget
+      const value = input.value.trim()
+
+      if (value) {
+        const tags = form.getValues('tags') ?? []
+        const newTags = value.split(',')
+        form.setValue('tags', tags.concat(newTags))
+        input.value = ''
+      }
+    }
+  }
+
+  const onRemoveTag = (index: number) => {
+    const tags = form.getValues('tags') ?? []
+    const newTags = tags.toSpliced(index, 1)
+    form.setValue('tags', newTags)
+  }
 
   return (
     <Form {...form}>
@@ -235,6 +258,39 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                       </FormItem>
                     )}
                   />
+                </div>
+
+                <div className="grid gap-2">
+                  <FormField
+                    control={form.control}
+                    name="tags"
+                    render={() => (
+                      <FormItem>
+                        <FormLabel>Etiquetas</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Escribe y presiona Enter para agregar etiquetas" onKeyDown={onAddTag} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {form.watch('tags')?.map((tag, index) => (
+                      <Badge key={index} className="text-white">
+                        {tag}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-4 w-4 p-0 hover:cursor-pointer hover:bg-transparent"
+                          onClick={() => onRemoveTag(index)}
+                        >
+                          <X className="h-3 w-3" />
+                          <span className="sr-only">Eliminar etiqueta</span>
+                        </Button>
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

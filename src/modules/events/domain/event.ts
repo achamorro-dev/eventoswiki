@@ -94,7 +94,6 @@ export class Event implements EventProps {
       organizationId,
       id: uuidv4(),
       location: data.location ?? null,
-      tags: [],
       tagColor: '',
     })
 
@@ -165,6 +164,4 @@ export interface EventProps {
   organizationId?: string | null
 }
 
-export type EventData = Primitives<
-  Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId' | 'tags' | 'tagColor'>
->
+export type EventData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId' | 'tagColor'>>
