@@ -4,4 +4,5 @@ export interface EventsFilters {
   startsAt: FilterCriteria<Date>
   endsAt: FilterCriteria<Date>
   location: FilterCriteria<string>
+  organizationId: FilterCriteria<string>
 }
