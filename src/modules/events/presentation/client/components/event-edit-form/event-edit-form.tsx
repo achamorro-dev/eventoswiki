@@ -8,6 +8,7 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
+import { ColorPicker } from '@/ui/color-picker'
 import { DateTimePicker } from '@/ui/components/date-time-picker'
 import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
@@ -44,7 +45,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       content: event?.content ?? '',
       startsAt: event?.startsAt ? Datetime.toDate(event?.startsAt) : undefined,
       endsAt: event?.endsAt ? Datetime.toDate(event?.endsAt) : undefined,
-      image: event?.image,
+      image: event?.image ?? 'https://hacken.es/images/isotipo-negativo-meta.png',
       location: event?.location ?? undefined,
       web: event?.web,
       twitter: event?.twitter,
@@ -260,7 +261,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                   />
                 </div>
 
-                <div className="grid gap-2">
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="tags"
@@ -274,9 +275,29 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="tags"
+                    render={() => (
+                      <FormItem>
+                        <FormLabel>Color de la etiqueta</FormLabel>
+                        <FormControl>
+                          <ColorPicker
+                            color={form.watch('tagColor') ?? ''}
+                            onChange={color => form.setValue('tagColor', color)}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid gap-2">
                   <div className="flex flex-wrap gap-2">
                     {form.watch('tags')?.map((tag, index) => (
-                      <Badge key={index} className="text-white">
+                      <Badge key={index} className="text-white" style={{ backgroundColor: form.watch('tagColor') }}>
                         {tag}
                         <Button
                           type="button"

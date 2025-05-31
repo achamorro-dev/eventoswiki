@@ -26,6 +26,7 @@ interface EventDataPayload {
   discord?: string | undefined
   tiktok?: string | undefined
   tags: string[]
+  tagColor: string
 }
 
 export const saveEventAction = defineAction({
@@ -53,6 +54,7 @@ export const saveEventAction = defineAction({
     organizationId: z.string(),
     eventId: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    tagColor: z.string().default(''),
   }),
   handler: async input => {
     try {

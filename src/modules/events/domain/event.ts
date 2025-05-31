@@ -94,7 +94,6 @@ export class Event implements EventProps {
       organizationId,
       id: uuidv4(),
       location: data.location ?? null,
-      tagColor: '',
     })
 
     return event
@@ -134,6 +133,8 @@ export class Event implements EventProps {
     this.youtube = data.youtube ?? this.youtube
     this.twitch = data.twitch ?? this.twitch
     this.facebook = data.facebook ?? this.facebook
+    this.tags = data.tags ?? this.tags
+    this.tagColor = data.tagColor ?? this.tagColor
   }
 }
 
@@ -164,4 +165,4 @@ export interface EventProps {
   organizationId?: string | null
 }
 
-export type EventData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId' | 'tagColor'>>
+export type EventData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>
