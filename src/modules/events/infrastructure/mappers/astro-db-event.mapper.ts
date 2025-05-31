@@ -30,7 +30,7 @@ export class AstroEventMapper {
       whatsapp: eventDto.whatsapp || undefined,
       discord: eventDto.discord || undefined,
       tiktok: eventDto.tiktok || undefined,
-      tags: eventDto.tags.split(','),
+      tags: eventDto.tags.length > 0 ? eventDto.tags.split(',') : [],
       tagColor: eventDto.tagColor,
       content: eventDto.content,
     })
