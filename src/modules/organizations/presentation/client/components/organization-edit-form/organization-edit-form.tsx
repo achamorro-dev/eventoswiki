@@ -87,7 +87,7 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit, onError)} id="organization-edit-form">
+      <form onSubmit={form.handleSubmit(onSubmit, onError)} id="organization-edit-form" className="container mx-auto">
         <div className="space-y-6 py-4">
           <div className="space-y-4">
             <div className="flex flex-col items-center justify-center gap-4 lg:flex-row">

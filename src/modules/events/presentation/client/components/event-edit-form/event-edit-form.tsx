@@ -8,6 +8,7 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Button } from '@/ui/button'
 import { DateTimePicker } from '@/ui/components/date-time-picker'
+import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Camera, CameraSlash, Loader, MapPin } from '@/ui/icons'
@@ -23,7 +24,6 @@ import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
 import { eventFormSchema } from './event-form-schema'
-import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 
 interface Props {
   provinces: Province[]
@@ -98,7 +98,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit, onError)} id="organization-edit-form">
+      <form onSubmit={form.handleSubmit(onSubmit, onError)} id="event-edit-form" className="container mx-auto">
         <div className="space-y-6 py-4">
           <div className="space-y-4">
             <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
