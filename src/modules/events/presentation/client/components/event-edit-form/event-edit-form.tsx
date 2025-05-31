@@ -134,7 +134,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                       >
                         {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
                       </Button>
-                      <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={field.onChange} />
+                      <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
                       <FormMessage />
                     </>
                   )}
