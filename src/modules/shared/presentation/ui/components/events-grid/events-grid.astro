@@ -30,11 +30,13 @@ const { events = [], page, totalPages, goToEvent } = Astro.props
 
   {
     events.length === 0 && (
-      <EmptyMessage
-        icon={Search}
-        title="No se encontraron resultados"
-        description="Intenta con otros términos de búsqueda o filtros diferentes."
-      />
+      <slot name="empty">
+        <EmptyMessage
+          icon={Search}
+          title="No se encontraron resultados"
+          description="Intenta con otros términos de búsqueda o filtros diferentes."
+        />
+      </slot>
     )
   }
   <nav class="footer">
