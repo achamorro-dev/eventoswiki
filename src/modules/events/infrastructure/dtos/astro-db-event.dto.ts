@@ -24,4 +24,5 @@ export interface AstroDbEventDto {
   createdAt: Date
   updatedAt: Date
   content: string
+  organizationId: string | null
 }

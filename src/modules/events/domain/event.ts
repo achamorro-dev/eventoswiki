@@ -1,3 +1,4 @@
+import type { OrganizationId } from '@/organizations/domain/organization-id'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { v4 as uuidv4 } from 'uuid'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
@@ -135,6 +136,10 @@ export class Event implements EventProps {
     this.facebook = data.facebook ?? this.facebook
     this.tags = data.tags ?? this.tags
     this.tagColor = data.tagColor ?? this.tagColor
+  }
+
+  isOrganizedBy(organizationId: OrganizationId): boolean {
+    return this.organizationId === organizationId.value
   }
 }
 
