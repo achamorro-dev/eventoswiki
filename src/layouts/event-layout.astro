@@ -4,18 +4,18 @@ import BaseLayout from './base-layout.astro'
 import AddToCalendarButton from '@/ui/components/add-to-calendar-button/add-to-calendar-button.astro'
 import Container from '@/ui/components/container/container.astro'
 import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
-import { SocialLink } from '@/ui/components/social-link/social-link'
-import { Link, MapPin } from '@/ui/icons'
+import { MapPin } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
-import type { Meetup } from '@/meetups/domain/meetup'
+import { Meetup } from '@/meetups/domain/meetup'
 import { Badge } from '@/ui/badge'
-import { SocialNetwork } from '@/shared/domain/social/social-network'
 import { SocialRow } from '@/ui/components/social-row/social-row'
+import { Link } from '@/ui/components/link'
 
 interface Props {
   event: Event | Meetup
+  isOrganizer?: boolean
 }
-const { event } = Astro.props
+const { event, isOrganizer = false } = Astro.props
 
 const {
   slug,
@@ -39,7 +39,8 @@ const {
   web,
   location,
 } = event
-const url = Urls.EVENT(slug)
+const isMeetup = event instanceof Meetup
+const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
 ---
 
 <BaseLayout
@@ -77,22 +78,6 @@ const url = Urls.EVENT(slug)
         </h1>
         <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
         {
-          web && (
-            <div class="flex items-center gap-1 text-black dark:text-white" transition:animate="fade">
-              <Link size="1.2rem" />
-              <a
-                href={web}
-                target="_blank"
-                rel="nofollow"
-                class="text-sm line-clamp-1"
-                aria-label={`Link al evento ${title}`}
-              >
-                {web}
-              </a>
-            </div>
-          )
-        }
-        {
           location && (
             <div class="flex items-center gap-1 text-black dark:text-white" transition:animate="fade">
               <MapPin size="1.25rem" />
@@ -117,6 +102,13 @@ const url = Urls.EVENT(slug)
         discord={discord}
         web={web}
       />
+      {
+        isOrganizer && (
+          <Link variant="secondary" href={isMeetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
+            Editar
+          </Link>
+        )
+      }
     </div>
   </header>
   <main class="lg:mt-4">
