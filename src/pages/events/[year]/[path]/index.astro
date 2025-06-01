@@ -3,23 +3,36 @@ import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import type { Event } from '@/events/domain/event'
 import BaseLayout from '@/layouts/base-layout.astro'
 import EventLayout from '@/layouts/event-layout.astro'
+import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
 import { marked } from 'marked'
-import { EventsLocator } from '../../modules/events/di/events.locator'
+import { EventsLocator } from '../../../../modules/events/di/events.locator'
 
-const slug = Astro.params.slug
+const year = Astro.params.year
+const path = Astro.params.path
 
-if (!slug) {
+if (!year || !path) {
   navigate(Urls.HOME)
   return
 }
 
+const userId = Astro.locals.user?.id
+const slug = `${year}/${path}`
+
 let event: Event | undefined
 let content: string = ''
+let isOrganizer = false
+
 try {
   event = await EventsLocator.getEventQuery().execute({ id: slug })
+
+  if (event && userId) {
+    const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+    isOrganizer = organizations.some(organization => event!.isOrganizedBy(organization.id))
+  }
+
   content = await marked.parse(event.content)
 } catch (error) {
   switch (true) {
@@ -37,7 +50,7 @@ try {
 
 {
   event && content ? (
-    <EventLayout event={event}>
+    <EventLayout event={event} isOrganizer={isOrganizer}>
       <article set:html={content} />
     </EventLayout>
   ) : (
