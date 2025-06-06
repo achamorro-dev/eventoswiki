@@ -17,6 +17,7 @@ export const Urls = {
   PROVINCE: (slug: Slug) => `/${slug}`,
   ORGANIZATION: (handle: string) => `/organizations/${handle}`,
   ORGANIZATION_EVENTS: (handle: string) => `/organizations/${handle}/events`,
+  ORGANIZATION_MEETUPS: (handle: string) => `/organizations/${handle}/meetups`,
   ORGANIZATION_EDIT: (handle: string) => `/organizations/${handle}/edit`,
   MY_ORGANIZATIONS: '/me/organizations/',
   CREATE_ORGANIZATION: '/me/organizations/create',

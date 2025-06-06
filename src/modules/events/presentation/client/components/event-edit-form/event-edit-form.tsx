@@ -58,6 +58,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       whatsapp: event?.whatsapp,
       tiktok: event?.tiktok,
       tags: event?.tags ?? [],
+      tagColor: event?.tagColor ?? '',
     },
     resolver: zodResolver(eventFormSchema),
   })
@@ -133,7 +134,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                   name="image"
                   render={({ field }) => (
                     <>
-                      {image ? (
+                      {field.value ? (
                         <img
                           src={field.value}
                           alt={form.watch('title')}
@@ -143,7 +144,7 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
                         <div
                           aria-invalid={!!form.formState.errors['image']}
                           className={
-                            'aria-invalid:border-destructive flex w-full items-center justify-center rounded-md border-2 border-gray-100 bg-gray-100'
+                            'aria-invalid:border-destructive border-input bg-input flex w-full items-center justify-center rounded-md border-2'
                           }
                         >
                           <CameraSlash className="h-72 w-48 text-gray-400" />
@@ -279,15 +280,12 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
 
                   <FormField
                     control={form.control}
-                    name="tags"
-                    render={() => (
+                    name="tagColor"
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>Color de la etiqueta</FormLabel>
                         <FormControl>
-                          <ColorPicker
-                            color={form.watch('tagColor') ?? ''}
-                            onChange={color => form.setValue('tagColor', color)}
-                          />
+                          <ColorPicker color={field.value || ''} onChange={color => form.setValue('tagColor', color)} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

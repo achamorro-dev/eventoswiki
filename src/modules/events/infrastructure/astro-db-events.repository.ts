@@ -10,6 +10,7 @@ import type { EventsCriteria } from '../domain/criterias/events-criteria'
 import type { EventsOrder } from '../domain/criterias/events-order'
 import { EventAlreadyExists } from '../domain/errors/event-already-exists.error'
 import { Event as EventEntity } from '../domain/event'
+import type { EventId } from '../domain/event-id'
 import type { EventsRepository } from '../domain/events.repository'
 import { AstroEventMapper } from './mappers/astro-db-event.mapper'
 
@@ -33,7 +34,21 @@ export class AstroDbEventsRepository implements EventsRepository {
     return new PaginatedResult(AstroEventMapper.toDomainList(events), totalPages, criteria.page, criteria.limit)
   }
 
-  async find(slug: EventEntity['slug']): Promise<EventEntity> {
+  async find(id: EventId): Promise<EventEntity> {
+    const result = await db
+      .select()
+      .from(Event)
+      .leftJoin(Province, eq(Province.slug, Event.location))
+      .where(eq(Event.id, id.value))
+      .limit(1)
+    if (!result.at(0)) {
+      throw new EventNotFound(id.value)
+    }
+
+    return AstroEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
+  }
+
+  async findBySlug(slug: string): Promise<EventEntity> {
     const result = await db
       .select()
       .from(Event)
@@ -53,7 +68,7 @@ export class AstroDbEventsRepository implements EventsRepository {
   }
 
   async save(value: EventEntity): Promise<void> {
-    const event = await db.select().from(Event).where(eq(Event.id, value.id))
+    const event = await db.select().from(Event).where(eq(Event.id, value.id.value))
     const hasEvent = event.length !== 0
 
     return hasEvent ? this._updateEvent(value) : this._insertEvent(value)
@@ -61,30 +76,33 @@ export class AstroDbEventsRepository implements EventsRepository {
 
   private async _updateEvent(value: EventEntity): Promise<void | PromiseLike<void>> {
     try {
-      await db.update(Event).set({
-        slug: value.slug,
-        title: value.title,
-        shortDescription: value.shortDescription,
-        startsAt: value.startsAt,
-        endsAt: value.endsAt,
-        image: value.image.toString(),
-        location: value.location,
-        web: value.web,
-        twitter: value.twitter,
-        linkedin: value.linkedin,
-        youtube: value.youtube,
-        twitch: value.twitch,
-        facebook: value.facebook,
-        instagram: value.instagram,
-        github: value.github,
-        telegram: value.telegram,
-        whatsapp: value.whatsapp,
-        discord: value.discord,
-        tiktok: value.tiktok,
-        tags: value.tags.length > 0 ? value.tags.join(',') : '',
-        tagColor: value.tagColor,
-        content: value.content,
-      })
+      await db
+        .update(Event)
+        .set({
+          slug: value.slug,
+          title: value.title,
+          shortDescription: value.shortDescription,
+          startsAt: value.startsAt,
+          endsAt: value.endsAt,
+          image: value.image.toString(),
+          location: value.location,
+          web: value.web,
+          twitter: value.twitter,
+          linkedin: value.linkedin,
+          youtube: value.youtube,
+          twitch: value.twitch,
+          facebook: value.facebook,
+          instagram: value.instagram,
+          github: value.github,
+          telegram: value.telegram,
+          whatsapp: value.whatsapp,
+          discord: value.discord,
+          tiktok: value.tiktok,
+          tags: value.tags.length > 0 ? value.tags.join(',') : '',
+          tagColor: value.tagColor,
+          content: value.content,
+        })
+        .where(eq(Event.id, value.id.value))
     } catch (error) {
       this._mapError(error, value)
     }
@@ -93,7 +111,7 @@ export class AstroDbEventsRepository implements EventsRepository {
   private async _insertEvent(value: EventEntity): Promise<void | PromiseLike<void>> {
     try {
       await db.insert(Event).values({
-        id: value.id,
+        id: value.id.value,
         slug: value.slug,
         title: value.title,
         shortDescription: value.shortDescription,

@@ -2,13 +2,16 @@
 import { EventsLocator } from '@/events/di/events.locator'
 import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import type { Event } from '@/events/domain/event'
+import { EventEditForm } from '@/events/presentation/client/components/event-edit-form/event-edit-form'
 import BaseLayout from '@/layouts/base-layout.astro'
-import EventLayout from '@/layouts/event-layout.astro'
+import Layout from '@/layouts/layout.astro'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
-import { marked } from 'marked'
 
 const year = Astro.params.year
 const path = Astro.params.path
@@ -22,18 +25,22 @@ const userId = Astro.locals.user?.id
 const slug = `${year}/${path}`
 
 let event: Event | undefined
+let provinces: Province[] = []
 let content: string = ''
-let isOrganizer = false
+let canEdit = false
 
 try {
   event = await EventsLocator.getEventQuery().execute({ slug: slug })
+  provinces = await ProvincesLocator.getProvincesQuery().execute()
+
+  if (!event.hasOrganization()) {
+    return Astro.redirect(Urls.EVENT(slug))
+  }
 
   if (event && userId) {
     const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
-    isOrganizer = organizations.some(organization => event!.isOrganizedBy(organization.id))
+    canEdit = organizations.some(organization => event!.isOrganizedBy(organization.id))
   }
-
-  content = await marked.parse(event.content)
 } catch (error) {
   switch (true) {
     case error instanceof EventNotFound:
@@ -49,10 +56,20 @@ try {
 ---
 
 {
-  event && content ? (
-    <EventLayout event={event} isOrganizer={isOrganizer}>
-      <article set:html={content} />
-    </EventLayout>
+  event && canEdit ? (
+    <>
+      <Layout title={'Editar evento'}>
+        <article>
+          <SectionTitle>Editar evento</SectionTitle>
+          <EventEditForm
+            client:load
+            event={event.toPrimitives()}
+            organizationId={event.organizationId!}
+            provinces={provinces}
+          />
+        </article>
+      </Layout>
+    </>
   ) : (
     <BaseLayout title="Evento no encontrado">
       <NotFound title="Evento no encontrado" />

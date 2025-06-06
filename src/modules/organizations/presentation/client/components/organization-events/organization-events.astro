@@ -1,0 +1,48 @@
+---
+import { EventsLocator } from '@/events/di/events.locator'
+import type { Organization } from '@/organizations/domain/organization'
+import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
+import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
+import { Link } from '@/ui/components/link'
+import { ChalkboardTeacher } from '@/ui/icons'
+import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  organization: Organization
+  isOrganizer: boolean
+}
+
+const { organization, isOrganizer } = Astro.props as Props
+const paginatedEvents = await EventsLocator.findEventsQuery().execute({ organizationId: organization.id.value })
+const hasEvents = paginatedEvents.data.length > 0
+---
+
+<EventsGrid
+  events={paginatedEvents.data}
+  page={paginatedEvents.page}
+  totalPages={paginatedEvents.totalPages}
+  goToEvent={Urls.EVENT}
+>
+  <EmptyMessage
+    slot="empty"
+    icon={ChalkboardTeacher}
+    title="No hay eventos"
+    description="Cuando haya eventos, podrás verlos aquí."
+  >
+    {
+      isOrganizer && (
+        <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="mt-4">
+          Crear evento
+        </Link>
+      )
+    }
+  </EmptyMessage>
+</EventsGrid>
+
+{
+  isOrganizer && hasEvents && (
+    <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min mx-auto">
+      Crear evento
+    </Link>
+  )
+}
