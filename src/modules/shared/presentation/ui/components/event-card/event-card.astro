@@ -8,10 +8,9 @@ import Location from '@/ui/components/location/location.astro'
 interface CardEvent {
   slug: string
   title: string
-  image: URL
+  image: string
   tags: string[]
   tagColor: string
-  altImage?: string
   startsAt: Date
   endsAt: Date
   location?: string | null
@@ -35,8 +34,8 @@ const { event, classes, goToEvent } = Astro.props
     <div class="event-cover-container">
       <img
         class="event-cover"
-        src={event.image}
-        alt={event.altImage || `Foto de portada del evento ${event.title}`}
+        src={event.image.toString()}
+        alt={`Foto de portada del evento ${event.title}`}
         loading="lazy"
         onerror="this.src='/not-found.jpg'"
         transition:name={`media-image-${event.slug}`}

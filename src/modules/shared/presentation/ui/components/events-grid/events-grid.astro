@@ -4,11 +4,12 @@ import EventCard from '@/ui/components/event-card/event-card.astro'
 import { Search } from 'lucide-react'
 import { EmptyMessage } from '../empty-message/empty-message'
 import Pagination from '../pagination/pagination.astro'
+import type { Meetup } from '@/meetups/domain/meetup'
 
 interface Props {
   page: number
   totalPages: number
-  events: Event[]
+  events: Event[] | Meetup[]
   goToEvent: (slug: string) => string
 }
 
@@ -18,10 +19,21 @@ const { events = [], page, totalPages, goToEvent } = Astro.props
 <article>
   <ul class="grid-list">
     {
-      events.map((event: Event) => {
+      events.map((event: Event | Meetup) => {
         return (
           <li>
-            <EventCard event={event} goToEvent={goToEvent} />
+            <EventCard
+              event={{
+                slug: event.slug,
+                title: event.title,
+                image: event.image.toString(),
+                tags: event.tags,
+                tagColor: event.tagColor,
+                startsAt: event.startsAt,
+                endsAt: event.endsAt,
+              }}
+              goToEvent={goToEvent}
+            />
           </li>
         )
       })

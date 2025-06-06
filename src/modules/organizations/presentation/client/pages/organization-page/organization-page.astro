@@ -7,13 +7,15 @@ import { SocialRow } from '@/ui/components/social-row/social-row'
 import { Urls } from '@/ui/urls/urls'
 import { OrganizationAvatar } from '../../components/organization-avatar/organization-avatar'
 import OrganizationEvents from '../../components/organization-events/organization-events.astro'
+import OrganizationMeetups from '../../components/organization-meetups/organization-meetups.astro'
 
 interface Props {
   organization: Organization
   userId?: string
+  activeTab: 'events' | 'meetups'
 }
 
-const { organization, userId } = Astro.props as Props
+const { organization, userId, activeTab } = Astro.props as Props
 const isOrganizer = userId ? organization.isOrganizer(userId) : false
 ---
 
@@ -41,13 +43,24 @@ const isOrganizer = userId ? organization.isOrganizer(userId) : false
   <section class="space-y-8">
     <LinkTabs
       tabs={[
-        { label: 'Eventos', href: Urls.ORGANIZATION_EVENTS(organization.handle), isActive: true },
-        { label: 'Meetups', href: Urls.ORGANIZATION_MEETUPS(organization.handle), isActive: false },
+        { label: 'Eventos', href: Urls.ORGANIZATION_EVENTS(organization.handle), isActive: activeTab === 'events' },
+        { label: 'Meetups', href: Urls.ORGANIZATION_MEETUPS(organization.handle), isActive: activeTab === 'meetups' },
       ]}
     />
-    <OrganizationEvents organization={organization} isOrganizer={isOrganizer} server:defer>
-      <EventsGridSkeleton slot="fallback" />
-    </OrganizationEvents>
+    {
+      activeTab === 'events' && (
+        <OrganizationEvents organization={organization} isOrganizer={isOrganizer} server:defer>
+          <EventsGridSkeleton slot="fallback" />
+        </OrganizationEvents>
+      )
+    }
+    {
+      activeTab === 'meetups' && (
+        <OrganizationMeetups organization={organization} isOrganizer={isOrganizer} server:defer>
+          <EventsGridSkeleton slot="fallback" />
+        </OrganizationMeetups>
+      )
+    }
   </section>
 </article>
 

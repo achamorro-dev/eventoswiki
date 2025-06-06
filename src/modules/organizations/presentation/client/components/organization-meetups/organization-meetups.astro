@@ -1,5 +1,5 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import type { Organization } from '@/organizations/domain/organization'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
@@ -13,21 +13,21 @@ interface Props {
 }
 
 const { organization, isOrganizer } = Astro.props as Props
-const paginatedEvents = await EventsLocator.findEventsQuery().execute({ organizationId: organization.id.value })
-const hasEvents = paginatedEvents.data.length > 0
+const paginatedMeetups = await MeetupsLocator.findMeetupsQuery().execute({ organizationId: organization.id.value })
+const hasMeetups = paginatedMeetups.data.length > 0
 ---
 
 <EventsGrid
-  events={paginatedEvents.data}
-  page={paginatedEvents.page}
-  totalPages={paginatedEvents.totalPages}
+  events={paginatedMeetups.data}
+  page={paginatedMeetups.page}
+  totalPages={paginatedMeetups.totalPages}
   goToEvent={Urls.EVENT}
 >
   <EmptyMessage
     slot="empty"
     icon={ChalkboardTeacher}
-    title="No hay eventos"
-    description="Cuando haya algún evento dado de alta podrás verlo aquí."
+    title="No hay meetups"
+    description="Cuando haya algún meetup dado de alta podrás verlo aquí."
   >
     {
       isOrganizer && (
@@ -40,7 +40,7 @@ const hasEvents = paginatedEvents.data.length > 0
 </EventsGrid>
 
 {
-  isOrganizer && hasEvents && (
+  isOrganizer && hasMeetups && (
     <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min mx-auto">
       Crear evento
     </Link>

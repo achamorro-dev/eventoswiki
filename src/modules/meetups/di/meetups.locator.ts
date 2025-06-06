@@ -1,3 +1,4 @@
+import { FindMeetupsQuery } from '../application/find-meetups.query'
 import { GetMeetupQuery } from '../application/get-meetup.query'
 import { GetMeetupsQuery } from '../application/get-meetups.query'
 import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
@@ -19,6 +20,10 @@ export class MeetupsLocator {
   }
   static getMeetupsQuery = (): GetMeetupsQuery => {
     return new GetMeetupsQuery(MeetupsLocator.createMeetupsRepository())
+  }
+
+  static findMeetupsQuery = (): FindMeetupsQuery => {
+    return new FindMeetupsQuery(MeetupsLocator.createMeetupsRepository())
   }
 
   private static createMeetupsRepository(): MeetupsRepository {
