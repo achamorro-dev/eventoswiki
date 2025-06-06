@@ -4,13 +4,9 @@ import { getEventsFor } from './content-migration/migration-mdx-to-astro-db'
 
 // https://astro.build/db/seed
 export default async function seed() {
-  const events = await Promise.all([
-    getEventsFor('eventos', '2023'),
-    getEventsFor('eventos', '2024'),
-    getEventsFor('eventos', '2025'),
-  ])
+  const events = await Promise.all([getEventsFor('eventos', '2025')])
 
-  const meetups = await Promise.all([getEventsFor('meetups', '2024'), getEventsFor('meetups', '2025')])
+  const meetups = await Promise.all([getEventsFor('meetups', '2025')])
 
   await db.delete(Province).run()
   await Promise.all(provinces.map(async province => await db.insert(Province).values(province as any)))
