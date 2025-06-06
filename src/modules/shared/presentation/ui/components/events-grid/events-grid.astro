@@ -39,9 +39,13 @@ const { events = [], page, totalPages, goToEvent } = Astro.props
       </slot>
     )
   }
-  <nav class="footer">
-    <Pagination totalPages={totalPages} page={page} />
-  </nav>
+  {
+    totalPages > 1 && (
+      <nav class="footer">
+        <Pagination totalPages={totalPages} page={page} />
+      </nav>
+    )
+  }
 </article>
 
 <style>
