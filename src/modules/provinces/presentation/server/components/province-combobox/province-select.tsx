@@ -17,20 +17,24 @@ export const ProvinceSelect: FC<Props> = props => {
   const { id, placeholder, value, provinces, className, size = 'default', onChange } = props
 
   const handleChange = (value: string) => {
-    if (onChange) {
-      onChange(value)
+    if (!onChange) {
+      const href = value === 'empty' ? '?' : `?province=${value}`
+      navigate(href, { history: 'replace' })
       return
     }
 
-    navigate(`?province=${value}`, { history: 'replace' })
+    onChange(value === 'empty' ? '' : value)
   }
 
   return (
-    <Select defaultValue={value} onValueChange={handleChange}>
+    <Select value={value} onValueChange={handleChange}>
       <SelectTrigger id={id} size={size} className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
+        <SelectItem value={'empty'} key="clear">
+          &nbsp;
+        </SelectItem>
         {provinces.map(province => (
           <SelectItem value={province.slug} key={province.slug}>
             {province.name}
