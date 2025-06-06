@@ -6,9 +6,12 @@ import type { EventsCriteria } from './criterias/events-criteria'
 import type { EventsFilters } from './criterias/events-filters'
 import type { EventsOrder } from './criterias/events-order'
 import { Event } from './event'
+import type { EventId } from './event-id'
 
 export interface EventsRepository
   extends MatcheableRepository<Partial<EventsFilters>, Partial<EventsOrder>, EventsCriteria, Event>,
     FindableAllRepository<Event>,
-    FindableByIdRepository<Event['slug'], Event>,
-    SaveableRepository<Event> {}
+    FindableByIdRepository<EventId, Event>,
+    SaveableRepository<Event> {
+  findBySlug(slug: string): Promise<Event>
+}

@@ -3,10 +3,11 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import { v4 as uuidv4 } from 'uuid'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
 import { InvalidEventError } from './errors/invalid-event.error'
+import { EventId } from './event-id'
 import { EventValidator } from './validators/event.validator'
 
 export class Event implements EventProps {
-  id: string
+  id: EventId
   slug: string
   title: string
   shortDescription: string
@@ -60,7 +61,7 @@ export class Event implements EventProps {
 
   static fromPrimitives(primitives: Primitives<Event>): Event {
     return new Event({
-      id: primitives.id,
+      id: new EventId(primitives.id),
       slug: primitives.slug,
       title: primitives.title,
       shortDescription: primitives.shortDescription,
@@ -85,6 +86,16 @@ export class Event implements EventProps {
       content: primitives.content,
       organizationId: primitives.organizationId,
     })
+  }
+
+  toPrimitives(): Primitives<Event> {
+    return {
+      ...this,
+      id: this.id.value,
+      startsAt: Datetime.toDateIsoString(this.startsAt),
+      endsAt: Datetime.toDateIsoString(this.endsAt),
+      image: this.image.toString(),
+    }
   }
 
   static create(data: EventData, organizationId: string) {
@@ -126,7 +137,7 @@ export class Event implements EventProps {
     this.shortDescription = data.shortDescription ?? this.shortDescription
     this.startsAt = Datetime.toDate(data.startsAt) ?? this.startsAt
     this.endsAt = Datetime.toDate(data.endsAt) ?? this.endsAt
-    this.image = new URL(data.image) ?? this.image
+    this.image = data.image ? new URL(data.image) : this.image
     this.location = data.location ?? this.location
     this.web = data.web ?? this.web
     this.twitter = data.twitter ?? this.twitter
@@ -134,17 +145,28 @@ export class Event implements EventProps {
     this.youtube = data.youtube ?? this.youtube
     this.twitch = data.twitch ?? this.twitch
     this.facebook = data.facebook ?? this.facebook
+    this.instagram = data.instagram ?? this.instagram
+    this.github = data.github ?? this.github
+    this.telegram = data.telegram ?? this.telegram
+    this.whatsapp = data.whatsapp ?? this.whatsapp
+    this.discord = data.discord ?? this.discord
+    this.tiktok = data.tiktok ?? this.tiktok
     this.tags = data.tags ?? this.tags
     this.tagColor = data.tagColor ?? this.tagColor
+    this.content = data.content ?? this.content
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
     return this.organizationId === organizationId.value
   }
+
+  hasOrganization(): boolean {
+    return this.organizationId !== undefined
+  }
 }
 
 export interface EventProps {
-  id: string
+  id: EventId
   slug: string
   title: string
   shortDescription: string

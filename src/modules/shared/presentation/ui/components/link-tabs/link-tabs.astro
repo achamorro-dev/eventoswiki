@@ -1,0 +1,26 @@
+---
+interface Props {
+  tabs: {
+    label: string
+    href: string
+    isActive: boolean
+  }[]
+}
+
+const { tabs } = Astro.props as Props
+---
+
+<nav>
+  <ul class="bg-background text-foreground inline-flex h-9 w-fit items-center justify-center gap-4 rounded-lg p-[3px]">
+    {
+      tabs.map(tab => (
+        <li
+          data-state={tab.isActive ? 'active' : 'inactive'}
+          class="data-[state=active]:text-foreground text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring data-[state=active]:border-b-primary rounded-xs inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 whitespace-nowrap border border-b-2 border-transparent border-b-transparent py-4 font-medium transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0"
+        >
+          <a href={tab.href}>{tab.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

@@ -1,10 +1,12 @@
 ---
 import { Organization } from '@/organizations/domain/organization'
+import EventsGridSkeleton from '@/ui/components/events-grid/events-grid-skeleton.astro'
 import { Link } from '@/ui/components/link'
+import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
 import { SocialRow } from '@/ui/components/social-row/social-row'
 import { Urls } from '@/ui/urls/urls'
 import { OrganizationAvatar } from '../../components/organization-avatar/organization-avatar'
-import { OrganizationTabs } from '../../components/organization-tabs/organization-tabs'
+import OrganizationEvents from '../../components/organization-events/organization-events.astro'
 
 interface Props {
   organization: Organization
@@ -36,7 +38,17 @@ const isOrganizer = userId ? organization.isOrganizer(userId) : false
     }
   </header>
 
-  <OrganizationTabs client:idle organization={organization.toPrimitives()} />
+  <section class="space-y-8">
+    <LinkTabs
+      tabs={[
+        { label: 'Eventos', href: Urls.ORGANIZATION_EVENTS(organization.handle), isActive: true },
+        { label: 'Meetups', href: Urls.ORGANIZATION_MEETUPS(organization.handle), isActive: false },
+      ]}
+    />
+    <OrganizationEvents organization={organization} isOrganizer={isOrganizer} server:defer>
+      <EventsGridSkeleton slot="fallback" />
+    </OrganizationEvents>
+  </section>
 </article>
 
 <style>

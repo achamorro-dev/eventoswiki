@@ -3,7 +3,7 @@ import { Event } from '../domain/event'
 import type { EventsRepository } from '../domain/events.repository'
 
 interface GetEventRequest {
-  id: Event['slug']
+  slug: Event['slug']
 }
 
 export class GetEventQuery extends Query<Event, GetEventRequest> {
@@ -11,7 +11,7 @@ export class GetEventQuery extends Query<Event, GetEventRequest> {
     super()
   }
 
-  execute({ id }: GetEventRequest): Promise<Event> {
-    return this.eventRepository.find(id)
+  execute({ slug }: GetEventRequest): Promise<Event> {
+    return this.eventRepository.findBySlug(slug)
   }
 }
