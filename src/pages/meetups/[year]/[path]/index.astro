@@ -4,22 +4,35 @@ import EventLayout from '@/layouts/event-layout.astro'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
+import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
 import { marked } from 'marked'
 
-const slug = Astro.params.slug
+const year = Astro.params.year
+const path = Astro.params.path
 
-if (!slug) {
+if (!year || !path) {
   navigate(Urls.HOME)
   return
 }
 
+const slug = `${year}/${path}`
+const userId = Astro.locals.user?.id
+
 let meetup: Meetup | undefined
 let content: string = ''
+let isOrganizer = false
+
 try {
-  meetup = await MeetupsLocator.getMeetupQuery().execute({ id: slug })
+  meetup = await MeetupsLocator.getMeetupQuery().execute({ slug: slug })
+
+  if (meetup && userId) {
+    const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+    isOrganizer = organizations.some(organization => meetup!.isOrganizedBy(organization.id))
+  }
+
   content = await marked.parse(meetup.content)
 } catch (error) {
   switch (true) {
@@ -37,7 +50,7 @@ try {
 
 {
   meetup && content ? (
-    <EventLayout event={meetup}>
+    <EventLayout event={meetup} isOrganizer={isOrganizer}>
       <article set:html={content} />
     </EventLayout>
   ) : (

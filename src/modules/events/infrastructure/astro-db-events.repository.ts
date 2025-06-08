@@ -12,7 +12,7 @@ import { EventAlreadyExists } from '../domain/errors/event-already-exists.error'
 import { Event as EventEntity } from '../domain/event'
 import type { EventId } from '../domain/event-id'
 import type { EventsRepository } from '../domain/events.repository'
-import { AstroEventMapper } from './mappers/astro-db-event.mapper'
+import { AstroEventMapper as AstroDbEventMapper } from './mappers/astro-db-event.mapper'
 
 export class AstroDbEventsRepository implements EventsRepository {
   async match(criteria: EventsCriteria): Promise<PaginatedResult<EventEntity>> {
@@ -31,7 +31,7 @@ export class AstroDbEventsRepository implements EventsRepository {
     const count = await countQuery
     const totalPages = Math.ceil(count[0].count / criteria.limit)
 
-    return new PaginatedResult(AstroEventMapper.toDomainList(events), totalPages, criteria.page, criteria.limit)
+    return new PaginatedResult(AstroDbEventMapper.toDomainList(events), totalPages, criteria.page, criteria.limit)
   }
 
   async find(id: EventId): Promise<EventEntity> {
@@ -45,7 +45,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(id.value)
     }
 
-    return AstroEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
   }
 
   async findBySlug(slug: string): Promise<EventEntity> {
@@ -59,12 +59,12 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(slug)
     }
 
-    return AstroEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
   }
 
   async findAll(): Promise<EventEntity[]> {
     const eventsAndProvinces = await db.select().from(Event).leftJoin(Province, eq(Province.slug, Event.location))
-    return AstroEventMapper.toDomainList(eventsAndProvinces)
+    return AstroDbEventMapper.toDomainList(eventsAndProvinces)
   }
 
   async save(value: EventEntity): Promise<void> {
@@ -140,6 +140,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       this._mapError(error, value)
     }
   }
+
   private _mapError(error: unknown, value: EventEntity) {
     if (isDbError(error)) {
       switch (error.code) {

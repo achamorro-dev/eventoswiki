@@ -1,14 +1,14 @@
 import type { ValidatorConstructor } from '@/shared/domain/validators/validator'
-import { z } from 'astro/zod'
+import { z, type ZodTypeAny } from 'astro/zod'
 import { validateField } from './validate-field'
 
-export const NotRequiredStringFormField = <Value>(validator?: ValidatorConstructor<Value>) => {
+export const NotRequiredArrayFormField = <Value>(type: ZodTypeAny, validator?: ValidatorConstructor<Value>) => {
   if (!validator) {
-    return z.string().optional()
+    return z.array(type).optional()
   }
 
   return z
-    .string()
+    .array(type)
     .optional()
     .superRefine((value, context) => validateField<Value>(value as Value, context, validator))
 }

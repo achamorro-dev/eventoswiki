@@ -3,7 +3,7 @@ import { Meetup } from '../domain/meetup'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 
 interface GetMeetupRequest {
-  id: Meetup['slug']
+  slug: Meetup['slug']
 }
 
 export class GetMeetupQuery extends Query<Meetup, GetMeetupRequest> {
@@ -11,7 +11,7 @@ export class GetMeetupQuery extends Query<Meetup, GetMeetupRequest> {
     super()
   }
 
-  execute({ id }: GetMeetupRequest): Promise<Meetup> {
-    return this.meetupsRepository.find(id)
+  execute({ slug }: GetMeetupRequest): Promise<Meetup> {
+    return this.meetupsRepository.findBySlug(slug)
   }
 }

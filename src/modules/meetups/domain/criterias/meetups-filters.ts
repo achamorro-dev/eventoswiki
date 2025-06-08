@@ -1,17 +1,8 @@
-import type { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
+import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 
 export interface MeetupsFilters {
-  startsAt: {
-    operator: RelationalOperator
-    value: Date
-    inverted?: boolean
-  }
-  endsAt: {
-    operator: RelationalOperator
-    value: Date
-  }
-  location: {
-    operator: RelationalOperator
-    value: string
-  }
+  startsAt: FilterCriteria<Date>
+  endsAt: FilterCriteria<Date>
+  location: FilterCriteria<string>
+  organizationId: FilterCriteria<string>
 }

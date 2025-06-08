@@ -14,4 +14,9 @@ export class MeetupsCriteria extends Criteria<Partial<MeetupsFilters>, Partial<M
     this.and({ location: { operator: RelationalOperator.EQUALS, value: location } })
     return this
   }
+
+  withOrganizationId(organizationId: string): MeetupsCriteria {
+    this.and({ organizationId: { operator: RelationalOperator.EQUALS, value: organizationId } })
+    return this
+  }
 }

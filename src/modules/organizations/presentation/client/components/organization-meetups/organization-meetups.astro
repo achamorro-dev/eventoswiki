@@ -21,7 +21,7 @@ const hasMeetups = paginatedMeetups.data.length > 0
   events={paginatedMeetups.data}
   page={paginatedMeetups.page}
   totalPages={paginatedMeetups.totalPages}
-  goToEvent={Urls.EVENT}
+  goToEvent={Urls.MEETUP}
 >
   <EmptyMessage
     slot="empty"
@@ -31,8 +31,8 @@ const hasMeetups = paginatedMeetups.data.length > 0
   >
     {
       isOrganizer && (
-        <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="mt-4">
-          Crear evento
+        <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline" className="mt-4">
+          Crear meetup
         </Link>
       )
     }
@@ -41,8 +41,8 @@ const hasMeetups = paginatedMeetups.data.length > 0
 
 {
   isOrganizer && hasMeetups && (
-    <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min mx-auto">
-      Crear evento
+    <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline" className="block w-min mx-auto">
+      Crear meetup
     </Link>
   )
 }

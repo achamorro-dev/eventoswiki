@@ -10,15 +10,15 @@ export class AstroDbMeetupMapper {
 
   static toDomain(meetupDto: AstroDbMeetupDto, provinceDto: AstroDbMeetupProvinceDto | null): Meetup {
     return Meetup.fromPrimitives({
+      id: meetupDto.id ?? '',
       slug: meetupDto.slug,
       title: meetupDto.title,
       shortDescription: meetupDto.shortDescription,
       startsAt: Datetime.toIsoString(meetupDto.startsAt),
       endsAt: Datetime.toIsoString(meetupDto.endsAt),
-      thumbnail: meetupDto.thumbnail,
       image: meetupDto.image,
       location: provinceDto?.name || null,
-      web: meetupDto.web,
+      web: meetupDto.web || undefined,
       twitter: meetupDto.twitter || undefined,
       linkedin: meetupDto.linkedin || undefined,
       youtube: meetupDto.youtube || undefined,
@@ -33,6 +33,7 @@ export class AstroDbMeetupMapper {
       tags: meetupDto.tags.split(','),
       tagColor: meetupDto.tagColor,
       content: meetupDto.content,
+      organizationId: meetupDto.organizationId || undefined,
     })
   }
 }

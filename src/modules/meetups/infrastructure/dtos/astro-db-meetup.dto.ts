@@ -1,13 +1,13 @@
 export interface AstroDbMeetupDto {
+  id: string | null
   slug: string
   title: string
   shortDescription: string
   startsAt: Date
   endsAt: Date
-  thumbnail: string
   image: string
   location: string | null
-  web: string
+  web: string | null
   twitter: string | null
   linkedin: string | null
   youtube: string | null
@@ -24,4 +24,5 @@ export interface AstroDbMeetupDto {
   createdAt: Date
   updatedAt: Date
   content: string
+  organizationId: string | null
 }

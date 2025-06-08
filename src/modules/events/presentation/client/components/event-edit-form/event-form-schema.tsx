@@ -8,6 +8,7 @@ import { EventSlugValidator } from '@/events/domain/validators/event-slug.valida
 import { EventStartDateValidator } from '@/events/domain/validators/event-start-date.validator'
 import { EventTitleValidator } from '@/events/domain/validators/event-title.validator'
 import { DateFormField } from '@/shared/presentation/forms/date-form-field'
+import { NotRequiredArrayFormField } from '@/shared/presentation/forms/not-required-array-form-field'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
 import { StringFormField } from '@/shared/presentation/forms/string-form-field'
 import { z } from 'astro/zod'
@@ -33,8 +34,8 @@ export const eventFormSchema = z.object({
   twitch: NotRequiredStringFormField(EventLinkValidator),
   github: NotRequiredStringFormField(EventLinkValidator),
   linkedin: NotRequiredStringFormField(EventLinkValidator),
-  tags: z.array(z.string()).optional(),
-  tagColor: z.string().optional(),
+  tags: NotRequiredArrayFormField(z.string()),
+  tagColor: NotRequiredStringFormField(),
 })
 
-export type OrganizationFormSchema = z.infer<typeof eventFormSchema>
+export type EventFormSchema = z.infer<typeof eventFormSchema>

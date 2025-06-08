@@ -1,0 +1,56 @@
+---
+import BaseLayout from '@/layouts/base-layout.astro'
+import Layout from '@/layouts/layout.astro'
+import { MeetupEditForm } from '@/meetups/presentation/client/components/meetup-edit-form/meetup-edit-form'
+import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
+import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import type { Province } from '@/provinces/domain/province'
+import NotFound from '@/ui/components/not-found/not-found.astro'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { Urls } from '@/ui/urls/urls'
+
+const { handle } = Astro.params
+const userId = Astro.locals.user?.id
+
+if (!handle) {
+  return Astro.redirect(Urls.HOME)
+}
+
+let organization
+let provinces: Province[] = []
+try {
+  organization = await OrganizationsLocator.getOrganizationQuery().execute({ handle: handle })
+  provinces = await ProvincesLocator.getProvincesQuery().execute()
+
+  if (!userId || !organization.isOrganizer(userId)) {
+    return Astro.redirect(Urls.ORGANIZATION(organization.handle))
+  }
+} catch (error) {
+  switch (true) {
+    case error instanceof OrganizationNotFound:
+      Astro.response.status = 404
+      Astro.response.statusText = 'Not found'
+      break
+    default:
+      Astro.response.status = 500
+      Astro.response.statusText = 'Internal server error'
+      break
+  }
+}
+---
+
+{
+  organization ? (
+    <Layout title={'Crear evento'}>
+      <article>
+        <SectionTitle>Crear meetup</SectionTitle>
+        <MeetupEditForm client:load organizationId={organization.id.value} provinces={provinces} />
+      </article>
+    </Layout>
+  ) : (
+    <BaseLayout title="Organización no encontrada">
+      <NotFound title="Organización no encontrada" />
+    </BaseLayout>
+  )
+}
