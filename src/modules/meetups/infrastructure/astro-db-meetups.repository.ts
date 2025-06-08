@@ -4,11 +4,13 @@ import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
-import { Meetup, Province, and, asc, count, db, desc, eq, gt, gte, lt, lte, or } from 'astro:db'
+import { Meetup, Province, and, asc, count, db, desc, eq, gt, gte, isDbError, lt, lte, or } from 'astro:db'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
+import { MeetupAlreadyExists } from '../domain/errors/meetup-already-exists.error'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
 import { Meetup as MeetupEntity } from '../domain/meetup'
+import type { MeetupId } from '../domain/meetup-id'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 import { AstroDbMeetupMapper } from './mappers/astro-db-meetup.mapper'
 
@@ -32,12 +34,26 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     return new PaginatedResult(AstroDbMeetupMapper.toDomainList(meetups), totalPages, criteria.page, criteria.limit)
   }
 
-  async find(id: string): Promise<MeetupEntity> {
+  async find(id: MeetupId): Promise<MeetupEntity> {
     const result = await db
       .select()
       .from(Meetup)
       .leftJoin(Province, eq(Province.slug, Meetup.location))
-      .where(eq(Meetup.slug, id))
+      .where(eq(Meetup.id, id.value))
+      .limit(1)
+    if (!result.at(0)) {
+      throw new MeetupNotFound(id.value)
+    }
+
+    return AstroDbMeetupMapper.toDomain(result.at(0)!.Meetup, result.at(0)!.Province)
+  }
+
+  async findBySlug(slug: string): Promise<MeetupEntity> {
+    const result = await db
+      .select()
+      .from(Meetup)
+      .leftJoin(Province, eq(Province.slug, Meetup.location))
+      .where(eq(Meetup.slug, slug))
       .limit(1)
 
     if (!result.at(0)) {
@@ -50,6 +66,94 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
   async findAll(): Promise<MeetupEntity[]> {
     const meetups = await db.select().from(Meetup).leftJoin(Province, eq(Province.slug, Meetup.location))
     return AstroDbMeetupMapper.toDomainList(meetups)
+  }
+
+  async save(value: MeetupEntity): Promise<void> {
+    const meetup = await db.select().from(Meetup).where(eq(Meetup.id, value.id.value))
+    const hasMeetup = meetup.length !== 0
+
+    return hasMeetup ? this._updateMeetup(value) : this._insertMeetup(value)
+  }
+
+  private async _updateMeetup(value: MeetupEntity): Promise<void | PromiseLike<void>> {
+    try {
+      await db
+        .update(Meetup)
+        .set({
+          slug: value.slug,
+          title: value.title,
+          shortDescription: value.shortDescription,
+          startsAt: value.startsAt,
+          endsAt: value.endsAt,
+          image: value.image.toString(),
+          location: value.location,
+          web: value.web,
+          twitter: value.twitter,
+          linkedin: value.linkedin,
+          youtube: value.youtube,
+          twitch: value.twitch,
+          facebook: value.facebook,
+          instagram: value.instagram,
+          github: value.github,
+          telegram: value.telegram,
+          whatsapp: value.whatsapp,
+          discord: value.discord,
+          tiktok: value.tiktok,
+          tags: value.tags.length > 0 ? value.tags.join(',') : '',
+          tagColor: value.tagColor,
+          content: value.content,
+        })
+        .where(eq(Meetup.id, value.id.value))
+    } catch (error) {
+      this._mapError(error, value)
+    }
+  }
+
+  private async _insertMeetup(value: MeetupEntity): Promise<void | PromiseLike<void>> {
+    try {
+      await db.insert(Meetup).values({
+        id: value.id.value,
+        slug: value.slug,
+        title: value.title,
+        shortDescription: value.shortDescription,
+        startsAt: value.startsAt,
+        endsAt: value.endsAt,
+        image: value.image.toString(),
+        location: value.location,
+        web: value.web,
+        twitter: value.twitter,
+        linkedin: value.linkedin,
+        youtube: value.youtube,
+        twitch: value.twitch,
+        facebook: value.facebook,
+        instagram: value.instagram,
+        github: value.github,
+        telegram: value.telegram,
+        whatsapp: value.whatsapp,
+        discord: value.discord,
+        tiktok: value.tiktok,
+        tags: value.tags.length > 0 ? value.tags.join(',') : '',
+        tagColor: value.tagColor,
+        content: value.content,
+        organizationId: value.organizationId,
+      })
+    } catch (error) {
+      this._mapError(error, value)
+    }
+  }
+
+  private _mapError(error: unknown, value: MeetupEntity) {
+    if (isDbError(error)) {
+      switch (error.code) {
+        case 'SQLITE_CONSTRAINT_UNIQUE':
+        case 'SQLITE_CONSTRAINT_PRIMARYKEY':
+          throw new MeetupAlreadyExists(value.slug)
+        default:
+          throw error
+      }
+    }
+
+    throw error
   }
 
   private getOrderBy(order: Partial<MeetupsOrder> | undefined) {

@@ -1,10 +1,10 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
-import { EventNotFound } from '@/events/domain/errors/event-not-found'
-import type { Event } from '@/events/domain/event'
-import { EventEditForm } from '@/events/presentation/client/components/event-edit-form/event-edit-form'
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
+import type { Meetup } from '@/meetups/domain/meetup'
+import { MeetupEditForm } from '@/meetups/presentation/client/components/meetup-edit-form/meetup-edit-form'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import type { Province } from '@/provinces/domain/province'
@@ -24,25 +24,25 @@ if (!year || !path) {
 const userId = Astro.locals.user?.id
 const slug = `${year}/${path}`
 
-let event: Event | undefined
+let meetup: Meetup | undefined
 let provinces: Province[] = []
 let canEdit = false
 
 try {
-  event = await EventsLocator.getEventQuery().execute({ slug: slug })
+  meetup = await MeetupsLocator.getMeetupQuery().execute({ slug: slug })
   provinces = await ProvincesLocator.getProvincesQuery().execute()
 
-  if (!event.hasOrganization()) {
-    return Astro.redirect(Urls.EVENT(slug))
+  if (!meetup.hasOrganization()) {
+    return Astro.redirect(Urls.MEETUP(slug))
   }
 
-  if (event && userId) {
+  if (meetup && userId) {
     const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
-    canEdit = organizations.some(organization => event!.isOrganizedBy(organization.id))
+    canEdit = organizations.some(organization => meetup!.isOrganizedBy(organization.id))
   }
 } catch (error) {
   switch (true) {
-    case error instanceof EventNotFound:
+    case error instanceof MeetupNotFound:
       Astro.response.status = 404
       Astro.response.statusText = 'Not found'
       break
@@ -55,23 +55,23 @@ try {
 ---
 
 {
-  event && canEdit ? (
+  meetup && canEdit ? (
     <>
-      <Layout title={'Editar evento'}>
+      <Layout title={'Editar meetup'}>
         <article>
-          <SectionTitle>Editar evento</SectionTitle>
-          <EventEditForm
+          <SectionTitle>Editar meetup</SectionTitle>
+          <MeetupEditForm
             client:load
-            event={event.toPrimitives()}
-            organizationId={event.organizationId!}
+            meetup={meetup.toPrimitives()}
+            organizationId={meetup.organizationId!}
             provinces={provinces}
           />
         </article>
       </Layout>
     </>
   ) : (
-    <BaseLayout title="Evento no encontrado">
-      <NotFound title="Evento no encontrado" />
+    <BaseLayout title="Meetup no encontrado">
+      <NotFound title="Meetup no encontrado" />
     </BaseLayout>
   )
 }

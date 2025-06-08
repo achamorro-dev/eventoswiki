@@ -1,7 +1,7 @@
 'use client'
 
-import type { Event } from '@/events/domain/event'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
+import type { Meetup } from '@/meetups/domain/meetup'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
@@ -19,50 +19,51 @@ import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
 import { zodResolver } from '@hookform/resolvers/zod'
+import type { z } from 'astro/zod'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
 import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
-import { eventFormSchema, type EventFormSchema } from './event-form-schema'
+import { meetupFormSchema, type MeetupFormSchema } from './meetup-form-schema'
 
 interface Props {
   provinces: Province[]
-  event?: Primitives<Event>
+  meetup?: Primitives<Meetup>
   organizationId: string
 }
 
-export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
+export const MeetupEditForm = ({ provinces, organizationId, meetup }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
 
-  const form = useForm<EventFormSchema>({
+  const form = useForm<MeetupFormSchema>({
     defaultValues: {
-      title: event?.title ?? '',
-      slug: event?.slug ?? '',
-      shortDescription: event?.shortDescription ?? '',
-      content: event?.content ?? '',
-      startsAt: event?.startsAt ? Datetime.toDate(event?.startsAt) : undefined,
-      endsAt: event?.endsAt ? Datetime.toDate(event?.endsAt) : undefined,
-      image: event?.image,
-      location: new ProvinceCollection(provinces).slugWithName(event?.location ?? undefined),
-      web: event?.web,
-      twitter: event?.twitter,
-      linkedin: event?.linkedin,
-      twitch: event?.twitch,
-      github: event?.github,
-      facebook: event?.facebook,
-      instagram: event?.instagram,
-      youtube: event?.youtube,
-      discord: event?.discord,
-      telegram: event?.telegram,
-      whatsapp: event?.whatsapp,
-      tiktok: event?.tiktok,
-      tags: event?.tags ?? [],
-      tagColor: event?.tagColor ?? '',
+      title: meetup?.title ?? '',
+      slug: meetup?.slug ?? '',
+      shortDescription: meetup?.shortDescription ?? '',
+      content: meetup?.content ?? '',
+      startsAt: meetup?.startsAt ? Datetime.toDate(meetup?.startsAt) : undefined,
+      endsAt: meetup?.endsAt ? Datetime.toDate(meetup?.endsAt) : undefined,
+      image: meetup?.image ?? 'https://hacken.es/images/isotipo-negativo-meta.png',
+      location: new ProvinceCollection(provinces).slugWithName(meetup?.location ?? undefined),
+      web: meetup?.web,
+      twitter: meetup?.twitter,
+      linkedin: meetup?.linkedin,
+      twitch: meetup?.twitch,
+      github: meetup?.github,
+      facebook: meetup?.facebook,
+      instagram: meetup?.instagram,
+      youtube: meetup?.youtube,
+      discord: meetup?.discord,
+      telegram: meetup?.telegram,
+      whatsapp: meetup?.whatsapp,
+      tiktok: meetup?.tiktok,
+      tags: meetup?.tags ?? [],
+      tagColor: meetup?.tagColor ?? '',
     },
-    resolver: zodResolver(eventFormSchema),
+    resolver: zodResolver(meetupFormSchema),
   })
 
   const title = form.watch('title')
@@ -75,22 +76,22 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
     }
   }, [title, startsAt])
 
-  const onSubmit = async (values: EventFormSchema) => {
-    const eventValues = {
+  const onSubmit = async (values: z.infer<typeof meetupFormSchema>) => {
+    const meetupValues = {
       ...values,
       startsAt: values.startsAt.toISOString(),
       endsAt: values.endsAt.toISOString(),
       organizationId,
-      eventId: event?.id,
+      meetupId: meetup?.id,
     }
-    const { error } = await actions.events.saveEventAction(eventValues)
+    const { error } = await actions.meetups.saveMeetupAction(meetupValues)
 
     if (error) {
       toast.error(error.message)
       return
     }
 
-    navigate(Urls.EVENT(values.slug))
+    navigate(Urls.MEETUP(values.slug))
   }
 
   const onError = () => {

@@ -1,110 +1,19 @@
+import type { OrganizationId } from '@/organizations/domain/organization-id'
 import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
+import { v4 as uuidv4 } from 'uuid'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
+import { InvalidMeetupError } from './errors/invalid-meetup.error'
+import { MeetupId } from './meetup-id'
+import { MeetupValidator } from './validators/meetup.validator'
 
 export class Meetup implements MeetupProps {
-  readonly slug: string
-  readonly title: string
-  readonly shortDescription: string
-  readonly startsAt: Date
-  readonly endsAt: Date
-  readonly thumbnail: string
-  readonly image: string
-  readonly altImage?: string
-  readonly location: string | null
-  readonly web?: string
-  readonly twitter?: string
-  readonly linkedin?: string
-  readonly youtube?: string
-  readonly twitch?: string
-  readonly facebook?: string
-  readonly instagram?: string
-  readonly github?: string
-  readonly telegram?: string
-  readonly whatsapp?: string
-  readonly discord?: string
-  readonly tiktok?: string
-  readonly tags: string[]
-  readonly tagColor: string
-  readonly content: string
-
-  private constructor(props: MeetupProps) {
-    this.slug = props.slug
-    this.title = props.title
-    this.shortDescription = props.shortDescription
-    this.startsAt = props.startsAt
-    this.endsAt = props.endsAt
-    this.thumbnail = props.thumbnail
-    this.image = props.image
-    this.altImage = props.altImage
-    this.location = props.location
-    this.web = props.web
-    this.twitter = props.twitter
-    this.linkedin = props.linkedin
-    this.youtube = props.youtube
-    this.twitch = props.twitch
-    this.facebook = props.facebook
-    this.instagram = props.instagram
-    this.github = props.github
-    this.telegram = props.telegram
-    this.whatsapp = props.whatsapp
-    this.discord = props.discord
-    this.tiktok = props.tiktok
-    this.tags = props.tags
-    this.tagColor = props.tagColor
-    this.content = props.content
-  }
-
-  static fromPrimitives(primitives: Primitives<Meetup>): Meetup {
-    return new Meetup({
-      slug: primitives.slug,
-      title: primitives.title,
-      shortDescription: primitives.shortDescription,
-      startsAt: Datetime.toDate(primitives.startsAt),
-      endsAt: Datetime.toDate(primitives.endsAt),
-      thumbnail: primitives.thumbnail,
-      image: primitives.image,
-      altImage: primitives.altImage,
-      location: primitives.location || null,
-      web: primitives.web,
-      twitter: primitives.twitter,
-      linkedin: primitives.linkedin,
-      youtube: primitives.youtube,
-      twitch: primitives.twitch,
-      facebook: primitives.facebook,
-      instagram: primitives.instagram,
-      github: primitives.github,
-      telegram: primitives.telegram,
-      whatsapp: primitives.whatsapp,
-      discord: primitives.discord,
-      tiktok: primitives.tiktok,
-      tags: primitives.tags,
-      tagColor: primitives.tagColor,
-      content: primitives.content,
-    })
-  }
-
-  getStartDateFormatted(): string {
-    return Datetime.toDateString(this.startsAt, DateFormat.DD_MMM_YYYY)
-  }
-
-  getEndDateFormatted(): string {
-    return Datetime.toDateString(this.endsAt)
-  }
-
-  occursOnSameDay(): boolean {
-    return Datetime.toDateIsoString(this.startsAt) === Datetime.toDateIsoString(this.endsAt)
-  }
-}
-
-export interface MeetupProps {
+  id: MeetupId
   slug: string
   title: string
   shortDescription: string
   startsAt: Date
   endsAt: Date
-  thumbnail: string
-  altImage?: string
-  image: string
+  image: URL
   location: string | null
   web?: string
   twitter?: string
@@ -121,4 +30,166 @@ export interface MeetupProps {
   tags: string[]
   tagColor: string
   content: string
+  organizationId?: string
+
+  private constructor(props: MeetupProps) {
+    this.id = props.id
+    this.slug = props.slug
+    this.title = props.title
+    this.shortDescription = props.shortDescription
+    this.startsAt = props.startsAt
+    this.endsAt = props.endsAt
+    this.image = props.image
+    this.location = props.location
+    this.web = props.web
+    this.twitter = props.twitter
+    this.linkedin = props.linkedin
+    this.youtube = props.youtube
+    this.twitch = props.twitch
+    this.facebook = props.facebook
+    this.instagram = props.instagram
+    this.github = props.github
+    this.telegram = props.telegram
+    this.whatsapp = props.whatsapp
+    this.discord = props.discord
+    this.tiktok = props.tiktok
+    this.tags = props.tags
+    this.tagColor = props.tagColor
+    this.content = props.content
+    this.organizationId = props.organizationId || undefined
+  }
+
+  static create(data: MeetupData, organizationId: string) {
+    this.ensureIsValidMeetup(data)
+
+    const meetup = Meetup.fromPrimitives({
+      ...data,
+      organizationId,
+      id: uuidv4(),
+      location: data.location ?? null,
+    })
+
+    return meetup
+  }
+
+  static fromPrimitives(primitives: Primitives<Meetup>): Meetup {
+    return new Meetup({
+      id: new MeetupId(primitives.id),
+      slug: primitives.slug,
+      title: primitives.title,
+      shortDescription: primitives.shortDescription,
+      startsAt: Datetime.toDate(primitives.startsAt),
+      endsAt: Datetime.toDate(primitives.endsAt),
+      image: new URL(primitives.image),
+      location: primitives.location || null,
+      web: primitives.web,
+      twitter: primitives.twitter,
+      linkedin: primitives.linkedin,
+      youtube: primitives.youtube,
+      twitch: primitives.twitch,
+      facebook: primitives.facebook,
+      instagram: primitives.instagram,
+      github: primitives.github,
+      telegram: primitives.telegram,
+      whatsapp: primitives.whatsapp,
+      discord: primitives.discord,
+      tiktok: primitives.tiktok,
+      tags: primitives.tags,
+      tagColor: primitives.tagColor,
+      content: primitives.content,
+      organizationId: primitives.organizationId,
+    })
+  }
+
+  toPrimitives(): Primitives<Meetup> {
+    return {
+      ...this,
+      id: this.id.value,
+      image: this.image.toString(),
+      startsAt: Datetime.toDateIsoString(this.startsAt),
+      endsAt: Datetime.toDateIsoString(this.endsAt),
+    }
+  }
+
+  getStartDateFormatted(): string {
+    return Datetime.toDateString(this.startsAt, DateFormat.DD_MMM_YYYY)
+  }
+
+  getEndDateFormatted(): string {
+    return Datetime.toDateString(this.endsAt)
+  }
+
+  occursOnSameDay(): boolean {
+    return Datetime.toDateIsoString(this.startsAt) === Datetime.toDateIsoString(this.endsAt)
+  }
+
+  update(data: MeetupData) {
+    Meetup.ensureIsValidMeetup(data)
+
+    this.title = data.title ?? this.title
+    this.shortDescription = data.shortDescription ?? this.shortDescription
+    this.startsAt = Datetime.toDate(data.startsAt) ?? this.startsAt
+    this.endsAt = Datetime.toDate(data.endsAt) ?? this.endsAt
+    this.image = data.image ? new URL(data.image) : this.image
+    this.location = data.location ?? this.location
+    this.web = data.web ?? this.web
+    this.twitter = data.twitter ?? this.twitter
+    this.linkedin = data.linkedin ?? this.linkedin
+    this.youtube = data.youtube ?? this.youtube
+    this.twitch = data.twitch ?? this.twitch
+    this.facebook = data.facebook ?? this.facebook
+    this.instagram = data.instagram ?? this.instagram
+    this.github = data.github ?? this.github
+    this.telegram = data.telegram ?? this.telegram
+    this.whatsapp = data.whatsapp ?? this.whatsapp
+    this.discord = data.discord ?? this.discord
+    this.tiktok = data.tiktok ?? this.tiktok
+    this.tags = data.tags ?? this.tags
+    this.tagColor = data.tagColor ?? this.tagColor
+    this.content = data.content ?? this.content
+  }
+
+  isOrganizedBy(organizationId: OrganizationId): boolean {
+    return this.organizationId === organizationId.value
+  }
+
+  hasOrganization(): boolean {
+    return this.organizationId !== undefined
+  }
+
+  private static ensureIsValidMeetup(data: MeetupData) {
+    const validator = new MeetupValidator(data)
+    const error = validator.validate()
+
+    if (error) throw new InvalidMeetupError(error)
+  }
 }
+
+export interface MeetupProps {
+  id: MeetupId
+  slug: string
+  title: string
+  shortDescription: string
+  startsAt: Date
+  endsAt: Date
+  image: URL
+  location: string | null
+  web?: string
+  twitter?: string
+  linkedin?: string
+  youtube?: string
+  twitch?: string
+  facebook?: string
+  instagram?: string
+  github?: string
+  telegram?: string
+  whatsapp?: string
+  discord?: string
+  tiktok?: string
+  tags: string[]
+  tagColor: string
+  content: string
+  organizationId?: string | null
+}
+
+export type MeetupData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>
