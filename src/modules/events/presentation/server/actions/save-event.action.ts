@@ -87,8 +87,8 @@ async function _createEvent(organizationId: string, newEvent: EventDataPayload) 
     data: {
       ...newEvent,
       location: newEvent.location ?? null,
-      startsAt: Datetime.toDateIsoString(newEvent.startsAt),
-      endsAt: Datetime.toDateIsoString(newEvent.endsAt),
+      startsAt: Datetime.toDateTimeIsoString(newEvent.startsAt),
+      endsAt: Datetime.toDateTimeIsoString(newEvent.endsAt),
     },
   })
 }
@@ -99,8 +99,8 @@ async function _saveEvent(eventId: string, newEvent: EventDataPayload) {
     data: {
       ...newEvent,
       location: newEvent.location ?? null,
-      startsAt: Datetime.toDateIsoString(newEvent.startsAt),
-      endsAt: Datetime.toDateIsoString(newEvent.endsAt),
+      startsAt: Datetime.toDateTimeIsoString(newEvent.startsAt),
+      endsAt: Datetime.toDateTimeIsoString(newEvent.endsAt),
     },
   })
 }
