@@ -87,8 +87,8 @@ async function _createMeetup(organizationId: string, newMeetup: MeetupDataPayloa
     data: {
       ...newMeetup,
       location: newMeetup.location ?? null,
-      startsAt: Datetime.toDateIsoString(newMeetup.startsAt),
-      endsAt: Datetime.toDateIsoString(newMeetup.endsAt),
+      startsAt: Datetime.toDateTimeIsoString(newMeetup.startsAt),
+      endsAt: Datetime.toDateTimeIsoString(newMeetup.endsAt),
     },
   })
 }
@@ -99,8 +99,8 @@ async function _saveMeetup(meetupId: string, newMeetup: MeetupDataPayload) {
     data: {
       ...newMeetup,
       location: newMeetup.location ?? null,
-      startsAt: Datetime.toDateIsoString(newMeetup.startsAt),
-      endsAt: Datetime.toDateIsoString(newMeetup.endsAt),
+      startsAt: Datetime.toDateTimeIsoString(newMeetup.startsAt),
+      endsAt: Datetime.toDateTimeIsoString(newMeetup.endsAt),
     },
   })
 }

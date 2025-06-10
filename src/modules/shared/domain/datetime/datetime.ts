@@ -61,6 +61,11 @@ export class Datetime {
     return dayjs(dateToFormat).locale('es').format('HH:mm')
   }
 
+  static toDateTimeIsoString(dateToFormat: ValidDate): string {
+    if (!dateToFormat) return ''
+    return dayjs(dateToFormat).locale('es').toISOString()
+  }
+
   static isBeforeToday(date: ValidDate): boolean {
     if (!date) return false
 

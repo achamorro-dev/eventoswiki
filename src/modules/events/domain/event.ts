@@ -92,8 +92,8 @@ export class Event implements EventProps {
     return {
       ...this,
       id: this.id.value,
-      startsAt: Datetime.toDateIsoString(this.startsAt),
-      endsAt: Datetime.toDateIsoString(this.endsAt),
+      startsAt: Datetime.toDateTimeIsoString(this.startsAt),
+      endsAt: Datetime.toDateTimeIsoString(this.endsAt),
       image: this.image.toString(),
     }
   }

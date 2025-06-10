@@ -106,8 +106,8 @@ export class Meetup implements MeetupProps {
       ...this,
       id: this.id.value,
       image: this.image.toString(),
-      startsAt: Datetime.toDateIsoString(this.startsAt),
-      endsAt: Datetime.toDateIsoString(this.endsAt),
+      startsAt: Datetime.toDateTimeIsoString(this.startsAt),
+      endsAt: Datetime.toDateTimeIsoString(this.endsAt),
     }
   }
 
