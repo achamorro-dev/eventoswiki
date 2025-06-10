@@ -1,13 +1,15 @@
 import { Organization } from '@/organizations/domain/organization'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
 import { Card, CardHeader, CardTitle } from '@/ui/card'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
-  organization: Organization
+  organization: Primitives<Organization>
 }
 
-export const OrganizationCard = ({ organization }: Props) => {
+export const OrganizationCard = (props: Props) => {
+  const organization = Organization.fromPrimitives(props.organization)
   return (
     <a href={Urls.ORGANIZATION(organization.handle)}>
       <Card>
