@@ -1,15 +1,82 @@
 ---
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
-import { MyOrganizationTabs } from '../../components/my-organization-tabs/my-organization-tabs'
+import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
+import { Link } from '@/ui/components/link'
+import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
+import { Heart, Users } from '@/ui/icons'
+import { Urls } from '@/ui/urls/urls'
+import { OrganizationCard } from '../../components/organization-card/organization-card'
 
 interface Props {
   userId: string
+  activeTab: 'following' | 'member'
 }
 
-const { userId } = Astro.props
+const { userId, activeTab } = Astro.props
 
 const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
 const organizations = userOrganizations.map(o => o.toPrimitives())
 ---
 
-<MyOrganizationTabs client:idle userOrganizations={organizations} />
+<header class="mb-4 lg:mb-8">
+  <LinkTabs
+    tabs={[
+      { label: 'Siguiendo', href: Urls.FOLLOWING_ORGANIZATIONS, isActive: activeTab === 'following' },
+      { label: 'Organizando', href: Urls.MEMBER_ORGANIZATIONS, isActive: activeTab === 'member' },
+    ]}
+  />
+</header>
+
+{
+  activeTab === 'following' && (
+    <EmptyMessage
+      icon={Heart}
+      title="Aún no sigues a ninguna organización"
+      description="Prueba buscando una organización cerca de ti y síguela para verla por aquí."
+    />
+  )
+}
+
+{
+  activeTab === 'member' &&
+    (userOrganizations.length === 0 ? (
+      <EmptyMessage
+        icon={Users}
+        title="Aún no participas en ninguna organización"
+        description="Únete como organizador a una comunidad o crea tu propia organización para verla aquí."
+      >
+        <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className="create-organization-link">
+          Crear organización
+        </Link>
+      </EmptyMessage>
+    ) : (
+      <article class="my-organizations">
+        <ul class="organizations-grid">
+          {userOrganizations.map(organization => (
+            <li>
+              <OrganizationCard client:load organization={organization.toPrimitives()} />
+            </li>
+          ))}
+        </ul>
+        <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className="create-organization-link">
+          Crear organización
+        </Link>
+      </article>
+    ))
+}
+
+<style>
+  @reference '../../../../../../styles/global.css';
+
+  .organizations-grid {
+    @apply grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4;
+  }
+
+  .my-organizations {
+    @apply flex flex-col items-center gap-4;
+  }
+
+  .create-organization-link {
+    @apply my-4 md:w-min;
+  }
+</style>

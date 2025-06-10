@@ -55,4 +55,5 @@ export {
   PiXBold as XBold,
   PiXLogoBold as XLogo,
   PiYoutubeLogo as Youtube,
+  PiHeart as Heart,
 } from 'react-icons/pi'
