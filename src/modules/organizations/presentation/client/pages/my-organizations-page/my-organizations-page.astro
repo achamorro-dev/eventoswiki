@@ -15,7 +15,6 @@ interface Props {
 const { userId, activeTab } = Astro.props
 
 const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
-const organizations = userOrganizations.map(o => o.toPrimitives())
 ---
 
 <header class="mb-4 lg:mb-8">

@@ -1,0 +1,24 @@
+---
+import Card from '@/ui/components/card/card.astro'
+import VisuallyHidden from '@/ui/components/visually-hidden/visually-hidden.astro'
+---
+
+<Card classes="organization-card">
+  <VisuallyHidden>Cargando evento</VisuallyHidden>
+  <div class="organization-avatar skeleton"></div>
+  <div class="organization-name skeleton"></div>
+</Card>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .organization-card {
+    @apply animate-pulse;
+  }
+  .organization-avatar {
+    @apply size-24 rounded-xl;
+  }
+  .organization-name {
+    @apply h-12 w-48 rounded-xl;
+  }
+</style>

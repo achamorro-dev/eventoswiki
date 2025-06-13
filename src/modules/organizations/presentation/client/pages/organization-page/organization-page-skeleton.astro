@@ -1,0 +1,41 @@
+---
+import VisuallyHidden from '@/ui/components/visually-hidden/visually-hidden.astro'
+---
+
+<article class="organization-page-skeleton">
+  <VisuallyHidden>Cargando organizatión</VisuallyHidden>
+  <header class="header">
+    <div class="avatar skeleton"></div>
+    <div class="name skeleton"></div>
+    <div class="handle skeleton"></div>
+    <div class="bio skeleton"></div>
+  </header>
+</article>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .organization-page-skeleton {
+    @apply flex flex-col items-stretch gap-y-16 py-24;
+  }
+
+  .header {
+    @apply flex flex-col items-center gap-4;
+  }
+
+  .avatar {
+    @apply size-24 rounded-xl;
+  }
+
+  .name {
+    @apply h-12 w-48 rounded-xl;
+  }
+
+  .handle {
+    @apply h-4 w-24 rounded-xl;
+  }
+
+  .bio {
+    @apply mt-2 h-4 w-full rounded-xl;
+  }
+</style>
