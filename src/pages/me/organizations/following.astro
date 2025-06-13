@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/layout.astro'
 import MyOrganizationsPage from '@/organizations/presentation/client/pages/my-organizations-page/my-organizations-page.astro'
+import OrganizationGridSkeleton from '@/organizations/presentation/server/components/organization-grid-skeleton/organization-grid-skeleton.astro'
 import { Urls } from '@/ui/urls/urls'
 
 const userId = Astro.locals.user?.id
@@ -11,5 +12,7 @@ if (!userId) {
 ---
 
 <Layout title="Mis organizaciones">
-  <MyOrganizationsPage userId={userId} activeTab="following" />
+  <MyOrganizationsPage userId={userId} activeTab="following">
+    <OrganizationGridSkeleton slot="fallback" totalElements={3} />
+  </MyOrganizationsPage>
 </Layout>

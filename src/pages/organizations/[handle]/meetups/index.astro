@@ -4,6 +4,7 @@ import Layout from '@/layouts/layout.astro'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import type { Organization } from '@/organizations/domain/organization'
+import OrganizationPageSkeleton from '@/organizations/presentation/client/pages/organization-page/organization-page-skeleton.astro'
 import OrganizationPage from '@/organizations/presentation/client/pages/organization-page/organization-page.astro'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 
@@ -37,7 +38,9 @@ try {
 {
   organization ? (
     <Layout title={organization.name}>
-      <OrganizationPage organization={organization} userId={userId} activeTab="meetups" />
+      <OrganizationPage organization={organization} userId={userId} activeTab="meetups">
+        <OrganizationPageSkeleton slot="fallback" />
+      </OrganizationPage>
     </Layout>
   ) : (
     <BaseLayout title="Organización no encontrada">
