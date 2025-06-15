@@ -20,7 +20,7 @@ export const SocialRow = (props: Props) => {
   const { twitter, twitch, instagram, youtube, facebook, linkedin, github, telegram, whatsapp, discord, web } = props
 
   return (
-    <div className="left-0 right-0 ml-auto mr-auto flex max-w-5xl justify-center gap-1 xl:px-0">
+    <div className="left-0 right-0 -ml-2 flex w-full justify-start gap-1 xl:px-0">
       {web && <SocialLink name={web} href={web} type={SocialNetwork.web} />}
       {twitter && <SocialLink name={twitter} href={twitter} type={SocialNetwork.twitter} />}
       {twitch && <SocialLink name={twitch} href={twitch} type={SocialNetwork.twitch} />}

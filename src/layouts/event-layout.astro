@@ -11,6 +11,8 @@ import { Badge } from '@/ui/badge'
 import { SocialRow } from '@/ui/components/social-row/social-row'
 import { Link } from '@/ui/components/link'
 import OrganizedBy from '@/organizations/presentation/server/components/organized-by/organized-by.astro'
+import EventTags from '@/ui/components/event-tags/event-tags.astro'
+import { EventLocation } from '@/ui/components/event-location/event-location'
 
 interface Props {
   event: Event | Meetup
@@ -60,7 +62,7 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         id="event-image"
         src={image.toString()}
         alt={`Foto de portada del evento ${title}`}
-        class="w-full max-w-[350px] max-h-[300px] min-h-[200px] object-cover rounded-xl shadow-md bg-white"
+        class="w-full md:max-w-[450px] md:max-h-[400px] min-h-[200px] object-cover rounded-xl shadow-md bg-white"
         loading="lazy"
         onerror="this.src='/not-found.jpg'"
         transition:name={`media-image-${url}`}
@@ -73,33 +75,6 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
               <Pencil />
               Editar
             </Link>
-          )
-        }
-      </div>
-    </div>
-    <div>
-      <div class="w-full lg:px-6 max-w-5xl xl:px-0">
-        <div class="flex items-center gap-2" transition:animate="fade">
-          {
-            tags.map((t: string) => (
-              <Badge color={tagColor} className="text-white">
-                {t.toUpperCase()}
-              </Badge>
-            ))
-          }
-        </div>
-        <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
-          {title}
-        </h1>
-        <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
-        {
-          location && (
-            <div class="flex items-center gap-1 text-black dark:text-white" transition:animate="fade">
-              <MapPin size="1.25rem" />
-              <p class="text-sm py-2" tabindex="0" aria-label={`Localización del evento: ${location}`}>
-                {location}
-              </p>
-            </div>
           )
         }
       </div>
@@ -117,6 +92,16 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         discord={discord}
         web={web}
       />
+    </div>
+    <div>
+      <div class="w-full lg:px-6 max-w-5xl xl:px-0">
+        <EventTags tags={tags} tagColor={tagColor} />
+        <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
+          {title}
+        </h1>
+        <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
+        <EventLocation location={location} client:load transition:animate="fade" />
+      </div>
     </div>
   </header>
   <main class="lg:mt-4">
