@@ -147,6 +147,7 @@ export class Meetup implements MeetupProps {
     this.tags = data.tags ?? this.tags
     this.tagColor = data.tagColor ?? this.tagColor
     this.content = data.content ?? this.content
+    this.slug = data.slug ?? this.slug
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
