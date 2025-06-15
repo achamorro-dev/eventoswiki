@@ -46,7 +46,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup }: Props) => 
       content: meetup?.content ?? '',
       startsAt: meetup?.startsAt ? Datetime.toDate(meetup?.startsAt) : undefined,
       endsAt: meetup?.endsAt ? Datetime.toDate(meetup?.endsAt) : undefined,
-      image: meetup?.image ?? 'https://hacken.es/images/isotipo-negativo-meta.png',
+      image: meetup?.image,
       location: new ProvinceCollection(provinces).slugWithName(meetup?.location ?? undefined),
       web: meetup?.web,
       twitter: meetup?.twitter,
