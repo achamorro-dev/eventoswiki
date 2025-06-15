@@ -1,4 +1,5 @@
 import { CreateOrganizationCommand } from '../application/create-organization.command'
+import { GetOrganizationByIdQuery } from '../application/get-organization-by-id.query'
 import { GetOrganizationQuery } from '../application/get-organization.query'
 import { GetUserOrganizationsQuery } from '../application/get-user-organizations.query'
 import { SaveOrganizationCommand } from '../application/save-organization.command'
@@ -24,5 +25,9 @@ export class OrganizationsLocator {
 
   static updateOrganizationCommand() {
     return new SaveOrganizationCommand(this.getOrganizationsRepository())
+  }
+
+  static getOrganizationByIdQuery() {
+    return new GetOrganizationByIdQuery(this.getOrganizationsRepository())
   }
 }
