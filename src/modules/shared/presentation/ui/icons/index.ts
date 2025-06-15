@@ -27,6 +27,7 @@ export {
   PiListNumbersBold as ListNumbers,
   PiCircleNotch as Loader,
   PiMapPin as MapPin,
+  PiMapPinLine as MapPinLine,
   PiMicrophoneStage as Microphone,
   PiMoonBold as MoonBold,
   PiPencilSimple as Pencil,

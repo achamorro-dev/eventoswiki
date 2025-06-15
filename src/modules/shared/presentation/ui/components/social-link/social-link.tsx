@@ -42,7 +42,7 @@ export const SocialLink: FC<SocialLinkProps> = props => {
     <a
       href={href}
       target="_blank"
-      className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl"
+      className="flex h-10 w-10 items-center justify-center rounded-full text-xl"
       rel="nofollow"
       title={`${type.toUpperCase()}`}
       aria-label={`Enlace a ${type} de ${name}`}

@@ -1,28 +1,28 @@
 import { DateTimeFormat, Datetime } from '@/shared/domain/datetime/datetime'
-import { Calendar } from '@/ui/icons'
+import { CalendarBlank } from '@/ui/icons'
 import type { FC } from 'react'
+import { EventDataRow } from '../event-data-row/event-data-row'
 
 export const EventDatePeriod: FC<{ startDate: Date; endDate?: Date }> = ({ startDate, endDate }) => {
   const startDateHumanized = Datetime.toDateTimeString(startDate, DateTimeFormat.DDD_MMM_YYYY_HH_MM)
   const endDateHumanized = endDate && Datetime.toDateTimeString(endDate, DateTimeFormat.DDD_MMM_YYYY_HH_MM)
 
   return (
-    <div className="flex text-black dark:text-white">
-      {startDate && (
-        <div className="flex shrink-0 items-center gap-1">
-          <Calendar size="1.2rem" />
-          <p className="py-2 text-sm" aria-label={`Fecha de inicio ${startDateHumanized}`} tabIndex={0}>
-            {startDateHumanized}
-          </p>
-        </div>
+    <>
+      <EventDataRow
+        title="Empieza"
+        icon={<CalendarBlank />}
+        value={startDateHumanized}
+        ariaLabel={`Fecha de inicio ${startDateHumanized}`}
+      />
+      {endDateHumanized && (
+        <EventDataRow
+          title="Termina"
+          icon={<CalendarBlank />}
+          value={endDateHumanized}
+          ariaLabel={`Fecha de fin ${endDateHumanized}`}
+        />
       )}
-      {endDate && (
-        <div className="flex shrink-0 items-center">
-          <p className="py-2 text-sm" tabIndex={0} aria-label={`Fecha de fin ${endDateHumanized}`}>
-            &nbsp;· {endDateHumanized}
-          </p>
-        </div>
-      )}
-    </div>
+    </>
   )
 }
