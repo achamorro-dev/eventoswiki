@@ -1,0 +1,33 @@
+---
+import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import type { Organization } from '@/organizations/domain/organization'
+import { OrganizationAvatar } from '@/organizations/presentation/client/components/organization-avatar/organization-avatar'
+import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  organizationId?: string
+}
+
+const { organizationId } = Astro.props
+
+let organization: Organization | undefined
+if (organizationId) {
+  organization = await OrganizationsLocator.getOrganizationByIdQuery().execute({
+    id: organizationId,
+  })
+}
+---
+
+{
+  organization && (
+    <section class="flex flex-row items-center gap-2">
+      <OrganizationAvatar className="size-12" client:load organization={organization.toPrimitives()} />
+      <div class="flex flex-col items-start">
+        <span class="text-xs text-muted-foreground">Organizado por</span>
+        <a class="text-sm font-medium hover:text-primary" href={Urls.ORGANIZATION(organization.handle)}>
+          {organization.name}
+        </a>
+      </div>
+    </section>
+  )
+}

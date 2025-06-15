@@ -18,6 +18,7 @@ export {
   PiFacebookLogo as Facebook,
   PiGithubLogo as Github,
   PiGlobe as Globe,
+  PiHeart as Heart,
   PiImageBold as Image,
   PiInstagramLogo as Instagram,
   PiLaptopBold as LaptopBold,
@@ -28,6 +29,7 @@ export {
   PiMapPin as MapPin,
   PiMicrophoneStage as Microphone,
   PiMoonBold as MoonBold,
+  PiPencilSimple as Pencil,
   PiQuotesBold as Quotes,
   PiSmileyStickerThin as SmileyStickerThin,
   PiSunBold as SunBold,
@@ -55,5 +57,4 @@ export {
   PiXBold as XBold,
   PiXLogoBold as XLogo,
   PiYoutubeLogo as Youtube,
-  PiHeart as Heart,
 } from 'react-icons/pi'
