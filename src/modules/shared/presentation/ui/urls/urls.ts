@@ -3,6 +3,7 @@ import type { Slug } from '@/shared/domain/types/slug'
 export const Urls = {
   HOME: '/',
   EVENTS: '/events/',
+  EVENTS_CREATE: '/events/create',
   EVENTS_WITH_PROVINCE: (province: string) => `${Urls.EVENTS}?province=${province}`,
   MEETUPS: '/meetups/',
   MEETUPS_WITH_PROVINCE: (province: string) => `${Urls.MEETUPS}?province=${province}`,

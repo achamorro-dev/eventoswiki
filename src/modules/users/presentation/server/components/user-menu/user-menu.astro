@@ -37,6 +37,9 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
 
     <DropdownSection isLast>
       <DropdownItem>
+        <Link href={Urls.EVENTS_CREATE} variant="ghost">Crear evento</Link>
+      </DropdownItem>
+      <DropdownItem>
         <Link href={Urls.MY_ORGANIZATIONS} variant="ghost">Mis organizaciones</Link>
       </DropdownItem>
       <DropdownItem>
