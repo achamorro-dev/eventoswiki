@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { startsAt, endsAt, format = DateFormat.DD_MM_YYYY } = Astro.props
-const shouldShowEndDate = startsAt && endsAt && startsAt !== endsAt
+const shouldShowEndDate = startsAt && endsAt && !Datetime.isSameDay(startsAt, endsAt)
 ---
 
 {
