@@ -94,4 +94,12 @@
     border-top: 1px solid var(--gray-2);
     margin: 2rem 0;
   }
+
+  a {
+    text-decoration: underline;
+  }
+
+  iframe {
+    width: 100%;
+  }
 }

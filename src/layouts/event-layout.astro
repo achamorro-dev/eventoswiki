@@ -193,6 +193,10 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
     @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
   }
 
+  article iframe {
+    @apply w-full;
+  }
+
   .event-container a {
     @apply underline;
   }

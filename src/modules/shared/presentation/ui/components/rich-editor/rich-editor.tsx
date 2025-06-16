@@ -1,8 +1,10 @@
 import { Color } from '@tiptap/extension-color'
+import Link from '@tiptap/extension-link'
 import ListItem from '@tiptap/extension-list-item'
 import { TextAlign } from '@tiptap/extension-text-align'
 import TextStyle from '@tiptap/extension-text-style'
 import { Underline } from '@tiptap/extension-underline'
+import Youtube from '@tiptap/extension-youtube'
 import { EditorProvider } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
@@ -25,6 +27,15 @@ const extensions = [
       keepMarks: true,
       keepAttributes: false,
     },
+  }),
+  Link.configure({
+    autolink: true,
+    defaultProtocol: 'https',
+    protocols: ['http', 'https', 'tel', 'mailto'],
+    linkOnPaste: true,
+  }),
+  Youtube.configure({
+    nocookie: true,
   }),
 ]
 
