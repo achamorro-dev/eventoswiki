@@ -129,4 +129,10 @@ export class Datetime {
     const end = dayjs(endDate).locale('es').format('DD MMMM YY')
     return `${start} - ${end}`
   }
+
+  static isSameDay(dateA?: ValidDate, dateB?: ValidDate): boolean {
+    if (!dateA || !dateB) return false
+
+    return dayjs(dateA).isSame(dateB, 'day')
+  }
 }
