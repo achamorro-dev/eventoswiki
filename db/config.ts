@@ -2,8 +2,8 @@ import { NOW, column, defineDb, defineTable } from 'astro:db'
 
 export const Event = defineTable({
   columns: {
-    id: column.text({ optional: true }),
-    slug: column.text({ primaryKey: true, optional: false, unique: true }),
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    slug: column.text({ optional: false, unique: true }),
     title: column.text(),
     shortDescription: column.text(),
     startsAt: column.date(),
@@ -33,8 +33,8 @@ export const Event = defineTable({
 
 export const Meetup = defineTable({
   columns: {
-    id: column.text({ optional: true }),
-    slug: column.text({ primaryKey: true, optional: false, unique: true }),
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    slug: column.text({ optional: false, unique: true }),
     title: column.text(),
     shortDescription: column.text(),
     startsAt: column.date(),
