@@ -5,6 +5,7 @@ import {
   ArrowArcRight,
   BulletList,
   Code,
+  Link,
   ListNumbers,
   Quotes,
   TextAlignCenter,
@@ -18,6 +19,7 @@ import {
   TextHTwo,
   TextItalic,
   TextStrikethrough,
+  Youtube,
 } from '@/ui/icons'
 import { Separator } from '@/ui/separator'
 import { Toggle } from '@/ui/toggle'
@@ -29,6 +31,33 @@ export const RichEditorToolbar = () => {
 
   if (!editor) {
     return null
+  }
+
+  function onToggleLink() {
+    if (!editor) {
+      return
+    }
+
+    const existingHref = editor.isActive('link') ? editor.getAttributes('link').href : ''
+    const href = window.prompt('URL', existingHref)
+    const url = href?.trim()
+    if (url) {
+      editor.chain().focus().setLink({ href: url }).run()
+    } else if (editor.isActive('link')) {
+      editor.chain().focus().unsetLink().run()
+    }
+  }
+
+  function onToggleYoutube() {
+    if (!editor) {
+      return
+    }
+
+    const existingHref = editor.isActive('youtube') ? editor.getAttributes('youtube').url : ''
+    const url = window.prompt('URL', existingHref)
+    if (url && url.trim()) {
+      editor.chain().focus().setYoutubeVideo({ src: url.trim() }).run()
+    }
   }
 
   return (
@@ -159,6 +188,17 @@ export const RichEditorToolbar = () => {
           onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
         >
           <Quotes />
+        </Toggle>
+        <Toggle variant="default" aria-label="Link" pressed={editor.isActive('link')} onPressedChange={onToggleLink}>
+          <Link />
+        </Toggle>
+        <Toggle
+          variant="default"
+          aria-label="Youtube"
+          pressed={editor.isActive('youtube')}
+          onPressedChange={onToggleYoutube}
+        >
+          <Youtube />
         </Toggle>
         {!isMobile && <Separator orientation="vertical" />}
       </div>
