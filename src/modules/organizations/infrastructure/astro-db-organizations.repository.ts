@@ -1,4 +1,4 @@
-import { Organization, OrganizationUser, Province, db, eq, isDbError } from 'astro:db'
+import { Event, Meetup, Organization, OrganizationUser, Province, db, eq, isDbError } from 'astro:db'
 import { OrganizationAlreadyExists } from '../domain/errors/organization-already-exists.error'
 import { OrganizationNotFound } from '../domain/errors/organization-not-found.error'
 import { Organization as OrganizationEntity } from '../domain/organization'
@@ -137,6 +137,17 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       })
     } catch (error) {
       this._mapError(error, value)
+    }
+  }
+
+  async delete(id: OrganizationId): Promise<void> {
+    try {
+      await db.delete(Event).where(eq(Event.organizationId, id.value))
+      await db.delete(Meetup).where(eq(Meetup.organizationId, id.value))
+      await db.delete(OrganizationUser).where(eq(OrganizationUser.organizationId, id.value))
+      await db.delete(Organization).where(eq(Organization.id, id.value))
+    } catch (error) {
+      throw new OrganizationNotFound(id.value)
     }
   }
 
