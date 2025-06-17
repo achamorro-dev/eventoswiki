@@ -1,4 +1,5 @@
 import { CreateOrganizationCommand } from '../application/create-organization.command'
+import { DeleteOrganizationCommand } from '../application/delete-organization.command'
 import { GetOrganizationByIdQuery } from '../application/get-organization-by-id.query'
 import { GetOrganizationQuery } from '../application/get-organization.query'
 import { GetUserOrganizationsQuery } from '../application/get-user-organizations.query'
@@ -29,5 +30,9 @@ export class OrganizationsLocator {
 
   static getOrganizationByIdQuery() {
     return new GetOrganizationByIdQuery(this.getOrganizationsRepository())
+  }
+
+  static deleteOrganizationCommand() {
+    return new DeleteOrganizationCommand(this.getOrganizationsRepository())
   }
 }

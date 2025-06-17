@@ -66,7 +66,7 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
       organizerId,
       organizationId: organization?.id,
     }
-    const { error } = await actions.organization.saveOrganizationAction(organizationValues)
+    const { error } = await actions.organizations.saveOrganizationAction(organizationValues)
 
     if (error) {
       toast.error(error.message)

@@ -8,7 +8,7 @@ import { userServerActions } from '@/users/presentation/server/actions'
 export const server = {
   authentication: authenticationServerActions,
   user: userServerActions,
-  organization: organizationServerActions,
+  organizations: organizationServerActions,
   files: filesServerActions,
   events: eventsServerActions,
   meetups: meetupsServerActions,
