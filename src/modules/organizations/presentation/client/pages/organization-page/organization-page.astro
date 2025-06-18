@@ -31,7 +31,7 @@ const isOrganizer = userId ? organization.isOrganizer(userId) : false
       {organization.location && `· ${organization.location}`}
     </span>
     <p class="bio">{organization.bio}</p>
-    <SocialRow {...organization.toPrimitives()} />
+    <SocialRow {...organization.toPrimitives()} className="justify-center" />
     {
       userId && isOrganizer && (
         <section class="actions">
