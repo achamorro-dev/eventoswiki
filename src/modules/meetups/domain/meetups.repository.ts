@@ -7,11 +7,13 @@ import type { MeetupsFilters } from './criterias/meetups-filters'
 import type { MeetupsOrder } from './criterias/meetups-order'
 import { Meetup } from './meetup'
 import type { MeetupId } from './meetup-id'
+import type { DeletableByIdRepository } from '@/shared/domain/repository/deletable-by-id-repository'
 
 export interface MeetupsRepository
   extends MatcheableRepository<Partial<MeetupsFilters>, Partial<MeetupsOrder>, MeetupsCriteria, Meetup>,
     FindableAllRepository<Meetup>,
     FindableByIdRepository<MeetupId, Meetup>,
-    SaveableRepository<Meetup> {
+    SaveableRepository<Meetup>,
+    DeletableByIdRepository<MeetupId> {
   findBySlug(slug: string): Promise<Meetup>
 }

@@ -1,5 +1,7 @@
 import { GetEventQuery } from '@/events/application/get-event.query.ts'
+import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { CreateEventCommand } from '../application/create-event.command'
+import { DeleteEventCommand } from '../application/delete-event.command'
 import { FindEventsQuery } from '../application/find-events.query'
 import { GetEventsQuery } from '../application/get-events.query'
 import { GetNextEventsQuery } from '../application/get-next-events.query'
@@ -39,5 +41,12 @@ export class EventsLocator {
 
   private static createEventsRepository(): EventsRepository {
     return new AstroDbEventsRepository()
+  }
+
+  static deleteEventCommand() {
+    return new DeleteEventCommand(
+      EventsLocator.createEventsRepository(),
+      OrganizationsLocator.getUserOrganizationsQuery(),
+    )
   }
 }

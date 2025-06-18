@@ -17,20 +17,20 @@ import type { FC } from 'react'
 import { toast } from 'sonner'
 
 interface Props {
-  organizationId: string
+  eventId: string
 }
 
-export const DeleteOrganizationModal: FC<Props> = ({ organizationId }) => {
+export const DeleteEventModal: FC<Props> = ({ eventId }) => {
   const onDelete = async () => {
-    const { error } = await actions.organizations.deleteOrganizationAction({
-      organizationId,
+    const { error } = await actions.events.deleteEventAction({
+      eventId,
     })
     if (error) {
       toast.error(error.message)
       return
     }
 
-    toast.success('Organización eliminada correctamente')
+    toast.success('Evento eliminado correctamente')
     navigate(Urls.MEMBER_ORGANIZATIONS)
   }
 
@@ -41,9 +41,9 @@ export const DeleteOrganizationModal: FC<Props> = ({ organizationId }) => {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Eliminar organización</AlertDialogTitle>
+          <AlertDialogTitle>Eliminar evento</AlertDialogTitle>
           <AlertDialogDescription>
-            ¿Estás seguro de que quieres eliminar la organización? Esta acción es irreversible y no se puede deshacer.
+            ¿Estás seguro de que quieres eliminar el evento? Esta acción es irreversible y no se puede deshacer.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

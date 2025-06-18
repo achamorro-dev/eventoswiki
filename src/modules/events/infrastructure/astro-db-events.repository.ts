@@ -74,6 +74,14 @@ export class AstroDbEventsRepository implements EventsRepository {
     return hasEvent ? this._updateEvent(value) : this._insertEvent(value)
   }
 
+  async delete(id: EventId): Promise<void> {
+    try {
+      await db.delete(Event).where(eq(Event.id, id.value))
+    } catch (error) {
+      throw new EventNotFound(id.value)
+    }
+  }
+
   private async _updateEvent(value: EventEntity): Promise<void | PromiseLike<void>> {
     try {
       await db
