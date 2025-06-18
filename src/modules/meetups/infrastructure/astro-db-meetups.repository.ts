@@ -75,6 +75,14 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     return hasMeetup ? this._updateMeetup(value) : this._insertMeetup(value)
   }
 
+  async delete(id: MeetupId): Promise<void> {
+    try {
+      await db.delete(Meetup).where(eq(Meetup.id, id.value))
+    } catch (error) {
+      throw new MeetupNotFound(id.value)
+    }
+  }
+
   private async _updateMeetup(value: MeetupEntity): Promise<void | PromiseLike<void>> {
     try {
       await db

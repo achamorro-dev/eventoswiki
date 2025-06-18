@@ -13,6 +13,8 @@ import { Link } from '@/ui/components/link'
 import OrganizedBy from '@/organizations/presentation/server/components/organized-by/organized-by.astro'
 import EventTags from '@/ui/components/event-tags/event-tags.astro'
 import { EventLocation } from '@/ui/components/event-location/event-location'
+import { DeleteEventModal } from '@/events/presentation/client/components/delete-event-modal/delete-event-modal'
+import { DeleteMeetupModal } from '@/meetups/presentation/client/components/delete-meetup-modal/delete-meetup-modal'
 
 interface Props {
   event: Event | Meetup
@@ -57,7 +59,7 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
     class="max-w-5xl w-full mx-auto mt-4 flex flex-col justify-center lg:items-start px-4 lg:px-0 lg:justify-start gap-4 md:flex-row"
     id="main"
   >
-    <div class="flex flex-col items-center gap-2">
+    <div class="flex flex-col items-center gap-4">
       <img
         id="event-image"
         src={image.toString()}
@@ -67,14 +69,21 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         onerror="this.src='/not-found.jpg'"
         transition:name={`media-image-${url}`}
       />
-      <div class="flex flex-row gap-2 justify-between w-full items-center">
+      <div class="flex flex-row gap-8 justify-between w-full items-center">
         <OrganizedBy organizationId={organizationId} />
         {
           isOrganizer && (
-            <Link variant="secondary" size="sm" href={isMeetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
-              <Pencil />
-              Editar
-            </Link>
+            <div class="flex flex-row gap-2">
+              <Link variant="secondary" href={isMeetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
+                <Pencil />
+                Editar
+              </Link>
+              {isMeetup ? (
+                <DeleteMeetupModal client:load meetupId={event.id.value} />
+              ) : (
+                <DeleteEventModal client:load eventId={event.id.value} />
+              )}
+            </div>
           )
         }
       </div>

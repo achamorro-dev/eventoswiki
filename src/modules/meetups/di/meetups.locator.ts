@@ -1,4 +1,6 @@
+import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
+import { DeleteMeetupCommand } from '../application/delete-meetup.command'
 import { FindMeetupsQuery } from '../application/find-meetups.query'
 import { GetMeetupQuery } from '../application/get-meetup.query'
 import { GetMeetupsQuery } from '../application/get-meetups.query'
@@ -34,6 +36,13 @@ export class MeetupsLocator {
 
   static createMeetupCommand = (): CreateMeetupCommand => {
     return new CreateMeetupCommand(MeetupsLocator.createMeetupsRepository())
+  }
+
+  static deleteMeetupCommand = (): DeleteMeetupCommand => {
+    return new DeleteMeetupCommand(
+      MeetupsLocator.createMeetupsRepository(),
+      OrganizationsLocator.getUserOrganizationsQuery(),
+    )
   }
 
   private static createMeetupsRepository(): MeetupsRepository {
