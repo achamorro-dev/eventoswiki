@@ -1,3 +1,5 @@
+@reference "../../../../../../styles/global.css";
+
 .calendar-wrapper {
   height: 800px;
 }
@@ -16,7 +18,7 @@
 }
 
 .big-calendar span {
-  @apply text-primary-dark;
+  @apply text-primary;
 }
 
 .rbc-header {
@@ -62,11 +64,11 @@
 }
 
 .rbc-off-range-bg {
-  @apply dark:bg-background-dark-light;
+  @apply dark:bg-background;
 }
 
 .rbc-today {
-  @apply bg-primary bg-opacity-50;
+  @apply bg-primary opacity-50;
 }
 
 .rbc-btn-group .rbc-active,
@@ -75,5 +77,5 @@
 }
 
 .rbc-button-link {
-  @apply hover:underline dark:hover:text-white !important;
+  @apply hover:underline dark:hover:text-white;
 }
