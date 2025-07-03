@@ -1,10 +1,10 @@
 ---
 import type { Event } from '@/events/domain/event'
+import type { Meetup } from '@/meetups/domain/meetup'
 import EventCard from '@/ui/components/event-card/event-card.astro'
 import { Search } from 'lucide-react'
 import { EmptyMessage } from '../empty-message/empty-message'
 import Pagination from '../pagination/pagination.astro'
-import type { Meetup } from '@/meetups/domain/meetup'
 
 interface Props {
   page: number
@@ -31,6 +31,7 @@ const { events = [], page, totalPages, goToEvent } = Astro.props
                 tagColor: event.tagColor,
                 startsAt: event.startsAt,
                 endsAt: event.endsAt,
+                location: event.location,
               }}
               goToEvent={goToEvent}
             />
