@@ -45,7 +45,12 @@ try {
     <Layout title={'Crear evento'}>
       <article>
         <SectionTitle>Crear evento</SectionTitle>
-        <EventEditForm client:load organizationId={organization.id.value} provinces={provinces} />
+        <EventEditForm
+          client:load
+          organizationId={organization.id.value}
+          organization={organization.toPrimitives()}
+          provinces={provinces}
+        />
       </article>
     </Layout>
   ) : (

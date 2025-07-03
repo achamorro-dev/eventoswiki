@@ -45,7 +45,12 @@ try {
     <Layout title={'Crear evento'}>
       <article>
         <SectionTitle>Crear meetup</SectionTitle>
-        <MeetupEditForm client:load organizationId={organization.id.value} provinces={provinces} />
+        <MeetupEditForm
+          client:load
+          organizationId={organization.id.value}
+          organization={organization.toPrimitives()}
+          provinces={provinces}
+        />
       </article>
     </Layout>
   ) : (

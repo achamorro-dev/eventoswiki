@@ -2,6 +2,7 @@
 
 import type { Event } from '@/events/domain/event'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
+import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
@@ -31,9 +32,10 @@ interface Props {
   provinces: Province[]
   event?: Primitives<Event>
   organizationId: string
+  organization?: Primitives<Organization>
 }
 
-export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
+export const EventEditForm = ({ provinces, organizationId, event, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
 
@@ -48,16 +50,16 @@ export const EventEditForm = ({ provinces, organizationId, event }: Props) => {
       image: event?.image,
       location: new ProvinceCollection(provinces).slugWithName(event?.location ?? undefined),
       web: event?.web,
-      twitter: event?.twitter,
-      linkedin: event?.linkedin,
-      twitch: event?.twitch,
-      github: event?.github,
-      facebook: event?.facebook,
-      instagram: event?.instagram,
-      youtube: event?.youtube,
-      discord: event?.discord,
-      telegram: event?.telegram,
-      whatsapp: event?.whatsapp,
+      twitter: event?.twitter || organization?.twitter,
+      linkedin: event?.linkedin || organization?.linkedin,
+      twitch: event?.twitch || organization?.twitch,
+      github: event?.github || organization?.github,
+      facebook: event?.facebook || organization?.facebook,
+      instagram: event?.instagram || organization?.instagram,
+      youtube: event?.youtube || organization?.youtube,
+      discord: event?.discord || organization?.discord,
+      telegram: event?.telegram || organization?.telegram,
+      whatsapp: event?.whatsapp || organization?.whatsapp,
       tiktok: event?.tiktok,
       tags: event?.tags ?? [],
       tagColor: event?.tagColor ?? '',

@@ -2,6 +2,7 @@
 
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import type { Meetup } from '@/meetups/domain/meetup'
+import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
@@ -32,9 +33,10 @@ interface Props {
   provinces: Province[]
   meetup?: Primitives<Meetup>
   organizationId: string
+  organization?: Primitives<Organization>
 }
 
-export const MeetupEditForm = ({ provinces, organizationId, meetup }: Props) => {
+export const MeetupEditForm = ({ provinces, organizationId, meetup, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
 
@@ -49,17 +51,17 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup }: Props) => 
       image: meetup?.image,
       location: new ProvinceCollection(provinces).slugWithName(meetup?.location ?? undefined),
       web: meetup?.web,
-      twitter: meetup?.twitter,
-      linkedin: meetup?.linkedin,
-      twitch: meetup?.twitch,
-      github: meetup?.github,
-      facebook: meetup?.facebook,
-      instagram: meetup?.instagram,
-      youtube: meetup?.youtube,
-      discord: meetup?.discord,
-      telegram: meetup?.telegram,
-      whatsapp: meetup?.whatsapp,
-      tiktok: meetup?.tiktok,
+      twitter: meetup?.twitter || organization?.twitter,
+      linkedin: meetup?.linkedin || organization?.linkedin,
+      twitch: meetup?.twitch || organization?.twitch,
+      github: meetup?.github || organization?.github,
+      facebook: meetup?.facebook || organization?.facebook,
+      instagram: meetup?.instagram || organization?.instagram,
+      youtube: meetup?.youtube || organization?.youtube,
+      discord: meetup?.discord || organization?.discord,
+      telegram: meetup?.telegram || organization?.telegram,
+      whatsapp: meetup?.whatsapp || organization?.whatsapp,
+      tiktok: meetup?.tiktok || organization?.tiktok,
       tags: meetup?.tags ?? [],
       tagColor: meetup?.tagColor ?? '',
     },
