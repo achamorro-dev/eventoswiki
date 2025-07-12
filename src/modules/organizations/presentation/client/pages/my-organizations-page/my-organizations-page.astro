@@ -5,7 +5,7 @@ import { Link } from '@/ui/components/link'
 import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
 import { Heart, Users } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
-import { OrganizationCard } from '../../components/organization-card/organization-card'
+import OrganizationsGrid from '../../components/organizations-grid/organizations-grid.astro'
 
 interface Props {
   userId: string
@@ -37,13 +37,7 @@ const organizationsFollowed = await OrganizationsLocator.getOrganizationsFollowe
       />
     ) : (
       <article class="my-organizations">
-        <ul class="organizations-grid">
-          {organizationsFollowed.map(organization => (
-            <li>
-              <OrganizationCard client:load organization={organization.toPrimitives()} />
-            </li>
-          ))}
-        </ul>
+        <OrganizationsGrid organizations={organizationsFollowed} />
       </article>
     ))
 }
@@ -62,13 +56,7 @@ const organizationsFollowed = await OrganizationsLocator.getOrganizationsFollowe
       </EmptyMessage>
     ) : (
       <article class="my-organizations">
-        <ul class="organizations-grid">
-          {userOrganizations.map(organization => (
-            <li>
-              <OrganizationCard client:load organization={organization.toPrimitives()} />
-            </li>
-          ))}
-        </ul>
+        <OrganizationsGrid organizations={userOrganizations} />
         <Link href={Urls.CREATE_ORGANIZATION} variant="outline" className="create-organization-link">
           Crear organización
         </Link>
@@ -78,10 +66,6 @@ const organizationsFollowed = await OrganizationsLocator.getOrganizationsFollowe
 
 <style>
   @reference '../../../../../../styles/global.css';
-
-  .organizations-grid {
-    @apply grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4;
-  }
 
   .my-organizations {
     @apply flex flex-col items-center gap-4;

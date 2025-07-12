@@ -1,0 +1,28 @@
+---
+import type { Organization } from '@/organizations/domain/organization'
+import { OrganizationCard } from '../organization-card/organization-card'
+
+interface Props {
+  organizations: Organization[]
+}
+
+const { organizations } = Astro.props
+---
+
+<ul class="organizations-grid">
+  {
+    organizations.map(organization => (
+      <li>
+        <OrganizationCard client:load organization={organization.toPrimitives()} />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  @reference '../../../../../../styles/global.css';
+
+  .organizations-grid {
+    @apply grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4;
+  }
+</style>
