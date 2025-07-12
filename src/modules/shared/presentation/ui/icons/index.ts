@@ -60,4 +60,5 @@ export {
   PiXBold as XBold,
   PiXLogoBold as XLogo,
   PiYoutubeLogo as Youtube,
+  PiMagnifyingGlass as Search,
 } from 'react-icons/pi'
