@@ -1,4 +1,15 @@
-import { Event, Meetup, Organization, OrganizationUser, Province, db, eq, isDbError } from 'astro:db'
+import {
+  Event,
+  Meetup,
+  Organization,
+  OrganizationFollower,
+  OrganizationUser,
+  Province,
+  db,
+  eq,
+  inArray,
+  isDbError,
+} from 'astro:db'
 import { OrganizationAlreadyExists } from '../domain/errors/organization-already-exists.error'
 import { OrganizationNotFound } from '../domain/errors/organization-not-found.error'
 import { Organization as OrganizationEntity } from '../domain/organization'
@@ -38,15 +49,26 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       .innerJoin(Organization, eq(OrganizationUser.organizationId, Organization.id))
       .where(eq(Organization.handle, handle))
 
+    const followersResult = await db
+      .select()
+      .from(OrganizationFollower)
+      .innerJoin(Organization, eq(OrganizationFollower.organizationId, Organization.id))
+      .where(eq(Organization.handle, handle))
+
     const organization = organizationResult.at(0)?.Organization
     const province = organizationResult.at(0)?.Province
     const organizerIds = organizersResult.map(({ OrganizationUser }) => OrganizationUser.userId)
+    const followerIds = followersResult.map(({ OrganizationFollower }) => OrganizationFollower.userId)
 
     if (!organization) {
       throw new OrganizationNotFound(handle)
     }
 
-    return AstroOrganizationMapper.toDomain({ ...organization, location: province?.name ?? null }, organizerIds)
+    return AstroOrganizationMapper.toDomain(
+      { ...organization, location: province?.name ?? null },
+      organizerIds,
+      followerIds,
+    )
   }
 
   async find(id: OrganizationId): Promise<OrganizationEntity> {
@@ -63,15 +85,26 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       .innerJoin(Organization, eq(OrganizationUser.organizationId, Organization.id))
       .where(eq(Organization.id, id.value))
 
+    const followersResult = await db
+      .select()
+      .from(OrganizationFollower)
+      .innerJoin(Organization, eq(OrganizationFollower.organizationId, Organization.id))
+      .where(eq(Organization.id, id.value))
+
     const organization = organizationResult.at(0)?.Organization
     const province = organizationResult.at(0)?.Province
     const organizerIds = organizersResult.map(({ OrganizationUser }) => OrganizationUser.userId)
+    const followerIds = followersResult.map(({ OrganizationFollower }) => OrganizationFollower.userId)
 
     if (!organization) {
       throw new OrganizationNotFound(id.value)
     }
 
-    return AstroOrganizationMapper.toDomain({ ...organization, location: province?.name ?? null }, organizerIds)
+    return AstroOrganizationMapper.toDomain(
+      { ...organization, location: province?.name ?? null },
+      organizerIds,
+      followerIds,
+    )
   }
 
   private async _updateOrganization(value: OrganizationEntity) {
@@ -149,6 +182,50 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     } catch (error) {
       throw new OrganizationNotFound(id.value)
     }
+  }
+
+  async updateFollowers(organization: OrganizationEntity): Promise<void> {
+    try {
+      const existingFollowers = await db
+        .select()
+        .from(OrganizationFollower)
+        .where(eq(OrganizationFollower.organizationId, organization.id.value))
+
+      const followersToDelete = existingFollowers.filter(follower => !organization.followers.includes(follower.userId))
+      const followersToInsert = organization.followers.filter(
+        follower => !existingFollowers.some(f => f.userId === follower),
+      )
+
+      if (followersToDelete.length > 0) {
+        await db.delete(OrganizationFollower).where(
+          inArray(
+            OrganizationFollower.userId,
+            followersToDelete.map(f => f.userId),
+          ),
+        )
+      }
+
+      if (followersToInsert.length > 0) {
+        await db.insert(OrganizationFollower).values(
+          followersToInsert.map(follower => ({
+            organizationId: organization.id.value,
+            userId: follower,
+          })),
+        )
+      }
+    } catch (error) {
+      this._mapError(error, organization)
+    }
+  }
+
+  async findOrganizationsFollowedByUserId(userId: string): Promise<OrganizationEntity[]> {
+    const result = await db
+      .select({ Organization })
+      .from(Organization)
+      .innerJoin(OrganizationFollower, eq(Organization.id, OrganizationFollower.organizationId))
+      .where(eq(OrganizationFollower.userId, userId))
+
+    return AstroOrganizationMapper.toDomainList(result)
   }
 
   _mapError(error: unknown, organization: OrganizationEntity) {

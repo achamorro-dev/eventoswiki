@@ -4,10 +4,9 @@ import BaseLayout from './base-layout.astro'
 import AddToCalendarButton from '@/ui/components/add-to-calendar-button/add-to-calendar-button.astro'
 import Container from '@/ui/components/container/container.astro'
 import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
-import { MapPin, Pencil } from '@/ui/icons'
+import { Pencil } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 import { Meetup } from '@/meetups/domain/meetup'
-import { Badge } from '@/ui/badge'
 import { SocialRow } from '@/ui/components/social-row/social-row'
 import { Link } from '@/ui/components/link'
 import OrganizedBy from '@/organizations/presentation/server/components/organized-by/organized-by.astro'
@@ -69,11 +68,10 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         onerror="this.src='/not-found.jpg'"
         transition:name={`media-image-${url}`}
       />
-      <div class="flex flex-row gap-8 justify-between w-full items-center">
-        <OrganizedBy organizationId={organizationId} />
+      <OrganizedBy organizationId={organizationId}>
         {
           isOrganizer && (
-            <div class="flex flex-row gap-2">
+            <div slot="actions" class="flex flex-row gap-2">
               <Link variant="secondary" href={isMeetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
                 <Pencil />
                 Editar
@@ -86,7 +84,7 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
             </div>
           )
         }
-      </div>
+      </OrganizedBy>
       <SocialRow
         name={title}
         twitter={twitter}

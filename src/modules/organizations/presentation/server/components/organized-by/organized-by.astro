@@ -2,6 +2,7 @@
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import type { Organization } from '@/organizations/domain/organization'
 import { OrganizationAvatar } from '@/organizations/presentation/client/components/organization-avatar/organization-avatar'
+import { OrganizationFollowButton } from '@/organizations/presentation/client/components/organization-follow-button/organization-follow-button'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
@@ -9,25 +10,45 @@ interface Props {
 }
 
 const { organizationId } = Astro.props
+const userId = Astro.locals.user?.id
 
 let organization: Organization | undefined
+let isOrganizer = false
+let isFollowing = false
+
 if (organizationId) {
   organization = await OrganizationsLocator.getOrganizationByIdQuery().execute({
     id: organizationId,
   })
+
+  if (userId) {
+    isOrganizer = organization.isOrganizer(userId)
+    isFollowing = organization.isFollower(userId)
+  }
 }
 ---
 
 {
   organization && (
-    <section class="flex flex-row items-center gap-2">
-      <OrganizationAvatar className="size-12" client:load organization={organization.toPrimitives()} />
-      <div class="flex flex-col items-start">
-        <span class="text-xs text-muted-foreground">Organizado por</span>
-        <a class="text-sm font-medium hover:text-primary" href={Urls.ORGANIZATION(organization.handle)}>
-          {organization.name}
-        </a>
-      </div>
-    </section>
+    <div class="flex flex-row gap-8 justify-between w-full items-center">
+      <section class="flex flex-row items-center gap-2">
+        <OrganizationAvatar className="size-12" client:load organization={organization.toPrimitives()} />
+        <div class="flex flex-col items-start">
+          <span class="text-xs text-muted-foreground">Organizado por</span>
+          <a class="text-sm font-medium hover:text-primary" href={Urls.ORGANIZATION(organization.handle)}>
+            {organization.name}
+          </a>
+        </div>
+      </section>
+      {userId && !isOrganizer && (
+        <OrganizationFollowButton
+          client:load
+          organizationId={organization.id.value}
+          userId={userId}
+          isFollowing={isFollowing}
+        />
+      )}
+      <slot name="actions" />
+    </div>
   )
 }

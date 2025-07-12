@@ -15,6 +15,7 @@ interface Props {
 const { userId, activeTab } = Astro.props
 
 const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+const organizationsFollowed = await OrganizationsLocator.getOrganizationsFollowedByQuery().execute({ userId })
 ---
 
 <header class="mb-4 lg:mb-8">
@@ -27,13 +28,24 @@ const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery()
 </header>
 
 {
-  activeTab === 'following' && (
-    <EmptyMessage
-      icon={Heart}
-      title="Aún no sigues a ninguna organización"
-      description="Prueba buscando una organización cerca de ti y síguela para verla por aquí."
-    />
-  )
+  activeTab === 'following' &&
+    (organizationsFollowed.length === 0 ? (
+      <EmptyMessage
+        icon={Heart}
+        title="Aún no sigues a ninguna organización"
+        description="Prueba buscando una organización cerca de ti y síguela para verla por aquí."
+      />
+    ) : (
+      <article class="my-organizations">
+        <ul class="organizations-grid">
+          {organizationsFollowed.map(organization => (
+            <li>
+              <OrganizationCard client:load organization={organization.toPrimitives()} />
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))
 }
 
 {

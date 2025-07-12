@@ -127,6 +127,15 @@ export const OrganizationUser = defineTable({
   },
 })
 
+export const OrganizationFollower = defineTable({
+  columns: {
+    organizationId: column.text({ optional: false, references: () => Organization.columns.id }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
 export default defineDb({
   tables: {
     Event,
@@ -136,5 +145,6 @@ export default defineDb({
     Session,
     Organization,
     OrganizationUser,
+    OrganizationFollower,
   },
 })

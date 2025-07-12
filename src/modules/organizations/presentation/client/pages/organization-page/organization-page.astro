@@ -8,6 +8,7 @@ import { Urls } from '@/ui/urls/urls'
 import { DeleteOrganizationModal } from '../../components/delete-organization-modal/delete-organization-modal'
 import { OrganizationAvatar } from '../../components/organization-avatar/organization-avatar'
 import OrganizationEvents from '../../components/organization-events/organization-events.astro'
+import { OrganizationFollowButton } from '../../components/organization-follow-button/organization-follow-button'
 import OrganizationMeetups from '../../components/organization-meetups/organization-meetups.astro'
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 
 const { organization, userId, activeTab } = Astro.props as Props
 const isOrganizer = userId ? organization.isOrganizer(userId) : false
+const isFollowing = userId ? organization.isFollower(userId) : false
 ---
 
 <article class="organization">
@@ -39,6 +41,18 @@ const isOrganizer = userId ? organization.isOrganizer(userId) : false
             Editar
           </Link>
           <DeleteOrganizationModal client:idle organizationId={organization.id.value} />
+        </section>
+      )
+    }
+    {
+      userId && !isOrganizer && (
+        <section class="actions">
+          <OrganizationFollowButton
+            client:load
+            organizationId={organization.id.value}
+            userId={userId}
+            isFollowing={isFollowing}
+          />
         </section>
       )
     }

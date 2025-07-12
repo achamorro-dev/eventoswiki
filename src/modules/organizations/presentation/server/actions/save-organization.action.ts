@@ -21,6 +21,7 @@ interface OrganizationDataPayload {
   whatsapp?: string | undefined
   discord?: string | undefined
   tiktok?: string | undefined
+  followers?: string[] | undefined
 }
 
 export const saveOrganizationAction = defineAction({
@@ -42,6 +43,7 @@ export const saveOrganizationAction = defineAction({
     whatsapp: z.string().optional(),
     discord: z.string().optional(),
     tiktok: z.string().optional(),
+    followers: z.array(z.string()).optional(),
     organizerId: z.string(),
     organizationId: z.string().optional(),
   }),
@@ -78,6 +80,7 @@ async function _createOrganization(organizerId: string, newOrganization: Organiz
     data: {
       ...newOrganization,
       location: newOrganization.location ?? null,
+      followers: [],
     },
   })
 }
@@ -88,6 +91,7 @@ async function _saveOrganization(organizationId: string, newOrganization: Organi
     data: {
       ...newOrganization,
       location: newOrganization.location ?? null,
+      followers: newOrganization.followers ?? [],
     },
   })
 }

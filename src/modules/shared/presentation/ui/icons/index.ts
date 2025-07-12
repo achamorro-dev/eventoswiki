@@ -19,6 +19,8 @@ export {
   PiGithubLogo as Github,
   PiGlobe as Globe,
   PiHeart as Heart,
+  PiHeartBold as HeartBold,
+  PiHeartBreakBold as HeartBreakBold,
   PiImageBold as Image,
   PiInstagramLogo as Instagram,
   PiLaptopBold as LaptopBold,

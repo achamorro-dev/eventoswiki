@@ -26,6 +26,7 @@ export interface OrganizationProps {
   tiktok?: string
   createdAt: Date
   updatedAt: Date
+  followers: string[]
 }
 
 export type OrganizationData = Primitives<Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt' | 'organizers'>>
@@ -52,6 +53,7 @@ export class Organization implements OrganizationProps {
   tiktok?: string
   createdAt: Date
   updatedAt: Date
+  followers: string[]
 
   private constructor(props: OrganizationProps) {
     this.id = props.id
@@ -75,6 +77,7 @@ export class Organization implements OrganizationProps {
     this.tiktok = props.tiktok
     this.createdAt = props.createdAt
     this.updatedAt = props.updatedAt
+    this.followers = props.followers
   }
 
   static create(props: OrganizationData): Organization {
@@ -87,6 +90,7 @@ export class Organization implements OrganizationProps {
       createdAt: new Date(),
       updatedAt: new Date(),
       organizers: [],
+      followers: [],
     })
   }
 
@@ -97,6 +101,7 @@ export class Organization implements OrganizationProps {
       id: OrganizationId.of(primitives.id),
       createdAt: Datetime.toDate(primitives.createdAt),
       updatedAt: Datetime.toDate(primitives.updatedAt),
+      followers: primitives.followers,
     })
   }
 
@@ -123,6 +128,7 @@ export class Organization implements OrganizationProps {
       tiktok: this.tiktok,
       createdAt: Datetime.toDateIsoString(this.createdAt),
       updatedAt: Datetime.toDateIsoString(this.updatedAt),
+      followers: this.followers,
     }
   }
 
@@ -164,6 +170,20 @@ export class Organization implements OrganizationProps {
     this.whatsapp = newOrganizationData.whatsapp ?? this.whatsapp
     this.discord = newOrganizationData.discord ?? this.discord
     this.tiktok = newOrganizationData.tiktok ?? this.tiktok
+  }
+
+  addFollower(userId: string) {
+    if (!this.followers.includes(userId)) {
+      this.followers.push(userId)
+    }
+  }
+
+  isFollower(userId: string) {
+    return this.followers.includes(userId)
+  }
+
+  removeFollower(userId: string) {
+    this.followers = this.followers.filter(follower => follower !== userId)
   }
 
   private static ensureIsValidOrganization(organization: OrganizationData) {

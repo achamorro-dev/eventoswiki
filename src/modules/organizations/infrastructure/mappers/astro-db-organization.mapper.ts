@@ -4,10 +4,10 @@ import type { AstroDbOrganizationDto } from '../dtos/astro-db-organization.dto'
 
 export class AstroOrganizationMapper {
   static toDomainList(dtos: { Organization: AstroDbOrganizationDto }[]): Organization[] {
-    return dtos.map(({ Organization }) => this.toDomain(Organization, []))
+    return dtos.map(({ Organization }) => this.toDomain(Organization, [], []))
   }
 
-  static toDomain(dto: AstroDbOrganizationDto, organizerIds: string[]): Organization {
+  static toDomain(dto: AstroDbOrganizationDto, organizerIds: string[], followerIds: string[]): Organization {
     return Organization.fromPrimitives({
       id: dto.id,
       handle: dto.handle,
@@ -30,6 +30,7 @@ export class AstroOrganizationMapper {
       createdAt: Datetime.toIsoString(dto.createdAt),
       updatedAt: Datetime.toIsoString(dto.updatedAt),
       organizers: organizerIds,
+      followers: followerIds,
     })
   }
 }

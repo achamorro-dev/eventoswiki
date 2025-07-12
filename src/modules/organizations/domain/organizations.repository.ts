@@ -9,6 +9,7 @@ export interface OrganizationsRepository
     FindableByIdRepository<OrganizationId, Organization>,
     DeletableByIdRepository<OrganizationId> {
   findOrganizationsByUserId(userId: string): Promise<Organization[]>
-
   findByHandle(handle: string): Promise<Organization>
+  updateFollowers(organization: Organization): Promise<void>
+  findOrganizationsFollowedByUserId(userId: string): Promise<Organization[]>
 }
