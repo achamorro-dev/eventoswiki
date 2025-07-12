@@ -22,7 +22,7 @@ import { Urls } from '@/ui/urls/urls'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
@@ -38,6 +38,7 @@ interface Props {
 export const EventEditForm = ({ provinces, organizationId, event, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
+  const [isSaving, setIsSaving] = useState(false)
 
   const form = useForm<EventFormSchema>({
     defaultValues: {
@@ -85,7 +86,10 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
       organizationId,
       eventId: event?.id,
     }
+
+    setIsSaving(true)
     const { error } = await actions.events.saveEventAction(eventValues)
+    setIsSaving(false)
 
     if (error) {
       toast.error(error.message)
@@ -337,8 +341,14 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
         </div>
 
         <div className="mt-4 flex w-full justify-end">
-          <Button type="submit" className="w-full md:w-min">
-            Guardar
+          <Button type="submit" className="w-full md:w-min" disabled={isSaving}>
+            {isSaving ? (
+              <>
+                <Loader className="animate-spin" /> Guardando
+              </>
+            ) : (
+              'Guardar'
+            )}
           </Button>
         </div>
       </form>

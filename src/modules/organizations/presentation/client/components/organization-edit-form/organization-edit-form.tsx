@@ -18,7 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { z } from 'astro/zod'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
@@ -33,6 +33,7 @@ interface Props {
 export const OrganizationEditForm = ({ provinces, organizerId, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile()
+  const [isSaving, setIsSaving] = useState(false)
 
   const form = useForm<z.infer<typeof organizationFormSchema>>({
     defaultValues: {
@@ -66,7 +67,10 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
       organizerId,
       organizationId: organization?.id,
     }
+
+    setIsSaving(true)
     const { error } = await actions.organizations.saveOrganizationAction(organizationValues)
+    setIsSaving(false)
 
     if (error) {
       toast.error(error.message)
@@ -178,8 +182,13 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
           <SocialForm control={form.control} />
         </div>
         <div className="mt-4 flex w-full justify-end">
-          <Button type="submit" className="w-full md:w-min">
-            Guardar
+          <Button type="submit" className="w-full md:w-min" disabled={isSaving}>
+            {isSaving && (
+              <>
+                <Loader className="animate-spin" /> Guardando
+              </>
+            )}
+            {!isSaving && 'Guardar'}
           </Button>
         </div>
       </form>

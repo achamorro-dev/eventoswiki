@@ -23,7 +23,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { z } from 'astro/zod'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
@@ -39,6 +39,7 @@ interface Props {
 export const MeetupEditForm = ({ provinces, organizationId, meetup, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
+  const [isSaving, setIsSaving] = useState(false)
 
   const form = useForm<MeetupFormSchema>({
     defaultValues: {
@@ -86,7 +87,10 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
       organizationId,
       meetupId: meetup?.id,
     }
+
+    setIsSaving(true)
     const { error } = await actions.meetups.saveMeetupAction(meetupValues)
+    setIsSaving(false)
 
     if (error) {
       toast.error(error.message)
@@ -338,8 +342,14 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
         </div>
 
         <div className="mt-4 flex w-full justify-end">
-          <Button type="submit" className="w-full md:w-min">
-            Guardar
+          <Button type="submit" className="w-full md:w-min" disabled={isSaving}>
+            {isSaving ? (
+              <>
+                <Loader className="animate-spin" /> Guardando
+              </>
+            ) : (
+              'Guardar'
+            )}
           </Button>
         </div>
       </form>
