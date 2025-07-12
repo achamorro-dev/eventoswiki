@@ -5,6 +5,7 @@ import { GetOrganizationByIdQuery } from '../application/get-organization-by-id.
 import { GetOrganizationQuery } from '../application/get-organization.query'
 import { GetOrganizationsFollowedByQuery } from '../application/get-organizations-followed-by.query'
 import { GetUserOrganizationsQuery } from '../application/get-user-organizations.query'
+import { MatchOrganizationsQuery } from '../application/match-organizations.query'
 import { SaveOrganizationCommand } from '../application/save-organization.command'
 import { UnfollowOrganizationCommand } from '../application/unfollow-organization.command'
 import type { OrganizationsRepository } from '../domain/organizations.repository'
@@ -49,5 +50,9 @@ export class OrganizationsLocator {
 
   static getOrganizationsFollowedByQuery() {
     return new GetOrganizationsFollowedByQuery(this.getOrganizationsRepository())
+  }
+
+  static matchOrganizationsQuery() {
+    return new MatchOrganizationsQuery(this.getOrganizationsRepository())
   }
 }

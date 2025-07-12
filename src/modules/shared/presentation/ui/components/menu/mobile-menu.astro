@@ -9,6 +9,7 @@ const urlSections = {
   EVENTS: Urls.EVENTS.slice(0, -1),
   MEETUPS: Urls.MEETUPS.slice(0, -1),
   CALENDAR: Urls.CALENDAR.slice(0, -1),
+  ORGANIZATIONS: Urls.ORGANIZATIONS.slice(0, -1),
 }
 ---
 
@@ -39,6 +40,15 @@ const urlSections = {
         href={Urls.CALENDAR}
       >
         Calendario
+      </Link>
+    </li>
+    <li>
+      <Link
+        variant={'link'}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.ORGANIZATIONS) })}
+        href={Urls.ORGANIZATIONS}
+      >
+        Organizaciones
       </Link>
     </li>
   </ul>

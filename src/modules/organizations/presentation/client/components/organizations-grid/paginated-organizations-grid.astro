@@ -1,0 +1,62 @@
+---
+import type { Organization } from '@/organizations/domain/organization'
+import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
+import Pagination from '@/ui/components/pagination/pagination.astro'
+import { Search } from '@/ui/icons'
+import { OrganizationCard } from '../organization-card/organization-card'
+
+interface Props {
+  page: number
+  totalPages: number
+  organizations: Organization[]
+}
+
+const { organizations = [], page, totalPages } = Astro.props
+---
+
+<article>
+  <ul class="grid-list">
+    {
+      organizations.map((organization: Organization) => {
+        return (
+          <li>
+            <OrganizationCard organization={organization.toPrimitives()} />
+          </li>
+        )
+      })
+    }
+  </ul>
+
+  {
+    organizations.length === 0 && (
+      <slot name="empty">
+        <EmptyMessage
+          icon={Search}
+          title="No se encontraron resultados"
+          description="Intenta con otros términos de búsqueda o filtros diferentes."
+        />
+      </slot>
+    )
+  }
+  {
+    totalPages > 1 && (
+      <nav class="footer">
+        <Pagination totalPages={totalPages} page={page} />
+      </nav>
+    )
+  }
+</article>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .grid-list {
+    @apply grid grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-12 2xl:grid-cols-4;
+  }
+  .empty-message {
+    @apply text-muted-foreground mt-4 text-sm;
+  }
+  .footer {
+    @apply mt-8;
+  }
+</style>

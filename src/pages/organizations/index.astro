@@ -1,0 +1,20 @@
+---
+import Layout from '@/layouts/layout.astro'
+import AllOrganizationsGrid from '@/organizations/presentation/server/components/all-organizations-grid/all-organizations-grid.astro'
+import OrganizationGridSkeleton from '@/organizations/presentation/server/components/organization-grid-skeleton/organization-grid-skeleton.astro'
+
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+
+const searchParams = new URL(Astro.request.url).searchParams
+const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
+---
+
+<Layout title="eventos.wiki - Organizaciones">
+  <SectionTitle>Organizaciones</SectionTitle>
+
+  <div class="my-4">
+    <AllOrganizationsGrid page={page} server:defer>
+      <OrganizationGridSkeleton slot="fallback" />
+    </AllOrganizationsGrid>
+  </div>
+</Layout>

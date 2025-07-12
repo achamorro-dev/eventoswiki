@@ -1,3 +1,8 @@
+import type { Filter } from '@/shared/domain/criteria/filter'
+import { FilterType } from '@/shared/domain/criteria/filter-type'
+import { OrderDirection } from '@/shared/domain/criteria/order-direction'
+import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
+import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
 import {
   Event,
   Meetup,
@@ -5,11 +10,18 @@ import {
   OrganizationFollower,
   OrganizationUser,
   Province,
+  and,
+  asc,
+  count,
   db,
+  desc,
   eq,
   inArray,
   isDbError,
+  or,
 } from 'astro:db'
+import type { OrganizationsCriteria } from '../domain/criterias/organizations-criteria'
+import type { OrganizationsOrder } from '../domain/criterias/organizations-order'
 import { OrganizationAlreadyExists } from '../domain/errors/organization-already-exists.error'
 import { OrganizationNotFound } from '../domain/errors/organization-not-found.error'
 import { Organization as OrganizationEntity } from '../domain/organization'
@@ -228,6 +240,32 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     return AstroOrganizationMapper.toDomainList(result)
   }
 
+  async match(criteria: OrganizationsCriteria): Promise<PaginatedResult<OrganizationEntity>> {
+    const organizationsQuery = this.getOrganizationsQueryWithCriteria(criteria).orderBy(
+      ...this.getOrderBy(criteria.order),
+    )
+    const countQuery = this.getCountOrganizationsQueryWithCriteria(criteria)
+
+    if (criteria.limit) {
+      organizationsQuery.limit(criteria.limit)
+    }
+
+    if (criteria.page) {
+      organizationsQuery.offset(criteria.offset)
+    }
+
+    const organizations = await organizationsQuery
+    const count = await countQuery
+    const totalPages = Math.ceil(count[0].count / criteria.limit)
+
+    return new PaginatedResult(
+      AstroOrganizationMapper.toDomainList(organizations),
+      totalPages,
+      criteria.page,
+      criteria.limit,
+    )
+  }
+
   _mapError(error: unknown, organization: OrganizationEntity) {
     if (isDbError(error)) {
       switch (error.code) {
@@ -239,5 +277,91 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     }
 
     throw error
+  }
+
+  private getOrganizationsQueryWithCriteria(criteria: OrganizationsCriteria) {
+    return (
+      db
+        .select()
+        .from(Organization)
+        .leftJoin(Province, eq(Province.slug, Organization.location))
+        //@ts-expect-error
+        .where(...this.getOrganizationsFiltersByCriteria(criteria))
+    )
+  }
+
+  private getCountOrganizationsQueryWithCriteria(criteria: OrganizationsCriteria) {
+    return (
+      db
+        .select({ count: count() })
+        .from(Organization)
+        .leftJoin(Province, eq(Province.slug, Organization.location))
+        //@ts-ignore
+        .where(...this.getOrganizationsFiltersByCriteria(criteria))
+    )
+  }
+
+  private getOrganizationsFiltersByCriteria(criteria: OrganizationsCriteria) {
+    return this.getFiltersToApply(criteria.filters)
+  }
+
+  //@ts-expect-error return any, pending fix types
+  private getFiltersToApply<F>(parentFilters: F | Array<Filter<F>>) {
+    if (!parentFilters) return []
+
+    if (Array.isArray(parentFilters)) {
+      return parentFilters.map((parentFilter: Filter<F>) => {
+        const { type, filters } = parentFilter
+        //@ts-ignore
+        const criterias = this.getFiltersToApply(filters)
+        return type === FilterType.AND ? and(...criterias) : or(...criterias)
+      })
+    }
+
+    //@ts-ignore
+    return Object.entries<FilterCriteria | undefined>(parentFilters)
+      .filter(([_, value]) => value !== undefined)
+      .map(([key, filter]) => {
+        if (!filter) return
+
+        switch (filter.operator) {
+          case RelationalOperator.EQUALS:
+            //@ts-ignore
+            return eq(Organization[key], filter.value)
+          case RelationalOperator.GREATER_THAN_OR_EQUAL:
+            //@ts-ignore
+            return gte(Organization[key], filter.value)
+          case RelationalOperator.LOWER_THAN_OR_EQUAL:
+            //@ts-ignore
+            return lte(Organization[key], filter.value)
+          case RelationalOperator.GREATER_THAN:
+            //@ts-ignore
+            return gt(Organization[key], filter.value)
+          case RelationalOperator.LOWER_THAN:
+            //@ts-ignore
+            return lt(Organization[key], filter.value)
+          case RelationalOperator.LIKE:
+          case RelationalOperator.LIKE_NOT_SENSITIVE:
+            //@ts-ignore
+            return like(Organization[key], filter.value)
+          case RelationalOperator.NOT_EQUALS:
+            //@ts-ignore
+            return ne(Organization[key], filter.value)
+        }
+      })
+  }
+
+  private getOrderBy(order: Partial<OrganizationsOrder> | undefined) {
+    const orderBy = []
+
+    if (order?.name === OrderDirection.ASC) {
+      orderBy.push(asc(Organization.name))
+    }
+
+    if (order?.name === OrderDirection.DESC) {
+      orderBy.push(desc(Organization.name))
+    }
+
+    return orderBy
   }
 }
