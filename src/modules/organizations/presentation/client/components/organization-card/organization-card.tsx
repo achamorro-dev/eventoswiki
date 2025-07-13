@@ -1,7 +1,7 @@
 import { Organization } from '@/organizations/domain/organization'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
-import { Card, CardHeader, CardTitle } from '@/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
@@ -19,6 +19,7 @@ export const OrganizationCard = (props: Props) => {
             <AvatarFallback>{organization.firstNameLetter()}</AvatarFallback>
           </Avatar>
           <CardTitle>{organization.name}</CardTitle>
+          <CardDescription>{organization.followersCount} personas</CardDescription>
         </CardHeader>
       </Card>
     </a>

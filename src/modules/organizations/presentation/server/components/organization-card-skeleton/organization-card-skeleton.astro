@@ -7,6 +7,7 @@ import VisuallyHidden from '@/ui/components/visually-hidden/visually-hidden.astr
   <VisuallyHidden>Cargando evento</VisuallyHidden>
   <div class="organization-avatar skeleton"></div>
   <div class="organization-name skeleton"></div>
+  <div class="organization-description skeleton"></div>
 </Card>
 
 <style>
@@ -18,7 +19,12 @@ import VisuallyHidden from '@/ui/components/visually-hidden/visually-hidden.astr
   .organization-avatar {
     @apply size-24 rounded-full;
   }
-  .organization-name {
-    @apply h-12 w-48 rounded-xl;
+  .organization-name,
+  .organization-description {
+    @apply h-6 w-48 rounded-xl;
+  }
+
+  .organization-description {
+    @apply h-4 w-24;
   }
 </style>

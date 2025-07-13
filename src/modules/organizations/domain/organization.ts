@@ -150,6 +150,10 @@ export class Organization implements OrganizationProps {
     return this.organizers.includes(organizerId)
   }
 
+  get followersCount() {
+    return this.followers.length
+  }
+
   update(newOrganizationData: OrganizationData) {
     Organization.ensureIsValidOrganization(newOrganizationData)
 
