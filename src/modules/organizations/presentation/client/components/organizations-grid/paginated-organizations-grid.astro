@@ -20,7 +20,7 @@ const { organizations = [], page, totalPages } = Astro.props
       organizations.map((organization: Organization) => {
         return (
           <li>
-            <OrganizationCard organization={organization.toPrimitives()} />
+            <OrganizationCard client:load organization={organization.toPrimitives()} />
           </li>
         )
       })

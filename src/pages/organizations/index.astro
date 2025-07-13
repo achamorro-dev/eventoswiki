@@ -2,15 +2,22 @@
 import Layout from '@/layouts/layout.astro'
 import AllOrganizationsGrid from '@/organizations/presentation/server/components/all-organizations-grid/all-organizations-grid.astro'
 import OrganizationGridSkeleton from '@/organizations/presentation/server/components/organization-grid-skeleton/organization-grid-skeleton.astro'
-
+import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
+import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
+const province = searchParams.get('province') || undefined
 ---
 
 <Layout title="eventos.wiki - Organizaciones">
-  <SectionTitle>Organizaciones</SectionTitle>
+  <header class="mb-4">
+    <SectionTitle>Organizaciones</SectionTitle>
+  </header>
+  <SearchFiltersBar>
+    <ProvinceComboboxFilter value={province} />
+  </SearchFiltersBar>
 
   <div class="my-4">
     <AllOrganizationsGrid page={page} server:defer>
