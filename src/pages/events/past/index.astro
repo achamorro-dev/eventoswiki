@@ -12,12 +12,13 @@ const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
 const province = searchParams.get('province') || undefined
 ---
 
-<Layout title="eventos.wiki - Eventos pasados" classes="px-4 lg:px-12">
+<Layout title="eventos.wiki - Eventos pasados">
   <EventsHeader title="Eventos pasados" actionLink={Urls.EVENTS} actionText="Ver próximos" transition:persist>
     <SearchFiltersBar>
       <ProvinceComboboxFilter value={province} />
     </SearchFiltersBar>
   </EventsHeader>
+
   <PastEventsGrid location={province} page={page} server:defer>
     <EventsGridSkeleton slot="fallback" />
   </PastEventsGrid>

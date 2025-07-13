@@ -1,7 +1,7 @@
 ---
 import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
 import { Badge } from '@/ui/badge'
-import Card from '@/ui/components/card/card.astro'
+import { Card, CardContent } from '@/ui/card'
 import DatePeriod from '@/ui/components/date-period/date-period.astro'
 import Location from '@/ui/components/location/location.astro'
 
@@ -31,30 +31,32 @@ const { event, classes, goToEvent } = Astro.props
   aria-label={`Ver evento ${event.title}`}
 >
   <Card>
-    <div class="event-cover-container">
-      <img
-        class="event-cover"
-        src={event.image.toString()}
-        alt={`Foto de portada del evento ${event.title}`}
-        loading="lazy"
-        onerror="this.src='/not-found.jpg'"
-        transition:name={`media-image-${event.slug}`}
-      />
-    </div>
-    <div class="event-tags">
-      {
-        event.tags.map(t => (
-          <Badge color={event.tagColor} className="text-white">
-            {t.toUpperCase()}
-          </Badge>
-        ))
-      }
-    </div>
-    <h3 class="event-title">{event.title}</h3>
-    <section class="event-date-location">
-      <Location location={event.location} />
-      <DatePeriod startsAt={event.startsAt} endsAt={event.endsAt} format={DateFormat.DD_MMM_YYYY} />
-    </section>
+    <CardContent className="p-0">
+      <div class="event-cover-container">
+        <img
+          class="event-cover"
+          src={event.image.toString()}
+          alt={`Foto de portada del evento ${event.title}`}
+          loading="lazy"
+          onerror="this.src='/not-found.jpg'"
+          transition:name={`media-image-${event.slug}`}
+        />
+      </div>
+      <div class="event-tags">
+        {
+          event.tags.map(t => (
+            <Badge color={event.tagColor} className="text-white">
+              {t.toUpperCase()}
+            </Badge>
+          ))
+        }
+      </div>
+      <h3 class="event-title">{event.title}</h3>
+      <section class="event-date-location">
+        <Location location={event.location} />
+        <DatePeriod startsAt={event.startsAt} endsAt={event.endsAt} format={DateFormat.DD_MMM_YYYY} />
+      </section>
+    </CardContent>
   </Card>
 </a>
 

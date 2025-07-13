@@ -18,8 +18,10 @@ const { title, actionLink, actionText } = Astro.props
 <slot />
 
 <style>
+  @reference "../../../../../../styles/global.css";
+
   .header {
-    @apply flex items-center justify-between;
+    @apply mb-4 flex w-full items-center justify-between;
   }
   .action-link {
     @apply shrink-0 text-right;

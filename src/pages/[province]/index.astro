@@ -18,7 +18,7 @@ if (!location) {
 }
 ---
 
-<Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-8 pb-12 !px-0">
+<Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-4 pb-12 !px-0">
   <NextEventsSlider locationId={location.slug} locationName={location.name} server:defer>
     <Link variant="link" slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} className="text-right shrink-0"
       >Ver todos</Link

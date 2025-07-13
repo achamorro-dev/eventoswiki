@@ -1,12 +1,11 @@
 ---
-import Card from '@/ui/components/card/card.astro'
 import DatePeriod from '@/ui/components/date-period/date-period.astro'
 import Location from '@/ui/components/location/location.astro'
-import Tag from '@/ui/components/tag/tag.astro'
 import { Urls } from '../../../../../shared/presentation/ui/urls/urls'
 import { Meetup } from '../../../../domain/meetup'
 import { Badge } from '@/ui/badge'
 import { DateFormat } from '@/shared/domain/datetime/datetime'
+import { Card } from '@/ui/card'
 
 interface Props {
   meetup: Meetup
@@ -17,11 +16,11 @@ const { meetup, classes } = Astro.props
 ---
 
 <a href={Urls.MEETUP(meetup.slug)} class:list={classes}>
-  <Card classes="relative transition-shadow duration-300 lg:hover:shadow-md">
+  <Card className="relative transition-shadow duration-300 lg:hover:shadow-md">
     <img
       class="object-cover w-full h-56"
-      src={meetup.image}
-      alt={meetup.altImage || `Foto de portada del meetup ${meetup.title}`}
+      src={meetup.image.toString()}
+      alt={`Foto de portada del meetup ${meetup.title}`}
       loading="lazy"
       onerror="this.src='/not-found.jpg'"
       transition:name={`media-image-${meetup.slug}`}
