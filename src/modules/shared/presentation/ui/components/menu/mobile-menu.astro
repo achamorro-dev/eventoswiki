@@ -36,19 +36,19 @@ const urlSections = {
     <li>
       <Link
         variant={'link'}
-        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.CALENDAR) })}
-        href={Urls.CALENDAR}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.ORGANIZATIONS) })}
+        href={Urls.ORGANIZATIONS}
       >
-        Calendario
+        Organizaciones
       </Link>
     </li>
     <li>
       <Link
         variant={'link'}
-        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.ORGANIZATIONS) })}
-        href={Urls.ORGANIZATIONS}
+        className={cn('mobile-link', { 'mobile-link-active': pathname.startsWith(urlSections.CALENDAR) })}
+        href={Urls.CALENDAR}
       >
-        Organizaciones
+        Calendario
       </Link>
     </li>
   </ul>
@@ -58,7 +58,7 @@ const urlSections = {
   @reference "../../../../../../styles/global.css";
 
   .mobile-menu {
-    @apply border-muted w-full border-b px-3 lg:hidden;
+    @apply border-muted w-full overflow-x-auto border-b px-3 py-2 lg:hidden;
   }
 
   .menu-list {
@@ -66,7 +66,7 @@ const urlSections = {
   }
 
   .mobile-link {
-    @apply text-muted-foreground hover:text-primary px-2 font-medium no-underline;
+    @apply text-muted-foreground hover:text-primary px-2 text-base font-medium no-underline;
   }
 
   .mobile-link-active {
