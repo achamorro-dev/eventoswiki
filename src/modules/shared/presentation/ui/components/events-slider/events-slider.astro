@@ -30,7 +30,7 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
 <article class="events-slider">
   <header class="header">
     <SectionSubtitle>{title}</SectionSubtitle>
-    <Link href={seeMoreLink} variant="ghost" className="link" aria-label={`${title} Ver más`}>Ver más</Link>
+    <Link href={seeMoreLink} variant="link" aria-label={`${title} Ver más`}>Ver más</Link>
   </header>
   {events.length === 0 && <p class="empty-message">No hay eventos disponibles en estos momentos</p>}
   {
@@ -56,9 +56,6 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
   }
   .header {
     @apply mb-4 flex items-center justify-between px-4 lg:px-8;
-  }
-  .link {
-    @apply shrink-0 text-right;
   }
   .empty-message {
     @apply text-muted-foreground p-4 text-sm lg:p-8;

@@ -13,7 +13,7 @@ const province = searchParams.get('province') || undefined
 ---
 
 <Layout title="eventos.wiki - Eventos">
-  <EventsHeader title="Eventos" actionLink={Urls.PAST_EVENTS} actionText="Ver eventos pasados" transition:persist>
+  <EventsHeader title="Eventos" actionLink={Urls.PAST_EVENTS} actionText="Ver pasados" transition:persist>
     <SearchFiltersBar>
       <ProvinceComboboxFilter value={province} />
     </SearchFiltersBar>
