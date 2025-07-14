@@ -1,17 +1,19 @@
 ---
-import { Card } from '@/ui/card'
+import { Card, CardContent } from '@/ui/card'
 import VisuallyHidden from '../visually-hidden/visually-hidden.astro'
 ---
 
 <Card className="event-card">
-  <VisuallyHidden>Cargando evento</VisuallyHidden>
-  <div class="event-cover"></div>
-  <div class="event-tags"></div>
-  <div class="event-title"></div>
-  <div class="event-date-location">
-    <div class="date"></div>
-    <div class="location"></div>
-  </div>
+  <CardContent className="px-0">
+    <VisuallyHidden>Cargando evento</VisuallyHidden>
+    <div class="event-cover"></div>
+    <div class="event-tags"></div>
+    <div class="event-title"></div>
+    <div class="event-date-location">
+      <div class="date"></div>
+      <div class="location"></div>
+    </div></CardContent
+  >
 </Card>
 
 <style>
