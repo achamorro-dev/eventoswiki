@@ -4,13 +4,15 @@ import BaseLayout from './base-layout.astro'
 interface Props {
   title: string
   description?: string
+  image?: string
+  url?: string
   classes?: string
 }
 
-const { title, description, classes, ...rest } = Astro.props
+const { title, description, image, url, classes, ...rest } = Astro.props
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={image} url={url}>
   <main id="main" class:list={['h-full min-h-[calc(100vh-12rem)] pb-12 px-4 lg:px-8 pt-4 md:pt-8', classes]} {...rest}>
     <slot />
   </main>

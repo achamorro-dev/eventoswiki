@@ -37,7 +37,12 @@ try {
 
 {
   organization ? (
-    <Layout title={organization.name}>
+    <Layout
+      title={organization.name}
+      description={organization.bio}
+      image={organization.image?.toString()}
+      url={`https://eventos.wiki/organizations/${handle}`}
+    >
       <OrganizationPage organization={organization} userId={userId} activeTab="events">
         <OrganizationPageSkeleton slot="fallback" />
       </OrganizationPage>
