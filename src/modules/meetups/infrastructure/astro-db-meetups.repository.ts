@@ -4,12 +4,29 @@ import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
-import { Meetup, Province, and, asc, count, db, desc, eq, gt, gte, isDbError, lt, lte, or } from 'astro:db'
+import {
+  Meetup,
+  MeetupAttendee,
+  Province,
+  and,
+  asc,
+  count,
+  db,
+  desc,
+  eq,
+  gt,
+  gte,
+  isDbError,
+  lt,
+  lte,
+  or,
+} from 'astro:db'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
 import { MeetupAlreadyExists } from '../domain/errors/meetup-already-exists.error'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
 import { Meetup as MeetupEntity } from '../domain/meetup'
+import type { MeetupAttendeeId } from '../domain/meetup-attendee-id'
 import type { MeetupId } from '../domain/meetup-id'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 import { AstroDbMeetupMapper } from './mappers/astro-db-meetup.mapper'
@@ -148,6 +165,29 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     } catch (error) {
       this._mapError(error, value)
     }
+  }
+
+  async addAttendees(meetup: MeetupEntity): Promise<void> {
+    const existingAttendees = await db.select().from(MeetupAttendee).where(eq(MeetupAttendee.meetupId, meetup.id.value))
+
+    const attendeesToInsert = meetup.attendees?.filter(
+      attendee => !existingAttendees.some(a => a.userId === attendee.value),
+    )
+
+    if (attendeesToInsert && attendeesToInsert.length > 0) {
+      await db.insert(MeetupAttendee).values(
+        attendeesToInsert.map(attendee => ({
+          meetupId: meetup.id.value,
+          userId: attendee.value,
+        })),
+      )
+    }
+  }
+
+  async removeAttendee(meetupId: MeetupId, attendeeId: MeetupAttendeeId): Promise<void> {
+    await db
+      .delete(MeetupAttendee)
+      .where(and(eq(MeetupAttendee.meetupId, meetupId.value), eq(MeetupAttendee.userId, attendeeId.value)))
   }
 
   private _mapError(error: unknown, value: MeetupEntity) {

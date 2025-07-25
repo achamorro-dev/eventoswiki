@@ -1,4 +1,5 @@
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { AttendMeetupCommand } from '../application/attend-meetup.command'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
 import { DeleteMeetupCommand } from '../application/delete-meetup.command'
 import { FindMeetupsQuery } from '../application/find-meetups.query'
@@ -6,6 +7,7 @@ import { GetMeetupQuery } from '../application/get-meetup.query'
 import { GetMeetupsQuery } from '../application/get-meetups.query'
 import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
+import { UnattendMeetupCommand } from '../application/unattend-meetup.command'
 import { UpdateMeetupCommand } from '../application/update-meetup.command'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 import { AstroDbMeetupsRepository } from '../infrastructure/astro-db-meetups.repository'
@@ -43,6 +45,14 @@ export class MeetupsLocator {
       MeetupsLocator.createMeetupsRepository(),
       OrganizationsLocator.getUserOrganizationsQuery(),
     )
+  }
+
+  static attendMeetupCommand = (): AttendMeetupCommand => {
+    return new AttendMeetupCommand(MeetupsLocator.createMeetupsRepository())
+  }
+
+  static unattendMeetupCommand = (): UnattendMeetupCommand => {
+    return new UnattendMeetupCommand(MeetupsLocator.createMeetupsRepository())
   }
 
   private static createMeetupsRepository(): MeetupsRepository {

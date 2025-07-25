@@ -1,5 +1,5 @@
-import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { MeetupAlreadyExists } from '@/meetups/domain/errors/meetup-already-exists.error'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { z } from 'astro/zod'
 import { ActionError, defineAction } from 'astro:actions'
@@ -66,7 +66,7 @@ export const saveMeetupAction = defineAction({
       return
     } catch (error) {
       switch (true) {
-        case error instanceof EventAlreadyExists:
+        case error instanceof MeetupAlreadyExists:
           throw new ActionError({
             code: 'BAD_REQUEST',
             message: 'Este meetup ya se encuentra dado de alta',

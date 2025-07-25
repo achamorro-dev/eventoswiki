@@ -4,19 +4,19 @@ import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-requ
 import { z } from 'astro/zod'
 import { ActionError, defineAction } from 'astro:actions'
 
-export const deleteMeetupAction = defineAction({
+export const attendMeetupAction = defineAction({
   input: z.object({
     meetupId: z.string(),
   }),
   handler: async (input, context) => {
     try {
-      const { user, session } = context.locals
+      const { user } = context.locals
       const meetupId = input.meetupId
-      if (!user || !session || !meetupId) {
-        throw new BadRequest('Error al eliminar el meetup')
+      if (!user || !meetupId) {
+        throw new BadRequest('Error al solicitar asistir al meetup')
       }
 
-      await MeetupsLocator.deleteMeetupCommand().execute({
+      await MeetupsLocator.attendMeetupCommand().execute({
         meetupId,
         userId: user.id,
       })
@@ -37,7 +37,7 @@ export const deleteMeetupAction = defineAction({
         default:
           throw new ActionError({
             code: 'INTERNAL_SERVER_ERROR',
-            message: 'Se ha producido un error al eliminar el meetup',
+            message: 'Se ha producido un error al solicitar asistir al meetup',
           })
       }
     }

@@ -3,6 +3,8 @@ import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
 import { v4 as uuidv4 } from 'uuid'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
 import { InvalidMeetupError } from './errors/invalid-meetup.error'
+import { MeetupAttendeeDoesNotExist } from './errors/meetup-attendee-does-not-exist.error'
+import { MeetupAttendeeId } from './meetup-attendee-id'
 import { MeetupId } from './meetup-id'
 import { MeetupValidator } from './validators/meetup.validator'
 
@@ -31,6 +33,7 @@ export class Meetup implements MeetupProps {
   tagColor: string
   content: string
   organizationId?: string
+  attendees?: MeetupAttendeeId[]
 
   private constructor(props: MeetupProps) {
     this.id = props.id
@@ -57,6 +60,7 @@ export class Meetup implements MeetupProps {
     this.tagColor = props.tagColor
     this.content = props.content
     this.organizationId = props.organizationId || undefined
+    this.attendees = props.attendees || undefined
   }
 
   static create(data: MeetupData, organizationId: string) {
@@ -98,6 +102,7 @@ export class Meetup implements MeetupProps {
       tagColor: primitives.tagColor,
       content: primitives.content,
       organizationId: primitives.organizationId,
+      attendees: primitives.attendees?.map(MeetupAttendeeId.of),
     })
   }
 
@@ -108,6 +113,7 @@ export class Meetup implements MeetupProps {
       image: this.image.toString(),
       startsAt: Datetime.toDateTimeIsoString(this.startsAt),
       endsAt: Datetime.toDateTimeIsoString(this.endsAt),
+      attendees: this.attendees?.map(attendee => attendee.value),
     }
   }
 
@@ -158,6 +164,30 @@ export class Meetup implements MeetupProps {
     return this.organizationId !== undefined
   }
 
+  addAttendee(attendeeId: MeetupAttendeeId) {
+    if (!this.attendees) {
+      this.attendees = [attendeeId]
+      return
+    }
+
+    const isAttendeeAlreadyAdded = this.attendees.some(attendee => attendee.value === attendeeId.value)
+    if (isAttendeeAlreadyAdded) {
+      return
+    }
+
+    this.attendees.push(attendeeId)
+  }
+
+  removeAttendee(attendeeId: MeetupAttendeeId) {
+    const attendeeDoesNotExist = !this.attendees?.some(attendee => attendee.value === attendeeId.value)
+
+    if (!this.attendees || attendeeDoesNotExist) {
+      throw new MeetupAttendeeDoesNotExist(attendeeId.value)
+    }
+
+    this.attendees = this.attendees.filter(attendee => attendee.value !== attendeeId.value)
+  }
+
   private static ensureIsValidMeetup(data: MeetupData) {
     const validator = new MeetupValidator(data)
     const error = validator.validate()
@@ -191,6 +221,7 @@ export interface MeetupProps {
   tagColor: string
   content: string
   organizationId?: string | null
+  attendees?: MeetupAttendeeId[]
 }
 
 export type MeetupData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

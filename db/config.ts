@@ -136,10 +136,20 @@ export const OrganizationFollower = defineTable({
   },
 })
 
+export const MeetupAttendee = defineTable({
+  columns: {
+    meetupId: column.text({ optional: false, references: () => Meetup.columns.id }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
 export default defineDb({
   tables: {
     Event,
     Meetup,
+    MeetupAttendee,
     Province,
     User,
     Session,
