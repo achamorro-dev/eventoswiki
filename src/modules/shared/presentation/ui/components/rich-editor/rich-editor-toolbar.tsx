@@ -23,10 +23,13 @@ import {
 } from '@/ui/icons'
 import { Separator } from '@/ui/separator'
 import { Toggle } from '@/ui/toggle'
-import { useCurrentEditor } from '@tiptap/react'
+import { Editor } from '@tiptap/react'
 
-export const RichEditorToolbar = () => {
-  const { editor } = useCurrentEditor()
+interface RichEditorToolbarProps {
+  editor: Editor | null
+}
+export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
+  const { editor } = props
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   if (!editor) {
@@ -58,6 +61,10 @@ export const RichEditorToolbar = () => {
     if (url && url.trim()) {
       editor.chain().focus().setYoutubeVideo({ src: url.trim() }).run()
     }
+  }
+
+  if (!editor) {
+    return null
   }
 
   return (
