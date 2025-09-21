@@ -4,7 +4,7 @@ import { getEventsFor } from './content-migration/migration-mdx-to-astro-db'
 
 // https://astro.build/db/seed
 export default async function seed() {
-  const events = await Promise.all([getEventsFor('eventos', '2025')])
+  const events = await Promise.all([getEventsFor('eventos', '2025'), getEventsFor('eventos', '2026')])
 
   const meetups = await Promise.all([getEventsFor('meetups', '2025')])
 
