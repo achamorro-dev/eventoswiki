@@ -188,6 +188,18 @@ export class Meetup implements MeetupProps {
     this.attendees = this.attendees.filter(attendee => attendee.value !== attendeeId.value)
   }
 
+  isAttending(userId: string): boolean {
+    return this.attendees?.some(attendee => attendee.value === userId) ?? false
+  }
+
+  isPast(): boolean {
+    return Datetime.isBefore(this.endsAt, Datetime.now())
+  }
+
+  hasStarted(): boolean {
+    return Datetime.isBefore(this.startsAt, Datetime.now())
+  }
+
   private static ensureIsValidMeetup(data: MeetupData) {
     const validator = new MeetupValidator(data)
     const error = validator.validate()

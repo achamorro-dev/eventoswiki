@@ -4,25 +4,33 @@
   height: 800px;
 }
 
-.rbc-month-view .event,
-.rbc-time-view .event {
-  color: #fff;
-  background-color: var(--event-background-color, #4338ca);
-  font-weight: bold;
+.rbc-calendar * {
+  @apply !border-gray-200;
 }
 
-.big-calendar .rbc-month-header span,
+.rbc-month-view {
+  @apply rounded-b-md;
+}
+
+.rbc-month-view .event,
+.rbc-time-view .event {
+  @apply rounded-md text-sm font-medium;
+  color: var(--event-color, var(--primary-foreground));
+  border: 1px solid color-mix(in srgb, var(--event-border-color, var(--primary)) 20%, transparent) !important;
+  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 10%, transparent);
+}
+
+.rbc-row-segment {
+  @apply px-1;
+}
+
 .big-calendar .rbc-time-header-cell span,
 .big-calendar .rbc-time-slot span {
   @apply font-sans text-base;
 }
 
-.big-calendar span {
-  @apply text-primary;
-}
-
 .rbc-header {
-  @apply p-2;
+  @apply text-foreground py-2 text-sm font-normal;
 }
 
 .rbc-calendar span,
@@ -48,34 +56,37 @@
 .rbc-agenda-date-cell,
 .rbc-agenda-event-cell,
 .rbc-agenda-time-cell span {
-  @apply text-base font-medium;
-}
-
-.rbc-agenda-event-cell {
-  @apply cursor-pointer;
+  @apply text-base font-light;
 }
 
 .rbc-toolbar-label {
-  @apply font-bold;
+  @apply text-primary text-xl font-medium;
 }
 
 .rbc-toolbar {
-  @apply gap-4;
+  @apply mb-0 gap-4 rounded-t-md border border-b-0 p-4;
 }
 
 .rbc-off-range-bg {
-  @apply dark:bg-background;
+  @apply bg-muted text-muted-foreground;
 }
 
 .rbc-today {
-  @apply bg-primary opacity-50;
+  @apply bg-muted opacity-75;
 }
 
-.rbc-btn-group .rbc-active,
-.rbc-btn-group:hover {
-  @apply border-none dark:text-black;
+.rbc-btn-group button {
+  @apply hover:bg-muted rounded-md text-sm font-medium;
+}
+
+.rbc-active {
+  @apply !bg-primary !text-primary-foreground !shadow-none;
 }
 
 .rbc-button-link {
-  @apply hover:underline dark:hover:text-white;
+  @apply m-1 rounded-full p-1 text-sm text-black/75 dark:text-white;
+}
+
+.rbc-date-cell.rbc-now button {
+  @apply bg-primary text-primary-foreground;
 }

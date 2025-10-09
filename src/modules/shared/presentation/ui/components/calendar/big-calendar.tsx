@@ -23,10 +23,12 @@ type BigCalendarProps = {
 
 interface CustomCSS extends CSSProperties {
   '--event-background-color': string
+  '--event-border-color': string
+  '--event-color': string
 }
 
 // @ts-ignore
-const allViews = [Views.MONTH, Views.WEEK, Views.AGENDA]
+const allViews = [Views.MONTH, Views.AGENDA]
 const agendaView = [Views.AGENDA]
 
 export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
@@ -92,6 +94,8 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
           className: 'event',
           style: {
             '--event-background-color': event.color,
+            '--event-border-color': event.color,
+            '--event-color': event.color,
           } as CustomCSS,
         })}
         onSelectEvent={onSelectEvent}
