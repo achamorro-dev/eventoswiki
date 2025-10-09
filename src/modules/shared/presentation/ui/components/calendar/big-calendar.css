@@ -4,8 +4,14 @@
   height: 800px;
 }
 
-.rbc-calendar * {
-  @apply !border-gray-200;
+.rbc-calendar *,
+.rbc-overlay,
+.rbc-overlay-header {
+  @apply !border-gray-200 dark:!border-gray-700;
+}
+
+.rbc-overlay {
+  @apply dark:bg-background dark:text-foreground;
 }
 
 .rbc-month-view {
@@ -13,11 +19,21 @@
 }
 
 .rbc-month-view .event,
-.rbc-time-view .event {
+.rbc-time-view .event,
+.rbc-overlay .rbc-event.event {
   @apply rounded-md text-sm font-medium;
-  color: var(--event-color, var(--primary-foreground));
-  border: 1px solid color-mix(in srgb, var(--event-border-color, var(--primary)) 20%, transparent) !important;
-  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 10%, transparent);
+  color: var(--event-color, var(--primary));
+  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, white) !important;
+  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 10%, white) !important;
+}
+
+html.dark .rbc-month-view .event,
+html.dark .rbc-time-view .event,
+html.dark .rbc-overlay .rbc-event.event {
+  @apply rounded-md text-sm font-medium;
+  color: color-mix(in srgb, var(--event-color, var(--primary)) 25%, white);
+  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 75%, white) !important;
+  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, transparent) !important;
 }
 
 .rbc-row-segment {
@@ -29,8 +45,10 @@
   @apply font-sans text-base;
 }
 
-.rbc-header {
-  @apply text-foreground py-2 text-sm font-normal;
+.rbc-header,
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th,
+.rbc-overlay-header {
+  @apply text-foreground px-2 py-2 text-sm font-normal;
 }
 
 .rbc-calendar span,
@@ -38,10 +56,6 @@
 .rbc-calendar th,
 .rbc-calendar td {
   @apply dark:text-white;
-}
-
-.rbc-calendar button:hover {
-  @apply dark:text-black;
 }
 
 .rbc-agenda-table {
@@ -67,6 +81,10 @@
   @apply mb-0 gap-4 rounded-t-md border border-b-0 p-4;
 }
 
+.rbc-toolbar button {
+  @apply focus:bg-gray-100 dark:focus:bg-gray-800;
+}
+
 .rbc-off-range-bg {
   @apply bg-muted text-muted-foreground;
 }
@@ -87,6 +105,14 @@
   @apply m-1 rounded-full p-1 text-sm text-black/75 dark:text-white;
 }
 
+.rbc-show-more {
+  @apply dark:bg-background px-2 text-sm font-medium hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800;
+}
+
 .rbc-date-cell.rbc-now button {
   @apply bg-primary text-primary-foreground;
+}
+
+.rbc-agenda-empty {
+  @apply rounded-b-md border border-gray-200 px-2 py-4 text-sm font-normal dark:border-gray-700;
 }
