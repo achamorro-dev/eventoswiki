@@ -17,7 +17,7 @@ export class MatchOrganizationsQuery extends Query<PaginatedResult<Organization>
 
   execute(request: MatchOrganizationsRequest): Promise<PaginatedResult<Organization>> {
     const { count, page = 1, location } = request
-    const criteria = AllOrganizationsCriteria.createWith({ location }).withCount(count).withPage(page)
+    const criteria = AllOrganizationsCriteria.createWith({ location }).withLimit(count).withPage(page)
 
     return this.organizationsRepository.match(criteria)
   }

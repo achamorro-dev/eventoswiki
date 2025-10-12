@@ -25,8 +25,10 @@ export abstract class Criteria<Filters, Order> {
     return this
   }
 
-  withCount(count: number) {
-    this.limit = count
+  withLimit(limit?: number) {
+    if (!limit) return this
+
+    this.limit = limit
     return this
   }
 

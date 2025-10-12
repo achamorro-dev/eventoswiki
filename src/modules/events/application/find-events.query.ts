@@ -6,7 +6,10 @@ import type { Event } from '../domain/event'
 import type { EventsRepository } from '../domain/events.repository'
 
 interface FindEventsRequest {
-  organizationId: string
+  organizationId?: string
+  startsAt?: Date
+  endsAt?: Date
+  limit?: number
 }
 
 export class FindEventsQuery extends Query<PaginatedResult<Event>, FindEventsRequest> {
@@ -15,11 +18,14 @@ export class FindEventsQuery extends Query<PaginatedResult<Event>, FindEventsReq
   }
 
   execute(request: FindEventsRequest): Promise<PaginatedResult<Event>> {
-    const { organizationId } = request
+    const { organizationId, startsAt, endsAt, limit } = request
 
     const criteria = EventsCriteria.create()
       .orderBy({ startsAt: OrderDirection.DESC })
       .withOrganizationId(organizationId)
+      .withStartsAt(startsAt)
+      .withEndsAt(endsAt)
+      .withLimit(limit)
 
     return this.eventRepository.match(criteria)
   }

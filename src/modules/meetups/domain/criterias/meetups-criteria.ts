@@ -15,8 +15,24 @@ export class MeetupsCriteria extends Criteria<Partial<MeetupsFilters>, Partial<M
     return this
   }
 
-  withOrganizationId(organizationId: string): MeetupsCriteria {
+  withOrganizationId(organizationId?: string): MeetupsCriteria {
+    if (!organizationId) return this
+
     this.and({ organizationId: { operator: RelationalOperator.EQUALS, value: organizationId } })
+    return this
+  }
+
+  withStartsAt(startsAt: Date | undefined) {
+    if (!startsAt) return this
+
+    this.and({ startsAt: { operator: RelationalOperator.GREATER_THAN_OR_EQUAL, value: startsAt } })
+    return this
+  }
+
+  withEndsAt(endsAt: Date | undefined) {
+    if (!endsAt) return this
+
+    this.and({ endsAt: { operator: RelationalOperator.LOWER_THAN, value: endsAt } })
     return this
   }
 }

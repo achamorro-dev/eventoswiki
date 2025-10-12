@@ -164,8 +164,8 @@ importers:
         specifier: 1.19.4
         version: 1.19.4(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-day-picker:
-        specifier: ^8.10.1
-        version: 8.10.1(date-fns@4.1.0)(react@18.2.0)
+        specifier: ^9.11.1
+        version: 9.11.1(react@18.2.0)
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
@@ -475,6 +475,10 @@ packages:
     resolution:
       { integrity: sha512-LRjP623jPyf3Poyfb0ohMj8I3ORyBDOwXAgxxVPbSD0unJuW2mJWeiRfaQinjtccMqC5Wy1HOMfa4btKjbNxbg== }
     engines: { node: '>=v18' }
+
+  '@date-fns/tz@1.4.1':
+    resolution:
+      { integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA== }
 
   '@emnapi/runtime@1.4.0':
     resolution:
@@ -2781,6 +2785,10 @@ packages:
     resolution:
       { integrity: sha512-QWxYLR5P/6GStZcdem+V1xoto6DMadYWpMXU82ES3/RfR3Wdwr3D0+be7mgOJ+Ov0G9D5Dmb9T17sNLQYj9XOg== }
 
+  date-fns-jalali@4.1.0-0:
+    resolution:
+      { integrity: sha512-hTIP/z+t+qKwBDcmmsnmjWTduxCg+5KfdqWQvb2X/8C9+knYY6epN/pfxdDuyVlSVeFz0sM5eEfwIUQ70U4ckg== }
+
   date-fns@4.1.0:
     resolution:
       { integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg== }
@@ -4395,12 +4403,12 @@ packages:
       react: ^16.14.0 || ^17 || ^18 || ^19
       react-dom: ^16.14.0 || ^17 || ^18 || ^19
 
-  react-day-picker@8.10.1:
+  react-day-picker@9.11.1:
     resolution:
-      { integrity: sha512-TMx7fNbhLk15eqcMt+7Z7S2KF7mfTId/XJDjKE8f+IUcFn0l08/kI4FiYTL/0yuOLmEcbR4Fwe3GJf/NiiMnPA== }
+      { integrity: sha512-l3ub6o8NlchqIjPKrRFUCkTUEq6KwemQlfv3XZzzwpUeGwmDJ+0u0Upmt38hJyd7D/vn2dQoOoLV/qAp0o3uUw== }
+    engines: { node: '>=18' }
     peerDependencies:
-      date-fns: ^2.28.0 || ^3.0.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: '>=16.8.0'
 
   react-dom@18.2.0:
     resolution:
@@ -5630,6 +5638,8 @@ snapshots:
     dependencies:
       '@types/conventional-commits-parser': 5.0.1
       chalk: 5.4.1
+
+  '@date-fns/tz@1.4.1': {}
 
   '@emnapi/runtime@1.4.0':
     dependencies:
@@ -7484,6 +7494,8 @@ snapshots:
 
   date-arithmetic@4.1.0: {}
 
+  date-fns-jalali@4.1.0-0: {}
+
   date-fns@4.1.0: {}
 
   dayjs@1.11.13: {}
@@ -8980,9 +8992,11 @@ snapshots:
       react-overlays: 5.2.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       uncontrollable: 7.2.1(react@18.2.0)
 
-  react-day-picker@8.10.1(date-fns@4.1.0)(react@18.2.0):
+  react-day-picker@9.11.1(react@18.2.0):
     dependencies:
+      '@date-fns/tz': 1.4.1
       date-fns: 4.1.0
+      date-fns-jalali: 4.1.0-0
       react: 18.2.0
 
   react-dom@18.2.0(react@18.2.0):

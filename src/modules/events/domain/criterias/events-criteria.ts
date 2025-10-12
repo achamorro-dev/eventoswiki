@@ -15,8 +15,24 @@ export class EventsCriteria extends Criteria<Partial<EventsFilters>, Partial<Eve
     return this
   }
 
-  withOrganizationId(organizationId: string): EventsCriteria {
+  withOrganizationId(organizationId?: string): EventsCriteria {
+    if (!organizationId) return this
+
     this.and({ organizationId: { operator: RelationalOperator.EQUALS, value: organizationId } })
+    return this
+  }
+
+  withStartsAt(startsAt?: Date): EventsCriteria {
+    if (!startsAt) return this
+
+    this.and({ startsAt: { operator: RelationalOperator.GREATER_THAN_OR_EQUAL, value: startsAt } })
+    return this
+  }
+
+  withEndsAt(endsAt?: Date): EventsCriteria {
+    if (!endsAt) return this
+
+    this.and({ endsAt: { operator: RelationalOperator.LOWER_THAN, value: endsAt } })
     return this
   }
 }

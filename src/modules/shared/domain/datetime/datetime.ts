@@ -135,4 +135,12 @@ export class Datetime {
 
     return dayjs(dateA).isSame(dateB, 'day')
   }
+
+  static getFirstMondayOfMonthWeek(date: Date): Date {
+    return dayjs(date).locale('es').startOf('month').startOf('week').toDate()
+  }
+
+  static getLastSundayOfMonth(date: Date): Date {
+    return dayjs(date).locale('es').endOf('month').endOf('week').toDate()
+  }
 }

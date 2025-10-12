@@ -3,26 +3,36 @@ import { EventsLocator } from '@/events/di/events.locator'
 import { Event } from '@/events/domain/event'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { Meetup } from '@/meetups/domain/meetup'
-import { BigCalendar } from '@/ui/components/calendar/big-calendar'
+import { Datetime } from '@/shared/domain/datetime/datetime'
+import { BigCalendar } from '@/ui/components/big-calendar/big-calendar'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
 import Layout from '../layouts/layout.astro'
-import type { CalendarEvent } from '../modules/shared/presentation/ui/components/calendar/calendar-event'
+import type { CalendarEvent } from '../modules/shared/presentation/ui/components/big-calendar/calendar-event'
 
-const events = await EventsLocator.getEventsQuery().execute()
-const meetups = await MeetupsLocator.getMeetupsQuery().execute()
+const url = new URL(Astro.request.url)
+const date = url.searchParams.get('date')
 
-const calendarEvents = events.concat(meetups).map<CalendarEvent>((event: Meetup | Event, index) => {
-  const isMeetup = event instanceof Meetup
-  return {
-    id: index,
-    title: event.title,
-    start: event.startsAt,
-    end: event.endsAt,
-    url: isMeetup ? Urls.MEETUP(event.slug) : Urls.EVENT(event.slug),
-    color: event.tagColor,
-  } as CalendarEvent
-})
+const selectedDate = date ? Datetime.toDate(date) : Datetime.now()
+const startsAt = Datetime.getFirstMondayOfMonthWeek(selectedDate)
+const endsAt = Datetime.getLastSundayOfMonth(selectedDate)
+
+const paginatedEvents = await EventsLocator.findEventsQuery().execute({ startsAt, endsAt, limit: 1000 })
+const paginatedMeetups = await MeetupsLocator.findMeetupsQuery().execute({ startsAt, endsAt, limit: 1000 })
+
+const calendarEvents = paginatedEvents.data
+  .concat(paginatedMeetups.data)
+  .map<CalendarEvent>((event: Meetup | Event, index) => {
+    const isMeetup = event instanceof Meetup
+    return {
+      id: index,
+      title: event.title,
+      start: event.startsAt,
+      end: event.endsAt,
+      url: isMeetup ? Urls.MEETUP(event.slug) : Urls.EVENT(event.slug),
+      color: event.tagColor,
+    } as CalendarEvent
+  })
 ---
 
 <Layout
@@ -31,6 +41,6 @@ const calendarEvents = events.concat(meetups).map<CalendarEvent>((event: Meetup 
 >
   <SectionTitle>Calendario</SectionTitle>
   <article class="mt-4">
-    <BigCalendar client:load events={calendarEvents} />
+    <BigCalendar client:load events={calendarEvents} selectedDate={selectedDate} />
   </article>
 </Layout>

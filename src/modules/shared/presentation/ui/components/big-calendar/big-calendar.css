@@ -90,7 +90,7 @@ html.dark .rbc-overlay .rbc-event.event {
 }
 
 .rbc-today {
-  @apply bg-muted opacity-75;
+  @apply bg-primary/25 opacity-75;
 }
 
 .rbc-btn-group button {
@@ -102,7 +102,7 @@ html.dark .rbc-overlay .rbc-event.event {
 }
 
 .rbc-button-link {
-  @apply m-1 rounded-full p-1 text-sm text-black/75 dark:text-white;
+  @apply m-1 mr-0 rounded-full p-2 text-sm leading-none text-black/75 dark:text-white;
 }
 
 .rbc-show-more {

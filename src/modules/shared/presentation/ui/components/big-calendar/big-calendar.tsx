@@ -1,9 +1,10 @@
 import moment from 'moment'
 import type { CSSProperties, FC } from 'react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef } from 'react'
 
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
 
+import { navigate } from 'astro:transitions/client'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { Datetime } from '../../../../domain/datetime/datetime'
 import './big-calendar.css'
@@ -19,6 +20,7 @@ const localizer = momentLocalizer(moment)
 
 type BigCalendarProps = {
   events: CalendarEvent[]
+  selectedDate?: Date
 }
 
 interface CustomCSS extends CSSProperties {
@@ -28,21 +30,10 @@ interface CustomCSS extends CSSProperties {
 }
 
 // @ts-ignore
-const allViews = [Views.MONTH, Views.AGENDA]
-const agendaView = [Views.AGENDA]
+const allViews = [Views.MONTH]
 
-export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
-  const [isSmallView, setIsSmallView] = useState<boolean>()
+export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate }) => {
   const linkRef = useRef<HTMLAnchorElement>(null)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallView(window.innerWidth < 768)
-    }
-
-    window.addEventListener('resize', handleResize)
-    setIsSmallView(window.innerWidth < 768)
-  }, [])
 
   const formats = useMemo(
     () => ({
@@ -62,15 +53,22 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
     linkRef.current!.click()
   }
 
+  const onDateChange = (date: Date) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('date', Datetime.toDateIsoString(date))
+
+    navigate(encodeURI(url.toString()))
+  }
+
   return (
     <section className="calendar-wrapper">
       <Calendar
         className="big-calendar"
         localizer={localizer}
         events={events}
-        views={isSmallView ? agendaView : allViews}
-        view={isSmallView ? agendaView[0] : undefined}
+        views={allViews}
         formats={formats}
+        date={selectedDate}
         popup
         messages={{
           date: 'Fecha',
@@ -99,6 +97,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events }) => {
           } as CustomCSS,
         })}
         onSelectEvent={onSelectEvent}
+        onNavigate={onDateChange}
       />
       <a ref={linkRef} target="_blank" aria-hidden />
     </section>
