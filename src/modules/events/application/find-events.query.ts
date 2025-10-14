@@ -23,8 +23,7 @@ export class FindEventsQuery extends Query<PaginatedResult<Event>, FindEventsReq
     const criteria = EventsCriteria.create()
       .orderBy({ startsAt: OrderDirection.DESC })
       .withOrganizationId(organizationId)
-      .withStartsAt(startsAt)
-      .withEndsAt(endsAt)
+      .withStartsAndEndsAt(startsAt, endsAt)
       .withLimit(limit)
 
     return this.eventRepository.match(criteria)

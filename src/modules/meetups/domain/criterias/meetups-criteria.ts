@@ -35,4 +35,14 @@ export class MeetupsCriteria extends Criteria<Partial<MeetupsFilters>, Partial<M
     this.and({ endsAt: { operator: RelationalOperator.LOWER_THAN, value: endsAt } })
     return this
   }
+
+  withStartsAndEndsAt(startsAt?: Date, endsAt?: Date) {
+    if (!startsAt || !endsAt) return this
+
+    this.and({
+      startsAt: { operator: RelationalOperator.GREATER_THAN_OR_EQUAL, value: startsAt },
+      endsAt: { operator: RelationalOperator.LOWER_THAN_OR_EQUAL, value: endsAt },
+    })
+    return this
+  }
 }

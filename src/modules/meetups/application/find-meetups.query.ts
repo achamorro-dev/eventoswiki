@@ -23,8 +23,7 @@ export class FindMeetupsQuery extends Query<PaginatedResult<Meetup>, FindMeetups
     const criteria = MeetupsCriteria.create()
       .orderBy({ startsAt: OrderDirection.DESC })
       .withOrganizationId(organizationId)
-      .withStartsAt(startsAt)
-      .withEndsAt(endsAt)
+      .withStartsAndEndsAt(startsAt, endsAt)
       .withLimit(limit)
 
     return this.meetupRepository.match(criteria)
