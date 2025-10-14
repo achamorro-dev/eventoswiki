@@ -4,6 +4,7 @@ import { Event } from '@/events/domain/event'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { Meetup } from '@/meetups/domain/meetup'
 import { Datetime } from '@/shared/domain/datetime/datetime'
+import { Agenda } from '@/ui/components/big-calendar/agenda'
 import { BigCalendar } from '@/ui/components/big-calendar/big-calendar'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
@@ -41,6 +42,7 @@ const calendarEvents = paginatedEvents.data
 >
   <SectionTitle>Calendario</SectionTitle>
   <article class="mt-4">
-    <BigCalendar client:load events={calendarEvents} selectedDate={selectedDate} />
+    <Agenda client:load events={calendarEvents} selectedDate={selectedDate} className="block md:hidden" />
+    <BigCalendar client:load events={calendarEvents} selectedDate={selectedDate} className="hidden md:block" />
   </article>
 </Layout>

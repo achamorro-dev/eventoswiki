@@ -4,6 +4,7 @@ import { useMemo, useRef } from 'react'
 
 import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
 
+import { cn } from '@/ui/lib/utils'
 import { navigate } from 'astro:transitions/client'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { Datetime } from '../../../../domain/datetime/datetime'
@@ -21,6 +22,7 @@ const localizer = momentLocalizer(moment)
 type BigCalendarProps = {
   events: CalendarEvent[]
   selectedDate?: Date
+  className?: string
 }
 
 interface CustomCSS extends CSSProperties {
@@ -32,7 +34,7 @@ interface CustomCSS extends CSSProperties {
 // @ts-ignore
 const allViews = [Views.MONTH]
 
-export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate }) => {
+export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate, className }) => {
   const linkRef = useRef<HTMLAnchorElement>(null)
 
   const formats = useMemo(
@@ -61,7 +63,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate }) => {
   }
 
   return (
-    <section className="calendar-wrapper">
+    <section className={cn('calendar-wrapper', className)}>
       <Calendar
         className="big-calendar"
         localizer={localizer}

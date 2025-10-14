@@ -37,6 +37,12 @@ export class Datetime {
     return dayjs(dateToFormat).locale('es').format(format)
   }
 
+  static toTimeString(dateToFormat: ValidDate, format = 'HH:mm'): string {
+    if (!dateToFormat) return ''
+
+    return dayjs(dateToFormat).locale('es').format(format)
+  }
+
   static toDateTimeString(dateToFormat: ValidDate, format = DateTimeFormat.DD_MM_YYYY_HH_MM): string {
     if (!dateToFormat) return ''
 

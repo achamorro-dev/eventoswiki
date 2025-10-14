@@ -116,3 +116,20 @@ html.dark .rbc-overlay .rbc-event.event {
 .rbc-agenda-empty {
   @apply rounded-b-md border border-gray-200 px-2 py-4 text-sm font-normal dark:border-gray-700;
 }
+
+/* Event Card Styles */
+.event-card {
+  background-color: color-mix(in srgb, var(--event-background-color) 10%, white) !important;
+  border-color: color-mix(in srgb, var(--event-background-color) 25%, white) !important;
+  color: var(--event-color) !important;
+}
+
+html.dark .event-card {
+  background-color: color-mix(in srgb, var(--event-background-color) 25%, transparent) !important;
+  border-color: color-mix(in srgb, var(--event-background-color) 75%, white) !important;
+  color: color-mix(in srgb, var(--event-color) 25%, white) !important;
+}
+
+.agenda-day-with-events {
+  @apply text-primary;
+}
