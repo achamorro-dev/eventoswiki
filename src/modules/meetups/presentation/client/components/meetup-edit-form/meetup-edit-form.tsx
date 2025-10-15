@@ -75,7 +75,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
   useEffect(() => {
     if (title && startsAt) {
       const year = startsAt.getFullYear()
-      form.setValue('slug', `${year}/${slugify(title, { lower: true })}`)
+      form.setValue('slug', `${year}/${slugify(title, { lower: true, remove: /:/g })}`)
     }
   }, [title, startsAt])
 
