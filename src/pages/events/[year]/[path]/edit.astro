@@ -61,7 +61,7 @@ try {
         <article>
           <SectionTitle>Editar evento</SectionTitle>
           <EventEditForm
-            client:load
+            client:only="react"
             event={event.toPrimitives()}
             organizationId={event.organizationId!}
             provinces={provinces}

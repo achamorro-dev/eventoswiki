@@ -61,7 +61,7 @@ try {
         <article>
           <SectionTitle>Editar meetup</SectionTitle>
           <MeetupEditForm
-            client:load
+            client:only="react"
             meetup={meetup.toPrimitives()}
             organizationId={meetup.organizationId!}
             provinces={provinces}

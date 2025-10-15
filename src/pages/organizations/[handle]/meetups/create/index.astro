@@ -20,8 +20,10 @@ if (!handle) {
 let organization
 let provinces: Province[] = []
 try {
-  organization = await OrganizationsLocator.getOrganizationQuery().execute({ handle: handle })
-  provinces = await ProvincesLocator.getProvincesQuery().execute()
+  ;[organization, provinces] = await Promise.all([
+    OrganizationsLocator.getOrganizationQuery().execute({ handle: handle }),
+    ProvincesLocator.getProvincesQuery().execute(),
+  ])
 
   if (!userId || !organization.isOrganizer(userId)) {
     return Astro.redirect(Urls.ORGANIZATION(organization.handle))
@@ -46,7 +48,7 @@ try {
       <article>
         <SectionTitle>Crear meetup</SectionTitle>
         <MeetupEditForm
-          client:load
+          client:only="react"
           organizationId={organization.id.value}
           organization={organization.toPrimitives()}
           provinces={provinces}
