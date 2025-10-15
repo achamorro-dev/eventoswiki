@@ -28,12 +28,21 @@ const isFollowing = userId ? organization.isFollower(userId) : false
     <h1 class="text-4xl font-semibold text-foreground">
       {organization.name}
     </h1>
-    <span class="handle">
-      @{organization.handle}
-      {organization.location && `· ${organization.location}`}
-    </span>
+    <div class="summary">
+      <span>@{organization.handle}</span>
+      {
+        organization.location && (
+          <>
+            <span>·</span>
+            <span>{organization.location}</span>
+          </>
+        )
+      }
+      <span>·</span><span>{organization.followersCount()} seguidores</span>
+    </div>
     <p class="bio">{organization.bio}</p>
     <SocialRow {...organization.toPrimitives()} className="justify-center" />
+
     {
       userId && isOrganizer && (
         <section class="actions">
@@ -93,8 +102,8 @@ const isFollowing = userId ? organization.isFollower(userId) : false
     @apply flex flex-col items-center gap-4;
   }
 
-  .handle {
-    @apply font-medium;
+  .summary {
+    @apply flex items-center gap-4 font-medium;
   }
 
   .bio {

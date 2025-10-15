@@ -32,8 +32,9 @@ import { AstroOrganizationMapper } from './mappers/astro-db-organization.mapper'
 export class AstroDbOrganizationsRepository implements OrganizationsRepository {
   async findOrganizationsByUserId(userId: string): Promise<OrganizationEntity[]> {
     const result = await db
-      .select({ Organization })
+      .select({ Organization, Province })
       .from(Organization)
+      .leftJoin(Province, eq(Province.slug, Organization.location))
       .innerJoin(OrganizationUser, eq(Organization.id, OrganizationUser.organizationId))
       .where(eq(OrganizationUser.userId, userId))
 
@@ -76,11 +77,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       throw new OrganizationNotFound(handle)
     }
 
-    return AstroOrganizationMapper.toDomain(
-      { ...organization, location: province?.name ?? null },
-      organizerIds,
-      followerIds,
-    )
+    return AstroOrganizationMapper.toDomain({ organization, organizerIds, followerIds, province })
   }
 
   async find(id: OrganizationId): Promise<OrganizationEntity> {
@@ -112,11 +109,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       throw new OrganizationNotFound(id.value)
     }
 
-    return AstroOrganizationMapper.toDomain(
-      { ...organization, location: province?.name ?? null },
-      organizerIds,
-      followerIds,
-    )
+    return AstroOrganizationMapper.toDomain({ organization, organizerIds, followerIds, province })
   }
 
   private async _updateOrganization(value: OrganizationEntity) {
@@ -232,8 +225,9 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
 
   async findOrganizationsFollowedByUserId(userId: string): Promise<OrganizationEntity[]> {
     const result = await db
-      .select({ Organization })
+      .select({ Organization, Province })
       .from(Organization)
+      .leftJoin(Province, eq(Province.slug, Organization.location))
       .innerJoin(OrganizationFollower, eq(Organization.id, OrganizationFollower.organizationId))
       .where(eq(OrganizationFollower.userId, userId))
 
@@ -255,15 +249,21 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     }
 
     const organizations = await organizationsQuery
+    const organizationIds = organizations.map(({ Organization }) => Organization.id)
+    const followersMap = await this.getFollowersMapByOrganizationIds(organizationIds)
     const count = await countQuery
     const totalPages = Math.ceil(count[0].count / criteria.limit)
 
-    return new PaginatedResult(
-      AstroOrganizationMapper.toDomainList(organizations),
-      totalPages,
-      criteria.page,
-      criteria.limit,
+    const organizationsWithFollowers = organizations.map(({ Organization, Province }) =>
+      AstroOrganizationMapper.toDomain({
+        organization: Organization,
+        organizerIds: [],
+        followerIds: followersMap.get(Organization.id) ?? [],
+        province: Province,
+      }),
     )
+
+    return new PaginatedResult(organizationsWithFollowers, totalPages, criteria.page, criteria.limit)
   }
 
   _mapError(error: unknown, organization: OrganizationEntity) {
@@ -282,7 +282,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
   private getOrganizationsQueryWithCriteria(criteria: OrganizationsCriteria) {
     return (
       db
-        .select()
+        .select({ Organization, Province })
         .from(Organization)
         .leftJoin(Province, eq(Province.slug, Organization.location))
         //@ts-expect-error
@@ -363,5 +363,23 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     }
 
     return orderBy
+  }
+
+  private async getFollowersMapByOrganizationIds(organizationIds: string[]) {
+    if (organizationIds.length === 0) return new Map<string, string[]>()
+
+    const followers = await db
+      .select()
+      .from(OrganizationFollower)
+      .where(inArray(OrganizationFollower.organizationId, organizationIds))
+
+    const map = new Map<string, string[]>()
+    for (const follower of followers) {
+      const list = map.get(follower.organizationId) ?? []
+      list.push(follower.userId)
+      map.set(follower.organizationId, list)
+    }
+
+    return map
   }
 }

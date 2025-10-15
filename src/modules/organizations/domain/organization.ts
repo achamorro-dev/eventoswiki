@@ -129,6 +129,7 @@ export class Organization implements OrganizationProps {
       createdAt: Datetime.toDateIsoString(this.createdAt),
       updatedAt: Datetime.toDateIsoString(this.updatedAt),
       followers: this.followers,
+      followersCount: this.followersCount,
     }
   }
 
@@ -150,7 +151,7 @@ export class Organization implements OrganizationProps {
     return this.organizers.includes(organizerId)
   }
 
-  get followersCount() {
+  followersCount() {
     return this.followers.length
   }
 

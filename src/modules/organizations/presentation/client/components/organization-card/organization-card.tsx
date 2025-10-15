@@ -19,7 +19,10 @@ export const OrganizationCard = (props: Props) => {
             <AvatarFallback>{organization.firstNameLetter()}</AvatarFallback>
           </Avatar>
           <CardTitle>{organization.name}</CardTitle>
-          <CardDescription>{organization.followersCount} personas</CardDescription>
+          <CardDescription>
+            {organization.location && `${organization.location} · `}
+            {organization.followersCount()} seguidores
+          </CardDescription>
         </CardHeader>
       </Card>
     </a>
