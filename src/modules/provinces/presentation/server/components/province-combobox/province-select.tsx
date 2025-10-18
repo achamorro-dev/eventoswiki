@@ -18,8 +18,22 @@ export const ProvinceSelect: FC<Props> = props => {
 
   const handleChange = (value: string) => {
     if (!onChange) {
-      const href = value === 'empty' ? '?' : `?province=${value}`
-      navigate(href, { history: 'replace' })
+      // Get current URL and search parameters
+      const currentUrl = new URL(window.location.href)
+      const searchParams = new URLSearchParams(currentUrl.search)
+
+      // Update or remove the province parameter
+      if (value === 'empty') {
+        searchParams.delete('province')
+      } else {
+        searchParams.set('province', value)
+      }
+
+      // Build the new URL with updated search parameters
+      const newSearch = searchParams.toString()
+      const href = newSearch ? `?${newSearch}` : window.location.pathname
+
+      navigate(href)
       return
     }
 

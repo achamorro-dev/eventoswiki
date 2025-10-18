@@ -9,6 +9,7 @@ interface FindEventsRequest {
   organizationId?: string
   startsAt?: Date
   endsAt?: Date
+  province?: string
   limit?: number
 }
 
@@ -18,12 +19,13 @@ export class FindEventsQuery extends Query<PaginatedResult<Event>, FindEventsReq
   }
 
   execute(request: FindEventsRequest): Promise<PaginatedResult<Event>> {
-    const { organizationId, startsAt, endsAt, limit } = request
+    const { organizationId, startsAt, endsAt, province, limit } = request
 
     const criteria = EventsCriteria.create()
       .orderBy({ startsAt: OrderDirection.DESC })
       .withOrganizationId(organizationId)
       .withStartsAndEndsAt(startsAt, endsAt)
+      .withLocation(province)
       .withLimit(limit)
 
     return this.eventRepository.match(criteria)

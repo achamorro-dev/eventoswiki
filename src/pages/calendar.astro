@@ -3,9 +3,11 @@ import { EventsLocator } from '@/events/di/events.locator'
 import { Event } from '@/events/domain/event'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { Meetup } from '@/meetups/domain/meetup'
+import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Agenda } from '@/ui/components/big-calendar/agenda'
 import { BigCalendar } from '@/ui/components/big-calendar/big-calendar'
+import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
 import Layout from '../layouts/layout.astro'
@@ -13,13 +15,14 @@ import type { CalendarEvent } from '../modules/shared/presentation/ui/components
 
 const url = new URL(Astro.request.url)
 const date = url.searchParams.get('date')
+const province = url.searchParams.get('province') || undefined
 
 const selectedDate = date ? Datetime.toDate(date) : Datetime.now()
 const startsAt = Datetime.getFirstMondayOfMonthWeek(selectedDate)
 const endsAt = Datetime.getLastSundayOfMonth(selectedDate)
 
-const paginatedEvents = await EventsLocator.findEventsQuery().execute({ startsAt, endsAt, limit: 1000 })
-const paginatedMeetups = await MeetupsLocator.findMeetupsQuery().execute({ startsAt, endsAt, limit: 1000 })
+const paginatedEvents = await EventsLocator.findEventsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
+const paginatedMeetups = await MeetupsLocator.findMeetupsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
 
 const calendarEvents = paginatedEvents.data
   .concat(paginatedMeetups.data)
@@ -41,6 +44,9 @@ const calendarEvents = paginatedEvents.data
   description="En eventos.wiki encontrarás el calendario de eventos sobre desarrollo y tecnología definitivo. Pasa y echa un vistazo a la gran variedad de eventos y, si falta el tuyo, sólo tienes que pedírnoslo."
 >
   <SectionTitle>Calendario</SectionTitle>
+  <SearchFiltersBar>
+    <ProvinceComboboxFilter value={province} />
+  </SearchFiltersBar>
   <article class="mt-4">
     <Agenda client:load events={calendarEvents} selectedDate={selectedDate} className="block md:hidden" />
     <BigCalendar client:load events={calendarEvents} selectedDate={selectedDate} className="hidden md:block" />
