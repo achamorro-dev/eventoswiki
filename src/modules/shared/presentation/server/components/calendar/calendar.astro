@@ -1,0 +1,50 @@
+---
+import { EventsLocator } from '@/events/di/events.locator'
+import { Event } from '@/events/domain/event'
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { Meetup } from '@/meetups/domain/meetup'
+import { Datetime } from '@/shared/domain/datetime/datetime'
+import { EventType } from '@/shared/domain/types/event-type'
+import { Agenda } from '@/ui/components/big-calendar/agenda'
+import { BigCalendar } from '@/ui/components/big-calendar/big-calendar'
+import type { CalendarEvent } from '@/ui/components/big-calendar/calendar-event'
+import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  selectedDate: Date
+  eventType: EventType
+  province?: string
+}
+
+const { selectedDate, province, eventType } = Astro.props as Props
+
+const startsAt = Datetime.getFirstMondayOfMonthWeek(selectedDate)
+const endsAt = Datetime.getLastSundayOfMonth(selectedDate)
+let filteredEvents: Event[] = []
+let filteredMeetups: Meetup[] = []
+
+if (eventType === EventType.EVENTS) {
+  const paginatedEvents = await EventsLocator.findEventsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
+  filteredEvents = paginatedEvents.data
+}
+
+if (eventType === EventType.MEETUPS) {
+  const paginatedMeetups = await MeetupsLocator.findMeetupsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
+  filteredMeetups = paginatedMeetups.data
+}
+
+const calendarEvents = filteredEvents.concat(filteredMeetups).map<CalendarEvent>((event: Meetup | Event, index) => {
+  const isMeetup = event instanceof Meetup
+  return {
+    id: index,
+    title: event.title,
+    start: event.startsAt,
+    end: event.endsAt,
+    url: isMeetup ? Urls.MEETUP(event.slug) : Urls.EVENT(event.slug),
+    color: event.tagColor,
+  } as CalendarEvent
+})
+---
+
+<Agenda client:load events={calendarEvents} selectedDate={selectedDate} className="block md:hidden" />
+<BigCalendar client:load events={calendarEvents} selectedDate={selectedDate} className="hidden md:block" />

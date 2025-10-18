@@ -1,19 +1,12 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
-import { Event } from '@/events/domain/event'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
-import { Meetup } from '@/meetups/domain/meetup'
+import CalendarContent from '@/modules/shared/presentation/server/components/calendar/calendar.astro'
 import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { EventType } from '@/shared/domain/types/event-type'
-import { Agenda } from '@/ui/components/big-calendar/agenda'
-import { BigCalendar } from '@/ui/components/big-calendar/big-calendar'
 import { EventTypeFilter } from '@/ui/components/event-type-filter/event-type-filter'
 import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
-import { Urls } from '@/ui/urls/urls'
 import Layout from '../layouts/layout.astro'
-import type { CalendarEvent } from '../modules/shared/presentation/ui/components/big-calendar/calendar-event'
 
 const url = new URL(Astro.request.url)
 const date = url.searchParams.get('date')
@@ -21,33 +14,6 @@ const province = url.searchParams.get('province') || undefined
 const eventType = (url.searchParams.get('type') as EventType | undefined) || EventType.EVENTS
 
 const selectedDate = date ? Datetime.toDate(date) : Datetime.now()
-const startsAt = Datetime.getFirstMondayOfMonthWeek(selectedDate)
-const endsAt = Datetime.getLastSundayOfMonth(selectedDate)
-
-let filteredEvents: (Meetup | Event)[] = []
-let filteredMeetups: (Meetup | Event)[] = []
-
-if (eventType === EventType.EVENTS) {
-  const paginatedEvents = await EventsLocator.findEventsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
-  filteredEvents = paginatedEvents.data
-}
-
-if (eventType === EventType.MEETUPS) {
-  const paginatedMeetups = await MeetupsLocator.findMeetupsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
-  filteredMeetups = paginatedMeetups.data
-}
-
-const calendarEvents = filteredEvents.concat(filteredMeetups).map<CalendarEvent>((event: Meetup | Event, index) => {
-  const isMeetup = event instanceof Meetup
-  return {
-    id: index,
-    title: event.title,
-    start: event.startsAt,
-    end: event.endsAt,
-    url: isMeetup ? Urls.MEETUP(event.slug) : Urls.EVENT(event.slug),
-    color: event.tagColor,
-  } as CalendarEvent
-})
 ---
 
 <Layout
@@ -61,7 +27,6 @@ const calendarEvents = filteredEvents.concat(filteredMeetups).map<CalendarEvent>
     <EventTypeFilter client:load value={eventType} />
   </SearchFiltersBar>
   <article class="mt-4">
-    <Agenda client:load events={calendarEvents} selectedDate={selectedDate} className="block md:hidden" />
-    <BigCalendar client:load events={calendarEvents} selectedDate={selectedDate} className="hidden md:block" />
+    <CalendarContent server:defer selectedDate={selectedDate} province={province} eventType={eventType} />
   </article>
 </Layout>
