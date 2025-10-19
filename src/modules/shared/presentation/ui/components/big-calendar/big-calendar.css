@@ -74,7 +74,7 @@ div.rbc-agenda-time-cell span {
 }
 
 .rbc-toolbar-label {
-  @apply text-primary text-xl font-medium;
+  @apply text-primary !text-right text-xl font-medium;
 }
 
 div.rbc-toolbar {

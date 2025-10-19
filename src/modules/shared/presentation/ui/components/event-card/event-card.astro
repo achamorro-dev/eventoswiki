@@ -30,7 +30,7 @@ const { event, classes, goToEvent } = Astro.props
   title={event.title}
   aria-label={`Ver evento ${event.title}`}
 >
-  <Card>
+  <Card className="p-0">
     <CardContent className="p-0">
       <div class="event-cover-container">
         <img
@@ -65,15 +65,15 @@ const { event, classes, goToEvent } = Astro.props
 
   .event-card-link {
     @apply block;
-  }
-  .event-cover-container {
-    @apply w-full overflow-hidden rounded-xl;
 
     @media (prefers-reduced-motion: no-preference) {
-      img:hover {
+      :hover .event-cover {
         transform: scale(1.1);
       }
     }
+  }
+  .event-cover-container {
+    @apply w-full overflow-hidden rounded-xl;
   }
   .event-cover {
     @apply h-56 w-full rounded-xl object-cover;
