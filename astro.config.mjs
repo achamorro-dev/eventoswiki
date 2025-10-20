@@ -1,24 +1,22 @@
 import db from '@astrojs/db'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
-import vercel from '@astrojs/vercel'
 import { defineConfig, envField } from 'astro/config'
 
 import tailwindcss from '@tailwindcss/vite'
+
+import netlify from '@astrojs/netlify'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://eventos.wiki',
   output: 'server',
   integrations: [react(), db(), mdx()],
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
+
   security: {
     checkOrigin: true,
   },
+
   vite: {
     plugins: [tailwindcss()],
     resolve: {
@@ -27,6 +25,7 @@ export default defineConfig({
       },
     },
   },
+
   redirects: {
     '/eventos': '/events',
     '/eventos/[...slug]': '/events/[...slug]',
@@ -34,6 +33,7 @@ export default defineConfig({
     '/privacidad': '/privacy',
     '/terminos': '/terms',
   },
+
   env: {
     schema: {
       BASE_URL: envField.string({ context: 'server', access: 'public', url: true }),
@@ -49,4 +49,6 @@ export default defineConfig({
       PINATA_GATEWAY_URL: envField.string({ context: 'server', access: 'secret' }),
     },
   },
+
+  adapter: netlify(),
 })
