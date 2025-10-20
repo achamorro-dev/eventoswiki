@@ -28,6 +28,34 @@ import { Editor } from '@tiptap/react'
 interface RichEditorToolbarProps {
   editor: Editor | null
 }
+
+function normalizeYoutubeUrl(value: string) {
+  const trimmed = value.trim()
+  if (!trimmed) {
+    return trimmed
+  }
+
+  try {
+    const url = new URL(trimmed)
+    const host = url.hostname.toLowerCase()
+    const isYoutubeHost = host === 'youtube.com' || host === 'www.youtube.com' || host.endsWith('.youtube.com')
+
+    if (isYoutubeHost) {
+      const segments = url.pathname.split('/').filter(Boolean)
+      if (segments[0] === 'live' && segments[1]) {
+        const videoId = segments[1]
+        url.pathname = '/watch'
+        url.searchParams.set('v', videoId)
+        return url.toString()
+      }
+    }
+
+    return trimmed
+  } catch {
+    return trimmed
+  }
+}
+
 export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
   const { editor } = props
   const isMobile = useMediaQuery('(max-width: 768px)')
@@ -59,7 +87,8 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     const existingHref = editor.isActive('youtube') ? editor.getAttributes('youtube').url : ''
     const url = window.prompt('URL', existingHref)
     if (url && url.trim()) {
-      editor.chain().focus().setYoutubeVideo({ src: url.trim() }).run()
+      const normalizedUrl = normalizeYoutubeUrl(url)
+      editor.chain().focus().setYoutubeVideo({ src: normalizedUrl }).run()
     }
   }
 
