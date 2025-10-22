@@ -1,12 +1,14 @@
 ---
-import { Card, CardContent } from '@/ui/card'
+import { Card, CardContent, CardHeader } from '@/ui/card'
 import VisuallyHidden from '../visually-hidden/visually-hidden.astro'
 ---
 
 <Card className="event-card">
-  <CardContent className="px-0">
-    <VisuallyHidden>Cargando evento</VisuallyHidden>
+  <CardHeader className="p-0">
     <div class="event-cover"></div>
+  </CardHeader>
+  <CardContent className="px-4 pt-0 pb-3">
+    <VisuallyHidden>Cargando evento</VisuallyHidden>
     <div class="event-tags"></div>
     <div class="event-title"></div>
     <div class="event-date-location">
@@ -20,13 +22,13 @@ import VisuallyHidden from '../visually-hidden/visually-hidden.astro'
   @reference "../../../../../../styles/global.css";
 
   .event-card {
-    @apply animate-pulse;
+    @apply border-border animate-pulse gap-0 border p-0;
   }
   .event-cover {
-    @apply h-56 w-full rounded-xl bg-gray-200 dark:bg-gray-700;
+    @apply h-56 w-full rounded-t-xl bg-gray-200 dark:bg-gray-700;
   }
   .event-tags {
-    @apply mt-2 h-6 w-28 rounded-xl bg-gray-200 dark:bg-gray-700;
+    @apply h-6 w-28 rounded-xl bg-gray-200 dark:bg-gray-700;
   }
   .event-title {
     @apply mt-2 h-4 w-56 rounded-xl bg-gray-200 dark:bg-gray-700;
