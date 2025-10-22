@@ -10,10 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/db": "0.14.10",
-    "@astrojs/mdx": "4.2.3",
+    "@astrojs/db": "0.18.0",
+    "@astrojs/mdx": "4.3.7",
     "@astrojs/netlify": "^6.5.13",
-    "@astrojs/react": "4.2.3",
+    "@astrojs/react": "4.4.0",
     "@fontsource-variable/inter": "^5.2.5",
     "@hookform/resolvers": "^5.0.1",
     "@lucia-auth/adapter-drizzle": "^1.1.0",
@@ -46,7 +46,7 @@
     "@types/react-dom": "18.2.7",
     "add-to-calendar-button-react": "2.4.1",
     "arctic": "^2.3.4",
-    "astro": "5.6.1",
+    "astro": "5.14.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "2.1.0",
     "compressorjs": "^1.2.1",

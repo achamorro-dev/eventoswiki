@@ -51,8 +51,4 @@ export default defineConfig({
   },
 
   adapter: netlify({}),
-
-  experimental: {
-    session: true,
-  },
 })
