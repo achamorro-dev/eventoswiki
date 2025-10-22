@@ -15,12 +15,30 @@ const province = url.searchParams.get('province') || undefined
 const eventType = (url.searchParams.get('type') as EventType | undefined) || EventType.EVENTS
 
 const selectedDate = date ? Datetime.toDate(date) : Datetime.now()
+const nextMonth = Datetime.add(selectedDate, 1, 'month')
+const previousMonth = Datetime.subtract(selectedDate, 1, 'month')
+
+// Create search params for prefetch links
+const createCalendarSearchParams = (targetDate: Date) => {
+  const params = new URLSearchParams()
+  params.set('date', Datetime.toDateIsoString(targetDate))
+  if (province) params.set('province', province)
+  if (eventType) params.set('type', eventType)
+  return params.toString()
+}
+
+const nextMonthParams = createCalendarSearchParams(nextMonth)
+const previousMonthParams = createCalendarSearchParams(previousMonth)
 ---
 
 <Layout
   title="eventos.wiki - Calendario"
   description="En eventos.wiki encontrarás el calendario de eventos sobre desarrollo y tecnología definitivo. Pasa y echa un vistazo a la gran variedad de eventos y, si falta el tuyo, sólo tienes que pedírnoslo."
 >
+  <!-- Hidden prefetch links for next and previous month -->
+  <a href={`/calendar?${nextMonthParams}`} rel="prefetch" class="hidden"></a>
+  <a href={`/calendar?${previousMonthParams}`} rel="prefetch" class="hidden"></a>
+
   <SectionTitle>Calendario</SectionTitle>
   <SearchFiltersBar>
     <EventTypeFilter client:only value={eventType} />
