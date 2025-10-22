@@ -18,6 +18,8 @@ export enum DateTimeFormat {
   DDD_MMM_YYYY_HH_MM = 'ddd DD MMM YYYY HH:mm',
 }
 
+export type TimeUnit = 'month' | 'year' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond'
+
 export class Datetime {
   static now(): Date {
     return dayjs().locale('es').toDate()
@@ -83,6 +85,14 @@ export class Datetime {
     if (!dateA || !dateB) return false
 
     return dayjs(dateA).isAfter(dateB, 'minute')
+  }
+
+  static add(date: Date, value: number, unit: TimeUnit): Date {
+    return dayjs(date).add(value, unit).toDate()
+  }
+
+  static subtract(date: Date, value: number, unit: TimeUnit): Date {
+    return dayjs(date).subtract(value, unit).toDate()
   }
 
   static isBefore(dateA: ValidDate, dateB: ValidDate): boolean {
