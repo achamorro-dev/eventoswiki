@@ -6,6 +6,7 @@ export const Urls = {
   EVENTS_CREATE: '/events/create',
   EVENTS_WITH_PROVINCE: (province: string) => `${Urls.EVENTS}?province=${province}`,
   MEETUPS: '/meetups/',
+  MEETUPS_CREATE: '/meetups/create',
   MEETUPS_WITH_PROVINCE: (province: string) => `${Urls.MEETUPS}?province=${province}`,
   EVENT: (slug: Slug) => `/events/${slug}`,
   EVENT_EDIT: (slug: Slug) => `/events/${slug}/edit`,

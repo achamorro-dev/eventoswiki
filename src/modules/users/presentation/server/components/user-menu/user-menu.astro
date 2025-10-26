@@ -35,13 +35,19 @@ const user = await UsersLocator.getUserQuery().execute({ id: userId })
       <ThemeModeToggle client:idle />
     </DropdownSection>
 
-    <DropdownSection isLast>
+    <DropdownSection>
       <DropdownItem>
         <Link href={Urls.CREATE_ORGANIZATION} variant="ghost">Crear organización</Link>
       </DropdownItem>
       <DropdownItem>
         <Link href={Urls.EVENTS_CREATE} variant="ghost">Crear evento</Link>
       </DropdownItem>
+      <DropdownItem>
+        <Link href={Urls.MEETUPS_CREATE} variant="ghost">Crear meetup</Link>
+      </DropdownItem>
+    </DropdownSection>
+
+    <DropdownSection isLast>
       <DropdownItem>
         <Link href={Urls.MY_ORGANIZATIONS} variant="ghost">Mis organizaciones</Link>
       </DropdownItem>
