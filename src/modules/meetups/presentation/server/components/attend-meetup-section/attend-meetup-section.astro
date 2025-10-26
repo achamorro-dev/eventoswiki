@@ -1,0 +1,43 @@
+---
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { AttendMeetup } from '@/meetups/presentation/client/components/attend-meetup/attend-meetup'
+import { Link } from '@/ui/components/link'
+import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  meetupId: string
+}
+
+const userId = Astro.locals.user?.id
+const { meetupId } = Astro.props
+
+let hasError = false
+let hasLoggedUser = !!userId
+let isAttending = false
+try {
+  const meetup = await MeetupsLocator.findMeetupQuery().execute({ id: meetupId })
+  isAttending = userId ? meetup.isAttending(userId) : false
+} catch (error) {
+  hasError = true
+}
+---
+
+<section class="bg-muted rounded-lg p-3 border border-border space-y-2 w-max">
+  <h2 class="text-sm font-medium">Registro</h2>
+  {
+    hasError && hasLoggedUser && (
+      <p class="text-sm text-muted-foreground">Se ha producido un error al leer los asistentes del meetup.</p>
+    )
+  }
+  {!hasError && hasLoggedUser && <AttendMeetup client:load meetupId={meetupId} initialAttending={isAttending} />}
+  {
+    !hasLoggedUser && (
+      <>
+        <p class="text-sm text-muted-foreground">Debes estar autenticado para poder asistir a este meetup.</p>
+        <Link href={Urls.LOGIN} variant="outline" size="sm">
+          Iniciar sesión
+        </Link>
+      </>
+    )
+  }
+</section>

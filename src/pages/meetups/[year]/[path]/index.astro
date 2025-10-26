@@ -26,7 +26,7 @@ let content: string = ''
 let isOrganizer = false
 
 try {
-  meetup = await MeetupsLocator.getMeetupQuery().execute({ slug: slug })
+  meetup = await MeetupsLocator.findMeetupBySlugQuery().execute({ slug: slug })
 
   if (meetup && userId) {
     const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })

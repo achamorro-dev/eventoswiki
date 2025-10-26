@@ -29,7 +29,7 @@ let provinces: Province[] = []
 let canEdit = false
 
 try {
-  meetup = await MeetupsLocator.getMeetupQuery().execute({ slug: slug })
+  meetup = await MeetupsLocator.findMeetupBySlugQuery().execute({ slug: slug })
   provinces = await ProvincesLocator.getProvincesQuery().execute()
 
   if (!meetup.hasOrganization()) {

@@ -1,14 +1,23 @@
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Meetup } from '../../domain/meetup'
+import type { AstroDbMeetupAttendeeDto } from '../dtos/astro-db-meetup-attendee'
 import type { AstroDbMeetupProvinceDto } from '../dtos/astro-db-meetup-province.dto'
 import type { AstroDbMeetupDto } from '../dtos/astro-db-meetup.dto'
 
 export class AstroDbMeetupMapper {
   static toDomainList(dtos: { Meetup: AstroDbMeetupDto; Province: AstroDbMeetupProvinceDto | null }[]): Meetup[] {
-    return dtos.map(({ Meetup, Province }) => this.toDomain(Meetup, Province))
+    return dtos.map(({ Meetup, Province }) =>
+      this.toDomain({ meetupDto: Meetup, provinceDto: Province, attendees: [] }),
+    )
   }
 
-  static toDomain(meetupDto: AstroDbMeetupDto, provinceDto: AstroDbMeetupProvinceDto | null): Meetup {
+  static toDomain(dto: {
+    meetupDto: AstroDbMeetupDto
+    provinceDto: AstroDbMeetupProvinceDto | null
+    attendees: AstroDbMeetupAttendeeDto[]
+  }): Meetup {
+    const { meetupDto, provinceDto, attendees = [] } = dto
+
     return Meetup.fromPrimitives({
       id: meetupDto.id ?? '',
       slug: meetupDto.slug,
@@ -34,6 +43,7 @@ export class AstroDbMeetupMapper {
       tagColor: meetupDto.tagColor,
       content: meetupDto.content,
       organizationId: meetupDto.organizationId || undefined,
+      attendees: attendees.map(attendee => attendee.userId),
     })
   }
 }

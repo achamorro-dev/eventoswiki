@@ -2,8 +2,9 @@ import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { AttendMeetupCommand } from '../application/attend-meetup.command'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
 import { DeleteMeetupCommand } from '../application/delete-meetup.command'
+import { FindMeetupBySlugQuery } from '../application/find-meetup-by-slug.query'
+import { FindMeetupQuery } from '../application/find-meetup.query'
 import { FindMeetupsQuery } from '../application/find-meetups.query'
-import { GetMeetupQuery } from '../application/get-meetup.query'
 import { GetMeetupsQuery } from '../application/get-meetups.query'
 import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
@@ -21,9 +22,14 @@ export class MeetupsLocator {
     return new GetPastMeetupsQuery(MeetupsLocator.createMeetupsRepository())
   }
 
-  static getMeetupQuery = (): GetMeetupQuery => {
-    return new GetMeetupQuery(MeetupsLocator.createMeetupsRepository())
+  static findMeetupBySlugQuery = (): FindMeetupBySlugQuery => {
+    return new FindMeetupBySlugQuery(MeetupsLocator.createMeetupsRepository())
   }
+
+  static findMeetupQuery = (): FindMeetupQuery => {
+    return new FindMeetupQuery(MeetupsLocator.createMeetupsRepository())
+  }
+
   static getMeetupsQuery = (): GetMeetupsQuery => {
     return new GetMeetupsQuery(MeetupsLocator.createMeetupsRepository())
   }

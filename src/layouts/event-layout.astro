@@ -14,6 +14,7 @@ import EventTags from '@/ui/components/event-tags/event-tags.astro'
 import { EventLocation } from '@/ui/components/event-location/event-location'
 import { DeleteEventModal } from '@/events/presentation/client/components/delete-event-modal/delete-event-modal'
 import { DeleteMeetupModal } from '@/meetups/presentation/client/components/delete-meetup-modal/delete-meetup-modal'
+import AttendMeetupSection from '@/meetups/presentation/server/components/attend-meetup-section/attend-meetup-section.astro'
 
 interface Props {
   event: Event | Meetup
@@ -108,6 +109,7 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         </h1>
         <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
         <EventLocation location={location} client:load transition:animate="fade" />
+        {isMeetup && !isOrganizer && <AttendMeetupSection meetupId={event.id.value} />}
       </div>
     </div>
   </header>

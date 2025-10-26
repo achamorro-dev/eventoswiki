@@ -62,7 +62,13 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       throw new MeetupNotFound(id.value)
     }
 
-    return AstroDbMeetupMapper.toDomain(result.at(0)!.Meetup, result.at(0)!.Province)
+    const attendees = await db.select().from(MeetupAttendee).where(eq(MeetupAttendee.meetupId, id.value))
+
+    return AstroDbMeetupMapper.toDomain({
+      meetupDto: result.at(0)!.Meetup,
+      provinceDto: result.at(0)!.Province,
+      attendees: attendees.map(attendee => ({ meetupId: attendee.meetupId, userId: attendee.userId })),
+    })
   }
 
   async findBySlug(slug: string): Promise<MeetupEntity> {
@@ -77,7 +83,11 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       throw new MeetupNotFound()
     }
 
-    return AstroDbMeetupMapper.toDomain(result.at(0)!.Meetup, result.at(0)!.Province)
+    return AstroDbMeetupMapper.toDomain({
+      meetupDto: result.at(0)!.Meetup,
+      provinceDto: result.at(0)!.Province,
+      attendees: [],
+    })
   }
 
   async findAll(): Promise<MeetupEntity[]> {
