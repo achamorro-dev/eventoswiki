@@ -61,7 +61,13 @@ export function DateTimePicker(props: DateTimePickerProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <Calendar mode="single" selected={value} onSelect={(d: Date | undefined) => handleSelect(d)} initialFocus />
+        <Calendar
+          mode="single"
+          selected={value}
+          defaultMonth={value}
+          onSelect={(d: Date | undefined) => handleSelect(d)}
+          initialFocus
+        />
         <div className="border-border border-t p-3">
           <TimePicker setDate={onChange} date={value} />
         </div>
