@@ -59,6 +59,7 @@ export const RichEditor = (props: RichEditorProps) => {
       {isDesktop ? <RichEditorToolbar editor={editor} /> : null}
       <EditorContent
         editor={editor}
+        className="content-styles"
         // slotBefore={isDesktop ? <RichEditorToolbar /> : null}
         // slotAfter={!isDesktop ? <RichEditorToolbar /> : null}
         // extensions={extensions}

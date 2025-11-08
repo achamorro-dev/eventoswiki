@@ -14,11 +14,11 @@ import {
   TextAlignRight,
   TextBold,
   TextHFour,
-  TextHOne,
   TextHThree,
   TextHTwo,
   TextItalic,
   TextStrikethrough,
+  TextUnderline,
   Youtube,
 } from '@/ui/icons'
 import { Separator } from '@/ui/separator'
@@ -145,27 +145,19 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
           variant="default"
           aria-label="Underline"
           pressed={editor.isActive('underline')}
-          onPressedChange={() => editor.chain().focus().toggleStrike().run()}
-          disabled={!editor.can().chain().focus().toggleStrike().run()}
+          onPressedChange={() => editor.chain().focus().toggleUnderline().run()}
+          disabled={!editor.can().chain().focus().toggleUnderline().run()}
         >
-          <TextStrikethrough />
+          <TextUnderline />
         </Toggle>
         <Toggle
           variant="default"
-          aria-label="Strike"
+          aria-label=""
           pressed={editor.isActive('strike')}
           onPressedChange={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
         >
           <TextStrikethrough />
-        </Toggle>
-        <Toggle
-          variant="default"
-          aria-label="Heading 1"
-          onPressedChange={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          pressed={editor.isActive('heading', { level: 1 })}
-        >
-          <TextHOne />
         </Toggle>
         <Toggle
           variant="default"

@@ -125,3 +125,84 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .content-styles {
+    p,
+    span {
+      @apply text-lg font-normal text-gray-900 dark:text-gray-50;
+    }
+
+    small {
+      @apply text-sm text-gray-900 dark:text-gray-50;
+    }
+
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply !font-bold;
+    }
+
+    h2 {
+      @apply py-4 !text-3xl text-slate-900 dark:text-gray-200;
+    }
+
+    h3 {
+      @apply py-3 !text-2xl text-slate-900 dark:text-gray-200;
+    }
+
+    p {
+      @apply py-2;
+    }
+
+    table {
+      @apply mb-10;
+    }
+
+    table tr {
+      @apply border-b dark:border-b-gray-50;
+    }
+
+    table td {
+      @apply p-4 text-gray-900 dark:text-gray-50;
+    }
+
+    table th {
+      @apply p-4 !text-gray-900 dark:!text-gray-50;
+    }
+
+    ol,
+    ul {
+      @apply p-4 font-sans text-base;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ul li {
+      @apply !text-lg text-slate-900 dark:text-gray-200;
+    }
+    ul li:not(:has(> p)) {
+      @apply mb-2;
+    }
+
+    ol li {
+      @apply mb-2 !text-lg text-slate-900 dark:text-gray-200;
+    }
+
+    iframe {
+      @apply w-full;
+    }
+
+    a {
+      @apply underline;
+    }
+  }
+}
