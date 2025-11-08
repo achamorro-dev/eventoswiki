@@ -1,15 +1,20 @@
 import { Validator } from './validator'
 
-const URL_REGEX = /^https?:\/\/([\da-z.-]+)\.([a-z.]{2,})([/\w .-]*)*(\/?|\?[^\s]*)?$/
-
 export class UrlValidator extends Validator<string> {
   constructor(value: string) {
     super(value)
   }
 
   validate(): string | null {
-    if (!URL_REGEX.test(this.value)) return 'La URL no es válida'
-
-    return null
+    try {
+      const url = new URL(this.value)
+      // Solo permitir http y https
+      if (!['http:', 'https:'].includes(url.protocol)) {
+        return 'La URL no es válida'
+      }
+      return null
+    } catch {
+      return 'La URL no es válida'
+    }
   }
 }
