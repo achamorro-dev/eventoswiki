@@ -1,3 +1,4 @@
+import { MeetupType } from '@/meetups/domain/meetup-type'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Meetup } from '../../domain/meetup'
 import type { AstroDbMeetupAttendeeDto } from '../dtos/astro-db-meetup-attendee'
@@ -43,6 +44,7 @@ export class AstroDbMeetupMapper {
       tagColor: meetupDto.tagColor,
       content: meetupDto.content,
       organizationId: meetupDto.organizationId || undefined,
+      type: MeetupType.of(meetupDto.type).value,
       attendees: attendees.map(attendee => attendee.userId),
     })
   }

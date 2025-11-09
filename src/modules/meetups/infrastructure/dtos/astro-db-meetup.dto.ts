@@ -6,6 +6,7 @@ export interface AstroDbMeetupDto {
   startsAt: Date
   endsAt: Date
   image: string
+  type: string
   location: string | null
   web: string | null
   twitter: string | null

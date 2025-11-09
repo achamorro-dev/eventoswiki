@@ -8,6 +8,7 @@ import { MeetupShortDescriptionValidator } from '@/meetups/domain/validators/mee
 import { MeetupSlugValidator } from '@/meetups/domain/validators/meetup-slug.validator'
 import { MeetupStartDateValidator } from '@/meetups/domain/validators/meetup-start-date.validator'
 import { MeetupTitleValidator } from '@/meetups/domain/validators/meetup-title.validator'
+import { MeetupTypeValidator } from '@/meetups/domain/validators/meetup-type.validator'
 import { DateFormField } from '@/shared/presentation/forms/date-form-field'
 import { NotRequiredArrayFormField } from '@/shared/presentation/forms/not-required-array-form-field'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
@@ -21,6 +22,9 @@ export const meetupFormSchema = z
     shortDescription: StringFormField(MeetupShortDescriptionValidator),
     image: StringFormField(MeetupImageValidator, { requiredError: 'Es obligatorio adjuntar una imagen al meetup' }),
     content: StringFormField(MeetupContentValidator),
+    type: StringFormField(MeetupTypeValidator, {
+      requiredError: 'Es obligatorio seleccionar un tipo de meetup',
+    }),
     location: NotRequiredStringFormField(MeetupLocationValidator),
     startsAt: DateFormField(MeetupStartDateValidator),
     endsAt: DateFormField(MeetupEndDateValidator),

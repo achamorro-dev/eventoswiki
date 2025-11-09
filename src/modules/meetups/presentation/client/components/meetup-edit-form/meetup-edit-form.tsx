@@ -2,6 +2,7 @@
 
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import type { Meetup } from '@/meetups/domain/meetup'
+import { MeetupTypes } from '@/meetups/domain/meetup-type'
 import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
@@ -20,13 +21,14 @@ import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { z } from 'astro/zod'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
 import { useEffect, useRef, useState } from 'react'
+import type { Control } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
+import { MeetupTypeSelect } from '../meetup-type-select/meetup-type-select'
 import { meetupFormSchema, type MeetupFormSchema } from './meetup-form-schema'
 
 interface Props {
@@ -50,6 +52,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
       startsAt: meetup?.startsAt ? Datetime.toDate(meetup?.startsAt) : undefined,
       endsAt: meetup?.endsAt ? Datetime.toDate(meetup?.endsAt) : undefined,
       image: meetup?.image,
+      type: meetup?.type ?? MeetupTypes.InPerson,
       location: new ProvinceCollection(provinces).slugWithName(meetup?.location ?? undefined),
       web: meetup?.web,
       twitter: meetup?.twitter || organization?.twitter,
@@ -66,20 +69,38 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
       tags: meetup?.tags ?? [],
       tagColor: meetup?.tagColor ?? '',
     },
-    resolver: zodResolver(meetupFormSchema),
+    // @ts-expect-error - Type instantiation is excessively deep due to complex Zod schema inference
+    resolver: zodResolver(meetupFormSchema) as any,
   })
+
+  const control = form.control as Control<MeetupFormSchema>
 
   const title = form.watch('title')
   const startsAt = form.watch('startsAt')
+  const type = form.watch('type')
 
   useEffect(() => {
-    if (title && startsAt) {
-      const year = startsAt.getFullYear()
-      form.setValue('slug', `${year}/${slugify(title, { lower: true, remove: /[:,#]/g })}`)
+    updateSlug()
+
+    function updateSlug() {
+      if (title && startsAt) {
+        const year = startsAt.getFullYear()
+        form.setValue('slug', `${year}/${slugify(title, { lower: true, remove: /[:,#]/g })}`)
+      }
     }
   }, [title, startsAt])
 
-  const onSubmit = async (values: z.infer<typeof meetupFormSchema>) => {
+  useEffect(() => {
+    emptyLocation()
+
+    function emptyLocation() {
+      if (type === MeetupTypes.Online) {
+        form.setValue('location', undefined)
+      }
+    }
+  }, [type])
+
+  const onSubmit = async (values: MeetupFormSchema) => {
     const meetupValues = {
       ...values,
       startsAt: values.startsAt.toISOString(),
@@ -139,7 +160,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
             <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
               <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
                 <FormField
-                  control={form.control}
+                  control={control}
                   name="image"
                   render={({ field }) => (
                     <>
@@ -179,7 +200,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
               <div className="w-full flex-1 space-y-4">
                 <div className="grid gap-4">
                   <FormField
-                    control={form.control}
+                    control={control}
                     name="title"
                     render={({ field }) => (
                       <FormItem>
@@ -192,7 +213,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                     )}
                   />
                   <FormField
-                    control={form.control}
+                    control={control}
                     name="shortDescription"
                     render={({ field }) => (
                       <FormItem>
@@ -211,7 +232,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                   />
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                     <FormField
-                      control={form.control}
+                      control={control}
                       name="startsAt"
                       render={({ field }) => (
                         <FormItem>
@@ -229,7 +250,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                     />
 
                     <FormField
-                      control={form.control}
+                      control={control}
                       name="endsAt"
                       render={({ field }) => (
                         <FormItem>
@@ -250,31 +271,50 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                 </div>
                 <div className="grid gap-2">
                   <FormField
-                    control={form.control}
-                    name="location"
+                    control={control}
+                    name="type"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="location" className="flex items-center gap-1">
-                          Localización
+                        <FormLabel htmlFor="type" className="flex items-center gap-1">
+                          Tipo
                         </FormLabel>
                         <FormControl>
-                          <ProvinceSelect
-                            id="location"
-                            placeholder="Provincia"
-                            provinces={provinces}
-                            className="w-full"
-                            {...field}
-                          />
+                          <MeetupTypeSelect id="type" placeholder="Tipo de meetup" className="w-full" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
+                {(type === MeetupTypes.InPerson || type === MeetupTypes.Hybrid) && (
+                  <div className="grid gap-2">
+                    <FormField
+                      control={control}
+                      name="location"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="location" className="flex items-center gap-1">
+                            Localización
+                          </FormLabel>
+                          <FormControl>
+                            <ProvinceSelect
+                              id="location"
+                              placeholder="Provincia"
+                              provinces={provinces}
+                              className="w-full"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <FormField
-                    control={form.control}
+                    control={control}
                     name="tags"
                     render={() => (
                       <FormItem>
@@ -288,7 +328,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                   />
 
                   <FormField
-                    control={form.control}
+                    control={control}
                     name="tagColor"
                     render={({ field }) => (
                       <FormItem>

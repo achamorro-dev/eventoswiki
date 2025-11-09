@@ -13,11 +13,19 @@ export default async function seed() {
 
   await db.delete(Event).run()
   for (const event of events) {
-    await db.insert(Event).values(event as any)
+    try {
+      await db.insert(Event).values(event as any)
+    } catch (error) {
+      console.error(`Error inserting event: ${JSON.stringify(event)}`, error)
+    }
   }
 
   await db.delete(Meetup).run()
   for (const meetup of meetups) {
-    await db.insert(Meetup).values(meetup as any)
+    try {
+      await db.insert(Meetup).values(meetup as any)
+    } catch (error) {
+      console.error(`Error inserting meetup: ${JSON.stringify(meetup)}`, error)
+    }
   }
 }

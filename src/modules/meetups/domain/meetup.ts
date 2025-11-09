@@ -6,6 +6,7 @@ import { InvalidMeetupError } from './errors/invalid-meetup.error'
 import { MeetupAttendeeDoesNotExist } from './errors/meetup-attendee-does-not-exist.error'
 import { MeetupAttendeeId } from './meetup-attendee-id'
 import { MeetupId } from './meetup-id'
+import { MeetupType } from './meetup-type'
 import { MeetupValidator } from './validators/meetup.validator'
 
 export class Meetup implements MeetupProps {
@@ -16,6 +17,7 @@ export class Meetup implements MeetupProps {
   startsAt: Date
   endsAt: Date
   image: URL
+  type: MeetupType
   location: string | null
   web?: string
   twitter?: string
@@ -43,6 +45,7 @@ export class Meetup implements MeetupProps {
     this.startsAt = props.startsAt
     this.endsAt = props.endsAt
     this.image = props.image
+    this.type = props.type
     this.location = props.location
     this.web = props.web
     this.twitter = props.twitter
@@ -85,6 +88,7 @@ export class Meetup implements MeetupProps {
       startsAt: Datetime.toDate(primitives.startsAt),
       endsAt: Datetime.toDate(primitives.endsAt),
       image: new URL(primitives.image),
+      type: MeetupType.of(primitives.type),
       location: primitives.location || null,
       web: primitives.web,
       twitter: primitives.twitter,
@@ -113,6 +117,7 @@ export class Meetup implements MeetupProps {
       image: this.image.toString(),
       startsAt: Datetime.toDateTimeIsoString(this.startsAt),
       endsAt: Datetime.toDateTimeIsoString(this.endsAt),
+      type: this.type.value,
       attendees: this.attendees?.map(attendee => attendee.value),
     }
   }
@@ -153,6 +158,7 @@ export class Meetup implements MeetupProps {
     this.tags = data.tags ?? this.tags
     this.tagColor = data.tagColor ?? this.tagColor
     this.content = data.content ?? this.content
+    this.type = !!data.type ? MeetupType.of(data.type) : this.type
     this.slug = data.slug ?? this.slug
   }
 
@@ -217,6 +223,7 @@ export interface MeetupProps {
   endsAt: Date
   image: URL
   location: string | null
+  type: MeetupType
   web?: string
   twitter?: string
   linkedin?: string

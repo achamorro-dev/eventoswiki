@@ -12,6 +12,7 @@ interface MeetupDataPayload {
   startsAt: Date
   endsAt: Date
   image: string
+  type: string
   location?: string | undefined
   web?: string | undefined
   twitter?: string | undefined
@@ -38,6 +39,7 @@ export const saveMeetupAction = defineAction({
     startsAt: z.string().transform(date => Datetime.toDate(date)),
     endsAt: z.string().transform(date => Datetime.toDate(date)),
     image: z.string(),
+    type: z.string(),
     location: z.string().optional(),
     web: z.string().optional(),
     twitter: z.string().optional(),

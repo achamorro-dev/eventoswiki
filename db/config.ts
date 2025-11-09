@@ -1,4 +1,5 @@
 import { NOW, column, defineDb, defineTable } from 'astro:db'
+import { MeetupTypes } from '../src/modules/meetups/domain/meetup-type'
 
 export const Event = defineTable({
   columns: {
@@ -40,6 +41,9 @@ export const Meetup = defineTable({
     startsAt: column.date(),
     endsAt: column.date(),
     image: column.text(),
+    type: column.text({
+      default: MeetupTypes.InPerson,
+    }),
     location: column.text({ optional: true }),
     web: column.text({ optional: true }),
     twitter: column.text({ optional: true }),

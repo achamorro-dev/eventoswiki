@@ -10,6 +10,7 @@ import { MeetupPeriodValidator } from './meetup-period.validator'
 import { MeetupShortDescriptionValidator } from './meetup-short-description.validator'
 import { MeetupStartDateValidator } from './meetup-start-date.validator'
 import { MeetupTitleValidator } from './meetup-title.validator'
+import { MeetupTypeValidator } from './meetup-type.validator'
 
 const socialKeys = [
   'twitter',
@@ -38,6 +39,7 @@ export class MeetupValidator extends Validator<MeetupData> {
       startsAt: Datetime.toDate(this.value.startsAt),
       endsAt: Datetime.toDate(this.value.endsAt),
     })
+    const typeValidator = new MeetupTypeValidator(this.value.type)
 
     const socialValidators = socialKeys
       .map(key => {
@@ -55,6 +57,7 @@ export class MeetupValidator extends Validator<MeetupData> {
       startsAtValidator.validate() ||
       endsAtValidator.validate() ||
       periodValidator.validate() ||
+      typeValidator.validate() ||
       (socialValidators.length > 0 ? 'Al menos un enlace de redes sociales es erróneo' : null)
     )
   }
