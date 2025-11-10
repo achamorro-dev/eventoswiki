@@ -48,6 +48,8 @@ export class MeetupValidator extends Validator<MeetupData> {
       })
       .filter(Boolean)
 
+    const streamingUrlValidator = new MeetupLinkValidator(this.value.streamingUrl ?? null)
+
     return (
       nameValidator.validate() ||
       shortDescriptionValidator.validate() ||
@@ -58,6 +60,7 @@ export class MeetupValidator extends Validator<MeetupData> {
       endsAtValidator.validate() ||
       periodValidator.validate() ||
       typeValidator.validate() ||
+      streamingUrlValidator.validate() ||
       (socialValidators.length > 0 ? 'Al menos un enlace de redes sociales es erróneo' : null)
     )
   }

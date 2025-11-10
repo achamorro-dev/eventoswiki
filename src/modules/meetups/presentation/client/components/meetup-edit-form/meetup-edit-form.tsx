@@ -66,6 +66,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
       telegram: meetup?.telegram || organization?.telegram,
       whatsapp: meetup?.whatsapp || organization?.whatsapp,
       tiktok: meetup?.tiktok || organization?.tiktok,
+      streamingUrl: meetup?.streamingUrl,
       tags: meetup?.tags ?? [],
       tagColor: meetup?.tagColor ?? '',
     },
@@ -92,10 +93,17 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
 
   useEffect(() => {
     emptyLocation()
+    emptyStreamingUrl()
 
     function emptyLocation() {
       if (type === MeetupTypes.Online) {
         form.setValue('location', undefined)
+      }
+    }
+
+    function emptyStreamingUrl() {
+      if (type === MeetupTypes.InPerson) {
+        form.setValue('streamingUrl', undefined)
       }
     }
   }, [type])
@@ -301,6 +309,31 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                               id="location"
                               placeholder="Provincia"
                               provinces={provinces}
+                              className="w-full"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
+                {(type === MeetupTypes.Online || type === MeetupTypes.Hybrid) && (
+                  <div className="grid gap-2">
+                    <FormField
+                      control={control}
+                      name="streamingUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="streamingUrl" className="flex items-center gap-1">
+                            URL del streaming
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              id="streamingUrl"
+                              type="url"
+                              placeholder="https://..."
                               className="w-full"
                               {...field}
                             />

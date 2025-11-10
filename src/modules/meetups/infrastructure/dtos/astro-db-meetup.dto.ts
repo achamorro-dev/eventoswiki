@@ -20,6 +20,7 @@ export interface AstroDbMeetupDto {
   whatsapp: string | null
   discord: string | null
   tiktok: string | null
+  streamingUrl: string | null
   tags: string
   tagColor: string
   createdAt: Date

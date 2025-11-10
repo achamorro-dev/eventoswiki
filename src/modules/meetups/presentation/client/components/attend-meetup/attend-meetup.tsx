@@ -3,6 +3,7 @@ import { useState, type FC } from 'react'
 
 import { Loader } from '@/ui/icons'
 import { actions } from 'astro:actions'
+import { navigate } from 'astro:transitions/client'
 import { toast } from 'sonner'
 
 interface Props {
@@ -31,11 +32,17 @@ export const AttendMeetup: FC<Props> = ({ meetupId, initialAttending }) => {
         return
       }
       setIsAttending(true)
+      refreshMeetup()
     } catch (error) {
       toast.error('Error al asistir al meetup')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const refreshMeetup = () => {
+    const currentUrl = new URL(window.location.href)
+    navigate(currentUrl.pathname + currentUrl.search, { history: 'replace' })
   }
 
   const unattendMeetup = async () => {
@@ -47,6 +54,7 @@ export const AttendMeetup: FC<Props> = ({ meetupId, initialAttending }) => {
         return
       }
       setIsAttending(false)
+      refreshMeetup()
     } catch (error) {
       toast.error('Error al cancelar la asistencia al meetup')
     } finally {

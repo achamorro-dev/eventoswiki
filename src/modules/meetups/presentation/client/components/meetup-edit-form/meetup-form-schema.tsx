@@ -40,6 +40,7 @@ export const meetupFormSchema = z
     twitch: NotRequiredStringFormField(MeetupLinkValidator),
     github: NotRequiredStringFormField(MeetupLinkValidator),
     linkedin: NotRequiredStringFormField(MeetupLinkValidator),
+    streamingUrl: NotRequiredStringFormField(MeetupLinkValidator),
     tags: NotRequiredArrayFormField(z.string()),
     tagColor: NotRequiredStringFormField(),
   })

@@ -26,6 +26,7 @@ interface MeetupDataPayload {
   whatsapp?: string | undefined
   discord?: string | undefined
   tiktok?: string | undefined
+  streamingUrl?: string | undefined
   tags: string[]
   tagColor: string
 }
@@ -53,6 +54,7 @@ export const saveMeetupAction = defineAction({
     whatsapp: z.string().optional(),
     discord: z.string().optional(),
     tiktok: z.string().optional(),
+    streamingUrl: z.string().optional(),
     organizationId: z.string(),
     meetupId: z.string().optional(),
     tags: z.array(z.string()).default([]),

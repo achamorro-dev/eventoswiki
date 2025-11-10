@@ -33,7 +33,9 @@ export {
   PiMicrophoneStage as Microphone,
   PiMoonBold as MoonBold,
   PiPencilSimple as Pencil,
+  PiBroadcast as Broadcast,
   PiQuotesBold as Quotes,
+  PiMagnifyingGlass as Search,
   PiSmileyStickerThin as SmileyStickerThin,
   PiSunBold as SunBold,
   PiTelegramLogo as Telegram,
@@ -60,5 +62,4 @@ export {
   PiXBold as XBold,
   PiXLogoBold as XLogo,
   PiYoutubeLogo as Youtube,
-  PiMagnifyingGlass as Search,
 } from 'react-icons/pi'

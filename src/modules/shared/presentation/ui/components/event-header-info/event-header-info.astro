@@ -1,0 +1,64 @@
+---
+import { EventsLocator } from '@/events/di/events.locator'
+import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { Meetup } from '@/meetups/domain/meetup'
+import AttendMeetupSection from '@/meetups/presentation/server/components/attend-meetup-section/attend-meetup-section.astro'
+import { Event } from '@/modules/events/domain/event'
+import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
+import { EventLocation } from '@/ui/components/event-location/event-location'
+import { EventStreaming } from '@/ui/components/event-streaming/event-streaming'
+import EventTags from '@/ui/components/event-tags/event-tags.astro'
+
+interface Props {
+  id: string
+  type: 'event' | 'meetup'
+  isOrganizer: boolean
+}
+
+const { id, type, isOrganizer } = Astro.props
+const userId = Astro.locals.user?.id
+
+let event: Event | Meetup | null = null
+let isAttending = false
+try {
+  if (type === 'event') {
+    event = await EventsLocator.findEventQuery().execute({ id })
+  } else {
+    event = await MeetupsLocator.findMeetupQuery().execute({ id })
+    if (event instanceof Meetup && userId) {
+      isAttending = event.isAttending(userId)
+    }
+  }
+} catch (error) {
+  // Handle error - event not found
+  event = null
+}
+
+if (!event) {
+  return null
+}
+
+const { title, tags, tagColor, startsAt, endsAt, location } = event
+const streamingUrl = event instanceof Meetup ? event.streamingUrl : undefined
+const shouldShowStreamingLink = isOrganizer || isAttending
+---
+
+<div class="w-full lg:px-6 max-w-5xl xl:px-0">
+  <EventTags tags={tags} tagColor={tagColor} />
+  <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
+    {title}
+  </h1>
+  <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
+  <EventLocation location={location} client:load transition:animate="fade" />
+  <EventStreaming
+    streamingUrl={streamingUrl}
+    shouldShowLink={shouldShowStreamingLink}
+    client:load
+    transition:animate="fade"
+  />
+  {
+    event instanceof Meetup && !isOrganizer && (
+      <AttendMeetupSection meetupId={event.id.value} isAttending={isAttending} />
+    )
+  }
+</div>

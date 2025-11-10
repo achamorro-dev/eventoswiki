@@ -2,6 +2,7 @@ import { GetEventQuery } from '@/events/application/get-event.query.ts'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { CreateEventCommand } from '../application/create-event.command'
 import { DeleteEventCommand } from '../application/delete-event.command'
+import { FindEventQuery } from '../application/find-event.query'
 import { FindEventsQuery } from '../application/find-events.query'
 import { GetEventsQuery } from '../application/get-events.query'
 import { GetNextEventsQuery } from '../application/get-next-events.query'
@@ -21,6 +22,10 @@ export class EventsLocator {
 
   static getEventQuery = (): GetEventQuery => {
     return new GetEventQuery(EventsLocator.createEventsRepository())
+  }
+
+  static findEventQuery = (): FindEventQuery => {
+    return new FindEventQuery(EventsLocator.createEventsRepository())
   }
 
   static getEventsQuery = (): GetEventsQuery => {

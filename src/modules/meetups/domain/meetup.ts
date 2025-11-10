@@ -31,6 +31,7 @@ export class Meetup implements MeetupProps {
   whatsapp?: string
   discord?: string
   tiktok?: string
+  streamingUrl?: string
   tags: string[]
   tagColor: string
   content: string
@@ -59,6 +60,7 @@ export class Meetup implements MeetupProps {
     this.whatsapp = props.whatsapp
     this.discord = props.discord
     this.tiktok = props.tiktok
+    this.streamingUrl = props.streamingUrl
     this.tags = props.tags
     this.tagColor = props.tagColor
     this.content = props.content
@@ -102,6 +104,7 @@ export class Meetup implements MeetupProps {
       whatsapp: primitives.whatsapp,
       discord: primitives.discord,
       tiktok: primitives.tiktok,
+      streamingUrl: primitives.streamingUrl,
       tags: primitives.tags,
       tagColor: primitives.tagColor,
       content: primitives.content,
@@ -155,6 +158,7 @@ export class Meetup implements MeetupProps {
     this.whatsapp = data.whatsapp ?? this.whatsapp
     this.discord = data.discord ?? this.discord
     this.tiktok = data.tiktok ?? this.tiktok
+    this.streamingUrl = data.streamingUrl ?? this.streamingUrl
     this.tags = data.tags ?? this.tags
     this.tagColor = data.tagColor ?? this.tagColor
     this.content = data.content ?? this.content
@@ -236,6 +240,7 @@ export interface MeetupProps {
   whatsapp?: string
   discord?: string
   tiktok?: string
+  streamingUrl?: string
   tags: string[]
   tagColor: string
   content: string

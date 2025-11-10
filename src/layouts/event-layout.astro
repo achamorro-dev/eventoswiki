@@ -3,18 +3,15 @@ import { Event } from '@/modules/events/domain/event'
 import BaseLayout from './base-layout.astro'
 import AddToCalendarButton from '@/ui/components/add-to-calendar-button/add-to-calendar-button.astro'
 import Container from '@/ui/components/container/container.astro'
-import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
-import { Pencil } from '@/ui/icons'
+import { Link as LinkIcon, Pencil } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 import { Meetup } from '@/meetups/domain/meetup'
 import { SocialRow } from '@/ui/components/social-row/social-row'
 import { Link } from '@/ui/components/link'
 import OrganizedBy from '@/organizations/presentation/server/components/organized-by/organized-by.astro'
-import EventTags from '@/ui/components/event-tags/event-tags.astro'
-import { EventLocation } from '@/ui/components/event-location/event-location'
 import { DeleteEventModal } from '@/events/presentation/client/components/delete-event-modal/delete-event-modal'
 import { DeleteMeetupModal } from '@/meetups/presentation/client/components/delete-meetup-modal/delete-meetup-modal'
-import AttendMeetupSection from '@/meetups/presentation/server/components/attend-meetup-section/attend-meetup-section.astro'
+import EventHeaderInfo from '@/ui/components/event-header-info/event-header-info.astro'
 
 interface Props {
   event: Event | Meetup
@@ -45,8 +42,8 @@ const {
   location,
   organizationId,
 } = event
-const isMeetup = event instanceof Meetup
-const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
+const streamingUrl = event instanceof Meetup ? event.streamingUrl : undefined
+const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
 ---
 
 <BaseLayout
@@ -73,11 +70,11 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         {
           isOrganizer && (
             <div slot="actions" class="flex flex-row gap-2">
-              <Link variant="secondary" href={isMeetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
+              <Link variant="secondary" href={event instanceof Meetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
                 <Pencil />
                 Editar
               </Link>
-              {isMeetup ? (
+              {event instanceof Meetup ? (
                 <DeleteMeetupModal client:load meetupId={event.id.value} />
               ) : (
                 <DeleteEventModal client:load eventId={event.id.value} />
@@ -102,15 +99,11 @@ const url = isMeetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
       />
     </div>
     <div>
-      <div class="w-full lg:px-6 max-w-5xl xl:px-0">
-        <EventTags tags={tags} tagColor={tagColor} />
-        <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
-          {title}
-        </h1>
-        <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
-        <EventLocation location={location} client:load transition:animate="fade" />
-        {isMeetup && !isOrganizer && <AttendMeetupSection meetupId={event.id.value} />}
-      </div>
+      <EventHeaderInfo
+        id={event.id.value}
+        type={event instanceof Meetup ? 'meetup' : 'event'}
+        isOrganizer={isOrganizer}
+      />
     </div>
   </header>
   <main class="lg:mt-4">
