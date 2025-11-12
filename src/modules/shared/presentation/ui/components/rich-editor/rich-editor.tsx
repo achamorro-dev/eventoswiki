@@ -57,17 +57,7 @@ export const RichEditor = (props: RichEditorProps) => {
   return (
     <div className="border-input w-full rounded border">
       {isDesktop ? <RichEditorToolbar editor={editor} /> : null}
-      <EditorContent
-        editor={editor}
-        className="content-styles"
-        // slotBefore={isDesktop ? <RichEditorToolbar /> : null}
-        // slotAfter={!isDesktop ? <RichEditorToolbar /> : null}
-        // extensions={extensions}
-        // content={content}
-        // onUpdate={({ editor }) => {
-        //   onContentChange(editor.getHTML())
-        // }}
-      ></EditorContent>
+      <EditorContent editor={editor} className="content-styles"></EditorContent>
       {!isDesktop ? <RichEditorToolbar editor={editor} /> : null}
     </div>
   )
