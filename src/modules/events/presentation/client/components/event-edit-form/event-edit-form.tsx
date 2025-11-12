@@ -2,6 +2,7 @@
 
 import type { Event } from '@/events/domain/event'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
+import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
 import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
@@ -38,6 +39,7 @@ interface Props {
 export const EventEditForm = ({ provinces, organizationId, event, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
+  const uploadImageForEditor = useUploadImageForEditor({ maxWidth: 1920 })
   const [isSaving, setIsSaving] = useState(false)
 
   const form = useForm<EventFormSchema>({
@@ -331,7 +333,11 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <RichEditor content={field.value} onContentChange={field.onChange} />
+                    <RichEditor
+                      content={field.value}
+                      onContentChange={field.onChange}
+                      onUploadImage={uploadImageForEditor}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

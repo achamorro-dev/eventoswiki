@@ -5,8 +5,10 @@ import {
   ArrowArcRight,
   BulletList,
   Code,
+  Image,
   Link,
   ListNumbers,
+  Loader,
   Quotes,
   TextAlignCenter,
   TextAlignJustify,
@@ -24,9 +26,12 @@ import {
 import { Separator } from '@/ui/separator'
 import { Toggle } from '@/ui/toggle'
 import { Editor } from '@tiptap/react'
+import { toast } from 'sonner'
 
 interface RichEditorToolbarProps {
   editor: Editor | null
+  onUploadImage?: (file: File) => Promise<string>
+  isUploadingImage?: boolean
 }
 
 function normalizeYoutubeUrl(value: string) {
@@ -57,7 +62,7 @@ function normalizeYoutubeUrl(value: string) {
 }
 
 export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
-  const { editor } = props
+  const { editor, onUploadImage, isUploadingImage = false } = props
   const isMobile = useMediaQuery('(max-width: 768px)')
 
   if (!editor) {
@@ -92,6 +97,47 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     }
   }
 
+  function onToggleImage() {
+    if (!editor || !onUploadImage || isUploadingImage) {
+      return
+    }
+
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.onchange = async event => {
+      const file = (event.target as HTMLInputElement).files?.[0]
+      if (!file) {
+        return
+      }
+
+      // Validate mime type (also validated in uploadImage, but show error immediately)
+      const allowedMimeTypes = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/gif',
+        'image/webp',
+        'image/avif',
+        'image/svg+xml',
+      ]
+      if (!allowedMimeTypes.includes(file.type)) {
+        toast.error('Tipo de archivo no válido. Solo se permiten imágenes (JPEG, PNG, GIF, WebP, AVIF, SVG).')
+        return
+      }
+
+      try {
+        // handleUploadImage already handles inserting placeholder and updating it
+        // Errors are shown via toast.error in the uploadImage function
+        await onUploadImage(file)
+      } catch (error) {
+        // Error already handled and shown via toast.error in handleUploadImage/uploadImage
+        // This catch ensures the error doesn't propagate further
+      }
+    }
+    input.click()
+  }
+
   if (!editor) {
     return null
   }
@@ -123,6 +169,30 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         {!isMobile && <Separator orientation="vertical" />}
       </div>
       <div className="flex flex-wrap">
+        <Toggle
+          variant="default"
+          aria-label="Heading 2"
+          pressed={editor.isActive('heading', { level: 2 })}
+          onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        >
+          <TextHTwo />
+        </Toggle>
+        <Toggle
+          variant="default"
+          aria-label="Heading 3"
+          pressed={editor.isActive('heading', { level: 3 })}
+          onPressedChange={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        >
+          <TextHThree />
+        </Toggle>
+        <Toggle
+          variant="default"
+          aria-label="Heading 4"
+          pressed={editor.isActive('heading', { level: 4 })}
+          onPressedChange={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+        >
+          <TextHFour />
+        </Toggle>
         <Toggle
           variant="default"
           aria-label="Bold"
@@ -159,30 +229,7 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         >
           <TextStrikethrough />
         </Toggle>
-        <Toggle
-          variant="default"
-          aria-label="Heading 2"
-          pressed={editor.isActive('heading', { level: 2 })}
-          onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        >
-          <TextHTwo />
-        </Toggle>
-        <Toggle
-          variant="default"
-          aria-label="Heading 3"
-          pressed={editor.isActive('heading', { level: 3 })}
-          onPressedChange={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        >
-          <TextHThree />
-        </Toggle>
-        <Toggle
-          variant="default"
-          aria-label="Heading 4"
-          pressed={editor.isActive('heading', { level: 4 })}
-          onPressedChange={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        >
-          <TextHFour />
-        </Toggle>
+        {!isMobile && <Separator orientation="vertical" />}
       </div>
       <div className="flex flex-wrap">
         <Toggle
@@ -220,6 +267,18 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         <Toggle variant="default" aria-label="Link" pressed={editor.isActive('link')} onPressedChange={onToggleLink}>
           <Link />
         </Toggle>
+        {onUploadImage && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Image"
+            onClick={onToggleImage}
+            disabled={isUploadingImage}
+          >
+            {isUploadingImage ? <Loader className="h-4 w-4 animate-spin" /> : <Image />}
+          </Button>
+        )}
         <Toggle
           variant="default"
           aria-label="Youtube"
@@ -262,16 +321,6 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
       >
         <TextAlignJustify />
       </Toggle>
-      {!isMobile && <Separator orientation="vertical" />}
-      {/* <Button
-        type="button"
-        variant="ghost"
-        size="icon"
-        aria-label="Image"
-        onClick={() => editor.chain().focus().undo().run()}
-      >
-        <Image />
-      </Button> */}
     </div>
   )
 }

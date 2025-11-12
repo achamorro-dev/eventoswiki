@@ -1,6 +1,7 @@
 'use client'
 
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
+import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupTypes } from '@/meetups/domain/meetup-type'
 import type { Organization } from '@/organizations/domain/organization'
@@ -41,6 +42,7 @@ interface Props {
 export const MeetupEditForm = ({ provinces, organizationId, meetup, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
+  const uploadImageForEditor = useUploadImageForEditor({ maxWidth: 1920 })
   const [isSaving, setIsSaving] = useState(false)
 
   const form = useForm<MeetupFormSchema>({
@@ -405,7 +407,11 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <RichEditor content={field.value} onContentChange={field.onChange} />
+                    <RichEditor
+                      content={field.value}
+                      onContentChange={field.onChange}
+                      onUploadImage={uploadImageForEditor}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
