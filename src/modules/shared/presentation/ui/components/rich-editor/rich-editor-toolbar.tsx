@@ -1,5 +1,7 @@
 import { Button } from '@/ui/button'
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
+import { InsertLinkDialog } from './insert-link-dialog'
+import { InsertYoutubeDialog } from './insert-youtube-dialog'
 import {
   ArrowArcLeft,
   ArrowArcRight,
@@ -66,6 +68,10 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
   const { editor, onUploadImage, isUploadingImage = false } = props
   const isMobile = useMediaQuery('(max-width: 768px)')
   const [_, setUpdateKey] = useState(0)
+  const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false)
+  const [isYoutubeDialogOpen, setIsYoutubeDialogOpen] = useState(false)
+  const [linkInitialUrl, setLinkInitialUrl] = useState('')
+  const [youtubeInitialUrl, setYoutubeInitialUrl] = useState('')
 
   useEffect(() => {
     if (!editor) {
@@ -99,13 +105,8 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     }
 
     const existingHref = editor.isActive('link') ? editor.getAttributes('link').href : ''
-    const href = window.prompt('URL', existingHref)
-    const url = href?.trim()
-    if (url) {
-      editor.chain().focus().setLink({ href: url }).run()
-    } else if (editor.isActive('link')) {
-      editor.chain().focus().unsetLink().run()
-    }
+    setLinkInitialUrl(existingHref)
+    setIsLinkDialogOpen(true)
   }
 
   function onToggleYoutube() {
@@ -114,11 +115,8 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     }
 
     const existingHref = editor.isActive('youtube') ? editor.getAttributes('youtube').url : ''
-    const url = window.prompt('URL', existingHref)
-    if (url && url.trim()) {
-      const normalizedUrl = normalizeYoutubeUrl(url)
-      editor.chain().focus().setYoutubeVideo({ src: normalizedUrl }).run()
-    }
+    setYoutubeInitialUrl(existingHref)
+    setIsYoutubeDialogOpen(true)
   }
 
   function onToggleImage() {
@@ -345,6 +343,19 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
       >
         <TextAlignJustify />
       </Toggle>
+      <InsertLinkDialog
+        editor={editor}
+        open={isLinkDialogOpen}
+        onOpenChange={setIsLinkDialogOpen}
+        initialUrl={linkInitialUrl}
+      />
+      <InsertYoutubeDialog
+        editor={editor}
+        open={isYoutubeDialogOpen}
+        onOpenChange={setIsYoutubeDialogOpen}
+        initialUrl={youtubeInitialUrl}
+        normalizeYoutubeUrl={normalizeYoutubeUrl}
+      />
     </div>
   )
 }
