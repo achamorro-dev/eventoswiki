@@ -49,10 +49,37 @@
     max-width: 100%;
     height: auto;
     border-radius: 0.375rem;
+    transition:
+      box-shadow 0.2s ease-in-out,
+      outline 0.2s ease-in-out;
   }
 
   img[data-upload-id] {
     border: 1px dashed var(--gray-3);
     background-color: var(--gray-1);
+  }
+
+  /* Highlight images when cursor is near them */
+  img.tiptap-media-highlighted,
+  .ProseMirror-selectednode img {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 10%, transparent);
+  }
+
+  /* Highlight YouTube videos when cursor is near them */
+  iframe.tiptap-media-highlighted,
+  .ProseMirror-selectednode iframe {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 10%, transparent);
+  }
+
+  /* Also handle youtube wrapper containers */
+  .tiptap-media-highlighted.youtube-wrapper,
+  .ProseMirror-selectednode.youtube-wrapper {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 10%, transparent);
   }
 }

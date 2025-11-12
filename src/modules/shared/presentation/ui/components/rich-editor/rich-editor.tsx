@@ -10,6 +10,7 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import type { Node as ProseMirrorNode } from '@tiptap/pm/model'
 
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
 import { RichEditorToolbar } from './rich-editor-toolbar'
@@ -254,6 +255,101 @@ export const RichEditor = (props: RichEditorProps) => {
 
   useEffect(() => {
     editorRef.current = editor
+  }, [editor])
+
+  // Highlight images and videos when cursor is near them
+  useEffect(() => {
+    if (!editor) return
+
+    const handleSelectionUpdate = () => {
+      const { state } = editor
+      const { selection } = state
+      const { $anchor } = selection
+
+      // Remove previous highlights
+      const editorDom = editor.view.dom
+      const previousHighlighted = editorDom.querySelectorAll('.tiptap-media-highlighted')
+      previousHighlighted.forEach(el => {
+        el.classList.remove('tiptap-media-highlighted')
+      })
+
+      // Find image or youtube node that contains the cursor
+      let targetNode: ProseMirrorNode | null = null
+      let nodePos: number | null = null
+
+      const cursorPos = $anchor.pos
+
+      // Search through all nodes to find media nodes that contain the cursor
+      state.doc.descendants((node, pos) => {
+        if (node.type.name === 'image' || node.type.name === 'youtube') {
+          const nodeStart = pos
+          const nodeEnd = pos + node.nodeSize
+
+          // Only highlight if cursor is within the node boundaries
+          // This ensures we don't highlight nodes in different lines
+          if (cursorPos >= nodeStart && cursorPos <= nodeEnd) {
+            targetNode = node
+            nodePos = pos
+            return false // Stop searching
+          }
+        }
+      })
+
+      // Also check if the node is selected (ProseMirror-selectednode class)
+      if (!targetNode) {
+        const selectedNode = editorDom.querySelector('.ProseMirror-selectednode')
+        if (selectedNode) {
+          const img = selectedNode.querySelector('img') || (selectedNode.tagName === 'IMG' ? selectedNode : null)
+          const iframe =
+            selectedNode.querySelector('iframe') || (selectedNode.tagName === 'IFRAME' ? selectedNode : null)
+
+          if (img) {
+            img.classList.add('tiptap-media-highlighted')
+            return
+          }
+          if (iframe) {
+            iframe.classList.add('tiptap-media-highlighted')
+            return
+          }
+        }
+      }
+
+      // If we found a target node, highlight it
+      if (targetNode && nodePos !== null) {
+        // Find the DOM element for this node
+        const domNode = editor.view.nodeDOM(nodePos)
+        if (domNode) {
+          const element = domNode instanceof HTMLElement ? domNode : (domNode.parentElement as HTMLElement)
+          if (element) {
+            // For images, highlight the img element
+            if (targetNode.type.name === 'image') {
+              const img = element.tagName === 'IMG' ? element : element.querySelector('img')
+              if (img) {
+                img.classList.add('tiptap-media-highlighted')
+              }
+            }
+            // For youtube, highlight the iframe or its container
+            if (targetNode.type.name === 'youtube') {
+              const iframe = element.tagName === 'IFRAME' ? element : element.querySelector('iframe')
+              if (iframe) {
+                iframe.classList.add('tiptap-media-highlighted')
+              } else {
+                // If no iframe found, highlight the container
+                element.classList.add('tiptap-media-highlighted')
+              }
+            }
+          }
+        }
+      }
+    }
+
+    editor.on('selectionUpdate', handleSelectionUpdate)
+    editor.on('update', handleSelectionUpdate)
+
+    return () => {
+      editor.off('selectionUpdate', handleSelectionUpdate)
+      editor.off('update', handleSelectionUpdate)
+    }
   }, [editor])
 
   return (
