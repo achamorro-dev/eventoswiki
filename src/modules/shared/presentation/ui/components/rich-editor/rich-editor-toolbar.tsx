@@ -26,6 +26,7 @@ import {
 import { Separator } from '@/ui/separator'
 import { Toggle } from '@/ui/toggle'
 import { Editor } from '@tiptap/react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 interface RichEditorToolbarProps {
@@ -64,6 +65,29 @@ function normalizeYoutubeUrl(value: string) {
 export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
   const { editor, onUploadImage, isUploadingImage = false } = props
   const isMobile = useMediaQuery('(max-width: 768px)')
+  const [_, setUpdateKey] = useState(0)
+
+  useEffect(() => {
+    if (!editor) {
+      return
+    }
+
+    const handleSelectionUpdate = () => {
+      setUpdateKey(prev => prev + 1)
+    }
+
+    const handleUpdate = () => {
+      setUpdateKey(prev => prev + 1)
+    }
+
+    editor.on('selectionUpdate', handleSelectionUpdate)
+    editor.on('update', handleUpdate)
+
+    return () => {
+      editor.off('selectionUpdate', handleSelectionUpdate)
+      editor.off('update', handleUpdate)
+    }
+  }, [editor])
 
   if (!editor) {
     return null
