@@ -1,7 +1,7 @@
 import { Command } from '@/shared/application/use-case/command'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
-import type { AuthenticationProvider } from '../domain/authentication-provider'
 import type { AuthenticationRepository } from '../domain/authentication.repository'
+import type { AuthenticationProvider } from '../domain/authentication-provider'
 import { LoggedUser } from '../domain/logged-user'
 import type { OAuth2Tokens } from '../domain/oauth2-tokens'
 import type { SessionManager } from '../domain/session-manager'

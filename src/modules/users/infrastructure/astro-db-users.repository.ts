@@ -1,3 +1,4 @@
+import { and, asc, count, db, desc, eq, gt, gte, like, lt, lte, ne, or, User as UserTable } from 'astro:db'
 import type { Filter } from '@/shared/domain/criteria/filter'
 import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
@@ -5,7 +6,6 @@ import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import type { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import { PaginatedResult as PaginatedResultImpl } from '@/shared/domain/criteria/paginated-result'
 import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
-import { User as UserTable, and, asc, count, db, desc, eq, gt, gte, like, lt, lte, ne, or } from 'astro:db'
 import type { UsersCriteria } from '../domain/criterias/users-criteria'
 import type { UsersOrder } from '../domain/criterias/users-order'
 import { UserNotFoundError } from '../domain/errors/user-not-found.error'
@@ -115,13 +115,13 @@ export class AstroDbUsersRepository implements UsersRepository {
     if (Array.isArray(parentFilters)) {
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
-        // @ts-ignore - Known issue with recursive calls
+        // @ts-expect-error - Known issue with recursive calls
         const criterias = this.getFiltersToApply(filters)
         return type === FilterType.AND ? and(...criterias) : or(...criterias)
       })
     }
 
-    // @ts-ignore - Known issue with type casting
+    // @ts-expect-error - Known issue with type casting
     return Object.entries<FilterCriteria | undefined>(parentFilters)
       .filter(([_, value]) => value !== undefined)
       .map(([key, userFilter]) => {
@@ -129,26 +129,26 @@ export class AstroDbUsersRepository implements UsersRepository {
 
         switch (userFilter.operator) {
           case RelationalOperator.EQUALS:
-            // @ts-ignore - Known issue with indexing
+            // @ts-expect-error - Known issue with indexing
             return eq(UserTable[key], userFilter.value)
           case RelationalOperator.GREATER_THAN_OR_EQUAL:
-            // @ts-ignore - Known issue with indexing
+            // @ts-expect-error - Known issue with indexing
             return gte(UserTable[key], userFilter.value)
           case RelationalOperator.LOWER_THAN_OR_EQUAL:
-            // @ts-ignore - Known issue with indexing
+            // @ts-expect-error - Known issue with indexing
             return lte(UserTable[key], userFilter.value)
           case RelationalOperator.GREATER_THAN:
-            // @ts-ignore - Known issue with indexing
+            // @ts-expect-error - Known issue with indexing
             return gt(UserTable[key], userFilter.value)
           case RelationalOperator.LOWER_THAN:
-            // @ts-ignore - Known issue with indexing
+            // @ts-expect-error - Known issue with indexing
             return lt(UserTable[key], userFilter.value)
           case RelationalOperator.LIKE:
           case RelationalOperator.LIKE_NOT_SENSITIVE:
-            // @ts-ignore - Known issue with indexing
+            // @ts-expect-error - Known issue with indexing
             return like(UserTable[key], userFilter.value)
           case RelationalOperator.NOT_EQUALS:
-            // @ts-ignore - Known issue with indexing
+            // @ts-expect-error - Known issue with indexing
             return ne(UserTable[key], userFilter.value)
         }
       })

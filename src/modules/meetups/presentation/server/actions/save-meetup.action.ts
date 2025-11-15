@@ -1,8 +1,8 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupAlreadyExists } from '@/meetups/domain/errors/meetup-already-exists.error'
 import { Datetime } from '@/shared/domain/datetime/datetime'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 interface MeetupDataPayload {
   title: string

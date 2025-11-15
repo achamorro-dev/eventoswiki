@@ -1,7 +1,7 @@
-import type { Province } from '@/provinces/domain/province'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { navigate } from 'astro:transitions/client'
 import type { FC } from 'react'
+import type { Province } from '@/provinces/domain/province'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 
 interface Props {
   id?: string

@@ -1,10 +1,9 @@
-import { LaptopBold, MoonBold, SunBold } from '@/ui/icons'
 import type { FC } from 'react'
-import { ThemeMode, useTheme } from './use-theme'
-
+import { LaptopBold, MoonBold, SunBold } from '@/ui/icons'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '../button'
 import styles from './theme-mode-toggle.module.css'
+import { ThemeMode, useTheme } from './use-theme'
 
 type ThemeModeToggleProps = {}
 

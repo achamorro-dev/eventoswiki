@@ -25,15 +25,15 @@ const hexToHsl = (hex: string): [number, number, number] => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   if (!result) return [0, 0, 0]
 
-  let r = parseInt(result[1], 16) / 255
-  let g = parseInt(result[2], 16) / 255
-  let b = parseInt(result[3], 16) / 255
+  const r = parseInt(result[1], 16) / 255
+  const g = parseInt(result[2], 16) / 255
+  const b = parseInt(result[3], 16) / 255
 
   const max = Math.max(r, g, b)
   const min = Math.min(r, g, b)
   let h = 0
   let s = 0
-  let l = (max + min) / 2
+  const l = (max + min) / 2
 
   if (max !== min) {
     const d = max - min

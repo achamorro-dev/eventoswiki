@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "astro-build.astro-vscode",
+    "biomejs.biome",
     "DavidAnson.vscode-markdownlint",
     "unifiedjs.vscode-mdx",
     "bradlc.vscode-tailwindcss"

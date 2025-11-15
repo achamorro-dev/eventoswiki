@@ -1,5 +1,5 @@
-import { Broadcast } from '@/ui/icons'
 import type { FC } from 'react'
+import { Broadcast } from '@/ui/icons'
 import { EventDataRow } from '../event-data-row/event-data-row'
 
 interface Props {

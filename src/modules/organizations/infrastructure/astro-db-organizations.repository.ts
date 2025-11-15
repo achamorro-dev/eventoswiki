@@ -1,25 +1,25 @@
-import type { Filter } from '@/shared/domain/criteria/filter'
-import { FilterType } from '@/shared/domain/criteria/filter-type'
-import { OrderDirection } from '@/shared/domain/criteria/order-direction'
-import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
-import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
 import {
-  Event,
-  Meetup,
-  Organization,
-  OrganizationFollower,
-  OrganizationUser,
-  Province,
   and,
   asc,
   count,
   db,
   desc,
+  Event,
   eq,
   inArray,
   isDbError,
+  Meetup,
+  Organization,
+  OrganizationFollower,
+  OrganizationUser,
   or,
+  Province,
 } from 'astro:db'
+import type { Filter } from '@/shared/domain/criteria/filter'
+import { FilterType } from '@/shared/domain/criteria/filter-type'
+import { OrderDirection } from '@/shared/domain/criteria/order-direction'
+import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
+import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
 import type { OrganizationsCriteria } from '../domain/criterias/organizations-criteria'
 import type { OrganizationsOrder } from '../domain/criterias/organizations-order'
 import { OrganizationAlreadyExists } from '../domain/errors/organization-already-exists.error'
@@ -296,7 +296,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
         .select({ count: count() })
         .from(Organization)
         .leftJoin(Province, eq(Province.slug, Organization.location))
-        //@ts-ignore
+        //@ts-expect-error
         .where(...this.getOrganizationsFiltersByCriteria(criteria))
     )
   }
@@ -312,13 +312,13 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     if (Array.isArray(parentFilters)) {
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
-        //@ts-ignore
+        //@ts-expect-error
         const criterias = this.getFiltersToApply(filters)
         return type === FilterType.AND ? and(...criterias) : or(...criterias)
       })
     }
 
-    //@ts-ignore
+    //@ts-expect-error
     return Object.entries<FilterCriteria | undefined>(parentFilters)
       .filter(([_, value]) => value !== undefined)
       .map(([key, filter]) => {
@@ -326,26 +326,26 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
 
         switch (filter.operator) {
           case RelationalOperator.EQUALS:
-            //@ts-ignore
+            //@ts-expect-error
             return eq(Organization[key], filter.value)
           case RelationalOperator.GREATER_THAN_OR_EQUAL:
-            //@ts-ignore
+            //@ts-expect-error
             return gte(Organization[key], filter.value)
           case RelationalOperator.LOWER_THAN_OR_EQUAL:
-            //@ts-ignore
+            //@ts-expect-error
             return lte(Organization[key], filter.value)
           case RelationalOperator.GREATER_THAN:
-            //@ts-ignore
+            //@ts-expect-error
             return gt(Organization[key], filter.value)
           case RelationalOperator.LOWER_THAN:
-            //@ts-ignore
+            //@ts-expect-error
             return lt(Organization[key], filter.value)
           case RelationalOperator.LIKE:
           case RelationalOperator.LIKE_NOT_SENSITIVE:
-            //@ts-ignore
+            //@ts-expect-error
             return like(Organization[key], filter.value)
           case RelationalOperator.NOT_EQUALS:
-            //@ts-ignore
+            //@ts-expect-error
             return ne(Organization[key], filter.value)
         }
       })

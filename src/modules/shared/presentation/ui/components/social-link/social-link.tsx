@@ -1,5 +1,5 @@
-import type { SocialNetwork } from '@/shared/domain/social/social-network'
 import type { FC, ReactNode } from 'react'
+import type { SocialNetwork } from '@/shared/domain/social/social-network'
 import {
   Discord,
   Facebook,

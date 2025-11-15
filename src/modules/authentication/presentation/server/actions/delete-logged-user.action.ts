@@ -1,5 +1,5 @@
-import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
 import { defineAction } from 'astro:actions'
+import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
 
 export const deleteLoggedUserAction = defineAction({
   handler: async (_, context) => {

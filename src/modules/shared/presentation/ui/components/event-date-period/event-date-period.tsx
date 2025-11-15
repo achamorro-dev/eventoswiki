@@ -1,6 +1,6 @@
+import type { FC } from 'react'
 import { DateTimeFormat, Datetime } from '@/shared/domain/datetime/datetime'
 import { CalendarBlank } from '@/ui/icons'
-import type { FC } from 'react'
 import { EventDataRow } from '../event-data-row/event-data-row'
 
 export const EventDatePeriod: FC<{ startDate: Date; endDate?: Date }> = ({ startDate, endDate }) => {

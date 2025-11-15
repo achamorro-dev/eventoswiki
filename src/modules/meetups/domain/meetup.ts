@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from 'uuid'
 import type { OrganizationId } from '@/organizations/domain/organization-id'
 import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
-import { v4 as uuidv4 } from 'uuid'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
 import { InvalidMeetupError } from './errors/invalid-meetup.error'
 import { MeetupAttendeeDoesNotExist } from './errors/meetup-attendee-does-not-exist.error'
@@ -69,7 +69,7 @@ export class Meetup implements MeetupProps {
   }
 
   static create(data: MeetupData, organizationId: string) {
-    this.ensureIsValidMeetup(data)
+    Meetup.ensureIsValidMeetup(data)
 
     const meetup = Meetup.fromPrimitives({
       ...data,
@@ -162,7 +162,7 @@ export class Meetup implements MeetupProps {
     this.tags = data.tags ?? this.tags
     this.tagColor = data.tagColor ?? this.tagColor
     this.content = data.content ?? this.content
-    this.type = !!data.type ? MeetupType.of(data.type) : this.type
+    this.type = data.type ? MeetupType.of(data.type) : this.type
     this.slug = data.slug ?? this.slug
   }
 

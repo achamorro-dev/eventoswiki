@@ -1,8 +1,8 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { EventsLocator } from '@/events/di/events.locator'
 import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 export const deleteEventAction = defineAction({
   input: z.object({

@@ -1,9 +1,9 @@
+import { Editor } from '@tiptap/react'
 import * as React from 'react'
 import { Button } from '@/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Input } from '@/ui/input'
 import { Label } from '@/ui/label'
-import { Editor } from '@tiptap/react'
 
 interface InsertLinkDialogProps {
   editor: Editor | null

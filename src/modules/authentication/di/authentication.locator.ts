@@ -31,16 +31,20 @@ export class AuthenticationLocator {
   }
 
   static invalidateSessionCommand(cookiesManager: CookiesManager) {
-    return new InvalidateSessionCommand(this.sessionManager, cookiesManager)
+    return new InvalidateSessionCommand(AuthenticationLocator.sessionManager, cookiesManager)
   }
 
   static createSessionCommand(cookiesManager: CookiesManager) {
-    return new CreateSessionCommand(cookiesManager, this.sessionManager, this.authenticationRepository)
+    return new CreateSessionCommand(
+      cookiesManager,
+      AuthenticationLocator.sessionManager,
+      AuthenticationLocator.authenticationRepository,
+    )
   }
 
   static deleteLoggedUserCommand(cookiesManager: CookiesManager) {
     return new DeleteLoggedUserCommand(
-      this.invalidateSessionCommand(cookiesManager),
+      AuthenticationLocator.invalidateSessionCommand(cookiesManager),
       AuthenticationLocator.authenticationRepository,
     )
   }

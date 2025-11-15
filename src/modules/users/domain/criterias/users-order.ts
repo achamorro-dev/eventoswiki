@@ -1,1 +1,1 @@
-export interface UsersOrder {}
+export type UsersOrder = {}

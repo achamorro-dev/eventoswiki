@@ -1,5 +1,5 @@
-import { classnames } from '@/ui/classnames/classnames'
 import type { FC, PropsWithChildren } from 'react'
+import { classnames } from '@/ui/classnames/classnames'
 
 import styles from './label.module.css'
 

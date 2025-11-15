@@ -1,5 +1,12 @@
 'use client'
 
+import { actions } from 'astro:actions'
+import { navigate } from 'astro:transitions/client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import slugify from 'slugify'
+import { toast } from 'sonner'
 import type { Event } from '@/events/domain/event'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
@@ -20,14 +27,7 @@ import { Camera, CameraSlash, Loader, X } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { actions } from 'astro:actions'
-import { navigate } from 'astro:transitions/client'
-import { useEffect, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import slugify from 'slugify'
-import { toast } from 'sonner'
-import { eventFormSchema, type EventFormSchema } from './event-form-schema'
+import { type EventFormSchema, eventFormSchema } from './event-form-schema'
 
 interface Props {
   provinces: Province[]

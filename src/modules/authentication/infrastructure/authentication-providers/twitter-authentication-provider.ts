@@ -1,9 +1,9 @@
+import { BASE_URL, TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from 'astro:env/server'
+import { generateCodeVerifier, generateState, Twitter } from 'arctic'
 import type { AuthenticationProvider } from '@/authentication/domain/authentication-provider'
 import type { OAuth2Tokens } from '@/authentication/domain/oauth2-tokens'
 import { RemoteUser } from '@/authentication/domain/remote-user'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
-import { Twitter, generateCodeVerifier, generateState } from 'arctic'
-import { BASE_URL, TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET } from 'astro:env/server'
 
 export class TwitterAuthenticationProvider implements AuthenticationProvider {
   twitter: Twitter

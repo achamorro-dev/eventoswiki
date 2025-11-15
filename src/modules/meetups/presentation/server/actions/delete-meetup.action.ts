@@ -1,8 +1,8 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 export const deleteMeetupAction = defineAction({
   input: z.object({

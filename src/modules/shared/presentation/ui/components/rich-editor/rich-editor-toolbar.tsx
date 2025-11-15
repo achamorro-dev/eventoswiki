@@ -1,7 +1,8 @@
+import { Editor } from '@tiptap/react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '@/ui/button'
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
-import { InsertLinkDialog } from './insert-link-dialog'
-import { InsertYoutubeDialog } from './insert-youtube-dialog'
 import {
   ArrowArcLeft,
   ArrowArcRight,
@@ -27,9 +28,8 @@ import {
 } from '@/ui/icons'
 import { Separator } from '@/ui/separator'
 import { Toggle } from '@/ui/toggle'
-import { Editor } from '@tiptap/react'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { InsertLinkDialog } from './insert-link-dialog'
+import { InsertYoutubeDialog } from './insert-youtube-dialog'
 
 interface RichEditorToolbarProps {
   editor: Editor | null

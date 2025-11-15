@@ -1,5 +1,5 @@
-import type { ValidatorConstructor } from '@/shared/domain/validators/validator'
 import { z } from 'astro/zod'
+import type { ValidatorConstructor } from '@/shared/domain/validators/validator'
 import { validateField } from './validate-field'
 
 export const DateFormField = <Value>(validator: ValidatorConstructor<Value>) => {

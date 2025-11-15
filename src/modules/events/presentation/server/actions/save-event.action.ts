@@ -1,8 +1,8 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { EventsLocator } from '@/events/di/events.locator'
 import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
 import { Datetime } from '@/shared/domain/datetime/datetime'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 interface EventDataPayload {
   title: string

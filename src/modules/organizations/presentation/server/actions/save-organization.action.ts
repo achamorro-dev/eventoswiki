@@ -1,7 +1,7 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationAlreadyExists } from '@/organizations/domain/errors/organization-already-exists.error'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 interface OrganizationDataPayload {
   handle: string

@@ -1,0 +1,18 @@
+# Biome handles these file types, so Prettier should ignore them
+*.ts
+*.tsx
+*.js
+*.jsx
+*.json
+*.jsonc
+
+# Source files
+src/**/*.ts
+src/**/*.tsx
+src/**/*.js
+src/**/*.jsx
+
+# Config files that Biome handles
+tsconfig.json
+biome.json
+

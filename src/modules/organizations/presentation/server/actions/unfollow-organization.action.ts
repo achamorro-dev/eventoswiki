@@ -1,7 +1,7 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 export const unfollowOrganizationAction = defineAction({
   input: z.object({

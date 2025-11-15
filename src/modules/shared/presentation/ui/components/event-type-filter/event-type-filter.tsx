@@ -1,7 +1,7 @@
-import { EventType } from '@/modules/shared/domain/types/event-type'
-import { Tabs, TabsList, TabsTrigger } from '@/modules/shared/presentation/ui/tabs'
 import { navigate } from 'astro:transitions/client'
 import { useEffect, useState } from 'react'
+import { EventType } from '@/modules/shared/domain/types/event-type'
+import { Tabs, TabsList, TabsTrigger } from '@/modules/shared/presentation/ui/tabs'
 
 interface EventTypeFilterProps {
   value?: EventType

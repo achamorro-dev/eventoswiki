@@ -7,8 +7,8 @@ import type { MeetupsCriteria } from './criterias/meetups-criteria'
 import type { MeetupsFilters } from './criterias/meetups-filters'
 import type { MeetupsOrder } from './criterias/meetups-order'
 import { Meetup } from './meetup'
-import type { MeetupId } from './meetup-id'
 import type { MeetupAttendeeId } from './meetup-attendee-id'
+import type { MeetupId } from './meetup-id'
 
 export interface MeetupsRepository
   extends MatcheableRepository<Partial<MeetupsFilters>, Partial<MeetupsOrder>, MeetupsCriteria, Meetup>,

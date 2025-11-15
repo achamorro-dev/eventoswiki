@@ -1,5 +1,5 @@
-import { WarningCircle } from '@/ui/icons'
 import { type FC } from 'react'
+import { WarningCircle } from '@/ui/icons'
 
 export const ErrorMessage: FC<{ message: string }> = ({ message }) => {
   return (

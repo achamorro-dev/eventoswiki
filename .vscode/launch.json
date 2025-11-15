@@ -7,10 +7,7 @@
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run-script",
-        "dev"
-      ],
+      "runtimeArgs": ["run-script", "dev"],
       "sourceMaps": true
     }
   ]

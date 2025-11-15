@@ -1,6 +1,6 @@
+import { v4 as uuidv4 } from 'uuid'
 import type { OrganizationId } from '@/organizations/domain/organization-id'
 import { Datetime } from '@/shared/domain/datetime/datetime'
-import { v4 as uuidv4 } from 'uuid'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
 import { InvalidEventError } from './errors/invalid-event.error'
 import { EventId } from './event-id'
@@ -99,7 +99,7 @@ export class Event implements EventProps {
   }
 
   static create(data: EventData, organizationId: string) {
-    this.ensureIsValidEvent(data)
+    Event.ensureIsValidEvent(data)
 
     const event = Event.fromPrimitives({
       ...data,

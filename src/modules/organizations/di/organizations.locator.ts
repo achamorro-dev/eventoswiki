@@ -1,8 +1,8 @@
 import { CreateOrganizationCommand } from '../application/create-organization.command'
 import { DeleteOrganizationCommand } from '../application/delete-organization.command'
 import { FollowOrganizationCommand } from '../application/follow-organization.command'
-import { GetOrganizationByIdQuery } from '../application/get-organization-by-id.query'
 import { GetOrganizationQuery } from '../application/get-organization.query'
+import { GetOrganizationByIdQuery } from '../application/get-organization-by-id.query'
 import { GetOrganizationsFollowedByQuery } from '../application/get-organizations-followed-by.query'
 import { GetUserOrganizationsQuery } from '../application/get-user-organizations.query'
 import { MatchOrganizationsQuery } from '../application/match-organizations.query'
@@ -13,11 +13,11 @@ import { AstroDbOrganizationsRepository } from '../infrastructure/astro-db-organ
 
 export class OrganizationsLocator {
   static getOrganizationQuery() {
-    return new GetOrganizationQuery(this.getOrganizationsRepository())
+    return new GetOrganizationQuery(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static createOrganizationCommand() {
-    return new CreateOrganizationCommand(this.getOrganizationsRepository())
+    return new CreateOrganizationCommand(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static getOrganizationsRepository(): OrganizationsRepository {
@@ -25,34 +25,34 @@ export class OrganizationsLocator {
   }
 
   static getUserOrganizationsQuery(): GetUserOrganizationsQuery {
-    return new GetUserOrganizationsQuery(this.getOrganizationsRepository())
+    return new GetUserOrganizationsQuery(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static updateOrganizationCommand() {
-    return new SaveOrganizationCommand(this.getOrganizationsRepository())
+    return new SaveOrganizationCommand(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static getOrganizationByIdQuery() {
-    return new GetOrganizationByIdQuery(this.getOrganizationsRepository())
+    return new GetOrganizationByIdQuery(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static deleteOrganizationCommand() {
-    return new DeleteOrganizationCommand(this.getOrganizationsRepository())
+    return new DeleteOrganizationCommand(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static followOrganizationCommand() {
-    return new FollowOrganizationCommand(this.getOrganizationsRepository())
+    return new FollowOrganizationCommand(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static unfollowOrganizationCommand() {
-    return new UnfollowOrganizationCommand(this.getOrganizationsRepository())
+    return new UnfollowOrganizationCommand(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static getOrganizationsFollowedByQuery() {
-    return new GetOrganizationsFollowedByQuery(this.getOrganizationsRepository())
+    return new GetOrganizationsFollowedByQuery(OrganizationsLocator.getOrganizationsRepository())
   }
 
   static matchOrganizationsQuery() {
-    return new MatchOrganizationsQuery(this.getOrganizationsRepository())
+    return new MatchOrganizationsQuery(OrganizationsLocator.getOrganizationsRepository())
   }
 }

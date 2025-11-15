@@ -1,3 +1,7 @@
+import { actions } from 'astro:actions'
+import { navigate } from 'astro:transitions/client'
+import type { FC } from 'react'
+import { toast } from 'sonner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,10 +15,6 @@ import {
 } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
 import { Urls } from '@/ui/urls/urls'
-import { actions } from 'astro:actions'
-import { navigate } from 'astro:transitions/client'
-import type { FC } from 'react'
-import { toast } from 'sonner'
 
 interface Props {
   eventId: string

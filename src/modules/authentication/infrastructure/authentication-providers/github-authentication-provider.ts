@@ -1,9 +1,9 @@
+import { BASE_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from 'astro:env/server'
+import { GitHub, generateState } from 'arctic'
 import type { AuthenticationProvider } from '@/authentication/domain/authentication-provider'
 import type { OAuth2Tokens } from '@/authentication/domain/oauth2-tokens'
 import { RemoteUser } from '@/authentication/domain/remote-user'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
-import { GitHub, generateState } from 'arctic'
-import { BASE_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from 'astro:env/server'
 
 export class GitHubAuthenticationProvider implements AuthenticationProvider {
   github: GitHub

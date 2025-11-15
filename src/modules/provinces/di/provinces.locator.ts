@@ -9,10 +9,10 @@ export class ProvincesLocator {
   }
 
   static getProvincesQuery() {
-    return new GetProvincesQuery(this.createEventsRepository())
+    return new GetProvincesQuery(ProvincesLocator.createEventsRepository())
   }
 
   static getProvinceQuery() {
-    return new GetProvinceQuery(this.createEventsRepository())
+    return new GetProvinceQuery(ProvincesLocator.createEventsRepository())
   }
 }

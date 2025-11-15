@@ -1,3 +1,4 @@
+import { z } from 'astro/zod'
 import { OrganizationBioValidator } from '@/organizations/domain/validators/organization-bio.validator'
 import { OrganizationHandleValidator } from '@/organizations/domain/validators/organization-handle.validator'
 import { OrganizationImageValidator } from '@/organizations/domain/validators/organization-image.validator'
@@ -6,7 +7,6 @@ import { OrganizationLocationValidator } from '@/organizations/domain/validators
 import { OrganizationNameValidator } from '@/organizations/domain/validators/organization-name.validator'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
 import { StringFormField } from '@/shared/presentation/forms/string-form-field'
-import { z } from 'astro/zod'
 
 export const organizationFormSchema = z.object({
   name: StringFormField(OrganizationNameValidator),

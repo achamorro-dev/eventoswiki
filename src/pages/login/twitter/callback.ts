@@ -1,8 +1,7 @@
 import { OAuth2RequestError } from 'arctic'
-
+import type { APIContext } from 'astro'
 import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
 import { Urls } from '@/ui/urls/urls'
-import type { APIContext } from 'astro'
 
 export async function GET(context: APIContext): Promise<Response> {
   const code = context.url.searchParams.get('code')

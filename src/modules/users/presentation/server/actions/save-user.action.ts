@@ -1,9 +1,9 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { UsersLocator } from '@/users/di/users.locator'
 import { InvalidUserProfileError } from '@/users/domain/errors/invalid-user-profile.error'
 import { UserNotFoundError } from '@/users/domain/errors/user-not-found.error'
 import { UsernameAlreadyExistError } from '@/users/domain/errors/username-already-exist.error'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 export const saveUserAction = defineAction({
   input: z.object({

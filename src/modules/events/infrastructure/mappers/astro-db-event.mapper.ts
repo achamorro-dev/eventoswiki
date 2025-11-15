@@ -1,11 +1,11 @@
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Event } from '../../domain/event'
-import type { AstroDbEventProvinceDto } from '../dtos/astro-db-event-province.dto'
 import type { AstroDbEventDto } from '../dtos/astro-db-event.dto'
+import type { AstroDbEventProvinceDto } from '../dtos/astro-db-event-province.dto'
 
 export class AstroEventMapper {
   static toDomainList(dtos: { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[]): Event[] {
-    return dtos.map(({ Event, Province }) => this.toDomain(Event, Province))
+    return dtos.map(({ Event, Province }) => AstroEventMapper.toDomain(Event, Province))
   }
 
   static toDomain(eventDto: AstroDbEventDto, provinceDto: AstroDbEventProvinceDto | null): Event {

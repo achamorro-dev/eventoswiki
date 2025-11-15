@@ -1,6 +1,6 @@
+import { Lucia } from 'lucia'
 import type { SessionCookie } from '@/authentication/domain/session-cookie'
 import { lucia } from '@/shared/infrastructure/lucia/authentication'
-import { Lucia } from 'lucia'
 import type { Session } from '../../domain/session'
 import { SessionManager } from '../../domain/session-manager'
 

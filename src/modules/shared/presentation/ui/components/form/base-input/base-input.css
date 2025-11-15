@@ -1,7 +1,7 @@
 @reference "../../../../../../../styles/global.css";
 
 input.input {
-  @apply bg-input text-input ring-border placeholder:text-foreground focus:ring-primary   w-full rounded-lg px-4 py-2 text-sm font-medium ring-1 placeholder:opacity-50 focus:border-transparent focus:outline-none focus:ring-2;
+  @apply bg-input text-input ring-border placeholder:text-foreground focus:ring-primary w-full rounded-lg px-4 py-2 text-sm font-medium ring-1 placeholder:opacity-50 focus:border-transparent focus:outline-none focus:ring-2;
 }
 
 input.input.input-chip {

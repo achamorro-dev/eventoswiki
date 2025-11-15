@@ -1,8 +1,8 @@
+import { ActionError, defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
-import { z } from 'astro/zod'
-import { ActionError, defineAction } from 'astro:actions'
 
 export const deleteOrganizationAction = defineAction({
   input: z.object({

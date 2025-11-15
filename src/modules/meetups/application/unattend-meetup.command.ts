@@ -1,8 +1,8 @@
 import { Command } from '@/shared/application/use-case/command'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
+import { MeetupAttendeeId } from '../domain/meetup-attendee-id'
 import { MeetupId } from '../domain/meetup-id'
 import type { MeetupsRepository } from '../domain/meetups.repository'
-import { MeetupAttendeeId } from '../domain/meetup-attendee-id'
 
 interface Param {
   meetupId: string

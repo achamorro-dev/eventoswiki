@@ -1,6 +1,6 @@
+import type { FC } from 'react'
 import { MeetupTypes } from '@/meetups/domain/meetup-type'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
-import type { FC } from 'react'
 
 interface Props {
   id?: string

@@ -81,7 +81,7 @@ export class Organization implements OrganizationProps {
   }
 
   static create(props: OrganizationData): Organization {
-    this.ensureIsValidOrganization(props)
+    Organization.ensureIsValidOrganization(props)
 
     return new Organization({
       ...props,

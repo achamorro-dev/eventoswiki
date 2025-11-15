@@ -1,6 +1,6 @@
 import { SocialNetwork } from '@/shared/domain/social/social-network'
-import { SocialLink } from '../social-link/social-link'
 import { cn } from '@/ui/lib/utils'
+import { SocialLink } from '../social-link/social-link'
 
 interface Props {
   name: string

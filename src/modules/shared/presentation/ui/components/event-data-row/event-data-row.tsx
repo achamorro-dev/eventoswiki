@@ -1,5 +1,5 @@
-import { Button } from '@/ui/button'
 import type { FC } from 'react'
+import { Button } from '@/ui/button'
 
 interface Props {
   title: string

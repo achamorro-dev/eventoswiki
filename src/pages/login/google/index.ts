@@ -1,6 +1,5 @@
-import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
-
 import type { APIContext } from 'astro'
+import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
 
 export async function GET(context: APIContext): Promise<Response> {
   const url = await AuthenticationLocator.createAuthorizationUrlCommand(

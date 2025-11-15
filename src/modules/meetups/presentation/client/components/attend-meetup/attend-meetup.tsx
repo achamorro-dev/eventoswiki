@@ -1,10 +1,9 @@
-import { Button } from '@/ui/components/button'
-import { useState, type FC } from 'react'
-
-import { Loader } from '@/ui/icons'
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
+import { type FC, useState } from 'react'
 import { toast } from 'sonner'
+import { Button } from '@/ui/components/button'
+import { Loader } from '@/ui/icons'
 
 interface Props {
   meetupId: string

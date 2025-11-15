@@ -1,4 +1,4 @@
-import { Event, Meetup, Province, db } from 'astro:db'
+import { db, Event, Meetup, Province } from 'astro:db'
 import { provinces } from './content-migration/data/provinces'
 import { getEventsFor } from './content-migration/migration-mdx-to-astro-db'
 

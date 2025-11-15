@@ -4,5 +4,5 @@
   @apply flex flex-col gap-px;
 }
 .label {
-  @apply text-foreground  text-sm font-medium;
+  @apply text-foreground text-sm font-medium;
 }

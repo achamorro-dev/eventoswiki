@@ -1,5 +1,5 @@
+import { type ZodTypeAny, z } from 'astro/zod'
 import type { ValidatorConstructor } from '@/shared/domain/validators/validator'
-import { z, type ZodTypeAny } from 'astro/zod'
 import { validateField } from './validate-field'
 
 export const NotRequiredArrayFormField = <Value>(type: ZodTypeAny, validator?: ValidatorConstructor<Value>) => {

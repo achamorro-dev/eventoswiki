@@ -1,1 +1,1 @@
-export interface SessionAttributes {}
+export type SessionAttributes = {}

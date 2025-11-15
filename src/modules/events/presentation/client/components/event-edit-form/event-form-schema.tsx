@@ -1,3 +1,4 @@
+import { z } from 'astro/zod'
 import { EventContentValidator } from '@/events/domain/validators/event-content.validator'
 import { EventEndDateValidator } from '@/events/domain/validators/event-end-date.validator'
 import { EventImageValidator } from '@/events/domain/validators/event-image.validator'
@@ -12,7 +13,6 @@ import { DateFormField } from '@/shared/presentation/forms/date-form-field'
 import { NotRequiredArrayFormField } from '@/shared/presentation/forms/not-required-array-form-field'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
 import { StringFormField } from '@/shared/presentation/forms/string-form-field'
-import { z } from 'astro/zod'
 
 export const eventFormSchema = z
   .object({

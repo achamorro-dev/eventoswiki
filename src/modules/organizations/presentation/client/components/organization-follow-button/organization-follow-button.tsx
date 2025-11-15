@@ -1,7 +1,7 @@
-import { Button } from '@/ui/button'
-import { HeartBold, HeartBreakBold, Loader } from '@/ui/icons'
 import { actions } from 'astro:actions'
 import { useState } from 'react'
+import { Button } from '@/ui/button'
+import { HeartBold, HeartBreakBold, Loader } from '@/ui/icons'
 
 interface Props {
   organizationId: string

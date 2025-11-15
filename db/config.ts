@@ -1,4 +1,4 @@
-import { NOW, column, defineDb, defineTable } from 'astro:db'
+import { column, defineDb, defineTable, NOW } from 'astro:db'
 import { MeetupTypes } from '../src/modules/meetups/domain/meetup-type'
 
 export const Event = defineTable({

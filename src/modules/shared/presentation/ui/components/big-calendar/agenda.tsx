@@ -1,8 +1,8 @@
+import { navigate } from 'astro:transitions/client'
+import { useMemo } from 'react'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Calendar } from '@/ui/calendar'
 import { cn } from '@/ui/lib/utils'
-import { navigate } from 'astro:transitions/client'
-import { useMemo } from 'react'
 import { type CalendarEvent } from './calendar-event'
 import { EventCard } from './event-card'
 

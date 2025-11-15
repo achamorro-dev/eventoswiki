@@ -1,10 +1,10 @@
+import { BASE_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from 'astro:env/server'
+import { ObjectParser } from '@pilcrowjs/object-parser'
+import { decodeIdToken, Google, generateCodeVerifier, generateState } from 'arctic'
 import type { AuthenticationProvider } from '@/authentication/domain/authentication-provider'
 import type { OAuth2Tokens } from '@/authentication/domain/oauth2-tokens'
 import { RemoteUser } from '@/authentication/domain/remote-user'
 import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
-import { ObjectParser } from '@pilcrowjs/object-parser'
-import { Google, decodeIdToken, generateCodeVerifier, generateState } from 'arctic'
-import { BASE_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from 'astro:env/server'
 
 export class GoogleAuthenticationProvider implements AuthenticationProvider {
   google: Google

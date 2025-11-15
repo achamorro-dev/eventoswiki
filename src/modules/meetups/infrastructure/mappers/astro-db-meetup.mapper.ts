@@ -1,14 +1,14 @@
 import { MeetupType } from '@/meetups/domain/meetup-type'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Meetup } from '../../domain/meetup'
+import type { AstroDbMeetupDto } from '../dtos/astro-db-meetup.dto'
 import type { AstroDbMeetupAttendeeDto } from '../dtos/astro-db-meetup-attendee'
 import type { AstroDbMeetupProvinceDto } from '../dtos/astro-db-meetup-province.dto'
-import type { AstroDbMeetupDto } from '../dtos/astro-db-meetup.dto'
 
 export class AstroDbMeetupMapper {
   static toDomainList(dtos: { Meetup: AstroDbMeetupDto; Province: AstroDbMeetupProvinceDto | null }[]): Meetup[] {
     return dtos.map(({ Meetup, Province }) =>
-      this.toDomain({ meetupDto: Meetup, provinceDto: Province, attendees: [] }),
+      AstroDbMeetupMapper.toDomain({ meetupDto: Meetup, provinceDto: Province, attendees: [] }),
     )
   }
 

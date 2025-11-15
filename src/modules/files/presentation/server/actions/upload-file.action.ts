@@ -1,6 +1,6 @@
-import { FilesLocator } from '@/files/di/files.locator'
-import { z } from 'astro/zod'
 import { defineAction } from 'astro:actions'
+import { z } from 'astro/zod'
+import { FilesLocator } from '@/files/di/files.locator'
 
 export const uploadFileAction = defineAction({
   accept: 'form',

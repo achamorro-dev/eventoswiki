@@ -1,3 +1,4 @@
+import { and, asc, count, db, desc, Event, eq, gt, gte, isDbError, like, lt, lte, ne, or, Province } from 'astro:db'
 import { EventNotFound } from '@/events/domain/errors/event-not-found.ts'
 import type { Filter } from '@/shared/domain/criteria/filter'
 import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
@@ -5,7 +6,6 @@ import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import { RelationalOperator } from '@/shared/domain/criteria/relational-operator'
-import { and, asc, count, db, desc, eq, Event, gt, gte, isDbError, like, lt, lte, ne, or, Province } from 'astro:db'
 import type { EventsCriteria } from '../domain/criterias/events-criteria'
 import type { EventsOrder } from '../domain/criterias/events-order'
 import { EventAlreadyExists } from '../domain/errors/event-already-exists.error'
@@ -202,7 +202,7 @@ export class AstroDbEventsRepository implements EventsRepository {
         .select({ count: count() })
         .from(Event)
         .leftJoin(Province, eq(Province.slug, Event.location))
-        //@ts-ignore
+        //@ts-expect-error
         .where(...this.getEventsFiltersByCriteria(criteria))
     )
   }
@@ -218,13 +218,13 @@ export class AstroDbEventsRepository implements EventsRepository {
     if (Array.isArray(parentFilters)) {
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
-        //@ts-ignore
+        //@ts-expect-error
         const criterias = this.getFiltersToApply(filters)
         return type === FilterType.AND ? and(...criterias) : or(...criterias)
       })
     }
 
-    //@ts-ignore
+    //@ts-expect-error
     return Object.entries<FilterCriteria | undefined>(parentFilters)
       .filter(([_, value]) => value !== undefined)
       .map(([key, eventFilter]) => {
@@ -232,26 +232,26 @@ export class AstroDbEventsRepository implements EventsRepository {
 
         switch (eventFilter.operator) {
           case RelationalOperator.EQUALS:
-            //@ts-ignore
+            //@ts-expect-error
             return eq(Event[key], eventFilter.value)
           case RelationalOperator.GREATER_THAN_OR_EQUAL:
-            //@ts-ignore
+            //@ts-expect-error
             return gte(Event[key], eventFilter.value)
           case RelationalOperator.LOWER_THAN_OR_EQUAL:
-            //@ts-ignore
+            //@ts-expect-error
             return lte(Event[key], eventFilter.value)
           case RelationalOperator.GREATER_THAN:
-            //@ts-ignore
+            //@ts-expect-error
             return gt(Event[key], eventFilter.value)
           case RelationalOperator.LOWER_THAN:
-            //@ts-ignore
+            //@ts-expect-error
             return lt(Event[key], eventFilter.value)
           case RelationalOperator.LIKE:
           case RelationalOperator.LIKE_NOT_SENSITIVE:
-            //@ts-ignore
+            //@ts-expect-error
             return like(Event[key], eventFilter.value)
           case RelationalOperator.NOT_EQUALS:
-            //@ts-ignore
+            //@ts-expect-error
             return ne(Event[key], eventFilter.value)
         }
       })

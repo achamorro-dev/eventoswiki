@@ -15,7 +15,7 @@ export class AstroOrganizationMapper {
     dtos: { Organization: AstroDbOrganizationDto; Province: AstroDbProvinceDto | null | undefined }[],
   ): Organization[] {
     return dtos.map(({ Organization, Province }) =>
-      this.toDomain({
+      AstroOrganizationMapper.toDomain({
         organization: Organization,
         province: Province,
         organizerIds: [],

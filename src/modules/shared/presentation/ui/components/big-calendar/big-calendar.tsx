@@ -1,11 +1,9 @@
+import { navigate } from 'astro:transitions/client'
 import moment from 'moment'
 import type { CSSProperties, FC } from 'react'
 import { useMemo, useRef } from 'react'
-
-import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
-
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
 import { cn } from '@/ui/lib/utils'
-import { navigate } from 'astro:transitions/client'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { Datetime } from '../../../../domain/datetime/datetime'
 import './big-calendar.css'
@@ -31,7 +29,7 @@ interface CustomCSS extends CSSProperties {
   '--event-color': string
 }
 
-// @ts-ignore
+// @ts-expect-error
 const allViews = [Views.MONTH]
 
 export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate, className }) => {

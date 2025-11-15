@@ -1,13 +1,4 @@
-import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
-import type { Filter } from '@/shared/domain/criteria/filter'
-import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
-import { FilterType } from '@/shared/domain/criteria/filter-type'
-import { OrderDirection } from '@/shared/domain/criteria/order-direction'
-import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import {
-  Meetup,
-  MeetupAttendee,
-  Province,
   and,
   asc,
   count,
@@ -19,8 +10,17 @@ import {
   isDbError,
   lt,
   lte,
+  Meetup,
+  MeetupAttendee,
   or,
+  Province,
 } from 'astro:db'
+import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
+import type { Filter } from '@/shared/domain/criteria/filter'
+import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
+import { FilterType } from '@/shared/domain/criteria/filter-type'
+import { OrderDirection } from '@/shared/domain/criteria/order-direction'
+import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
 import { MeetupAlreadyExists } from '../domain/errors/meetup-already-exists.error'
@@ -246,7 +246,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
         .select()
         .from(Meetup)
         .leftJoin(Province, eq(Province.slug, Meetup.location))
-        //@ts-ignore
+        //@ts-expect-error
         .where(...this.getMeetupsFiltersByCriteria(criteria))
     )
   }
@@ -257,7 +257,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
         .select({ count: count() })
         .from(Meetup)
         .leftJoin(Province, eq(Province.slug, Meetup.location))
-        //@ts-ignore
+        //@ts-expect-error
         .where(...this.getMeetupsFiltersByCriteria(criteria))
     )
   }
@@ -273,7 +273,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     if (Array.isArray(parentFilters)) {
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
-        //@ts-ignore
+        //@ts-expect-error
         const criterias = this.getFiltersToApply(filters)
         return type === FilterType.AND ? and(...criterias) : or(...criterias)
       })
@@ -286,26 +286,26 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
 
         switch (eventFilter.operator) {
           case RelationalOperator.EQUALS:
-            //@ts-ignore
+            //@ts-expect-error
             return eq(Meetup[key], eventFilter.value)
           case RelationalOperator.GREATER_THAN_OR_EQUAL:
-            //@ts-ignore
+            //@ts-expect-error
             return gte(Meetup[key], eventFilter.value)
           case RelationalOperator.LOWER_THAN_OR_EQUAL:
-            //@ts-ignore
+            //@ts-expect-error
             return lte(Meetup[key], eventFilter.value)
           case RelationalOperator.GREATER_THAN:
-            //@ts-ignore
+            //@ts-expect-error
             return gt(Meetup[key], eventFilter.value)
           case RelationalOperator.LOWER_THAN:
-            //@ts-ignore
+            //@ts-expect-error
             return lt(Meetup[key], eventFilter.value)
           case RelationalOperator.LIKE:
           case RelationalOperator.LIKE_NOT_SENSITIVE:
-            //@ts-ignore
+            //@ts-expect-error
             return like(Meetup[key], eventFilter.value)
           case RelationalOperator.NOT_EQUALS:
-            //@ts-ignore
+            //@ts-expect-error
             return ne(Meetup[key], eventFilter.value)
         }
       })
