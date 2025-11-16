@@ -14,7 +14,7 @@ const { meetupId, isAttending } = Astro.props
 const hasLoggedUser = !!userId
 ---
 
-<section class="bg-muted rounded-lg p-3 border border-border space-y-2 w-max">
+<section class="bg-muted rounded-lg p-3 border border-border space-y-2 w-full">
   <h2 class="text-sm font-medium">Registro</h2>
   {hasLoggedUser && <AttendMeetup client:load meetupId={meetupId} initialAttending={isAttending} />}
   {
