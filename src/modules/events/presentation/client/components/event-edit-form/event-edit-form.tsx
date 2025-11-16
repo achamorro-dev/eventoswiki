@@ -67,6 +67,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
       tags: event?.tags ?? [],
       tagColor: event?.tagColor ?? '',
     },
+    // @ts-expect-error - Type instantiation is excessively deep due to complex Zod schema inference
     resolver: zodResolver(eventFormSchema),
   })
 
