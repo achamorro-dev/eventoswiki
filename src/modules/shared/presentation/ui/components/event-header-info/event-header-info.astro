@@ -41,6 +41,7 @@ if (!event) {
 const { title, tags, tagColor, startsAt, endsAt, location } = event
 const streamingUrl = event instanceof Meetup ? event.streamingUrl : undefined
 const shouldShowStreamingLink = isOrganizer || isAttending
+const place = event instanceof Meetup ? event.place?.toPrimitives() : undefined
 ---
 
 <div class="w-full lg:px-6 max-w-5xl xl:px-0">
@@ -49,7 +50,7 @@ const shouldShowStreamingLink = isOrganizer || isAttending
     {title}
   </h1>
   <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
-  <EventLocation location={location} client:load transition:animate="fade" />
+  <EventLocation location={location} place={place} client:load transition:animate="fade" />
   <EventStreaming
     streamingUrl={streamingUrl}
     shouldShowLink={shouldShowStreamingLink}

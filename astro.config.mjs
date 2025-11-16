@@ -43,6 +43,7 @@ export default defineConfig({
       GOOGLE_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
       GOOGLE_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
       GOOGLE_MAPS_PLACES_API_KEY: envField.string({ context: 'server', access: 'secret' }),
+      PUBLIC_GOOGLE_MAPS_EMBED_API_KEY: envField.string({ context: 'client', access: 'public' }),
       TWITTER_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
       TWITTER_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
       PINATA_JWT: envField.string({ context: 'server', access: 'secret' }),

@@ -13,6 +13,7 @@ import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-u
 import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupTypes } from '@/meetups/domain/meetup-type'
 import type { Place } from '@/modules/places/domain/place'
+import { PlaceEmbedMap } from '@/modules/places/presentation/client/components/place-embed-map/place-embed-map'
 import { PlaceSearch } from '@/modules/places/presentation/client/components/place-search'
 import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
@@ -340,21 +341,24 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                         control={control}
                         name="place"
                         render={({ field }) => (
-                          <FormItem>
-                            <FormLabel htmlFor="placeDisplayName" className="flex items-center gap-1">
-                              Dirección
-                            </FormLabel>
-                            <FormControl>
-                              <PlaceSearch
-                                className="w-full"
-                                value={field.value}
-                                onPlaceSelect={(place: Primitives<Place>) => {
-                                  form.setValue('place', place)
-                                }}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                          <>
+                            <FormItem>
+                              <FormLabel htmlFor="placeDisplayName" className="flex items-center gap-1">
+                                Dirección
+                              </FormLabel>
+                              <FormControl>
+                                <PlaceSearch
+                                  className="w-full"
+                                  value={field.value}
+                                  onPlaceSelect={(place: Primitives<Place>) => {
+                                    form.setValue('place', place)
+                                  }}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                            {field.value && <PlaceEmbedMap place={field.value} height="200px" />}
+                          </>
                         )}
                       />
                     </div>

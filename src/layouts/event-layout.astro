@@ -69,7 +69,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
       <OrganizedBy organizationId={organizationId}>
         {
           isOrganizer && (
-            <div slot="actions" class="flex flex-row gap-2">
+            <div slot="actions" class="flex flex-row md:flex-col gap-2">
               <Link variant="secondary" href={event instanceof Meetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
                 <Pencil />
                 Editar
