@@ -9,6 +9,7 @@ import { EventShortDescriptionValidator } from '@/events/domain/validators/event
 import { EventSlugValidator } from '@/events/domain/validators/event-slug.validator'
 import { EventStartDateValidator } from '@/events/domain/validators/event-start-date.validator'
 import { EventTitleValidator } from '@/events/domain/validators/event-title.validator'
+import { EventTypeValidator } from '@/events/domain/validators/event-type.validator'
 import { DateFormField } from '@/shared/presentation/forms/date-form-field'
 import { NotRequiredArrayFormField } from '@/shared/presentation/forms/not-required-array-form-field'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
@@ -21,6 +22,9 @@ export const eventFormSchema = z
     shortDescription: StringFormField(EventShortDescriptionValidator),
     image: StringFormField(EventImageValidator, { requiredError: 'Es obligatorio adjuntar una imagen del evento' }),
     content: StringFormField(EventContentValidator),
+    type: StringFormField(EventTypeValidator, {
+      requiredError: 'Es obligatorio seleccionar un tipo de evento',
+    }),
     location: NotRequiredStringFormField(EventLocationValidator),
     startsAt: DateFormField(EventStartDateValidator),
     endsAt: DateFormField(EventEndDateValidator),
@@ -36,6 +40,14 @@ export const eventFormSchema = z
     twitch: NotRequiredStringFormField(EventLinkValidator),
     github: NotRequiredStringFormField(EventLinkValidator),
     linkedin: NotRequiredStringFormField(EventLinkValidator),
+    streamingUrl: NotRequiredStringFormField(EventLinkValidator),
+    place: z
+      .object({
+        id: StringFormField(),
+        address: StringFormField(),
+        name: StringFormField(),
+      })
+      .optional(),
     tags: NotRequiredArrayFormField(z.string()),
     tagColor: NotRequiredStringFormField(),
   })

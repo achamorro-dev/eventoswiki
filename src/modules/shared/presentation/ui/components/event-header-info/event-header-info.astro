@@ -39,9 +39,9 @@ if (!event) {
 }
 
 const { title, tags, tagColor, startsAt, endsAt, location } = event
-const streamingUrl = event instanceof Meetup ? event.streamingUrl : undefined
+const streamingUrl = event.streamingUrl
 const shouldShowStreamingLink = isOrganizer || isAttending
-const place = event instanceof Meetup ? event.place?.toPrimitives() : undefined
+const place = event.place?.toPrimitives()
 ---
 
 <div class="w-full lg:px-6 max-w-5xl xl:px-0">

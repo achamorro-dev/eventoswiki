@@ -4,6 +4,8 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '../../shared/domain/primitives/primitives'
 import { InvalidEventError } from './errors/invalid-event.error'
 import { EventId } from './event-id'
+import { EventPlace } from './event-place'
+import { EventType, EventTypes } from './event-type'
 import { EventValidator } from './validators/event.validator'
 
 export class Event implements EventProps {
@@ -14,6 +16,7 @@ export class Event implements EventProps {
   startsAt: Date
   endsAt: Date
   image: URL
+  type: EventType
   location: string | null
   web?: string
   twitter?: string
@@ -27,10 +30,12 @@ export class Event implements EventProps {
   whatsapp?: string
   discord?: string
   tiktok?: string
+  streamingUrl?: string
   tags: string[]
   tagColor: string
   content: string
   organizationId?: string
+  place?: EventPlace
 
   private constructor(props: EventProps) {
     this.id = props.id
@@ -40,6 +45,7 @@ export class Event implements EventProps {
     this.startsAt = props.startsAt
     this.endsAt = props.endsAt
     this.image = props.image
+    this.type = props.type
     this.location = props.location || null
     this.web = props.web
     this.twitter = props.twitter
@@ -53,10 +59,12 @@ export class Event implements EventProps {
     this.whatsapp = props.whatsapp
     this.discord = props.discord
     this.tiktok = props.tiktok
+    this.streamingUrl = props.streamingUrl
     this.tags = props.tags
     this.tagColor = props.tagColor
     this.content = props.content
     this.organizationId = props.organizationId || undefined
+    this.place = props.place
   }
 
   static fromPrimitives(primitives: Primitives<Event>): Event {
@@ -68,6 +76,7 @@ export class Event implements EventProps {
       startsAt: Datetime.toDate(primitives.startsAt),
       endsAt: Datetime.toDate(primitives.endsAt),
       image: new URL(primitives.image),
+      type: EventType.of(primitives.type),
       location: primitives.location,
       web: primitives.web,
       twitter: primitives.twitter,
@@ -81,10 +90,12 @@ export class Event implements EventProps {
       whatsapp: primitives.whatsapp,
       discord: primitives.discord,
       tiktok: primitives.tiktok,
+      streamingUrl: primitives.streamingUrl,
       tags: primitives.tags,
       tagColor: primitives.tagColor,
       content: primitives.content,
       organizationId: primitives.organizationId,
+      place: primitives.place ? EventPlace.fromPrimitives(primitives.place) : undefined,
     })
   }
 
@@ -92,9 +103,11 @@ export class Event implements EventProps {
     return {
       ...this,
       id: this.id.value,
+      type: this.type.value,
       startsAt: Datetime.toDateTimeIsoString(this.startsAt),
       endsAt: Datetime.toDateTimeIsoString(this.endsAt),
       image: this.image.toString(),
+      place: this.place?.toPrimitives(),
     }
   }
 
@@ -106,6 +119,7 @@ export class Event implements EventProps {
       organizationId,
       id: uuidv4(),
       location: data.location ?? null,
+      type: data.type ?? EventTypes.InPerson,
     })
 
     return event
@@ -138,6 +152,7 @@ export class Event implements EventProps {
     this.startsAt = Datetime.toDate(data.startsAt) ?? this.startsAt
     this.endsAt = Datetime.toDate(data.endsAt) ?? this.endsAt
     this.image = data.image ? new URL(data.image) : this.image
+    this.type = data.type ? EventType.of(data.type) : this.type
     this.location = data.location ?? this.location
     this.web = data.web ?? this.web
     this.twitter = data.twitter ?? this.twitter
@@ -151,10 +166,12 @@ export class Event implements EventProps {
     this.whatsapp = data.whatsapp ?? this.whatsapp
     this.discord = data.discord ?? this.discord
     this.tiktok = data.tiktok ?? this.tiktok
+    this.streamingUrl = data.streamingUrl ?? this.streamingUrl
     this.tags = data.tags ?? this.tags
     this.tagColor = data.tagColor ?? this.tagColor
     this.content = data.content ?? this.content
     this.slug = data.slug ?? this.slug
+    this.place = data.place ? EventPlace.fromPrimitives(data.place) : this.place
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
@@ -174,6 +191,7 @@ export interface EventProps {
   startsAt: Date
   endsAt: Date
   image: URL
+  type: EventType
   location?: string | null
   web?: string
   twitter?: string
@@ -187,10 +205,12 @@ export interface EventProps {
   whatsapp?: string
   discord?: string
   tiktok?: string
+  streamingUrl?: string
   tags: string[]
   tagColor: string
   content: string
   organizationId?: string | null
+  place?: EventPlace
 }
 
 export type EventData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

@@ -61,7 +61,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         id="event-image"
         src={image.toString()}
         alt={`Foto de portada del evento ${title}`}
-        class="w-full md:max-w-[450px] md:max-h-[400px] min-h-[200px] object-cover rounded-xl shadow-md bg-white"
+        class="w-full md:max-w-[800px] md:max-h-[400px] min-h-[200px] min-w-[300px] object-cover rounded-xl shadow-md bg-white"
         loading="lazy"
         onerror="this.src='/not-found.jpg'"
         transition:name={`media-image-${url}`}
@@ -98,13 +98,11 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         web={web}
       />
     </div>
-    <div>
-      <EventHeaderInfo
-        id={event.id.value}
-        type={event instanceof Meetup ? 'meetup' : 'event'}
-        isOrganizer={isOrganizer}
-      />
-    </div>
+    <EventHeaderInfo
+      id={event.id.value}
+      type={event instanceof Meetup ? 'meetup' : 'event'}
+      isOrganizer={isOrganizer}
+    />
   </header>
   <main class="lg:mt-4">
     <Container maxSize="m" className="event-container content-styles">

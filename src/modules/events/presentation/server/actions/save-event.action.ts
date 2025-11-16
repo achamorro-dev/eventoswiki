@@ -2,7 +2,9 @@ import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
 import { EventsLocator } from '@/events/di/events.locator'
 import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
+import type { Place } from '@/modules/places/domain/place'
 import { Datetime } from '@/shared/domain/datetime/datetime'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 
 interface EventDataPayload {
   title: string
@@ -12,6 +14,7 @@ interface EventDataPayload {
   startsAt: Date
   endsAt: Date
   image: string
+  type: string
   location?: string | undefined
   web?: string | undefined
   twitter?: string | undefined
@@ -25,6 +28,8 @@ interface EventDataPayload {
   whatsapp?: string | undefined
   discord?: string | undefined
   tiktok?: string | undefined
+  streamingUrl?: string | undefined
+  place?: Primitives<Place> | undefined
   tags: string[]
   tagColor: string
 }
@@ -38,6 +43,7 @@ export const saveEventAction = defineAction({
     startsAt: z.string().transform(date => Datetime.toDate(date)),
     endsAt: z.string().transform(date => Datetime.toDate(date)),
     image: z.string(),
+    type: z.string(),
     location: z.string().optional(),
     web: z.string().optional(),
     twitter: z.string().optional(),
@@ -51,6 +57,14 @@ export const saveEventAction = defineAction({
     whatsapp: z.string().optional(),
     discord: z.string().optional(),
     tiktok: z.string().optional(),
+    streamingUrl: z.string().optional(),
+    place: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+        address: z.string(),
+      })
+      .optional(),
     organizationId: z.string(),
     eventId: z.string().optional(),
     tags: z.array(z.string()).default([]),

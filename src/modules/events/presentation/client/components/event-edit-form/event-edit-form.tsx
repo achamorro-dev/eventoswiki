@@ -8,8 +8,13 @@ import { useForm } from 'react-hook-form'
 import slugify from 'slugify'
 import { toast } from 'sonner'
 import type { Event } from '@/events/domain/event'
+import { EventTypes } from '@/events/domain/event-type'
+import { EventTypeSelect } from '@/events/presentation/client/components/event-type-select/event-type-select'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
+import type { Place } from '@/modules/places/domain/place'
+import { PlaceEmbedMap } from '@/modules/places/presentation/client/components/place-embed-map/place-embed-map'
+import { PlaceSearch } from '@/modules/places/presentation/client/components/place-search'
 import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
@@ -51,6 +56,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
       startsAt: event?.startsAt ? Datetime.toDate(event?.startsAt) : undefined,
       endsAt: event?.endsAt ? Datetime.toDate(event?.endsAt) : undefined,
       image: event?.image,
+      type: event?.type ?? EventTypes.InPerson,
       location: new ProvinceCollection(provinces).slugWithName(event?.location ?? undefined),
       web: event?.web,
       twitter: event?.twitter || organization?.twitter,
@@ -64,6 +70,14 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
       telegram: event?.telegram || organization?.telegram,
       whatsapp: event?.whatsapp || organization?.whatsapp,
       tiktok: event?.tiktok,
+      streamingUrl: event?.streamingUrl,
+      place: event?.place
+        ? {
+            id: event?.place.id,
+            name: event?.place.name,
+            address: event?.place.address,
+          }
+        : undefined,
       tags: event?.tags ?? [],
       tagColor: event?.tagColor ?? '',
     },
@@ -73,6 +87,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
 
   const title = form.watch('title')
   const startsAt = form.watch('startsAt')
+  const type = form.watch('type')
 
   useEffect(() => {
     if (title && startsAt) {
@@ -80,6 +95,24 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
       form.setValue('slug', `${year}/${slugify(title, { lower: true, remove: /[:,#]/g })}`)
     }
   }, [title, startsAt])
+
+  useEffect(() => {
+    emptyLocationAndPlace()
+    emptyStreamingUrl()
+
+    function emptyLocationAndPlace() {
+      if (type === EventTypes.Online) {
+        form.setValue('location', undefined)
+        form.setValue('place', undefined)
+      }
+    }
+
+    function emptyStreamingUrl() {
+      if (type === EventTypes.InPerson) {
+        form.setValue('streamingUrl', undefined)
+      }
+    }
+  }, [type, form.setValue])
 
   const onSubmit = async (values: EventFormSchema) => {
     const eventValues = {
@@ -249,30 +282,108 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                       )}
                     />
                   </div>
+                  <div className="grid gap-2">
+                    <FormField
+                      control={form.control}
+                      name="type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="type" className="flex items-center gap-1">
+                            Tipo de evento
+                          </FormLabel>
+                          <FormControl>
+                            <EventTypeSelect
+                              id="type"
+                              placeholder="Selecciona un tipo"
+                              value={field.value}
+                              onChange={field.onChange}
+                              className="w-full"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="location"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="location" className="flex items-center gap-1">
-                          Localización
-                        </FormLabel>
-                        <FormControl>
-                          <ProvinceSelect
-                            id="location"
-                            placeholder="Provincia"
-                            provinces={provinces}
-                            className="w-full"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                {(type === EventTypes.InPerson || type === EventTypes.Hybrid) && (
+                  <>
+                    <div className="grid gap-2">
+                      <FormField
+                        control={form.control}
+                        name="location"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor="location" className="flex items-center gap-1">
+                              Localización
+                            </FormLabel>
+                            <FormControl>
+                              <ProvinceSelect
+                                id="location"
+                                placeholder="Provincia"
+                                provinces={provinces}
+                                className="w-full"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <FormField
+                        control={form.control}
+                        name="place"
+                        render={({ field }) => (
+                          <>
+                            <FormItem>
+                              <FormLabel htmlFor="placeDisplayName" className="flex items-center gap-1">
+                                Dirección
+                              </FormLabel>
+                              <FormControl>
+                                <PlaceSearch
+                                  className="w-full"
+                                  value={field.value}
+                                  onPlaceSelect={(place: Primitives<Place>) => {
+                                    form.setValue('place', place)
+                                  }}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                            {field.value && <PlaceEmbedMap place={field.value} height="200px" />}
+                          </>
+                        )}
+                      />
+                    </div>
+                  </>
+                )}
+                {(type === EventTypes.Online || type === EventTypes.Hybrid) && (
+                  <div className="grid gap-2">
+                    <FormField
+                      control={form.control}
+                      name="streamingUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="streamingUrl" className="flex items-center gap-1">
+                            URL de streaming
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              id="streamingUrl"
+                              placeholder="https://..."
+                              type="url"
+                              className="w-full"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
 
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <FormField

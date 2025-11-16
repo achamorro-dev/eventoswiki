@@ -1,3 +1,6 @@
+import type { Primitives } from '@/shared/domain/primitives/primitives'
+import type { Place } from '@/modules/places/domain/place'
+
 export interface AstroDbEventDto {
   id: string | null
   slug: string
@@ -6,6 +9,7 @@ export interface AstroDbEventDto {
   startsAt: Date
   endsAt: Date
   image: string
+  type: string
   location: string | null
   web: string | null
   twitter: string | null
@@ -19,10 +23,12 @@ export interface AstroDbEventDto {
   whatsapp: string | null
   discord: string | null
   tiktok: string | null
+  streamingUrl: string | null
   tags: string
   tagColor: string
   createdAt: Date
   updatedAt: Date
   content: string
   organizationId: string | null
+  place: Primitives<Place> | null
 }

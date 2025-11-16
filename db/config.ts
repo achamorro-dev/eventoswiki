@@ -1,4 +1,5 @@
 import { column, defineDb, defineTable, NOW } from 'astro:db'
+import { EventTypes } from '../src/modules/events/domain/event-type'
 import { MeetupTypes } from '../src/modules/meetups/domain/meetup-type'
 
 export const Event = defineTable({
@@ -10,6 +11,9 @@ export const Event = defineTable({
     startsAt: column.date(),
     endsAt: column.date(),
     image: column.text(),
+    type: column.text({
+      default: EventTypes.InPerson,
+    }),
     location: column.text({ optional: true }),
     web: column.text({ optional: true }),
     twitter: column.text({ optional: true }),
@@ -23,12 +27,14 @@ export const Event = defineTable({
     whatsapp: column.text({ optional: true }),
     discord: column.text({ optional: true }),
     tiktok: column.text({ optional: true }),
+    streamingUrl: column.text({ optional: true }),
     tags: column.text(),
     tagColor: column.text(),
     createdAt: column.date({ default: NOW }),
     updatedAt: column.date({ default: NOW }),
     content: column.text(),
     organizationId: column.text({ optional: true, references: () => Organization.columns.id }),
+    place: column.json({ optional: true }),
   },
 })
 

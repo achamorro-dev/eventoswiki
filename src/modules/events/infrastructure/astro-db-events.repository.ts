@@ -93,6 +93,7 @@ export class AstroDbEventsRepository implements EventsRepository {
           startsAt: value.startsAt,
           endsAt: value.endsAt,
           image: value.image.toString(),
+          type: value.type.value,
           location: value.location,
           web: value.web,
           twitter: value.twitter,
@@ -106,9 +107,11 @@ export class AstroDbEventsRepository implements EventsRepository {
           whatsapp: value.whatsapp,
           discord: value.discord,
           tiktok: value.tiktok,
+          streamingUrl: value.streamingUrl,
           tags: value.tags.length > 0 ? value.tags.join(',') : '',
           tagColor: value.tagColor,
           content: value.content,
+          place: value.place ? value.place.toPrimitives() : null,
         })
         .where(eq(Event.id, value.id.value))
     } catch (error) {
@@ -126,6 +129,7 @@ export class AstroDbEventsRepository implements EventsRepository {
         startsAt: value.startsAt,
         endsAt: value.endsAt,
         image: value.image.toString(),
+        type: value.type.value,
         location: value.location,
         web: value.web,
         twitter: value.twitter,
@@ -139,10 +143,12 @@ export class AstroDbEventsRepository implements EventsRepository {
         whatsapp: value.whatsapp,
         discord: value.discord,
         tiktok: value.tiktok,
+        streamingUrl: value.streamingUrl,
         tags: value.tags.length > 0 ? value.tags.join(',') : '',
         tagColor: value.tagColor,
         content: value.content,
         organizationId: value.organizationId,
+        place: value.place ? value.place.toPrimitives() : null,
       })
     } catch (error) {
       this._mapError(error, value)
