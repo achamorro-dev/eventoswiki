@@ -64,6 +64,7 @@ export const Meetup = defineTable({
     updatedAt: column.date({ default: NOW }),
     content: column.text(),
     organizationId: column.text({ optional: true, references: () => Organization.columns.id }),
+    place: column.json({ optional: true }),
   },
 })
 

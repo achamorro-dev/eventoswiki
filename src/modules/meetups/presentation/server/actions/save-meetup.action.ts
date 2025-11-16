@@ -2,7 +2,9 @@ import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupAlreadyExists } from '@/meetups/domain/errors/meetup-already-exists.error'
+import type { Place } from '@/modules/places/domain/place'
 import { Datetime } from '@/shared/domain/datetime/datetime'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 
 interface MeetupDataPayload {
   title: string
@@ -29,6 +31,7 @@ interface MeetupDataPayload {
   streamingUrl?: string | undefined
   tags: string[]
   tagColor: string
+  place?: Primitives<Place> | undefined
 }
 
 export const saveMeetupAction = defineAction({
@@ -59,6 +62,13 @@ export const saveMeetupAction = defineAction({
     meetupId: z.string().optional(),
     tags: z.array(z.string()).default([]),
     tagColor: z.string().default(''),
+    place: z
+      .object({
+        id: z.string(),
+        name: z.string(),
+        address: z.string(),
+      })
+      .optional(),
   }),
   handler: async input => {
     try {

@@ -1,3 +1,6 @@
+import type { Primitives } from '@/shared/domain/primitives/primitives'
+import type { Place } from '@/modules/places/domain/place'
+
 export interface AstroDbMeetupDto {
   id: string | null
   slug: string
@@ -27,4 +30,5 @@ export interface AstroDbMeetupDto {
   updatedAt: Date
   content: string
   organizationId: string | null
+  place: Primitives<Place> | null
 }

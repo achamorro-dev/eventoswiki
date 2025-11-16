@@ -1,9 +1,19 @@
 'use client'
 
+import { actions } from 'astro:actions'
+import { navigate } from 'astro:transitions/client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useRef, useState } from 'react'
+import type { Control } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
+import slugify from 'slugify'
+import { toast } from 'sonner'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupTypes } from '@/meetups/domain/meetup-type'
+import type { Place } from '@/modules/places/domain/place'
+import { PlaceSearch } from '@/modules/places/presentation/client/components/place-search'
 import type { Organization } from '@/organizations/domain/organization'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
@@ -21,16 +31,8 @@ import { Camera, CameraSlash, Loader, X } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { actions } from 'astro:actions'
-import { navigate } from 'astro:transitions/client'
-import { useEffect, useRef, useState } from 'react'
-import type { Control } from 'react-hook-form'
-import { useForm } from 'react-hook-form'
-import slugify from 'slugify'
-import { toast } from 'sonner'
 import { MeetupTypeSelect } from '../meetup-type-select/meetup-type-select'
-import { meetupFormSchema, type MeetupFormSchema } from './meetup-form-schema'
+import { type MeetupFormSchema, meetupFormSchema } from './meetup-form-schema'
 
 interface Props {
   provinces: Province[]
@@ -69,6 +71,13 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
       whatsapp: meetup?.whatsapp || organization?.whatsapp,
       tiktok: meetup?.tiktok || organization?.tiktok,
       streamingUrl: meetup?.streamingUrl,
+      place: meetup?.place
+        ? {
+            id: meetup?.place.id,
+            name: meetup?.place.name,
+            address: meetup?.place.address,
+          }
+        : undefined,
       tags: meetup?.tags ?? [],
       tagColor: meetup?.tagColor ?? '',
     },
@@ -91,15 +100,20 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
         form.setValue('slug', `${year}/${slugify(title, { lower: true, remove: /[:,#]/g })}`)
       }
     }
-  }, [title, startsAt])
+  }, [title, startsAt, form.setValue])
 
   useEffect(() => {
-    emptyLocation()
+    emptyLocationAndPlace()
     emptyStreamingUrl()
 
-    function emptyLocation() {
+    function emptyLocationAndPlace() {
       if (type === MeetupTypes.Online) {
         form.setValue('location', undefined)
+        form.setValue('place', {
+          address: undefined,
+          id: undefined,
+          name: undefined,
+        })
       }
     }
 
@@ -108,7 +122,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
         form.setValue('streamingUrl', undefined)
       }
     }
-  }, [type])
+  }, [type, form.setValue])
 
   const onSubmit = async (values: MeetupFormSchema) => {
     const meetupValues = {
@@ -139,7 +153,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
     if (image) {
       form.setValue('image', image.toString())
     }
-  }, [image])
+  }, [image, form.setValue])
 
   const onAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -297,29 +311,54 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                   />
                 </div>
                 {(type === MeetupTypes.InPerson || type === MeetupTypes.Hybrid) && (
-                  <div className="grid gap-2">
-                    <FormField
-                      control={control}
-                      name="location"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel htmlFor="location" className="flex items-center gap-1">
-                            Localización
-                          </FormLabel>
-                          <FormControl>
-                            <ProvinceSelect
-                              id="location"
-                              placeholder="Provincia"
-                              provinces={provinces}
-                              className="w-full"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <>
+                    <div className="grid gap-2">
+                      <FormField
+                        control={control}
+                        name="location"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor="location" className="flex items-center gap-1">
+                              Localización
+                            </FormLabel>
+                            <FormControl>
+                              <ProvinceSelect
+                                id="location"
+                                placeholder="Provincia"
+                                provinces={provinces}
+                                className="w-full"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <FormField
+                        control={control}
+                        name="place"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor="placeDisplayName" className="flex items-center gap-1">
+                              Dirección
+                            </FormLabel>
+                            <FormControl>
+                              <PlaceSearch
+                                className="w-full"
+                                value={field.value}
+                                onPlaceSelect={(place: Primitives<Place>) => {
+                                  form.setValue('place', place)
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </>
                 )}
                 {(type === MeetupTypes.Online || type === MeetupTypes.Hybrid) && (
                   <div className="grid gap-2">

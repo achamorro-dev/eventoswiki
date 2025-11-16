@@ -6,6 +6,7 @@ import { InvalidMeetupError } from './errors/invalid-meetup.error'
 import { MeetupAttendeeDoesNotExist } from './errors/meetup-attendee-does-not-exist.error'
 import { MeetupAttendeeId } from './meetup-attendee-id'
 import { MeetupId } from './meetup-id'
+import { MeetupPlace } from './meetup-place'
 import { MeetupType } from './meetup-type'
 import { MeetupValidator } from './validators/meetup.validator'
 
@@ -37,6 +38,7 @@ export class Meetup implements MeetupProps {
   content: string
   organizationId?: string
   attendees?: MeetupAttendeeId[]
+  place?: MeetupPlace
 
   private constructor(props: MeetupProps) {
     this.id = props.id
@@ -66,6 +68,7 @@ export class Meetup implements MeetupProps {
     this.content = props.content
     this.organizationId = props.organizationId || undefined
     this.attendees = props.attendees || undefined
+    this.place = props.place || undefined
   }
 
   static create(data: MeetupData, organizationId: string) {
@@ -110,6 +113,7 @@ export class Meetup implements MeetupProps {
       content: primitives.content,
       organizationId: primitives.organizationId,
       attendees: primitives.attendees?.map(MeetupAttendeeId.of),
+      place: primitives.place ? MeetupPlace.fromPrimitives(primitives.place) : undefined,
     })
   }
 
@@ -122,6 +126,7 @@ export class Meetup implements MeetupProps {
       endsAt: Datetime.toDateTimeIsoString(this.endsAt),
       type: this.type.value,
       attendees: this.attendees?.map(attendee => attendee.value),
+      place: this.place ? this.place.toPrimitives() : undefined,
     }
   }
 
@@ -164,6 +169,7 @@ export class Meetup implements MeetupProps {
     this.content = data.content ?? this.content
     this.type = data.type ? MeetupType.of(data.type) : this.type
     this.slug = data.slug ?? this.slug
+    this.place = data.place ? MeetupPlace.fromPrimitives(data.place) : this.place
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
@@ -246,6 +252,7 @@ export interface MeetupProps {
   content: string
   organizationId?: string | null
   attendees?: MeetupAttendeeId[]
+  place?: MeetupPlace
 }
 
 export type MeetupData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

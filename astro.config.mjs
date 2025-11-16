@@ -1,11 +1,10 @@
 import db from '@astrojs/db'
 import mdx from '@astrojs/mdx'
+import netlify from '@astrojs/netlify'
 import react from '@astrojs/react'
-import { defineConfig, envField } from 'astro/config'
 
 import tailwindcss from '@tailwindcss/vite'
-
-import netlify from '@astrojs/netlify'
+import { defineConfig, envField } from 'astro/config'
 
 // https://astro.build/config
 export default defineConfig({
@@ -43,6 +42,7 @@ export default defineConfig({
       GITHUB_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
       GOOGLE_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
       GOOGLE_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
+      GOOGLE_MAPS_PLACES_API_KEY: envField.string({ context: 'server', access: 'secret' }),
       TWITTER_CLIENT_ID: envField.string({ context: 'server', access: 'secret' }),
       TWITTER_CLIENT_SECRET: envField.string({ context: 'server', access: 'secret' }),
       PINATA_JWT: envField.string({ context: 'server', access: 'secret' }),

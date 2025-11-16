@@ -1,3 +1,4 @@
+import { z } from 'astro/zod'
 import { MeetupContentValidator } from '@/meetups/domain/validators/meetup-content.validator'
 import { MeetupEndDateValidator } from '@/meetups/domain/validators/meetup-end-date.validator'
 import { MeetupImageValidator } from '@/meetups/domain/validators/meetup-image.validator'
@@ -13,7 +14,6 @@ import { DateFormField } from '@/shared/presentation/forms/date-form-field'
 import { NotRequiredArrayFormField } from '@/shared/presentation/forms/not-required-array-form-field'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
 import { StringFormField } from '@/shared/presentation/forms/string-form-field'
-import { z } from 'astro/zod'
 
 export const meetupFormSchema = z
   .object({
@@ -41,6 +41,13 @@ export const meetupFormSchema = z
     github: NotRequiredStringFormField(MeetupLinkValidator),
     linkedin: NotRequiredStringFormField(MeetupLinkValidator),
     streamingUrl: NotRequiredStringFormField(MeetupLinkValidator),
+    place: z
+      .object({
+        id: StringFormField(),
+        address: StringFormField(),
+        name: StringFormField(),
+      })
+      .optional(),
     tags: NotRequiredArrayFormField(z.string()),
     tagColor: NotRequiredStringFormField(),
   })

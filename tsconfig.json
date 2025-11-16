@@ -16,6 +16,7 @@
       "@/users/*": ["./src/modules/users/*"],
       "@/organizations/*": ["./src/modules/organizations/*"],
       "@/files/*": ["./src/modules/files/*"],
+      "@/places/*": ["./src/modules/maps/*"],
       "@/*": ["./src/*"]
     }
   }

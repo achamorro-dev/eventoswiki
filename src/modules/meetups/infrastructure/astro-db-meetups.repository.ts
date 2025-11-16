@@ -30,6 +30,8 @@ import type { MeetupAttendeeId } from '../domain/meetup-attendee-id'
 import type { MeetupId } from '../domain/meetup-id'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 import { AstroDbMeetupMapper } from './mappers/astro-db-meetup.mapper'
+import type { AstroDbMeetupDto } from './dtos/astro-db-meetup.dto'
+import type { AstroDbMeetupProvinceDto } from './dtos/astro-db-meetup-province.dto'
 
 export class AstroDbMeetupsRepository implements MeetupsRepository {
   async match(criteria: MeetupsCriteria): Promise<PaginatedResult<MeetupEntity>> {
@@ -48,7 +50,14 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     const count = await countQuery
     const totalPages = Math.ceil(count[0].count / criteria.limit)
 
-    return new PaginatedResult(AstroDbMeetupMapper.toDomainList(meetups), totalPages, criteria.page, criteria.limit)
+    return new PaginatedResult(
+      AstroDbMeetupMapper.toDomainList(
+        meetups as { Meetup: AstroDbMeetupDto; Province: AstroDbMeetupProvinceDto | null }[],
+      ),
+      totalPages,
+      criteria.page,
+      criteria.limit,
+    )
   }
 
   async find(id: MeetupId): Promise<MeetupEntity> {
@@ -65,7 +74,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     const attendees = await db.select().from(MeetupAttendee).where(eq(MeetupAttendee.meetupId, id.value))
 
     return AstroDbMeetupMapper.toDomain({
-      meetupDto: result.at(0)!.Meetup,
+      meetupDto: result.at(0)!.Meetup as AstroDbMeetupDto,
       provinceDto: result.at(0)!.Province,
       attendees: attendees.map(attendee => ({ meetupId: attendee.meetupId, userId: attendee.userId })),
     })
@@ -84,7 +93,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     }
 
     return AstroDbMeetupMapper.toDomain({
-      meetupDto: result.at(0)!.Meetup,
+      meetupDto: result.at(0)!.Meetup as AstroDbMeetupDto,
       provinceDto: result.at(0)!.Province,
       attendees: [],
     })
@@ -92,7 +101,9 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
 
   async findAll(): Promise<MeetupEntity[]> {
     const meetups = await db.select().from(Meetup).leftJoin(Province, eq(Province.slug, Meetup.location))
-    return AstroDbMeetupMapper.toDomainList(meetups)
+    return AstroDbMeetupMapper.toDomainList(
+      meetups as { Meetup: AstroDbMeetupDto; Province: AstroDbMeetupProvinceDto | null }[],
+    )
   }
 
   async save(value: MeetupEntity): Promise<void> {
@@ -139,6 +150,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
           tags: value.tags.length > 0 ? value.tags.join(',') : '',
           tagColor: value.tagColor,
           content: value.content,
+          place: value.place ? value.place.toPrimitives() : null,
         })
         .where(eq(Meetup.id, value.id.value))
     } catch (error) {
@@ -175,6 +187,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
         tagColor: value.tagColor,
         content: value.content,
         organizationId: value.organizationId,
+        place: value.place ? value.place.toPrimitives() : null,
       })
     } catch (error) {
       this._mapError(error, value)
