@@ -6,10 +6,10 @@ export const StringFormField = <Value>(
   validator?: ValidatorConstructor<Value>,
   options?: { requiredError?: string },
 ) => {
-  const formField = z.string({ required_error: options?.requiredError })
+  const baseField = z.string({ required_error: options?.requiredError ?? 'Este campo es obligatorio' })
   if (validator) {
-    formField.superRefine((value, context) => validateField<Value>(value as Value, context, validator))
+    return baseField.superRefine((value, context) => validateField<Value>(value as Value, context, validator))
   }
 
-  return formField
+  return baseField
 }

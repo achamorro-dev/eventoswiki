@@ -50,10 +50,10 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
 
   const form = useForm<MeetupFormSchema>({
     defaultValues: {
-      title: meetup?.title ?? '',
-      slug: meetup?.slug ?? '',
-      shortDescription: meetup?.shortDescription ?? '',
-      content: meetup?.content ?? '',
+      title: meetup?.title,
+      slug: meetup?.slug,
+      shortDescription: meetup?.shortDescription,
+      content: meetup?.content,
       startsAt: meetup?.startsAt ? Datetime.toDate(meetup?.startsAt) : undefined,
       endsAt: meetup?.endsAt ? Datetime.toDate(meetup?.endsAt) : undefined,
       image: meetup?.image,

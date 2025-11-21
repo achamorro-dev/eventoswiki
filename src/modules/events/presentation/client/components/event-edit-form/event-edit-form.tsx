@@ -48,11 +48,12 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
   const [isSaving, setIsSaving] = useState(false)
 
   const form = useForm<EventFormSchema>({
+    mode: 'onChange',
     defaultValues: {
-      title: event?.title ?? '',
-      slug: event?.slug ?? '',
-      shortDescription: event?.shortDescription ?? '',
-      content: event?.content ?? '',
+      title: event?.title,
+      slug: event?.slug,
+      shortDescription: event?.shortDescription,
+      content: event?.content,
       startsAt: event?.startsAt ? Datetime.toDate(event?.startsAt) : undefined,
       endsAt: event?.endsAt ? Datetime.toDate(event?.endsAt) : undefined,
       image: event?.image,
@@ -143,7 +144,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
     if (image) {
       form.setValue('image', image.toString())
     }
-  }, [image])
+  }, [image, form.setValue])
 
   const onAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -165,6 +166,8 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
     const newTags = tags.toSpliced(index, 1)
     form.setValue('tags', newTags)
   }
+
+  console.log(form.formState.errors)
 
   return (
     <Form {...form}>

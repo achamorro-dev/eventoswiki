@@ -37,9 +37,9 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
 
   const form = useForm<z.infer<typeof organizationFormSchema>>({
     defaultValues: {
-      name: organization?.name ?? '',
+      name: organization?.name,
       image: organization?.image ?? 'https://github.com/shadcn.png',
-      bio: organization?.bio ?? '',
+      bio: organization?.bio,
       handle: organization?.handle,
       location: new ProvinceCollection(provinces).slugWithName(organization?.location ?? undefined),
       web: organization?.web,
@@ -52,6 +52,7 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
       whatsapp: organization?.whatsapp,
       tiktok: organization?.tiktok,
     },
+    // @ts-expect-error - Type instantiation is excessively deep due to complex Zod schema inference
     resolver: zodResolver(organizationFormSchema),
   })
 
@@ -88,7 +89,7 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
     if (image) {
       form.setValue('image', image.toString())
     }
-  }, [image])
+  }, [image, form.setValue])
 
   return (
     <Form {...form}>
