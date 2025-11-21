@@ -59,8 +59,8 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
   const name = form.watch('name')
 
   useEffect(() => {
-    form.setValue('handle', slugify(name, { lower: true }))
-  }, [name])
+    form.setValue('handle', slugify(name ?? '', { lower: true }))
+  }, [name, form.setValue])
 
   const onSubmit = async (values: z.infer<typeof organizationFormSchema>) => {
     const organizationValues = {
@@ -100,7 +100,7 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
               <div className="flex flex-col items-center gap-2">
                 <Avatar className="h-24 w-24">
                   <AvatarImage src={form.watch('image')} alt="Avatar" />
-                  <AvatarFallback>{form.watch('name').slice(0, 2)}</AvatarFallback>
+                  <AvatarFallback>{name?.slice(0, 2)}</AvatarFallback>
                 </Avatar>
                 <Button
                   variant="outline"
