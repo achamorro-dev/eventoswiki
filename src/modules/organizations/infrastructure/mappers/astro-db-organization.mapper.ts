@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
 import { Organization } from '@/organizations/domain/organization'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { AstroDbProvinceDto } from '@/shared/infrastructure/provinces/astro-db-province-dto'

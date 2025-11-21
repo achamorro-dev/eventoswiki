@@ -38,7 +38,17 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       .innerJoin(OrganizationUser, eq(Organization.id, OrganizationUser.organizationId))
       .where(eq(OrganizationUser.userId, userId))
 
-    return AstroOrganizationMapper.toDomainList(result)
+    const organizationIds = result.map(({ Organization }) => Organization.id)
+    const followersResult = await this.getFollowersMapByOrganizationIds(organizationIds)
+
+    return result.map(({ Organization, Province }) =>
+      AstroOrganizationMapper.toDomain({
+        organization: Organization,
+        province: Province,
+        organizerIds: [],
+        followerIds: followersResult.get(Organization.id) ?? [],
+      }),
+    )
   }
 
   async save(value: OrganizationEntity): Promise<void> {
@@ -230,8 +240,17 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       .leftJoin(Province, eq(Province.slug, Organization.location))
       .innerJoin(OrganizationFollower, eq(Organization.id, OrganizationFollower.organizationId))
       .where(eq(OrganizationFollower.userId, userId))
+    const organizationIds = result.map(({ Organization }) => Organization.id)
+    const followersResult = await this.getFollowersMapByOrganizationIds(organizationIds)
 
-    return AstroOrganizationMapper.toDomainList(result)
+    return result.map(({ Organization, Province }) =>
+      AstroOrganizationMapper.toDomain({
+        organization: Organization,
+        province: Province,
+        organizerIds: [],
+        followerIds: followersResult.get(Organization.id) ?? [],
+      }),
+    )
   }
 
   async match(criteria: OrganizationsCriteria): Promise<PaginatedResult<OrganizationEntity>> {

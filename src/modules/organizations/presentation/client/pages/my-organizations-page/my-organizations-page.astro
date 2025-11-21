@@ -14,8 +14,11 @@ interface Props {
 
 const { userId, activeTab } = Astro.props
 
-const userOrganizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
-const organizationsFollowed = await OrganizationsLocator.getOrganizationsFollowedByQuery().execute({ userId })
+const getUserOrganizationsQuery = () => OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+const getOrganizationsFollowedQuery = () => OrganizationsLocator.getOrganizationsFollowedByQuery().execute({ userId })
+
+const userOrganizations = activeTab === 'member' ? await getUserOrganizationsQuery() : []
+const organizationsFollowed = activeTab === 'following' ? await getOrganizationsFollowedQuery() : []
 ---
 
 <header class="mb-4 lg:mb-8">
