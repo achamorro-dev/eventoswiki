@@ -13,10 +13,10 @@
     "format": "biome format --write ."
   },
   "dependencies": {
-    "@astrojs/db": "0.18.0",
-    "@astrojs/mdx": "4.3.7",
-    "@astrojs/netlify": "^6.5.13",
-    "@astrojs/react": "4.4.0",
+    "@astrojs/db": "0.18.3",
+    "@astrojs/mdx": "4.3.12",
+    "@astrojs/netlify": "^6.6.2",
+    "@astrojs/react": "4.4.2",
     "@fontsource-variable/inter": "^5.2.5",
     "@googlemaps/places": "^2.2.0",
     "@hookform/resolvers": "^5.0.1",
@@ -50,7 +50,7 @@
     "@types/react-dom": "18.2.7",
     "add-to-calendar-button-react": "2.4.1",
     "arctic": "^2.3.4",
-    "astro": "5.14.8",
+    "astro": "5.16.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "2.1.0",
     "cmdk": "^1.1.1",
