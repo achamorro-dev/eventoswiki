@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useRef, useState } from 'react'
 import type { Control } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import slugify from 'slugify'
 import { toast } from 'sonner'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
@@ -21,6 +20,7 @@ import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
 import { ColorPicker } from '@/ui/color-picker'
@@ -98,7 +98,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
     function updateSlug() {
       if (title && startsAt) {
         const year = startsAt.getFullYear()
-        form.setValue('slug', `${year}/${slugify(title, { lower: true, remove: /[:,#]/g })}`)
+        form.setValue('slug', `${year}/${new SlugGenerator(title).generate()}`)
       }
     }
   }, [title, startsAt, form.setValue])

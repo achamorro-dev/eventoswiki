@@ -5,7 +5,6 @@ import { navigate } from 'astro:transitions/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import slugify from 'slugify'
 import { toast } from 'sonner'
 import type { Event } from '@/events/domain/event'
 import { EventTypes } from '@/events/domain/event-type'
@@ -21,6 +20,7 @@ import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
 import { ColorPicker } from '@/ui/color-picker'
@@ -93,9 +93,9 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
   useEffect(() => {
     if (title && startsAt) {
       const year = startsAt.getFullYear()
-      form.setValue('slug', `${year}/${slugify(title, { lower: true, remove: /[:,#]/g })}`)
+      form.setValue('slug', `${year}/${new SlugGenerator(title).generate()}`)
     }
-  }, [title, startsAt])
+  }, [title, startsAt, form.setValue])
 
   useEffect(() => {
     emptyLocationAndPlace()

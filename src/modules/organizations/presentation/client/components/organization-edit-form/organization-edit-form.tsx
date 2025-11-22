@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type { z } from 'astro/zod'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import slugify from 'slugify'
 import { toast } from 'sonner'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import type { Organization } from '@/organizations/domain/organization'
@@ -14,6 +13,7 @@ import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
 import { Button } from '@/ui/components/button'
 import { SocialForm } from '@/ui/components/social-form/social-form'
@@ -59,7 +59,7 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
   const name = form.watch('name')
 
   useEffect(() => {
-    form.setValue('handle', slugify(name ?? '', { lower: true }))
+    form.setValue('handle', new SlugGenerator(name ?? '').generate())
   }, [name, form.setValue])
 
   const onSubmit = async (values: z.infer<typeof organizationFormSchema>) => {

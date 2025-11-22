@@ -64,7 +64,8 @@
         "useNodejsImportProtocol": "off"
       },
       "suspicious": {
-        "recommended": true
+        "recommended": true,
+        "noStaticOnlyClass": "off"
       },
       "nursery": {
         "useSortedClasses": "warn"
