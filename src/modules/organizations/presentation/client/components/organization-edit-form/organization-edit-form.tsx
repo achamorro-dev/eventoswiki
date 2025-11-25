@@ -52,7 +52,6 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
       whatsapp: organization?.whatsapp,
       tiktok: organization?.tiktok,
     },
-    // @ts-expect-error - Type instantiation is excessively deep due to complex Zod schema inference
     resolver: zodResolver(organizationFormSchema),
   })
 

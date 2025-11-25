@@ -5,7 +5,7 @@ import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { cn } from '@/ui/lib/utils'
 
 interface PlaceEmbedMapProps {
-  place: Primitives<Place>
+  place: Primitives<Place> | undefined
   height?: string | number
   className?: string
 }
@@ -13,7 +13,7 @@ interface PlaceEmbedMapProps {
 export function PlaceEmbedMap({ place, height = '400px', className }: PlaceEmbedMapProps) {
   const apiKey = import.meta.env.PUBLIC_GOOGLE_MAPS_EMBED_API_KEY
 
-  if (!place.id) {
+  if (!place?.id) {
     return null
   }
 

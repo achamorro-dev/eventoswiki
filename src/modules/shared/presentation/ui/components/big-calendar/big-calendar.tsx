@@ -29,7 +29,6 @@ interface CustomCSS extends CSSProperties {
   '--event-color': string
 }
 
-// @ts-expect-error
 const allViews = [Views.MONTH]
 
 export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate, className }) => {

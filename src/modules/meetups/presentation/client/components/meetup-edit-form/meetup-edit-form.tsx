@@ -82,8 +82,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
       tags: meetup?.tags ?? [],
       tagColor: meetup?.tagColor ?? '',
     },
-    // @ts-expect-error - Type instantiation is excessively deep due to complex Zod schema inference
-    resolver: zodResolver(meetupFormSchema) as any,
+    resolver: zodResolver(meetupFormSchema),
   })
 
   const control = form.control as Control<MeetupFormSchema>
@@ -110,11 +109,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
     function emptyLocationAndPlace() {
       if (type === MeetupTypes.Online) {
         form.setValue('location', undefined)
-        form.setValue('place', {
-          address: undefined,
-          id: undefined,
-          name: undefined,
-        })
+        form.setValue('place', undefined)
       }
     }
 
@@ -349,7 +344,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                               <FormControl>
                                 <PlaceSearch
                                   className="w-full"
-                                  value={field.value}
+                                  value={field.value as Primitives<Place> | undefined}
                                   onPlaceSelect={(place: Primitives<Place>) => {
                                     form.setValue('place', place)
                                   }}
@@ -357,7 +352,7 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                               </FormControl>
                               <FormMessage />
                             </FormItem>
-                            {field.value && <PlaceEmbedMap place={field.value} height="200px" />}
+                            {field.value && <PlaceEmbedMap place={field.value as Primitives<Place> | undefined} height="200px" />}
                           </>
                         )}
                       />

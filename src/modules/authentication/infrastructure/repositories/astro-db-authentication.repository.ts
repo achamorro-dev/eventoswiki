@@ -1,4 +1,4 @@
-import { db, eq, User } from 'astro:db'
+import { db, eq, User as UserTable } from 'astro:db'
 import { v4 as uuidv4 } from 'uuid'
 import type { AuthenticationRepository } from '@/authentication/domain/authentication.repository'
 import { LoggedUser } from '@/authentication/domain/logged-user'
@@ -9,7 +9,7 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
   async getLoggedUser(filters: LoggedUserFilters): Promise<LoggedUser | null> {
     const users = await db
       .select()
-      .from(User)
+      .from(UserTable)
       //@ts-expect-error
       .where(...this.getLoggedUserQuery(filters))
 
@@ -24,7 +24,7 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
       name: user.name,
       username: user.username,
       email: user.email,
-      avatar: user.avatar,
+      avatar: user.avatar ?? '',
     })
   }
 
@@ -32,28 +32,27 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
     const filters = []
 
     if (loggedUserFilters.githubId) {
-      filters.push(eq(User.githubId, loggedUserFilters.githubId))
+      filters.push(eq(UserTable.githubId, loggedUserFilters.githubId))
     }
 
     if (loggedUserFilters.googleId) {
-      filters.push(eq(User.googleId, loggedUserFilters.googleId))
+      filters.push(eq(UserTable.googleId, loggedUserFilters.googleId))
     }
 
     return filters
   }
 
   async createLoggedUser(user: LoggedUser): Promise<void> {
-    await db.insert(User).values([
-      {
-        id: user.id,
-        githubId: user.githubId,
-        googleId: user.googleId,
-        name: user.name,
-        username: user.username,
-        email: user.email ?? undefined,
-        avatar: user.avatar,
-      },
-    ])
+    await db.insert(UserTable).values({
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      githubId: user.githubId,
+      googleId: user.googleId,
+      twitterId: user.twitterId,
+      email: user.email,
+      avatar: user.avatar,
+    })
   }
 
   generateId(): string {
@@ -61,7 +60,7 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
   }
 
   async deleteLoggedUser(userId: LoggedUserId): Promise<void> {
-    await db.delete(User).where(eq(User.id, userId.value))
+    await db.delete(UserTable).where(eq(UserTable.id, userId.value))
     return
   }
 }

@@ -10,7 +10,6 @@ import type { Node as ProseMirrorNode } from '@tiptap/pm/model'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
 
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
 import { RichEditorToolbar } from './rich-editor-toolbar'
@@ -69,6 +68,7 @@ export const RichEditor = (props: RichEditorProps) => {
       const placeholderUrl = createLoadingImagePlaceholder()
 
       // Insert placeholder image immediately
+      // @ts-expect-error
       currentEditor.chain().focus().setImage({ src: placeholderUrl, 'data-upload-id': uploadId }).run()
 
       try {
@@ -92,6 +92,7 @@ export const RichEditor = (props: RichEditorProps) => {
             const node = editor.state.doc.nodeAt(imageNodePos)
             if (node) {
               const newAttrs = { ...node.attrs, src: url }
+              //@ts-expect-error
               delete newAttrs['data-upload-id']
               tr.setNodeMarkup(imageNodePos, undefined, newAttrs)
               editor.view.dispatch(tr)
@@ -170,11 +171,12 @@ export const RichEditor = (props: RichEditorProps) => {
     Image.extend({
       addAttributes() {
         return {
+          //@ts-ignore
           ...this.parent?.(),
           'data-upload-id': {
             default: null,
-            parseHTML: element => element.getAttribute('data-upload-id'),
-            renderHTML: attributes => {
+            parseHTML: (element: HTMLElement) => element.getAttribute('data-upload-id'),
+            renderHTML: (attributes: Record<string, string>) => {
               if (!attributes['data-upload-id']) {
                 return {}
               }
@@ -322,14 +324,14 @@ export const RichEditor = (props: RichEditorProps) => {
           const element = domNode instanceof HTMLElement ? domNode : (domNode.parentElement as HTMLElement)
           if (element) {
             // For images, highlight the img element
-            if (targetNode.type.name === 'image') {
+            if ((targetNode as ProseMirrorNode).type.name === 'image') {
               const img = element.tagName === 'IMG' ? element : element.querySelector('img')
               if (img) {
                 img.classList.add('tiptap-media-highlighted')
               }
             }
             // For youtube, highlight the iframe or its container
-            if (targetNode.type.name === 'youtube') {
+            if ((targetNode as ProseMirrorNode).type.name === 'youtube') {
               const iframe = element.tagName === 'IFRAME' ? element : element.querySelector('iframe')
               if (iframe) {
                 iframe.classList.add('tiptap-media-highlighted')

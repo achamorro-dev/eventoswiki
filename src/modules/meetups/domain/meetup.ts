@@ -71,7 +71,7 @@ export class Meetup implements MeetupProps {
     this.place = props.place || undefined
   }
 
-  static create(data: MeetupData, organizationId: string) {
+  static create(data: MeetupEditableData, organizationId: string) {
     Meetup.ensureIsValidMeetup(data)
 
     const meetup = Meetup.fromPrimitives({
@@ -142,7 +142,7 @@ export class Meetup implements MeetupProps {
     return Datetime.toDateIsoString(this.startsAt) === Datetime.toDateIsoString(this.endsAt)
   }
 
-  update(data: MeetupData) {
+  update(data: MeetupEditableData) {
     Meetup.ensureIsValidMeetup(data)
 
     this.title = data.title ?? this.title
@@ -216,7 +216,7 @@ export class Meetup implements MeetupProps {
     return Datetime.isBefore(this.startsAt, Datetime.now())
   }
 
-  private static ensureIsValidMeetup(data: MeetupData) {
+  private static ensureIsValidMeetup(data: MeetupEditableData) {
     const validator = new MeetupValidator(data)
     const error = validator.validate()
 
@@ -255,4 +255,4 @@ export interface MeetupProps {
   place?: MeetupPlace
 }
 
-export type MeetupData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>
+export type MeetupEditableData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

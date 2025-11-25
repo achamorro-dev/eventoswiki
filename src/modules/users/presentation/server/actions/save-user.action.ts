@@ -6,6 +6,7 @@ import { UserNotFoundError } from '@/users/domain/errors/user-not-found.error'
 import { UsernameAlreadyExistError } from '@/users/domain/errors/username-already-exist.error'
 
 export const saveUserAction = defineAction({
+  accept: 'json',
   input: z.object({
     name: z.string(),
     email: z.string().email().nullable(),

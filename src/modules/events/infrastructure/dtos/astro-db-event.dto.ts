@@ -30,5 +30,5 @@ export interface AstroDbEventDto {
   updatedAt: Date
   content: string
   organizationId: string | null
-  place: Primitives<Place> | null
+  place: Primitives<Place> | null | undefined
 }

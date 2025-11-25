@@ -39,17 +39,23 @@ export class MeetupsLocator {
   }
 
   static updateMeetupCommand = (): UpdateMeetupCommand => {
-    return new UpdateMeetupCommand(MeetupsLocator.createMeetupsRepository())
+    return new UpdateMeetupCommand(
+      MeetupsLocator.createMeetupsRepository(),
+      OrganizationsLocator.userIsOrganizerEnsurer(),
+    )
   }
 
   static createMeetupCommand = (): CreateMeetupCommand => {
-    return new CreateMeetupCommand(MeetupsLocator.createMeetupsRepository())
+    return new CreateMeetupCommand(
+      MeetupsLocator.createMeetupsRepository(),
+      OrganizationsLocator.userIsOrganizerEnsurer(),
+    )
   }
 
   static deleteMeetupCommand = (): DeleteMeetupCommand => {
     return new DeleteMeetupCommand(
       MeetupsLocator.createMeetupsRepository(),
-      OrganizationsLocator.getUserOrganizationsQuery(),
+      OrganizationsLocator.userIsOrganizerEnsurer(),
     )
   }
 

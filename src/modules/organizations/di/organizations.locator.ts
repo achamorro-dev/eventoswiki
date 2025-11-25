@@ -8,6 +8,7 @@ import { GetUserOrganizationsQuery } from '../application/get-user-organizations
 import { MatchOrganizationsQuery } from '../application/match-organizations.query'
 import { SaveOrganizationCommand } from '../application/save-organization.command'
 import { UnfollowOrganizationCommand } from '../application/unfollow-organization.command'
+import { UserIsOrganizerEnsurer } from '../application/user-is-organizer-ensurer.service'
 import type { OrganizationsRepository } from '../domain/organizations.repository'
 import { AstroDbOrganizationsRepository } from '../infrastructure/astro-db-organizations.repository'
 
@@ -54,5 +55,9 @@ export class OrganizationsLocator {
 
   static matchOrganizationsQuery() {
     return new MatchOrganizationsQuery(OrganizationsLocator.getOrganizationsRepository())
+  }
+
+  static userIsOrganizerEnsurer(): UserIsOrganizerEnsurer {
+    return new UserIsOrganizerEnsurer(OrganizationsLocator.getUserOrganizationsQuery())
   }
 }

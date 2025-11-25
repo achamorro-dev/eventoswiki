@@ -1,11 +1,11 @@
 import { Command } from '@/shared/application/use-case/command'
-import type { OrganizationData } from '../domain/organization'
+import type { OrganizationEditableData } from '../domain/organization'
 import { OrganizationId } from '../domain/organization-id'
 import type { OrganizationsRepository } from '../domain/organizations.repository'
 
 interface Param {
   organizationId: string
-  data: OrganizationData
+  data: OrganizationEditableData
 }
 export class SaveOrganizationCommand extends Command<Param, void> {
   constructor(private readonly organizationsRepository: OrganizationsRepository) {

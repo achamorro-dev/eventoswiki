@@ -4,6 +4,7 @@ import { PlacesLocator } from '@/modules/places/di/places.locator'
 import type { Place } from '@/modules/places/domain/place'
 
 export const searchPlacesAction = defineAction({
+  accept: 'json',
   input: z.object({
     query: z.string().min(1, 'La búsqueda no puede estar vacía'),
   }),

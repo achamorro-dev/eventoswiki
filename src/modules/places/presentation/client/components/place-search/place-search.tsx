@@ -8,7 +8,6 @@ import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from '@/ui/command'
 import { InputError } from '@/ui/components/form/input-error/input-error'
 import { cn } from '@/ui/lib/utils'
-import { PlaceEmbedMap } from '../place-embed-map/place-embed-map'
 
 interface PlaceSearchProps {
   onPlaceSelect?: (place: Primitives<Place>) => void

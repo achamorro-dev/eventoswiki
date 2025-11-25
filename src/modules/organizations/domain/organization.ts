@@ -29,7 +29,7 @@ export interface OrganizationProps {
   followers: string[]
 }
 
-export type OrganizationData = Primitives<Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt' | 'organizers'>>
+export type OrganizationEditableData = Primitives<Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt' | 'organizers'>>
 
 export class Organization implements OrganizationProps {
   readonly id: OrganizationId
@@ -80,7 +80,7 @@ export class Organization implements OrganizationProps {
     this.followers = props.followers
   }
 
-  static create(props: OrganizationData): Organization {
+  static create(props: OrganizationEditableData): Organization {
     Organization.ensureIsValidOrganization(props)
 
     return new Organization({
@@ -129,7 +129,6 @@ export class Organization implements OrganizationProps {
       createdAt: Datetime.toDateIsoString(this.createdAt),
       updatedAt: Datetime.toDateIsoString(this.updatedAt),
       followers: this.followers,
-      followersCount: this.followersCount,
     }
   }
 
@@ -155,7 +154,7 @@ export class Organization implements OrganizationProps {
     return this.followers.length
   }
 
-  update(newOrganizationData: OrganizationData) {
+  update(newOrganizationData: OrganizationEditableData) {
     Organization.ensureIsValidOrganization(newOrganizationData)
 
     this.handle = newOrganizationData.handle ?? this.handle
@@ -191,7 +190,7 @@ export class Organization implements OrganizationProps {
     this.followers = this.followers.filter(follower => follower !== userId)
   }
 
-  private static ensureIsValidOrganization(organization: OrganizationData) {
+  private static ensureIsValidOrganization(organization: OrganizationEditableData) {
     const validator = new OrganizationValidator(organization)
     const error = validator.validate()
 

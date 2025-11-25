@@ -8,6 +8,7 @@ export const deleteMeetupAction = defineAction({
   input: z.object({
     meetupId: z.string(),
   }),
+  accept: 'json',
   handler: async (input, context) => {
     try {
       const { user, session } = context.locals

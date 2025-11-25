@@ -1,9 +1,9 @@
 import { Command } from '@/shared/application/use-case/command'
-import { Organization, type OrganizationData } from '../domain/organization'
+import { Organization, type OrganizationEditableData } from '../domain/organization'
 import type { OrganizationsRepository } from '../domain/organizations.repository'
 
 interface Param {
-  data: OrganizationData
+  data: OrganizationEditableData
   organizerId: string
 }
 export class CreateOrganizationCommand extends Command<Param, void> {

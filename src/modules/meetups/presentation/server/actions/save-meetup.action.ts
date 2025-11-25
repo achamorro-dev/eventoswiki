@@ -1,81 +1,31 @@
 import { ActionError, defineAction } from 'astro:actions'
-import { z } from 'astro/zod'
+import type { z } from 'astro:content'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupAlreadyExists } from '@/meetups/domain/errors/meetup-already-exists.error'
-import type { Place } from '@/modules/places/domain/place'
+import type { MeetupEditableData } from '@/meetups/domain/meetup'
 import { Datetime } from '@/shared/domain/datetime/datetime'
-import type { Primitives } from '@/shared/domain/primitives/primitives'
-
-interface MeetupDataPayload {
-  title: string
-  slug: string
-  shortDescription: string
-  content: string
-  startsAt: Date
-  endsAt: Date
-  image: string
-  type: string
-  location?: string | undefined
-  web?: string | undefined
-  twitter?: string | undefined
-  linkedin?: string | undefined
-  youtube?: string | undefined
-  twitch?: string | undefined
-  facebook?: string | undefined
-  instagram?: string | undefined
-  github?: string | undefined
-  telegram?: string | undefined
-  whatsapp?: string | undefined
-  discord?: string | undefined
-  tiktok?: string | undefined
-  streamingUrl?: string | undefined
-  tags: string[]
-  tagColor: string
-  place?: Primitives<Place> | undefined
-}
+import { saveMeetupActionSchema } from './save-meetup-action.schema'
 
 export const saveMeetupAction = defineAction({
-  input: z.object({
-    title: z.string(),
-    slug: z.string(),
-    shortDescription: z.string(),
-    content: z.string(),
-    startsAt: z.string().transform(date => Datetime.toDate(date)),
-    endsAt: z.string().transform(date => Datetime.toDate(date)),
-    image: z.string(),
-    type: z.string(),
-    location: z.string().optional(),
-    web: z.string().optional(),
-    twitter: z.string().optional(),
-    linkedin: z.string().optional(),
-    youtube: z.string().optional(),
-    twitch: z.string().optional(),
-    facebook: z.string().optional(),
-    instagram: z.string().optional(),
-    github: z.string().optional(),
-    telegram: z.string().optional(),
-    whatsapp: z.string().optional(),
-    discord: z.string().optional(),
-    tiktok: z.string().optional(),
-    streamingUrl: z.string().optional(),
-    organizationId: z.string(),
-    meetupId: z.string().optional(),
-    tags: z.array(z.string()).default([]),
-    tagColor: z.string().default(''),
-    place: z
-      .object({
-        id: z.string(),
-        name: z.string(),
-        address: z.string(),
-      })
-      .optional(),
-  }),
-  handler: async input => {
+  accept: 'json',
+  input: saveMeetupActionSchema,
+  handler: async (input, context) => {
     try {
-      const { organizationId, meetupId, ...newMeetup } = input
+      const { organizationId, meetupId } = input
+      const userId = context.locals.user?.id
+      const meetupData = _parseMeetupDataPayload(input)
+
+      if (!userId) {
+        throw new ActionError({
+          code: 'UNAUTHORIZED',
+          message: 'No estás autorizado para guardar este meetup',
+        })
+      }
 
       const isNewMeetup = !meetupId
-      isNewMeetup ? await _createMeetup(organizationId, newMeetup) : await _saveMeetup(meetupId, newMeetup)
+      isNewMeetup
+        ? await _createMeetup(organizationId, meetupData, userId)
+        : await _saveMeetup(meetupId, meetupData, userId)
 
       return
     } catch (error) {
@@ -95,9 +45,10 @@ export const saveMeetupAction = defineAction({
   },
 })
 
-async function _createMeetup(organizationId: string, newMeetup: MeetupDataPayload) {
+async function _createMeetup(organizationId: string, newMeetup: MeetupEditableData, userId: string) {
   await MeetupsLocator.createMeetupCommand().execute({
     organizationId,
+    userId,
     data: {
       ...newMeetup,
       location: newMeetup.location ?? null,
@@ -107,9 +58,10 @@ async function _createMeetup(organizationId: string, newMeetup: MeetupDataPayloa
   })
 }
 
-async function _saveMeetup(meetupId: string, newMeetup: MeetupDataPayload) {
+async function _saveMeetup(meetupId: string, newMeetup: MeetupEditableData, userId: string) {
   await MeetupsLocator.updateMeetupCommand().execute({
     meetupId,
+    userId,
     data: {
       ...newMeetup,
       location: newMeetup.location ?? null,
@@ -117,4 +69,40 @@ async function _saveMeetup(meetupId: string, newMeetup: MeetupDataPayload) {
       endsAt: Datetime.toDateTimeIsoString(newMeetup.endsAt),
     },
   })
+}
+
+function _parseMeetupDataPayload(input: z.infer<typeof saveMeetupActionSchema>): MeetupEditableData {
+  return {
+    title: input.title,
+    slug: input.slug,
+    shortDescription: input.shortDescription,
+    content: input.content,
+    startsAt: Datetime.toDateIsoString(input.startsAt),
+    endsAt: Datetime.toDateIsoString(input.endsAt),
+    image: input.image,
+    type: input.type,
+    location: input.location ?? null,
+    web: input.web,
+    twitter: input.twitter,
+    linkedin: input.linkedin,
+    youtube: input.youtube,
+    twitch: input.twitch,
+    facebook: input.facebook,
+    instagram: input.instagram,
+    github: input.github,
+    telegram: input.telegram,
+    whatsapp: input.whatsapp,
+    discord: input.discord,
+    tiktok: input.tiktok,
+    streamingUrl: input.streamingUrl,
+    tags: input.tags,
+    tagColor: input.tagColor,
+    place: input.place
+      ? {
+          id: input.place.id,
+          name: input.place.name,
+          address: input.place.address,
+        }
+      : undefined,
+  }
 }

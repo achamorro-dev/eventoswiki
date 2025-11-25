@@ -108,21 +108,21 @@ export class AstroDbUsersRepository implements UsersRepository {
     return this.getFiltersToApply(criteria.filters)
   }
 
-  // @ts-expect-error - Known issue with return type
+  // @ts-expect-error
   private getFiltersToApply<F>(parentFilters: F | Array<Filter<F>>) {
     if (!parentFilters) return []
 
     if (Array.isArray(parentFilters)) {
+      //@ts-ignore
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
-        // @ts-expect-error - Known issue with recursive calls
+        // @ts-expect-error
         const criterias = this.getFiltersToApply(filters)
         return type === FilterType.AND ? and(...criterias) : or(...criterias)
       })
     }
 
-    // @ts-expect-error - Known issue with type casting
-    return Object.entries<FilterCriteria | undefined>(parentFilters)
+    return Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
       .filter(([_, value]) => value !== undefined)
       .map(([key, userFilter]) => {
         if (!userFilter) return

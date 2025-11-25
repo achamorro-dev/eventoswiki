@@ -1,6 +1,6 @@
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Validator } from '@/shared/domain/validators/validator'
-import type { MeetupData } from '../meetup'
+import type { MeetupEditableData } from '../meetup'
 import { MeetupContentValidator } from './meetup-content.validator'
 import { MeetupEndDateValidator } from './meetup-end-date.validator'
 import { MeetupImageValidator } from './meetup-image.validator'
@@ -26,7 +26,7 @@ const socialKeys = [
   'tiktok',
 ] as const
 
-export class MeetupValidator extends Validator<MeetupData> {
+export class MeetupValidator extends Validator<MeetupEditableData> {
   validate() {
     const nameValidator = new MeetupTitleValidator(this.value.title)
     const shortDescriptionValidator = new MeetupShortDescriptionValidator(this.value.shortDescription)

@@ -1,6 +1,5 @@
-import type { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { Command } from '@/shared/application/use-case/command'
-import { EventNotFound } from '../domain/errors/event-not-found'
 import { EventId } from '../domain/event-id'
 import type { EventsRepository } from '../domain/events.repository'
 
@@ -11,7 +10,7 @@ interface Param {
 export class DeleteEventCommand extends Command<Param, void> {
   constructor(
     private readonly eventsRepository: EventsRepository,
-    private readonly getUserOrganizationsQuery: GetUserOrganizationsQuery,
+    private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
   ) {
     super()
   }
@@ -19,14 +18,11 @@ export class DeleteEventCommand extends Command<Param, void> {
   async execute(param: Param): Promise<void> {
     const { eventId, userId } = param
 
-    const [event, organizations] = await Promise.all([
-      this.eventsRepository.find(EventId.of(eventId)),
-      this.getUserOrganizationsQuery.execute({ userId }),
-    ])
+    const event = await this.eventsRepository.find(EventId.of(eventId))
 
-    const userNotOrganizeTheEvent = !organizations.some(organization => event.isOrganizedBy(organization.id))
-    if (userNotOrganizeTheEvent) {
-      throw new EventNotFound(eventId)
+    const organizationId = event.organizationId
+    if (organizationId) {
+      await this.userIsOrganizerEnsurer.ensure({ userId, organizationId: organizationId })
     }
 
     await this.eventsRepository.delete(event.id)

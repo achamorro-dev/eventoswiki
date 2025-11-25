@@ -5,6 +5,7 @@ import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
 export const deleteEventAction = defineAction({
+  accept: 'json',
   input: z.object({
     eventId: z.string(),
   }),

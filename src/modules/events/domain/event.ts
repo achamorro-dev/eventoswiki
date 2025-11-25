@@ -111,7 +111,7 @@ export class Event implements EventProps {
     }
   }
 
-  static create(data: EventData, organizationId: string) {
+  static create(data: EventEditableData, organizationId: string) {
     Event.ensureIsValidEvent(data)
 
     const event = Event.fromPrimitives({
@@ -125,7 +125,7 @@ export class Event implements EventProps {
     return event
   }
 
-  private static ensureIsValidEvent(data: EventData) {
+  private static ensureIsValidEvent(data: EventEditableData) {
     const validator = new EventValidator(data)
     const error = validator.validate()
 
@@ -144,7 +144,7 @@ export class Event implements EventProps {
     return Datetime.toDateIsoString(this.startsAt) === Datetime.toDateIsoString(this.endsAt)
   }
 
-  update(data: EventData) {
+  update(data: EventEditableData) {
     Event.ensureIsValidEvent(data)
 
     this.title = data.title ?? this.title
@@ -213,4 +213,4 @@ export interface EventProps {
   place?: EventPlace
 }
 
-export type EventData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>
+export type EventEditableData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

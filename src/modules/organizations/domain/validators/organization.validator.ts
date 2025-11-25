@@ -1,5 +1,5 @@
 import { Validator } from '@/shared/domain/validators/validator'
-import type { OrganizationData } from '../organization'
+import type { OrganizationEditableData } from '../organization'
 import { OrganizationBioValidator } from './organization-bio.validator'
 import { OrganizationHandleValidator } from './organization-handle.validator'
 import { OrganizationLinkValidator } from './organization-link.validator'
@@ -20,7 +20,7 @@ const socialKeys = [
   'tiktok',
 ] as const
 
-export class OrganizationValidator extends Validator<OrganizationData> {
+export class OrganizationValidator extends Validator<OrganizationEditableData> {
   validate() {
     const nameValidator = new OrganizationNameValidator(this.value.name)
     const handleValidator = new OrganizationHandleValidator(this.value.handle)

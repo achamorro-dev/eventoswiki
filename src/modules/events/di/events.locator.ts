@@ -33,11 +33,11 @@ export class EventsLocator {
   }
 
   static updateEventCommand() {
-    return new UpdateEventCommand(EventsLocator.createEventsRepository())
+    return new UpdateEventCommand(EventsLocator.createEventsRepository(), OrganizationsLocator.userIsOrganizerEnsurer())
   }
 
   static createEventCommand() {
-    return new CreateEventCommand(EventsLocator.createEventsRepository())
+    return new CreateEventCommand(EventsLocator.createEventsRepository(), OrganizationsLocator.userIsOrganizerEnsurer())
   }
 
   static findEventsQuery = (): FindEventsQuery => {
@@ -49,9 +49,6 @@ export class EventsLocator {
   }
 
   static deleteEventCommand() {
-    return new DeleteEventCommand(
-      EventsLocator.createEventsRepository(),
-      OrganizationsLocator.getUserOrganizationsQuery(),
-    )
+    return new DeleteEventCommand(EventsLocator.createEventsRepository(), OrganizationsLocator.userIsOrganizerEnsurer())
   }
 }

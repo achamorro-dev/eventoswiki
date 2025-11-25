@@ -2,80 +2,28 @@ import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
 import { EventsLocator } from '@/events/di/events.locator'
 import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
-import type { Place } from '@/modules/places/domain/place'
 import { Datetime } from '@/shared/domain/datetime/datetime'
-import type { Primitives } from '@/shared/domain/primitives/primitives'
-
-interface EventDataPayload {
-  title: string
-  slug: string
-  shortDescription: string
-  content: string
-  startsAt: Date
-  endsAt: Date
-  image: string
-  type: string
-  location?: string | undefined
-  web?: string | undefined
-  twitter?: string | undefined
-  linkedin?: string | undefined
-  youtube?: string | undefined
-  twitch?: string | undefined
-  facebook?: string | undefined
-  instagram?: string | undefined
-  github?: string | undefined
-  telegram?: string | undefined
-  whatsapp?: string | undefined
-  discord?: string | undefined
-  tiktok?: string | undefined
-  streamingUrl?: string | undefined
-  place?: Primitives<Place> | undefined
-  tags: string[]
-  tagColor: string
-}
+import { saveEventActionSchema } from './save-event.schema'
+import type { EventEditableData } from '@/events/domain/event'
 
 export const saveEventAction = defineAction({
-  input: z.object({
-    title: z.string(),
-    slug: z.string(),
-    shortDescription: z.string(),
-    content: z.string(),
-    startsAt: z.string().transform(date => Datetime.toDate(date)),
-    endsAt: z.string().transform(date => Datetime.toDate(date)),
-    image: z.string(),
-    type: z.string(),
-    location: z.string().optional(),
-    web: z.string().optional(),
-    twitter: z.string().optional(),
-    linkedin: z.string().optional(),
-    youtube: z.string().optional(),
-    twitch: z.string().optional(),
-    facebook: z.string().optional(),
-    instagram: z.string().optional(),
-    github: z.string().optional(),
-    telegram: z.string().optional(),
-    whatsapp: z.string().optional(),
-    discord: z.string().optional(),
-    tiktok: z.string().optional(),
-    streamingUrl: z.string().optional(),
-    place: z
-      .object({
-        id: z.string(),
-        name: z.string(),
-        address: z.string(),
-      })
-      .optional(),
-    organizationId: z.string(),
-    eventId: z.string().optional(),
-    tags: z.array(z.string()).default([]),
-    tagColor: z.string().default(''),
-  }),
-  handler: async input => {
+  accept: 'json',
+  input: saveEventActionSchema,
+  handler: async (input, context) => {
     try {
-      const { organizationId, eventId, ...newEvent } = input
+      const { organizationId, eventId } = input
+      const userId = context.locals.user?.id
+      const eventData = _parseEventDataPayload(input)
+
+      if (!userId) {
+        throw new ActionError({
+          code: 'UNAUTHORIZED',
+          message: 'No estás autorizado para guardar este evento',
+        })
+      }
 
       const isNewEvent = !eventId
-      isNewEvent ? await _createEvent(organizationId, newEvent) : await _saveEvent(eventId, newEvent)
+      isNewEvent ? await _createEvent(organizationId, eventData, userId) : await _saveEvent(eventId, eventData, userId)
 
       return
     } catch (error) {
@@ -95,9 +43,10 @@ export const saveEventAction = defineAction({
   },
 })
 
-async function _createEvent(organizationId: string, newEvent: EventDataPayload) {
+async function _createEvent(organizationId: string, newEvent: EventEditableData, userId: string) {
   await EventsLocator.createEventCommand().execute({
     organizationId,
+    userId,
     data: {
       ...newEvent,
       location: newEvent.location ?? null,
@@ -107,9 +56,10 @@ async function _createEvent(organizationId: string, newEvent: EventDataPayload) 
   })
 }
 
-async function _saveEvent(eventId: string, newEvent: EventDataPayload) {
+async function _saveEvent(eventId: string, newEvent: EventEditableData, userId: string) {
   await EventsLocator.updateEventCommand().execute({
     eventId,
+    userId,
     data: {
       ...newEvent,
       location: newEvent.location ?? null,
@@ -117,4 +67,40 @@ async function _saveEvent(eventId: string, newEvent: EventDataPayload) {
       endsAt: Datetime.toDateTimeIsoString(newEvent.endsAt),
     },
   })
+}
+
+function _parseEventDataPayload(input: z.infer<typeof saveEventActionSchema>): EventEditableData {
+  return {
+    title: input.title,
+    slug: input.slug,
+    shortDescription: input.shortDescription,
+    content: input.content,
+    startsAt: Datetime.toDateIsoString(input.startsAt),
+    endsAt: Datetime.toDateIsoString(input.endsAt),
+    image: input.image,
+    type: input.type,
+    location: input.location ?? null,
+    web: input.web,
+    twitter: input.twitter,
+    linkedin: input.linkedin,
+    youtube: input.youtube,
+    twitch: input.twitch,
+    facebook: input.facebook,
+    instagram: input.instagram,
+    github: input.github,
+    telegram: input.telegram,
+    whatsapp: input.whatsapp,
+    discord: input.discord,
+    tiktok: input.tiktok,
+    streamingUrl: input.streamingUrl,
+    place: input.place
+      ? {
+          id: input.place.id,
+          name: input.place.name,
+          address: input.place.address,
+        }
+      : undefined,
+    tags: input.tags,
+    tagColor: input.tagColor,
+  }
 }

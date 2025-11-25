@@ -1,6 +1,5 @@
-import type { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { Command } from '@/shared/application/use-case/command'
-import { MeetupNotFound } from '../domain/errors/meetup-not-found'
 import { MeetupId } from '../domain/meetup-id'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 
@@ -11,7 +10,7 @@ interface Param {
 export class DeleteMeetupCommand extends Command<Param, void> {
   constructor(
     private readonly meetupsRepository: MeetupsRepository,
-    private readonly getUserOrganizationsQuery: GetUserOrganizationsQuery,
+    private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
   ) {
     super()
   }
@@ -19,14 +18,11 @@ export class DeleteMeetupCommand extends Command<Param, void> {
   async execute(param: Param): Promise<void> {
     const { meetupId, userId } = param
 
-    const [meetup, organizations] = await Promise.all([
-      this.meetupsRepository.find(MeetupId.of(meetupId)),
-      this.getUserOrganizationsQuery.execute({ userId }),
-    ])
+    const meetup = await this.meetupsRepository.find(MeetupId.of(meetupId))
 
-    const userNotOrganizeTheMeetup = !organizations.some(organization => meetup.isOrganizedBy(organization.id))
-    if (userNotOrganizeTheMeetup) {
-      throw new MeetupNotFound(meetupId)
+    const organizationId = meetup.organizationId
+    if (organizationId) {
+      await this.userIsOrganizerEnsurer.ensure({ userId, organizationId: organizationId })
     }
 
     await this.meetupsRepository.delete(meetup.id)

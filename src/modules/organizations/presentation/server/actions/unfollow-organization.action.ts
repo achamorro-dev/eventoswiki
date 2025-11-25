@@ -4,6 +4,7 @@ import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 
 export const unfollowOrganizationAction = defineAction({
+  accept: 'json',
   input: z.object({
     organizationId: z.string(),
     userId: z.string(),

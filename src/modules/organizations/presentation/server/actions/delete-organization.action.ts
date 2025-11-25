@@ -5,6 +5,7 @@ import { OrganizationNotFound } from '@/organizations/domain/errors/organization
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
 export const deleteOrganizationAction = defineAction({
+  accept: 'json',
   input: z.object({
     organizationId: z.string(),
   }),

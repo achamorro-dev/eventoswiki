@@ -13,5 +13,5 @@ const provinces = await ProvincesLocator.getProvincesQuery().execute()
 
 <article>
   <SectionTitle>Crear Organización</SectionTitle>
-  <OrganizationEditForm client:load organizerId={organizerId} provinces={provinces} />
+  <OrganizationEditForm client:only="react" organizerId={organizerId} provinces={provinces} />
 </article>

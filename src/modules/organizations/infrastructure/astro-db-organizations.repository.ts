@@ -329,6 +329,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     if (!parentFilters) return []
 
     if (Array.isArray(parentFilters)) {
+        //@ts-ignore
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
         //@ts-expect-error

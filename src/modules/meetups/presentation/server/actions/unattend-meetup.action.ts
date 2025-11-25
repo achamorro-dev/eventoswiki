@@ -6,6 +6,7 @@ import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
 export const unattendMeetupAction = defineAction({
+  accept: 'json',
   input: z.object({
     meetupId: z.string(),
   }),

@@ -20,9 +20,9 @@ interface Props {
   userId: string
 }
 
-export const DeleteLoggedUserModal: FC<Props> = ({ userId }) => {
+export const DeleteLoggedUserModal: FC<Props> = () => {
   const onDelete = async () => {
-    const { error } = await actions.authentication.deleteLoggedUserAction()
+    const { error } = await actions.authentication.deleteLoggedUserAction({})
     if (error) {
       console.error(error)
       return

@@ -3,7 +3,7 @@ import { EventEndDateValidator } from '@/events/domain/validators/event-end-date
 import { EventStartDateValidator } from '@/events/domain/validators/event-start-date.validator'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { Validator } from '@/shared/domain/validators/validator'
-import type { EventData } from '../event'
+import type { EventEditableData } from '../event'
 import { EventTypes } from '../event-type'
 import { EventImageValidator } from './event-image.validator'
 import { EventLinkValidator } from './event-link.validator'
@@ -27,7 +27,7 @@ const socialKeys = [
   'tiktok',
 ] as const
 
-export class EventValidator extends Validator<EventData> {
+export class EventValidator extends Validator<EventEditableData> {
   validate() {
     const nameValidator = new EventTitleValidator(this.value.title)
     const shortDescriptionValidator = new EventShortDescriptionValidator(this.value.shortDescription)

@@ -13,6 +13,8 @@ import { Event as EventEntity } from '../domain/event'
 import type { EventId } from '../domain/event-id'
 import type { EventsRepository } from '../domain/events.repository'
 import { AstroEventMapper as AstroDbEventMapper } from './mappers/astro-db-event.mapper'
+import type { AstroDbEventDto } from './dtos/astro-db-event.dto'
+import type { AstroDbEventProvinceDto } from './dtos/astro-db-event-province.dto'
 
 export class AstroDbEventsRepository implements EventsRepository {
   async match(criteria: EventsCriteria): Promise<PaginatedResult<EventEntity>> {
@@ -27,7 +29,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       eventsQuery.offset(criteria.offset)
     }
 
-    const events = await eventsQuery
+    const events = await eventsQuery as { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[]
     const count = await countQuery
     const totalPages = Math.ceil(count[0].count / criteria.limit)
 
@@ -45,7 +47,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(id.value)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)!.Event as AstroDbEventDto, result.at(0)!.Province)
   }
 
   async findBySlug(slug: string): Promise<EventEntity> {
@@ -59,12 +61,12 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(slug)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)!.Event, result.at(0)!.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)!.Event as AstroDbEventDto, result.at(0)!.Province)
   }
 
   async findAll(): Promise<EventEntity[]> {
     const eventsAndProvinces = await db.select().from(Event).leftJoin(Province, eq(Province.slug, Event.location))
-    return AstroDbEventMapper.toDomainList(eventsAndProvinces)
+    return AstroDbEventMapper.toDomainList(eventsAndProvinces as { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[])
   }
 
   async save(value: EventEntity): Promise<void> {
@@ -222,6 +224,7 @@ export class AstroDbEventsRepository implements EventsRepository {
     if (!parentFilters) return []
 
     if (Array.isArray(parentFilters)) {
+      //@ts-ignore
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
         //@ts-expect-error
@@ -230,8 +233,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       })
     }
 
-    //@ts-expect-error
-    return Object.entries<FilterCriteria | undefined>(parentFilters)
+    return Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
       .filter(([_, value]) => value !== undefined)
       .map(([key, eventFilter]) => {
         if (!eventFilter) return

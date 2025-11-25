@@ -16,7 +16,7 @@ const provinces = await ProvincesLocator.getProvincesQuery().execute()
 <article>
   <SectionTitle>Editar Organización</SectionTitle>
   <OrganizationEditForm
-    client:load
+    client:only="react"
     organization={organization.toPrimitives()}
     organizerId={organizerId}
     provinces={provinces}

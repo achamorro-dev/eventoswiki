@@ -284,6 +284,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     if (!parentFilters) return []
 
     if (Array.isArray(parentFilters)) {
+      //@ts-ignore
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
         //@ts-expect-error
@@ -292,7 +293,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       })
     }
 
-    return Object.entries<FilterCriteria | undefined>(parentFilters)
+    return Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
       .filter(([_, value]) => value !== undefined)
       .map(([key, eventFilter]) => {
         if (!eventFilter) return
