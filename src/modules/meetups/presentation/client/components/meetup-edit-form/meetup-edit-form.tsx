@@ -222,15 +222,20 @@ export const MeetupEditForm = ({ provinces, organizationId, meetup, organization
                   <FormField
                     control={control}
                     name="title"
-                    render={({ field }) => (
+                    render={({ field }) => {
+                      const slugError = form.formState.errors.slug
+                      return (
                       <FormItem>
                         <FormLabel htmlFor="title">Título</FormLabel>
                         <FormControl>
                           <Input id="title" placeholder="Título del evento" {...field} />
                         </FormControl>
                         <FormMessage />
+                        {slugError && !form.formState.errors.title && (
+                          <p className="text-destructive text-xs font-medium">{slugError.message}</p>
+                        )}
                       </FormItem>
-                    )}
+                    )}}
                   />
                   <FormField
                     control={control}

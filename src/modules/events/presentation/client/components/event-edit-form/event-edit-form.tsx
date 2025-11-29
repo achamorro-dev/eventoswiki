@@ -217,15 +217,21 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                   <FormField
                     control={form.control}
                     name="title"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="title">Título</FormLabel>
-                        <FormControl>
-                          <Input id="title" placeholder="Título del evento" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const slugError = form.formState.errors.slug
+                      return (
+                        <FormItem>
+                          <FormLabel htmlFor="title">Título</FormLabel>
+                          <FormControl>
+                            <Input id="title" placeholder="Título del evento" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                          {slugError && !form.formState.errors.title && (
+                            <p className="text-destructive text-xs font-medium">{slugError.message}</p>
+                          )}
+                        </FormItem>
+                      )
+                    }}
                   />
                   <FormField
                     control={form.control}

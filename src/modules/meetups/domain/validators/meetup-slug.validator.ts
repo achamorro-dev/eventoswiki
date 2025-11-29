@@ -3,6 +3,6 @@ import { Validator } from '@/shared/domain/validators/validator'
 
 export class MeetupSlugValidator extends Validator<string> {
   validate(): string | null {
-    return new SlugStringValidator(this.value).validate()
+    return new SlugStringValidator(this.value, 'El título contiene caracteres especiales no permitidos').validate()
   }
 }

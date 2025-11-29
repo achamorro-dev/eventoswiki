@@ -1,18 +1,25 @@
+import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
 import { Validator } from './validator'
 
 export class SlugStringValidator extends Validator<string> {
-  private readonly slugRegex = /^[a-z0-9/]+(?:-[a-z0-9/]+)*$/
-
   constructor(
     value: string,
-    private readonly errorMessage: string = 'El formato es incorrecto',
+    private readonly errorMessage: string = 'El slug generado no es válido',
   ) {
     super(value)
   }
 
   validate(): string | null {
-    if (!this.slugRegex.test(this.value)) return this.errorMessage
+    const slug = new SlugGenerator(this.value).generate()
+    try {
+      const url = new URL('http://acme.com/' + slug)
+      if (url.pathname !== '/' + slug) {
+        throw new Error()
+      }
 
-    return null
+      return null
+    } catch {
+      return this.errorMessage
+    }
   }
 }
