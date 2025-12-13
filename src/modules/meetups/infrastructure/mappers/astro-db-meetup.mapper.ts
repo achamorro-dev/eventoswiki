@@ -48,6 +48,9 @@ export class AstroDbMeetupMapper {
       type: MeetupType.of(meetupDto.type).value,
       attendees: attendees.map(attendee => attendee.userId),
       place: meetupDto.place || undefined,
+      allowsAttendees: meetupDto.allowsAttendees,
+      registrationEndsAt: meetupDto.registrationEndsAt ? Datetime.toIsoString(meetupDto.registrationEndsAt) : undefined,
+      maxAttendees: meetupDto.maxAttendees || undefined,
     })
   }
 }

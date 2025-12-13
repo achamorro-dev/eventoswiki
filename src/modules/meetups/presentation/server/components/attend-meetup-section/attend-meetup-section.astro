@@ -2,21 +2,36 @@
 import { AttendMeetup } from '@/meetups/presentation/client/components/attend-meetup/attend-meetup'
 import { Link } from '@/ui/components/link'
 import { Urls } from '@/ui/urls/urls'
+import type { Meetup } from '@/meetups/domain/meetup'
 
 interface Props {
-  meetupId: string
+  meetup: Meetup
   isAttending: boolean
 }
 
 const userId = Astro.locals.user?.id
-const { meetupId, isAttending } = Astro.props
+const { meetup, isAttending } = Astro.props
 
 const hasLoggedUser = !!userId
+const currentAttendeesCount = meetup.attendees?.length ?? 0
 ---
 
 <section class="bg-muted rounded-lg p-3 border border-border space-y-2 w-full">
   <h2 class="text-sm font-medium">Registro</h2>
-  {hasLoggedUser && <AttendMeetup client:load meetupId={meetupId} initialAttending={isAttending} />}
+  {
+    hasLoggedUser && (
+      <AttendMeetup
+        client:load
+        meetupId={meetup.id.value}
+        initialAttending={isAttending}
+        allowsAttendees={meetup.allowsAttendees}
+        isRegistrationOpen={meetup.isRegistrationOpen()}
+        canAcceptMoreAttendees={meetup.canAcceptMoreAttendees()}
+        maxAttendees={meetup.maxAttendees}
+        currentAttendeesCount={currentAttendeesCount}
+      />
+    )
+  }
   {
     !hasLoggedUser && (
       <>

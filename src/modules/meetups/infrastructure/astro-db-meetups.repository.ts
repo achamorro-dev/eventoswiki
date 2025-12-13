@@ -151,6 +151,9 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
           tagColor: value.tagColor,
           content: value.content,
           place: value.place ? value.place.toPrimitives() : null,
+          allowsAttendees: value.allowsAttendees,
+          registrationEndsAt: value.registrationEndsAt ?? null,
+          maxAttendees: value.maxAttendees ?? null,
         })
         .where(eq(Meetup.id, value.id.value))
     } catch (error) {
@@ -188,6 +191,9 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
         content: value.content,
         organizationId: value.organizationId,
         place: value.place ? value.place.toPrimitives() : null,
+        allowsAttendees: value.allowsAttendees,
+        registrationEndsAt: value.registrationEndsAt ?? null,
+        maxAttendees: value.maxAttendees ?? null,
       })
     } catch (error) {
       this._mapError(error, value)

@@ -57,9 +57,5 @@ const place = event.place?.toPrimitives()
     client:load
     transition:animate="fade"
   />
-  {
-    event instanceof Meetup && !isOrganizer && (
-      <AttendMeetupSection meetupId={event.id.value} isAttending={isAttending} />
-    )
-  }
+  {event instanceof Meetup && !isOrganizer && <AttendMeetupSection meetup={event} isAttending={isAttending} />}
 </div>

@@ -11,6 +11,8 @@ import { MeetupShortDescriptionValidator } from './meetup-short-description.vali
 import { MeetupStartDateValidator } from './meetup-start-date.validator'
 import { MeetupTitleValidator } from './meetup-title.validator'
 import { MeetupTypeValidator } from './meetup-type.validator'
+import { MeetupRegistrationEndsAtValidator } from './meetup-registration-ends-at.validator'
+import { MeetupMaxAttendeesValidator } from './meetup-max-attendees.validator'
 
 const socialKeys = [
   'twitter',
@@ -50,6 +52,11 @@ export class MeetupValidator extends Validator<MeetupEditableData> {
 
     const streamingUrlValidator = new MeetupLinkValidator(this.value.streamingUrl ?? null)
 
+    const registrationEndsAtValidator = new MeetupRegistrationEndsAtValidator(
+      this.value.registrationEndsAt ? Datetime.toDate(this.value.registrationEndsAt) : null,
+    )
+    const maxAttendeesValidator = new MeetupMaxAttendeesValidator(this.value.maxAttendees)
+
     return (
       nameValidator.validate() ||
       shortDescriptionValidator.validate() ||
@@ -61,6 +68,8 @@ export class MeetupValidator extends Validator<MeetupEditableData> {
       periodValidator.validate() ||
       typeValidator.validate() ||
       streamingUrlValidator.validate() ||
+      registrationEndsAtValidator.validate() ||
+      maxAttendeesValidator.validate() ||
       (socialValidators.length > 0 ? 'Al menos un enlace de redes sociales es erróneo' : null)
     )
   }

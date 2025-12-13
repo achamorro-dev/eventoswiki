@@ -10,9 +10,12 @@ import { MeetupSlugValidator } from '@/meetups/domain/validators/meetup-slug.val
 import { MeetupStartDateValidator } from '@/meetups/domain/validators/meetup-start-date.validator'
 import { MeetupTitleValidator } from '@/meetups/domain/validators/meetup-title.validator'
 import { MeetupTypeValidator } from '@/meetups/domain/validators/meetup-type.validator'
+import { MeetupRegistrationEndsAtValidator } from '@/meetups/domain/validators/meetup-registration-ends-at.validator'
+import { MeetupMaxAttendeesValidator } from '@/meetups/domain/validators/meetup-max-attendees.validator'
 import { DateFormField } from '@/shared/presentation/forms/date-form-field'
 import { NotRequiredArrayFormField } from '@/shared/presentation/forms/not-required-array-form-field'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
+import { NotRequiredNumberFormField } from '@/shared/presentation/forms/not-required-number-form-field'
 import { StringFormField } from '@/shared/presentation/forms/string-form-field'
 
 export const meetupFormSchema = z
@@ -50,6 +53,9 @@ export const meetupFormSchema = z
       .optional(),
     tags: NotRequiredArrayFormField(z.string()),
     tagColor: NotRequiredStringFormField(),
+    allowsAttendees: z.boolean().default(true),
+    registrationEndsAt: z.date().optional(),
+    maxAttendees: NotRequiredNumberFormField(MeetupMaxAttendeesValidator),
   })
   .superRefine((data, ctx) => {
     const periodValidator = new MeetupPeriodValidator({ startsAt: data.startsAt, endsAt: data.endsAt })
@@ -60,6 +66,28 @@ export const meetupFormSchema = z
         message: periodError,
         path: ['startsAt'],
       })
+    }
+
+    if (data.registrationEndsAt && data.startsAt) {
+      if (data.registrationEndsAt > data.startsAt) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'La fecha de fin de registro debe ser anterior a la fecha de inicio del meetup',
+          path: ['registrationEndsAt'],
+        })
+      }
+    }
+
+    if (data.registrationEndsAt) {
+      const registrationEndsAtValidator = new MeetupRegistrationEndsAtValidator(data.registrationEndsAt)
+      const registrationError = registrationEndsAtValidator.validate()
+      if (registrationError) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: registrationError,
+          path: ['registrationEndsAt'],
+        })
+      }
     }
   })
 

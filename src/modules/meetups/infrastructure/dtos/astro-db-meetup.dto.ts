@@ -31,4 +31,7 @@ export interface AstroDbMeetupDto {
   content: string
   organizationId: string | null
   place: Primitives<Place> | null
+  allowsAttendees: boolean
+  registrationEndsAt: Date | null
+  maxAttendees: number | null
 }

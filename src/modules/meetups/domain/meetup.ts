@@ -39,6 +39,9 @@ export class Meetup implements MeetupProps {
   organizationId?: string
   attendees?: MeetupAttendeeId[]
   place?: MeetupPlace
+  allowsAttendees: boolean
+  registrationEndsAt?: Date
+  maxAttendees?: number
 
   private constructor(props: MeetupProps) {
     this.id = props.id
@@ -69,6 +72,9 @@ export class Meetup implements MeetupProps {
     this.organizationId = props.organizationId || undefined
     this.attendees = props.attendees || undefined
     this.place = props.place || undefined
+    this.allowsAttendees = props.allowsAttendees
+    this.registrationEndsAt = props.registrationEndsAt
+    this.maxAttendees = props.maxAttendees
   }
 
   static create(data: MeetupEditableData, organizationId: string) {
@@ -114,6 +120,9 @@ export class Meetup implements MeetupProps {
       organizationId: primitives.organizationId,
       attendees: primitives.attendees?.map(MeetupAttendeeId.of),
       place: primitives.place ? MeetupPlace.fromPrimitives(primitives.place) : undefined,
+      allowsAttendees: primitives.allowsAttendees,
+      registrationEndsAt: primitives.registrationEndsAt ? Datetime.toDate(primitives.registrationEndsAt) : undefined,
+      maxAttendees: primitives.maxAttendees,
     })
   }
 
@@ -127,6 +136,9 @@ export class Meetup implements MeetupProps {
       type: this.type.value,
       attendees: this.attendees?.map(attendee => attendee.value),
       place: this.place ? this.place.toPrimitives() : undefined,
+      allowsAttendees: this.allowsAttendees,
+      registrationEndsAt: this.registrationEndsAt ? Datetime.toDateTimeIsoString(this.registrationEndsAt) : undefined,
+      maxAttendees: this.maxAttendees,
     }
   }
 
@@ -170,6 +182,9 @@ export class Meetup implements MeetupProps {
     this.type = data.type ? MeetupType.of(data.type) : this.type
     this.slug = data.slug ?? this.slug
     this.place = data.place ? MeetupPlace.fromPrimitives(data.place) : this.place
+    this.allowsAttendees = data.allowsAttendees ?? this.allowsAttendees
+    this.registrationEndsAt = data.registrationEndsAt ? Datetime.toDate(data.registrationEndsAt) : this.registrationEndsAt
+    this.maxAttendees = data.maxAttendees ?? this.maxAttendees
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
@@ -216,6 +231,46 @@ export class Meetup implements MeetupProps {
     return Datetime.isBefore(this.startsAt, Datetime.now())
   }
 
+  canAcceptMoreAttendees(): boolean {
+    if (!this.maxAttendees) {
+      return true
+    }
+    const currentAttendeesCount = this.attendees?.length ?? 0
+    return currentAttendeesCount < this.maxAttendees
+  }
+
+  isRegistrationOpen(): boolean {
+    if (!this.allowsAttendees) {
+      return false
+    }
+
+    if (this.registrationEndsAt && Datetime.isAfter(Datetime.now(), this.registrationEndsAt)) {
+      return false
+    }
+
+    return !this.hasStarted()
+  }
+
+  canUserAttend(): { canAttend: boolean; reason?: string } {
+    if (!this.allowsAttendees) {
+      return { canAttend: false, reason: 'Este meetup no permite registro de asistentes' }
+    }
+
+    if (this.registrationEndsAt && Datetime.isAfter(Datetime.now(), this.registrationEndsAt)) {
+      return { canAttend: false, reason: 'El periodo de registro ha finalizado' }
+    }
+
+    if (!this.canAcceptMoreAttendees()) {
+      return { canAttend: false, reason: 'El aforo del meetup está completo' }
+    }
+
+    if (this.hasStarted()) {
+      return { canAttend: false, reason: 'El meetup ya ha comenzado' }
+    }
+
+    return { canAttend: true }
+  }
+
   private static ensureIsValidMeetup(data: MeetupEditableData) {
     const validator = new MeetupValidator(data)
     const error = validator.validate()
@@ -253,6 +308,9 @@ export interface MeetupProps {
   organizationId?: string | null
   attendees?: MeetupAttendeeId[]
   place?: MeetupPlace
+  allowsAttendees: boolean
+  registrationEndsAt?: Date
+  maxAttendees?: number
 }
 
 export type MeetupEditableData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

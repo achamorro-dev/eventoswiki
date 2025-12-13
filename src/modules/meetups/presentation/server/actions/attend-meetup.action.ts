@@ -17,6 +17,14 @@ export const attendMeetupAction = defineAction({
         throw new BadRequest('Error al solicitar asistir al meetup')
       }
 
+      // Verificar si el meetup permite asistentes y hay cupo
+      const meetup = await MeetupsLocator.findMeetupQuery().execute({ id: meetupId })
+      const { canAttend, reason } = meetup.canUserAttend()
+
+      if (!canAttend) {
+        throw new BadRequest(reason || 'No puedes asistir a este meetup')
+      }
+
       await MeetupsLocator.attendMeetupCommand().execute({
         meetupId,
         userId: user.id,

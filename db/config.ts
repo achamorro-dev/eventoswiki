@@ -71,6 +71,9 @@ export const Meetup = defineTable({
     content: column.text(),
     organizationId: column.text({ optional: true, references: () => Organization.columns.id }),
     place: column.json({ optional: true }),
+    allowsAttendees: column.boolean({ default: true }),
+    registrationEndsAt: column.date({ optional: true }),
+    maxAttendees: column.number({ optional: true }),
   },
 })
 
