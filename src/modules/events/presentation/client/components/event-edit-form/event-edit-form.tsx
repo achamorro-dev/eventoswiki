@@ -165,85 +165,104 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
     form.setValue('tags', newTags)
   }
 
-  console.log(form.formState.errors)
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit, onError)} id="event-edit-form" className="container mx-auto">
         <div className="space-y-6 py-4">
-          <div className="space-y-4">
-            <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
-              <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
+          <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
+            {/* Columna izquierda: Imagen */}
+            <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <>
+                    {field.value ? (
+                      <img
+                        src={field.value}
+                        alt={form.watch('title')}
+                        className="h-72 rounded-md border-transparent object-cover"
+                      />
+                    ) : (
+                      <div
+                        aria-invalid={!!form.formState.errors['image']}
+                        className={
+                          'aria-invalid:border-destructive border-input bg-input flex w-full items-center justify-center rounded-md border-2'
+                        }
+                      >
+                        <CameraSlash className="h-72 w-48 text-gray-400" />
+                      </div>
+                    )}
+                    <Button
+                      variant="outline"
+                      type="button"
+                      size="icon"
+                      className="z-1 -mt-7 ml-4"
+                      disabled={isLoading}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+                    </Button>
+                    <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
+                    <FormMessage />
+                  </>
+                )}
+              />
+            </div>
+
+            {/* Columna derecha: Todas las secciones excepto Detalles del evento */}
+            <div className="w-full flex-1 space-y-6">
+              {/* Sección: Información básica */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold">Información básica</h2>
                 <FormField
                   control={form.control}
-                  name="image"
+                  name="title"
+                  render={({ field }) => {
+                    const slugError = form.formState.errors.slug
+                    return (
+                      <FormItem>
+                        <FormLabel htmlFor="title">Título</FormLabel>
+                        <FormControl>
+                          <Input id="title" placeholder="Título del evento" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        {slugError && !form.formState.errors.title && (
+                          <p className="text-destructive text-xs font-medium">{slugError.message}</p>
+                        )}
+                      </FormItem>
+                    )
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="shortDescription"
                   render={({ field }) => (
-                    <>
-                      {field.value ? (
-                        <img
-                          src={field.value}
-                          alt={form.watch('title')}
-                          className="h-72 rounded-md border-transparent object-cover"
+                    <FormItem>
+                      <FormLabel htmlFor="shortDescription">Descripción corta</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          id="shortDescription"
+                          placeholder="Describe el evento..."
+                          className="min-h-[100px]"
+                          {...field}
                         />
-                      ) : (
-                        <div
-                          aria-invalid={!!form.formState.errors['image']}
-                          className={
-                            'aria-invalid:border-destructive border-input bg-input flex w-full items-center justify-center rounded-md border-2'
-                          }
-                        >
-                          <CameraSlash className="h-72 w-48 text-gray-400" />
-                        </div>
-                      )}
-                      <Button
-                        variant="outline"
-                        type="button"
-                        size="icon"
-                        className="z-1 -mt-7 ml-4"
-                        disabled={isLoading}
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-                      </Button>
-                      <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
+                      </FormControl>
                       <FormMessage />
-                    </>
+                    </FormItem>
                   )}
                 />
-              </div>
-
-              <div className="w-full flex-1 space-y-4">
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <FormField
                     control={form.control}
-                    name="title"
-                    render={({ field }) => {
-                      const slugError = form.formState.errors.slug
-                      return (
-                        <FormItem>
-                          <FormLabel htmlFor="title">Título</FormLabel>
-                          <FormControl>
-                            <Input id="title" placeholder="Título del evento" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                          {slugError && !form.formState.errors.title && (
-                            <p className="text-destructive text-xs font-medium">{slugError.message}</p>
-                          )}
-                        </FormItem>
-                      )
-                    }}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="shortDescription"
+                    name="startsAt"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="shortDescription">Descripción corta</FormLabel>
+                        <FormLabel htmlFor="startsAt">Fecha de inicio</FormLabel>
                         <FormControl>
-                          <Textarea
-                            id="shortDescription"
-                            placeholder="Describe el evento..."
-                            className="min-h-[100px]"
+                          <DateTimePicker
+                            disabled={form.formState.isSubmitting}
+                            placeholder="Elige una fecha"
                             {...field}
                           />
                         </FormControl>
@@ -251,83 +270,64 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                       </FormItem>
                     )}
                   />
-                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                    <FormField
-                      control={form.control}
-                      name="startsAt"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel htmlFor="startsAt">Fecha de inicio</FormLabel>
-                          <FormControl>
-                            <DateTimePicker
-                              disabled={form.formState.isSubmitting}
-                              placeholder="Elige una fecha"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
 
-                    <FormField
-                      control={form.control}
-                      name="endsAt"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel htmlFor="endsAt">Fecha de fin</FormLabel>
-                          <FormControl>
-                            <DateTimePicker
-                              value={field.value}
-                              onChange={field.onChange}
-                              disabled={form.formState.isSubmitting}
-                              placeholder="Elige una fecha"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <FormField
-                      control={form.control}
-                      name="type"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel htmlFor="type" className="flex items-center gap-1">
-                            Tipo de evento
-                          </FormLabel>
-                          <FormControl>
-                            <EventTypeSelect
-                              id="type"
-                              placeholder="Selecciona un tipo"
-                              value={field.value}
-                              onChange={field.onChange}
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="endsAt"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="endsAt">Fecha de fin</FormLabel>
+                        <FormControl>
+                          <DateTimePicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            disabled={form.formState.isSubmitting}
+                            placeholder="Elige una fecha"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-                {(type === EventTypes.InPerson || type === EventTypes.Hybrid) && (
-                  <>
-                    <div className="grid gap-2">
+              </div>
+
+              {/* Sección: Tipo y localización */}
+              <div className="border-t pt-6">
+                <h2 className="text-xl font-semibold mb-4">Tipo y localización</h2>
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="type">Tipo de evento</FormLabel>
+                        <FormControl>
+                          <EventTypeSelect
+                            id="type"
+                            placeholder="Selecciona un tipo"
+                            value={field.value}
+                            onChange={field.onChange}
+                            className="w-full"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {(type === EventTypes.InPerson || type === EventTypes.Hybrid) && (
+                    <>
                       <FormField
                         control={form.control}
                         name="location"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel htmlFor="location" className="flex items-center gap-1">
-                              Localización
-                            </FormLabel>
+                            <FormLabel htmlFor="location">Provincia</FormLabel>
                             <FormControl>
                               <ProvinceSelect
                                 id="location"
-                                placeholder="Provincia"
+                                placeholder="Selecciona una provincia"
                                 provinces={provinces}
                                 className="w-full"
                                 {...field}
@@ -337,17 +337,13 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                           </FormItem>
                         )}
                       />
-                    </div>
-                    <div className="grid gap-2">
                       <FormField
                         control={form.control}
                         name="place"
                         render={({ field }) => (
                           <>
                             <FormItem>
-                              <FormLabel htmlFor="placeDisplayName" className="flex items-center gap-1">
-                                Dirección
-                              </FormLabel>
+                              <FormLabel htmlFor="placeDisplayName">Dirección</FormLabel>
                               <FormControl>
                                 <PlaceSearch
                                   className="w-full"
@@ -363,19 +359,16 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                           </>
                         )}
                       />
-                    </div>
-                  </>
-                )}
-                {(type === EventTypes.Online || type === EventTypes.Hybrid) && (
-                  <div className="grid gap-2">
+                    </>
+                  )}
+
+                  {(type === EventTypes.Online || type === EventTypes.Hybrid) && (
                     <FormField
                       control={form.control}
                       name="streamingUrl"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel htmlFor="streamingUrl" className="flex items-center gap-1">
-                            URL de streaming
-                          </FormLabel>
+                          <FormLabel htmlFor="streamingUrl">URL del streaming</FormLabel>
                           <FormControl>
                             <Input
                               id="streamingUrl"
@@ -389,37 +382,43 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                         </FormItem>
                       )}
                     />
+                  )}
+                </div>
+              </div>
+
+              {/* Sección: Etiquetas y categorización */}
+              <div className="border-t pt-6">
+                <h2 className="text-xl font-semibold mb-4">Etiquetas y categorización</h2>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="tags"
+                      render={() => (
+                        <FormItem>
+                          <FormLabel>Etiquetas</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Escribe y presiona Enter para agregar etiquetas" onKeyDown={onAddTag} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="tagColor"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Color de la etiqueta</FormLabel>
+                          <FormControl>
+                            <ColorPicker color={field.value || ''} onChange={color => form.setValue('tagColor', color)} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                )}
-
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <FormField
-                    control={form.control}
-                    name="tags"
-                    render={() => (
-                      <FormItem>
-                        <FormLabel>Etiquetas</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Escribe y presiona Enter para agregar etiquetas" onKeyDown={onAddTag} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="tagColor"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Color de la etiqueta</FormLabel>
-                        <FormControl>
-                          <ColorPicker color={field.value || ''} onChange={color => form.setValue('tagColor', color)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <div className="flex flex-wrap gap-2">
                     {form.watch('tags')?.map((tag, index) => (
                       <Badge key={index} className="text-white" style={{ backgroundColor: form.watch('tagColor') }}>
@@ -438,14 +437,19 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                     ))}
                   </div>
                 </div>
+              </div>
 
+              {/* Sección: Redes sociales */}
+              <div className="border-t pt-6">
+                <h2 className="text-xl font-semibold mb-4">Redes sociales y enlaces</h2>
                 <SocialForm control={form.control} />
               </div>
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Detalles del evento</h3>
+          {/* Sección: Detalles del evento (ancho completo) */}
+          <div className="border-t pt-6">
+            <h2 className="text-xl font-semibold mb-4">Detalles del evento</h2>
             <FormField
               control={form.control}
               name="content"
