@@ -3,6 +3,7 @@ import type { DeletableByIdRepository } from '@/shared/domain/repository/deletab
 import type { FindableAllRepository } from '@/shared/domain/repository/findable-all-repository'
 import type { FindableByIdRepository } from '@/shared/domain/repository/findable-by-id-repository.ts'
 import type { SaveableRepository } from '@/shared/domain/repository/saveable-repository'
+import type { MeetupAttendee } from './meetup-attendee'
 import type { MeetupsCriteria } from './criterias/meetups-criteria'
 import type { MeetupsFilters } from './criterias/meetups-filters'
 import type { MeetupsOrder } from './criterias/meetups-order'
@@ -19,4 +20,5 @@ export interface MeetupsRepository
   findBySlug(slug: string): Promise<Meetup>
   addAttendees(meetup: Meetup): Promise<void>
   removeAttendee(meetupId: MeetupId, attendeeId: MeetupAttendeeId): Promise<void>
+  findAllAttendees(meetupId: string): Promise<MeetupAttendee[]>
 }

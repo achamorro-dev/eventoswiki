@@ -35,4 +35,7 @@ export const saveMeetupActionSchema = z.object({
       address: z.string(),
     })
     .optional(),
+  allowsAttendees: z.boolean(),
+  registrationEndsAt: z.string().transform(date => Datetime.toDate(date)).optional(),
+  maxAttendees: z.number().optional(),
 })

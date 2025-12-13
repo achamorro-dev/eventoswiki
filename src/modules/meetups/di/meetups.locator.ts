@@ -5,6 +5,7 @@ import { DeleteMeetupCommand } from '../application/delete-meetup.command'
 import { FindMeetupQuery } from '../application/find-meetup.query'
 import { FindMeetupBySlugQuery } from '../application/find-meetup-by-slug.query'
 import { FindMeetupsQuery } from '../application/find-meetups.query'
+import { FindMeetupAttendeesQuery } from '../application/find-meetup-attendees.query'
 import { GetMeetupsQuery } from '../application/get-meetups.query'
 import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
@@ -65,6 +66,10 @@ export class MeetupsLocator {
 
   static unattendMeetupCommand = (): UnattendMeetupCommand => {
     return new UnattendMeetupCommand(MeetupsLocator.createMeetupsRepository())
+  }
+
+  static findMeetupAttendeesQuery = (): FindMeetupAttendeesQuery => {
+    return new FindMeetupAttendeesQuery(MeetupsLocator.createMeetupsRepository())
   }
 
   private static createMeetupsRepository(): MeetupsRepository {

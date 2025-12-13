@@ -14,6 +14,7 @@ import {
   MeetupAttendee,
   or,
   Province,
+  User,
 } from 'astro:db'
 import { RelationalOperator } from '@/modules/shared/domain/criteria/relational-operator'
 import type { Filter } from '@/shared/domain/criteria/filter'
@@ -21,6 +22,7 @@ import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
+import { MeetupAttendee as MeetupAttendeeEntity } from '../domain/meetup-attendee'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
 import { MeetupAlreadyExists } from '../domain/errors/meetup-already-exists.error'
@@ -221,6 +223,21 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     await db
       .delete(MeetupAttendee)
       .where(and(eq(MeetupAttendee.meetupId, meetupId.value), eq(MeetupAttendee.userId, attendeeId.value)))
+  }
+
+  async findAllAttendees(meetupId: string): Promise<MeetupAttendeeEntity[]> {
+    const attendees = await db
+      .select({
+        userId: User.id,
+        name: User.name,
+        username: User.username,
+        avatar: User.avatar,
+      })
+      .from(MeetupAttendee)
+      .innerJoin(User, eq(MeetupAttendee.userId, User.id))
+      .where(eq(MeetupAttendee.meetupId, meetupId))
+
+    return attendees.map(attendee => MeetupAttendeeEntity.fromPrimitives(attendee))
   }
 
   private _mapError(error: unknown, value: MeetupEntity) {

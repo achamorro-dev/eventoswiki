@@ -104,5 +104,8 @@ function _parseMeetupDataPayload(input: z.infer<typeof saveMeetupActionSchema>):
           address: input.place.address,
         }
       : undefined,
+    allowsAttendees: input.allowsAttendees,
+    registrationEndsAt: input.registrationEndsAt ? Datetime.toDateTimeIsoString(input.registrationEndsAt) : undefined,
+    maxAttendees: input.maxAttendees,
   }
 }

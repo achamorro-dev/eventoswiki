@@ -53,7 +53,7 @@ export const meetupFormSchema = z
       .optional(),
     tags: NotRequiredArrayFormField(z.string()),
     tagColor: NotRequiredStringFormField(),
-    allowsAttendees: z.boolean().default(true),
+    allowsAttendees: z.boolean(),
     registrationEndsAt: z.date().optional(),
     maxAttendees: NotRequiredNumberFormField(MeetupMaxAttendeesValidator),
   })
