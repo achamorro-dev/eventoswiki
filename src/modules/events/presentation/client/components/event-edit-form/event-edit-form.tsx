@@ -386,9 +386,9 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                 </div>
               </div>
 
-              {/* Sección: Etiquetas y categorización */}
+              {/* Sección: Categorías */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Etiquetas y categorización</h2>
+                <h2 className="text-xl font-semibold mb-4">Categorías</h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <FormField
