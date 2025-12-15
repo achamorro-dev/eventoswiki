@@ -1,10 +1,11 @@
 import db from '@astrojs/db'
 import mdx from '@astrojs/mdx'
-import netlify from '@astrojs/netlify'
 import react from '@astrojs/react'
 
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, envField } from 'astro/config'
+
+import node from '@astrojs/node'
 
 // https://astro.build/config
 export default defineConfig({
@@ -51,5 +52,7 @@ export default defineConfig({
     },
   },
 
-  adapter: netlify({}),
+  adapter: node({
+    mode: 'standalone',
+  }),
 })
