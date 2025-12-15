@@ -1,0 +1,43 @@
+services:
+  eventoswiki:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BASE_URL=${BASE_URL}
+        - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
+        - ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
+        - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+        - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+        - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+        - GOOGLE_MAPS_PLACES_API_KEY=${GOOGLE_MAPS_PLACES_API_KEY}
+        - PUBLIC_GOOGLE_MAPS_EMBED_API_KEY=${PUBLIC_GOOGLE_MAPS_EMBED_API_KEY}
+        - TWITTER_CLIENT_ID=${TWITTER_CLIENT_ID}
+        - TWITTER_CLIENT_SECRET=${TWITTER_CLIENT_SECRET}
+        - PINATA_JWT=${PINATA_JWT}
+        - PINATA_GATEWAY_URL=${PINATA_GATEWAY_URL}
+    ports:
+      - '4321:4321'
+    environment:
+      - NODE_ENV=production
+      - BASE_URL=${BASE_URL}
+      - ASTRO_DB_REMOTE_URL=${ASTRO_DB_REMOTE_URL}
+      - ASTRO_DB_APP_TOKEN=${ASTRO_DB_APP_TOKEN}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_MAPS_PLACES_API_KEY=${GOOGLE_MAPS_PLACES_API_KEY}
+      - PUBLIC_GOOGLE_MAPS_EMBED_API_KEY=${PUBLIC_GOOGLE_MAPS_EMBED_API_KEY}
+      - TWITTER_CLIENT_ID=${TWITTER_CLIENT_ID}
+      - TWITTER_CLIENT_SECRET=${TWITTER_CLIENT_SECRET}
+      - PINATA_JWT=${PINATA_JWT}
+      - PINATA_GATEWAY_URL=${PINATA_GATEWAY_URL}
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://localhost:4321']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

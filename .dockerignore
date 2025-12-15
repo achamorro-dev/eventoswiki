@@ -1,0 +1,102 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Archivos de construcción
+dist/
+.astro/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables de entorno
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env*.local
+
+# Control de versiones
+.git/
+.gitignore
+.gitattributes
+
+# IDE y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.cursor/
+
+# Archivos de testing
+coverage/
+.nyc_output/
+*.test.ts
+*.spec.ts
+__tests__/
+
+# Archivos de CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Documentación
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+docs/
+*.md
+
+# Archivos temporales
+tmp/
+temp/
+*.tmp
+
+# Archivos del sistema
+Thumbs.db
+.DS_Store
+
+# Scripts de desarrollo
+scripts/
+
+# Archivos de configuración de desarrollo
+.editorconfig
+.eslintrc*
+.prettierrc*
+biome.json
+.biomeignore
+.prettierignore
+.eslintignore
+
+# Git hooks
+.husky/
+simple-git-hooks
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose*.yml
+
+# Contenido antiguo y migraciones
+src/old-content/
+db/content-migration/
+
+# Archivos de bloqueo alternativos (solo necesitamos pnpm-lock.yaml)
+package-lock.json
+yarn.lock
+
+# Caché de Astro
+.vercel/
+.netlify/
+
