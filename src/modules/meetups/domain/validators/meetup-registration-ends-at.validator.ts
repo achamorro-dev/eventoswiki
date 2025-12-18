@@ -1,4 +1,4 @@
-import { Datetime } from '@/shared/domain/datetime/datetime'
+import { DateValidator } from '@/shared/domain/validators/date.validator'
 import { Validator } from '@/shared/domain/validators/validator'
 
 export class MeetupRegistrationEndsAtValidator extends Validator<Date | null | undefined> {
@@ -7,10 +7,6 @@ export class MeetupRegistrationEndsAtValidator extends Validator<Date | null | u
       return null
     }
 
-    if (Datetime.isBefore(this.value, Datetime.now())) {
-      return 'La fecha de fin de registro debe ser futura'
-    }
-
-    return null
+    return new DateValidator(this.value).validate()
   }
 }
