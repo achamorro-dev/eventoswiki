@@ -41,7 +41,7 @@ try {
 {
   userId && organization ? (
     <Layout title={organization.name}>
-      <EditOrganizationPage organization={organization} organizerId={userId} />
+      <EditOrganizationPage organization={organization} />
     </Layout>
   ) : (
     <BaseLayout title="Organización no encontrada">

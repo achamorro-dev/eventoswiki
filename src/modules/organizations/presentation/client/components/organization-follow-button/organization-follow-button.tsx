@@ -5,11 +5,10 @@ import { HeartBold, HeartBreakBold, Loader } from '@/ui/icons'
 
 interface Props {
   organizationId: string
-  userId: string
   isFollowing: boolean
 }
 export const OrganizationFollowButton = (props: Props) => {
-  const { organizationId, userId } = props
+  const { organizationId } = props
   const [isFollowing, setIsFollowing] = useState(props.isFollowing)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -17,7 +16,6 @@ export const OrganizationFollowButton = (props: Props) => {
     setIsLoading(true)
     await actions.organizations.followOrganizationAction({
       organizationId,
-      userId,
     })
 
     setIsFollowing(true)
@@ -28,7 +26,6 @@ export const OrganizationFollowButton = (props: Props) => {
     setIsLoading(true)
     await actions.organizations.unfollowOrganizationAction({
       organizationId,
-      userId,
     })
 
     setIsFollowing(false)

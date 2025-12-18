@@ -56,12 +56,7 @@ const isFollowing = userId ? organization.isFollower(userId) : false
     {
       userId && !isOrganizer && (
         <section class="actions">
-          <OrganizationFollowButton
-            client:load
-            organizationId={organization.id.value}
-            userId={userId}
-            isFollowing={isFollowing}
-          />
+          <OrganizationFollowButton client:load organizationId={organization.id.value} isFollowing={isFollowing} />
         </section>
       )
     }

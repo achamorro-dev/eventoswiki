@@ -7,11 +7,18 @@ export const followOrganizationAction = defineAction({
   accept: 'json',
   input: z.object({
     organizationId: z.string(),
-    userId: z.string(),
   }),
-  handler: async input => {
+  handler: async (input, context) => {
     try {
-      const { organizationId, userId } = input
+      const { organizationId } = input
+      const userId = context.locals.user?.id
+
+      if (!userId) {
+        throw new ActionError({
+          code: 'UNAUTHORIZED',
+          message: 'Usuario no autenticado',
+        })
+      }
 
       await OrganizationsLocator.followOrganizationCommand().execute({
         organizationId,

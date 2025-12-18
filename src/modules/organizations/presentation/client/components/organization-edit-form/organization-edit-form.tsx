@@ -27,10 +27,9 @@ import { organizationFormSchema } from './organization-form-schema'
 interface Props {
   provinces: Province[]
   organization?: Primitives<Organization>
-  organizerId: string
 }
 
-export const OrganizationEditForm = ({ provinces, organizerId, organization }: Props) => {
+export const OrganizationEditForm = ({ provinces, organization }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile()
   const [isSaving, setIsSaving] = useState(false)
@@ -64,7 +63,6 @@ export const OrganizationEditForm = ({ provinces, organizerId, organization }: P
   const onSubmit = async (values: z.infer<typeof organizationFormSchema>) => {
     const organizationValues = {
       ...values,
-      organizerId,
       organizationId: organization?.id,
     }
 

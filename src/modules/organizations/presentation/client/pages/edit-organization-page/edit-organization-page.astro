@@ -5,20 +5,14 @@ import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { OrganizationEditForm } from '../../components/organization-edit-form/organization-edit-form'
 
 interface Props {
-  organizerId: string
   organization: Organization
 }
 
-const { organizerId, organization } = Astro.props as Props
+const { organization } = Astro.props as Props
 const provinces = await ProvincesLocator.getProvincesQuery().execute()
 ---
 
 <article>
   <SectionTitle>Editar Organización</SectionTitle>
-  <OrganizationEditForm
-    client:only="react"
-    organization={organization.toPrimitives()}
-    organizerId={organizerId}
-    provinces={provinces}
-  />
+  <OrganizationEditForm client:only="react" organization={organization.toPrimitives()} provinces={provinces} />
 </article>

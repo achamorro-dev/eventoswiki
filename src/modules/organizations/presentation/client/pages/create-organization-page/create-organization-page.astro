@@ -3,15 +3,11 @@ import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { OrganizationEditForm } from '../../components/organization-edit-form/organization-edit-form'
 
-interface Props {
-  organizerId: string
-}
-
-const { organizerId } = Astro.props as Props
+// no props required; the page checks Astro.locals.user for access control
 const provinces = await ProvincesLocator.getProvincesQuery().execute()
 ---
 
 <article>
   <SectionTitle>Crear Organización</SectionTitle>
-  <OrganizationEditForm client:only="react" organizerId={organizerId} provinces={provinces} />
+  <OrganizationEditForm client:only="react" provinces={provinces} />
 </article>

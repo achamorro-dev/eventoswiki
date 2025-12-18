@@ -41,12 +41,7 @@ if (organizationId) {
         </div>
       </section>
       {userId && !isOrganizer && (
-        <OrganizationFollowButton
-          client:load
-          organizationId={organization.id.value}
-          userId={userId}
-          isFollowing={isFollowing}
-        />
+        <OrganizationFollowButton client:load organizationId={organization.id.value} isFollowing={isFollowing} />
       )}
       <slot name="actions" />
     </div>

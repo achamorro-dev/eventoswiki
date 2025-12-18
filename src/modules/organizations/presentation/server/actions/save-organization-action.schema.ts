@@ -19,6 +19,5 @@ export const saveOrganizationActionSchema = z.object({
   discord: z.string().optional(),
   tiktok: z.string().optional(),
   followers: z.array(z.string()).optional(),
-  organizerId: z.string(),
   organizationId: z.string().optional(),
 });

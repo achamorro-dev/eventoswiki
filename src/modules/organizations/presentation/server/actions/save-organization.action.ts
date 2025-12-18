@@ -8,9 +8,16 @@ import  { saveOrganizationActionSchema } from './save-organization-action.schema
 export const saveOrganizationAction = defineAction({
   accept: 'json',
   input: saveOrganizationActionSchema,
-  handler: async input => {
+  handler: async (input, context) => {
     try {
-      const { organizerId, organizationId } = input
+      const { organizationId } = input
+      const organizerId = context.locals.user?.id
+      if (!organizerId) {
+        throw new ActionError({
+          code: 'UNAUTHORIZED',
+          message: 'No estás autorizado para guardar esta organización',
+        })
+      }
       const newOrganization = _parseOrganizationDataPayload(input)
 
       const isNewOrganization = !organizationId
