@@ -1,5 +1,5 @@
-import type { Primitives } from '@/shared/domain/primitives/primitives'
 import type { Place } from '@/modules/places/domain/place'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 
 export interface AstroDbMeetupDto {
   id: string | null

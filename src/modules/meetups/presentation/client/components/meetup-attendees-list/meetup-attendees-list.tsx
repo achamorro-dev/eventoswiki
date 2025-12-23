@@ -4,11 +4,11 @@ import { actions } from 'astro:actions'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import type { MeetupAttendee } from '@/meetups/domain/meetup-attendee'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
 import { Button } from '@/ui/button'
 import { Loader, User, X } from '@/ui/icons'
 import { ExportAttendeesButton } from './export-attendees-button'
-import type { Primitives } from '@/shared/domain/primitives/primitives'
 
 interface Props {
   meetupId: string
@@ -42,7 +42,7 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttende
       setAttendees(prev => prev.filter(attendee => attendee.userId !== userId))
       onAttendeesChange?.(attendees.filter(attendee => attendee.userId !== userId))
       toast.success('Asistente eliminado correctamente')
-    } catch (error) {
+    } catch (_error) {
       toast.error('Error al eliminar el asistente')
     } finally {
       setRemovingIds(prev => {
@@ -71,7 +71,7 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttende
         if (data?.attendees) {
           setAttendees(data.attendees)
         }
-      } catch (err) {
+      } catch (_err) {
         toast.error('Error al obtener los asistentes')
       } finally {
         setIsLoading(false)
@@ -92,11 +92,9 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttende
   if (attendees.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <User className="h-16 w-16 text-muted-foreground mb-4" />
-        <h3 className="text-lg font-semibold mb-2">No hay asistentes registrados</h3>
-        <p className="text-muted-foreground">
-          Cuando los usuarios se registren para este meetup, aparecerán aquí.
-        </p>
+        <User className="mb-4 h-16 w-16 text-muted-foreground" />
+        <h3 className="mb-2 font-semibold text-lg">No hay asistentes registrados</h3>
+        <p className="text-muted-foreground">Cuando los usuarios se registren para este meetup, aparecerán aquí.</p>
       </div>
     )
   }
@@ -104,15 +102,18 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttende
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           {attendees.length} {attendees.length === 1 ? 'asistente registrado' : 'asistentes registrados'}
         </p>
         <ExportAttendeesButton meetupId={meetupId} attendees={attendees} />
       </div>
 
-      <div className="border rounded-lg divide-y">
+      <div className="divide-y rounded-lg border">
         {attendees.map(attendee => (
-          <div key={attendee.userId} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors">
+          <div
+            key={attendee.userId}
+            className="flex items-center justify-between p-4 transition-colors hover:bg-muted/50"
+          >
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
                 {attendee.avatar ? (
@@ -125,7 +126,7 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttende
               </Avatar>
               <div>
                 <p className="font-medium">{attendee.name}</p>
-                <p className="text-sm text-muted-foreground">@{attendee.username}</p>
+                <p className="text-muted-foreground text-sm">@{attendee.username}</p>
               </div>
             </div>
             <Button
@@ -133,7 +134,7 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttende
               size="icon"
               onClick={() => handleRemoveAttendee(attendee.userId, attendee.name)}
               disabled={removingIds.has(attendee.userId)}
-              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
             >
               {removingIds.has(attendee.userId) ? (
                 <Loader className="h-4 w-4 animate-spin" />
@@ -148,4 +149,3 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttende
     </div>
   )
 }
-

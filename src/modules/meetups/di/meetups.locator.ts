@@ -2,6 +2,7 @@ import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { AttendMeetupCommand } from '../application/attend-meetup.command'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
 import { DeleteMeetupCommand } from '../application/delete-meetup.command'
+import { ExportAttendeesCommand } from '../application/export-attendees.command'
 import { FindMeetupQuery } from '../application/find-meetup.query'
 import { FindMeetupAttendeesQuery } from '../application/find-meetup-attendees.query'
 import { FindMeetupBySlugQuery } from '../application/find-meetup-by-slug.query'
@@ -70,6 +71,13 @@ export class MeetupsLocator {
 
   static findMeetupAttendeesQuery = (): FindMeetupAttendeesQuery => {
     return new FindMeetupAttendeesQuery(MeetupsLocator.createMeetupsRepository())
+  }
+
+  static exportAttendeesCommand = (): ExportAttendeesCommand => {
+    return new ExportAttendeesCommand(
+      MeetupsLocator.createMeetupsRepository(),
+      OrganizationsLocator.userIsOrganizerEnsurer(),
+    )
   }
 
   private static createMeetupsRepository(): MeetupsRepository {

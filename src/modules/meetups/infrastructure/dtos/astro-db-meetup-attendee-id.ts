@@ -1,4 +1,3 @@
-
 export interface AstroDbMeetupAttendeeId {
-  userId: string;
+  userId: string
 }

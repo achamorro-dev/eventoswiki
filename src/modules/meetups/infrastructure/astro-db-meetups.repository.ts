@@ -22,18 +22,18 @@ import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
-import { MeetupAttendee as MeetupAttendeeEntity } from '../domain/meetup-attendee'
 import type { MeetupsCriteria } from '../domain/criterias/meetups-criteria'
 import type { MeetupsOrder } from '../domain/criterias/meetups-order'
 import { MeetupAlreadyExists } from '../domain/errors/meetup-already-exists.error'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
 import { Meetup as MeetupEntity } from '../domain/meetup'
+import { MeetupAttendee as MeetupAttendeeEntity } from '../domain/meetup-attendee'
 import type { MeetupAttendeeId } from '../domain/meetup-attendee-id'
 import type { MeetupId } from '../domain/meetup-id'
 import type { MeetupsRepository } from '../domain/meetups.repository'
-import { AstroDbMeetupMapper } from './mappers/astro-db-meetup.mapper'
 import type { AstroDbMeetupDto } from './dtos/astro-db-meetup.dto'
 import type { AstroDbMeetupProvinceDto } from './dtos/astro-db-meetup-province.dto'
+import { AstroDbMeetupMapper } from './mappers/astro-db-meetup.mapper'
 
 export class AstroDbMeetupsRepository implements MeetupsRepository {
   async match(criteria: MeetupsCriteria): Promise<PaginatedResult<MeetupEntity>> {
@@ -69,15 +69,16 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       .leftJoin(Province, eq(Province.slug, Meetup.location))
       .where(eq(Meetup.id, id.value))
       .limit(1)
-    if (!result.at(0)) {
+    const meetupResult = result.at(0)
+    if (!meetupResult) {
       throw new MeetupNotFound(id.value)
     }
 
     const attendees = await db.select().from(MeetupAttendee).where(eq(MeetupAttendee.meetupId, id.value))
 
     return AstroDbMeetupMapper.toDomain({
-      meetupDto: result.at(0)!.Meetup as AstroDbMeetupDto,
-      provinceDto: result.at(0)!.Province,
+      meetupDto: meetupResult.Meetup as AstroDbMeetupDto,
+      provinceDto: meetupResult.Province,
       attendeesIds: attendees.map(attendee => ({ meetupId: attendee.meetupId, userId: attendee.userId })),
     })
   }
@@ -90,22 +91,21 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       .where(eq(Meetup.slug, slug))
       .limit(1)
 
-    if (!result.at(0)) {
+    const meetupResult = result.at(0)
+    if (!meetupResult) {
       throw new MeetupNotFound()
     }
 
     const attendees = await db
-      .select(
-        {
-          userId: MeetupAttendee.userId,
-        }
-      )
+      .select({
+        userId: MeetupAttendee.userId,
+      })
       .from(MeetupAttendee)
-      .where(eq(MeetupAttendee.meetupId, result.at(0)!.Meetup.id))
+      .where(eq(MeetupAttendee.meetupId, meetupResult.Meetup.id))
 
     return AstroDbMeetupMapper.toDomain({
-      meetupDto: result.at(0)!.Meetup as AstroDbMeetupDto,
-      provinceDto: result.at(0)!.Province,
+      meetupDto: meetupResult.Meetup as AstroDbMeetupDto,
+      provinceDto: meetupResult.Province,
       attendeesIds: attendees.map(attendee => ({ userId: attendee.userId })),
     })
   }
@@ -127,7 +127,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
   async delete(id: MeetupId): Promise<void> {
     try {
       await db.delete(Meetup).where(eq(Meetup.id, id.value))
-    } catch (error) {
+    } catch (_error) {
       throw new MeetupNotFound(id.value)
     }
   }
@@ -320,7 +320,6 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     if (!parentFilters) return []
 
     if (Array.isArray(parentFilters)) {
-      //@ts-ignore
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
         //@ts-expect-error
@@ -332,9 +331,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     return Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
       .filter(([_, value]) => value !== undefined)
       .map(([key, eventFilter]) => {
-        if (!eventFilter) return
-
-        switch (eventFilter.operator) {
+        switch (eventFilter?.operator) {
           case RelationalOperator.EQUALS:
             //@ts-expect-error
             return eq(Meetup[key], eventFilter.value)
@@ -357,6 +354,8 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
           case RelationalOperator.NOT_EQUALS:
             //@ts-expect-error
             return ne(Meetup[key], eventFilter.value)
+          default:
+            throw new Error(`Operador no soportado: ${eventFilter?.operator}`)
         }
       })
   }
