@@ -1,6 +1,6 @@
 import { Query } from '@/modules/shared/application/use-case/query'
-import type { MeetupsRepository } from '../domain/meetups.repository'
 import type { MeetupAttendee } from '../domain/meetup-attendee'
+import type { MeetupsRepository } from '../domain/meetups.repository'
 
 export class FindMeetupAttendeesQuery extends Query<MeetupAttendee[], string> {
   constructor(private readonly meetupsRepository: MeetupsRepository) {
@@ -11,4 +11,3 @@ export class FindMeetupAttendeesQuery extends Query<MeetupAttendee[], string> {
     return this.meetupsRepository.findAllAttendees(meetupId)
   }
 }
-

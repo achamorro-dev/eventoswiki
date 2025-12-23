@@ -8,14 +8,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar'
 import { Button } from '@/ui/button'
 import { Loader, User, X } from '@/ui/icons'
 import { ExportAttendeesButton } from './export-attendees-button'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
 
 interface Props {
   meetupId: string
-  initialAttendees?: MeetupAttendee[]
+  initialAttendees?: Primitives<MeetupAttendee>[]
+  onAttendeesChange?: (attendees: Primitives<MeetupAttendee>[]) => void
 }
 
-export const MeetupAttendeesList = ({ meetupId, initialAttendees = [] }: Props) => {
-  const [attendees, setAttendees] = useState<MeetupAttendee[]>(initialAttendees)
+export const MeetupAttendeesList = ({ meetupId, initialAttendees = [], onAttendeesChange }: Props) => {
+  const [attendees, setAttendees] = useState<Array<Primitives<MeetupAttendee>>>(initialAttendees)
   const [isLoading, setIsLoading] = useState(false)
   const [removingIds, setRemovingIds] = useState<Set<string>>(new Set())
 
@@ -25,7 +27,6 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [] }: Props) 
     }
 
     setRemovingIds(prev => new Set(prev).add(userId))
-
     try {
       const { error } = await actions.meetups.removeAttendeeAction({
         meetupId,
@@ -39,6 +40,7 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [] }: Props) 
 
       // Optimistically update the UI
       setAttendees(prev => prev.filter(attendee => attendee.userId !== userId))
+      onAttendeesChange?.(attendees.filter(attendee => attendee.userId !== userId))
       toast.success('Asistente eliminado correctamente')
     } catch (error) {
       toast.error('Error al eliminar el asistente')
@@ -50,6 +52,34 @@ export const MeetupAttendeesList = ({ meetupId, initialAttendees = [] }: Props) 
       })
     }
   }
+
+  // Fetch attendees if they were not provided initially
+  useEffect(() => {
+    const fetchAttendees = async () => {
+      if (initialAttendees.length > 0) return
+
+      setIsLoading(true)
+
+      try {
+        const { data, error } = await actions.meetups.getAttendeesAction({ meetupId })
+
+        if (error) {
+          toast.error(error.message)
+          return
+        }
+
+        if (data?.attendees) {
+          setAttendees(data.attendees)
+        }
+      } catch (err) {
+        toast.error('Error al obtener los asistentes')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchAttendees()
+  }, [initialAttendees.length, meetupId])
 
   if (isLoading) {
     return (

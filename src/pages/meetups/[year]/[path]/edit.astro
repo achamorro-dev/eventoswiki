@@ -1,17 +1,18 @@
 ---
+import { navigate } from 'astro:transitions/client'
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
-import { MeetupEditForm } from '@/meetups/presentation/client/components/meetup-edit-form/meetup-edit-form'
+import { MeetupEditTabs } from '@/meetups/presentation/client/components/meetup-edit-tabs/meetup-edit-tabs'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
-import { navigate } from 'astro:transitions/client'
 
 const year = Astro.params.year
 const path = Astro.params.path
@@ -26,6 +27,7 @@ const slug = `${year}/${path}`
 
 let meetup: Meetup | undefined
 let provinces: Province[] = []
+let organization: Organization | undefined
 let canEdit = false
 
 try {
@@ -38,7 +40,8 @@ try {
 
   if (meetup && userId) {
     const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
-    canEdit = organizations.some(organization => meetup!.isOrganizedBy(organization.id))
+    organization = organizations.find(organization => meetup!.isOrganizedBy(organization.id))
+    canEdit = organization !== undefined
   }
 } catch (error) {
   switch (true) {
@@ -55,16 +58,16 @@ try {
 ---
 
 {
-  meetup && canEdit ? (
+  meetup && organization && canEdit ? (
     <>
       <Layout title={'Editar meetup'}>
         <article>
           <SectionTitle>Editar meetup</SectionTitle>
-          <MeetupEditForm
+          <MeetupEditTabs
             client:only="react"
             meetup={meetup.toPrimitives()}
-            organizationId={meetup.organizationId!}
             provinces={provinces}
+            organization={organization.toPrimitives()}
           />
         </article>
       </Layout>

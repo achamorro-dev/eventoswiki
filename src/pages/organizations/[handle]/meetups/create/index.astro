@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
-import { MeetupEditForm } from '@/meetups/presentation/client/components/meetup-edit-form/meetup-edit-form'
+import { MeetupEditTabs } from '@/meetups/presentation/client/components/meetup-edit-tabs/meetup-edit-tabs'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
+import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesLocator } from '@/provinces/di/provinces.locator'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
@@ -17,7 +18,7 @@ if (!handle) {
   return Astro.redirect(Urls.HOME)
 }
 
-let organization
+let organization: Organization | undefined
 let provinces: Province[] = []
 try {
   ;[organization, provinces] = await Promise.all([
@@ -47,12 +48,7 @@ try {
     <Layout title={'Crear evento'}>
       <article>
         <SectionTitle>Crear meetup</SectionTitle>
-        <MeetupEditForm
-          client:only="react"
-          organizationId={organization.id.value}
-          organization={organization.toPrimitives()}
-          provinces={provinces}
-        />
+        <MeetupEditTabs client:only="react" provinces={provinces} organization={organization.toPrimitives()} />
       </article>
     </Layout>
   ) : (

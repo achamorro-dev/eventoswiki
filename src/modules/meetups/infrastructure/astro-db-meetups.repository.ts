@@ -78,7 +78,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     return AstroDbMeetupMapper.toDomain({
       meetupDto: result.at(0)!.Meetup as AstroDbMeetupDto,
       provinceDto: result.at(0)!.Province,
-      attendees: attendees.map(attendee => ({ meetupId: attendee.meetupId, userId: attendee.userId })),
+      attendeesIds: attendees.map(attendee => ({ meetupId: attendee.meetupId, userId: attendee.userId })),
     })
   }
 
@@ -94,10 +94,19 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       throw new MeetupNotFound()
     }
 
+    const attendees = await db
+      .select(
+        {
+          userId: MeetupAttendee.userId,
+        }
+      )
+      .from(MeetupAttendee)
+      .where(eq(MeetupAttendee.meetupId, result.at(0)!.Meetup.id))
+
     return AstroDbMeetupMapper.toDomain({
       meetupDto: result.at(0)!.Meetup as AstroDbMeetupDto,
       provinceDto: result.at(0)!.Province,
-      attendees: [],
+      attendeesIds: attendees.map(attendee => ({ userId: attendee.userId })),
     })
   }
 
@@ -226,7 +235,13 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
   }
 
   async findAllAttendees(meetupId: string): Promise<MeetupAttendeeEntity[]> {
-    const attendees = await db
+    const attendees = await this._getAttendees(meetupId)
+
+    return attendees.map(attendee => MeetupAttendeeEntity.fromPrimitives(attendee))
+  }
+
+  private async _getAttendees(meetupId: string) {
+    return await db
       .select({
         userId: User.id,
         name: User.name,
@@ -236,8 +251,6 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
       .from(MeetupAttendee)
       .innerJoin(User, eq(MeetupAttendee.userId, User.id))
       .where(eq(MeetupAttendee.meetupId, meetupId))
-
-    return attendees.map(attendee => MeetupAttendeeEntity.fromPrimitives(attendee))
   }
 
   private _mapError(error: unknown, value: MeetupEntity) {
