@@ -10,6 +10,7 @@
     "astro": "astro",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
+    "lint:unsafe": "biome check --write --unsafe .",
     "format": "biome format --write ."
   },
   "dependencies": {
@@ -84,6 +85,7 @@
     "zod": "^3.25.76"
   },
   "simple-git-hooks": {
+    "pre-commit": "npx --no-install biome check --write --unsafe --staged",
     "commit-msg": "npx --no-install commitlint --edit ${1}"
   },
   "volta": {

@@ -46,7 +46,8 @@
       },
       "complexity": {
         "recommended": true,
-        "noForEach": "off"
+        "noForEach": "off",
+        "noStaticOnlyClass": "off"
       },
       "correctness": {
         "recommended": true,
@@ -64,8 +65,7 @@
         "useNodejsImportProtocol": "off"
       },
       "suspicious": {
-        "recommended": true,
-        "noStaticOnlyClass": "off"
+        "recommended": true
       },
       "nursery": {
         "useSortedClasses": "warn"
