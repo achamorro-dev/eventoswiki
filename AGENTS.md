@@ -236,6 +236,28 @@ This repo uses `@commitlint/config-conventional`, so follow `type(scope): subjec
 4. Add proper accessibility support
 5. Export from appropriate index files
 
+## File Organization Rules
+
+### No Barrel Files
+
+Do not create barrel files (index.ts files that re-export modules). Import directly from the source files to maintain clear dependencies and avoid circular imports. This applies to:
+
+- Domain entities and value objects
+- Application use cases and commands
+- Infrastructure repositories
+- Presentation components
+- Shared utilities
+
+**Example of correct imports:**
+```typescript
+// ❌ Don't do this
+import { Event, EventId } from '@/events/domain'
+
+// ✅ Do this instead
+import { Event } from '@/events/domain/event'
+import { EventId } from '@/events/domain/event-id'
+```
+
 ## Dependencies
 
 - **Astro**: 5.14.8 (SSG/SSR framework)

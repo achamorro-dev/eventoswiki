@@ -55,3 +55,6 @@ coverage/
 *.tmp
 *.temp
 .cache/
+
+# AI config files
+AGENTS.md
