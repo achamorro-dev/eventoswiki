@@ -73,10 +73,14 @@ export const Agenda = (props: Props) => {
             {sortedDates.map(dateKey => {
               const date = new Date(dateKey)
               const dayEvents = eventsByDate[dateKey]
+              const now = new Date()
+              const isToday = Datetime.isSameDay(date, now)
 
               return (
                 <div key={dateKey} className="space-y-3">
-                  <h3 className="text-foreground text-lg font-medium">{Datetime.toDayString(date)}</h3>
+                  <h3 className={cn('font-medium text-lg', isToday ? 'text-primary' : 'text-foreground')}>
+                    {Datetime.toDayString(date)}
+                  </h3>
                   <ul className="space-y-3">
                     {dayEvents.map(event => (
                       <li key={event.id}>
