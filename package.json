@@ -85,7 +85,7 @@
     "zod": "^3.25.76"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx --no-install biome check --write --unsafe --staged",
+    "pre-commit": "npx --no-install biome check --write --unsafe --staged --no-errors-on-unmatched",
     "commit-msg": "npx --no-install commitlint --edit ${1}"
   },
   "volta": {
