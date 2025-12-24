@@ -8,6 +8,7 @@ import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-pe
 import { EventLocation } from '@/ui/components/event-location/event-location'
 import { EventStreaming } from '@/ui/components/event-streaming/event-streaming'
 import EventTags from '@/ui/components/event-tags/event-tags.astro'
+import { EventTypeDisplay } from '../event-type-display/event-type-display'
 
 interface Props {
   id: string
@@ -15,13 +16,13 @@ interface Props {
   isOrganizer: boolean
 }
 
-const { id, type, isOrganizer } = Astro.props
+const { id, type: entityType, isOrganizer } = Astro.props
 const userId = Astro.locals.user?.id
 
 let event: Event | Meetup | null = null
 let isAttending = false
 try {
-  if (type === 'event') {
+  if (entityType === 'event') {
     event = await EventsLocator.findEventQuery().execute({ id })
   } else {
     event = await MeetupsLocator.findMeetupQuery().execute({ id })
@@ -38,7 +39,7 @@ if (!event) {
   return null
 }
 
-const { title, tags, tagColor, startsAt, endsAt, location } = event
+const { title, tags, tagColor, startsAt, endsAt, location, type } = event
 const streamingUrl = event.streamingUrl
 const shouldShowStreamingLink = isOrganizer || isAttending
 const place = event.place?.toPrimitives()
@@ -50,6 +51,7 @@ const place = event.place?.toPrimitives()
     {title}
   </h1>
   <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
+  <EventTypeDisplay type={type} entityType={entityType} client:load transition:animate="fade" />
   <EventLocation location={location} place={place} client:load transition:animate="fade" />
   <EventStreaming
     streamingUrl={streamingUrl}
