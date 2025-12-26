@@ -17,6 +17,7 @@ interface Props {
 }
 
 const { title, description, image, url, mainContentId } = Astro.props
+const currentPath = Astro.url.pathname
 ---
 
 <!doctype html>
@@ -24,7 +25,7 @@ const { title, description, image, url, mainContentId } = Astro.props
   <BaseHead title={`${title} - eventos.wiki`} description={description} image={image} url={url} />
   <body>
     <SkipToContent contentId={mainContentId} />
-    <Header transition:persist />
+    <Header currentPath={currentPath} transition:persist />
     <slot />
     <Footer transition:persist>
       <ProvincesList />

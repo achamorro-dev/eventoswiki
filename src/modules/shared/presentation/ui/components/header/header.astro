@@ -7,8 +7,15 @@ import { Link } from '../link'
 import MobileMenu from '../menu/mobile-menu.astro'
 import UserAvatarSkeleton from '../user-avatar/user-avatar-skeleton.astro'
 
+interface Props {
+  currentPath?: string
+}
+
+const { currentPath } = Astro.props
 const hasActiveSession = Astro.locals.user !== null
 const userId = Astro.locals.user?.id
+
+const getNextParam = () => (currentPath ? `?_next=${encodeURIComponent(currentPath)}` : '')
 ---
 
 <header class="header">
@@ -17,7 +24,7 @@ const userId = Astro.locals.user?.id
   <section class="actions">
     {
       !hasActiveSession && (
-        <Link href={Urls.LOGIN} variant="default">
+        <Link href={`${Urls.LOGIN}${getNextParam()}`} variant="default">
           Iniciar sesión
         </Link>
       )
@@ -31,7 +38,7 @@ const userId = Astro.locals.user?.id
     }
   </section>
 </header>
-<MobileMenu />
+<MobileMenu currentPath={currentPath} />
 
 <style>
   @reference "../../../../../../styles/global.css";
