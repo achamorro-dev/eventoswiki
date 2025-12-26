@@ -183,7 +183,9 @@ export class Meetup implements MeetupProps {
     this.slug = data.slug ?? this.slug
     this.place = data.place ? MeetupPlace.fromPrimitives(data.place) : this.place
     this.allowsAttendees = data.allowsAttendees ?? this.allowsAttendees
-    this.registrationEndsAt = data.registrationEndsAt ? Datetime.toDate(data.registrationEndsAt) : this.registrationEndsAt
+    this.registrationEndsAt = data.registrationEndsAt
+      ? Datetime.toDate(data.registrationEndsAt)
+      : this.registrationEndsAt
     this.maxAttendees = data.maxAttendees ?? this.maxAttendees
   }
 
@@ -276,6 +278,10 @@ export class Meetup implements MeetupProps {
     const error = validator.validate()
 
     if (error) throw new InvalidMeetupError(error)
+  }
+
+  hasAttendees() {
+    return this.attendees !== undefined && this.attendees.length > 0
   }
 }
 

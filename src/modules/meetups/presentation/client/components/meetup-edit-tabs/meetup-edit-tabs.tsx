@@ -24,16 +24,16 @@ export const MeetupEditTabs = ({ meetup, provinces, organization }: Props) => {
 
   return (
     <Tabs defaultValue="info" className="w-full">
-      <TabsList className="mb-6">
+      <TabsList>
         <TabsTrigger value="info">Información del Meetup</TabsTrigger>
         <TabsTrigger value="attendees">Asistentes ({attendeesCount})</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="info" className="space-y-6 py-4">
+      <TabsContent value="info">
         <MeetupEditForm meetup={meetup} organization={organization} provinces={provinces} />
       </TabsContent>
 
-      <TabsContent value="attendees" className="py-4">
+      <TabsContent value="attendees">
         <MeetupAttendeesList meetupId={meetup.id} onAttendeesChange={a => setAttendeesCount(a.length)} />
       </TabsContent>
     </Tabs>

@@ -3,6 +3,7 @@ import { EventsLocator } from '@/events/di/events.locator'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { Meetup } from '@/meetups/domain/meetup'
 import AttendMeetupSection from '@/meetups/presentation/server/components/attend-meetup-section/attend-meetup-section.astro'
+import { EventAttendeesRow } from '@/shared/presentation/ui/components/event-attendees-row/event-attendees-row'
 import { Event } from '@/modules/events/domain/event'
 import { EventDatePeriod } from '@/ui/components/event-date-period/event-date-period'
 import { EventLocation } from '@/ui/components/event-location/event-location'
@@ -43,6 +44,17 @@ const { title, tags, tagColor, startsAt, endsAt, location, type } = event
 const streamingUrl = event.streamingUrl
 const shouldShowStreamingLink = isOrganizer || isAttending
 const place = event.place?.toPrimitives()
+
+// Get attendees data for meetups that allow attendees
+let initialAttendees: Array<{name: string; avatar?: string | null}> = []
+if (event instanceof Meetup && event.allowsAttendees && event.hasAttendees()) {
+    try {
+      const attendees = await MeetupsLocator.findMeetupAttendeesQuery().execute(event.id.value)
+      initialAttendees = attendees.map(attendee => attendee.toPrimitives())
+    } catch (error) {
+      // Silently fail if we can't fetch attendees
+  }
+}
 ---
 
 <div class="w-full lg:px-6 max-w-5xl xl:px-0">
@@ -51,7 +63,16 @@ const place = event.place?.toPrimitives()
     {title}
   </h1>
   <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />
-  <EventTypeDisplay type={type} entityType={entityType} client:load transition:animate="fade" />
+  <EventTypeDisplay type={type} client:load transition:animate="fade" />
+  {
+    event instanceof Meetup && event.hasAttendees() && (
+      <EventAttendeesRow
+        client:load
+        attendees={initialAttendees}
+        transition:animate="fade"
+      />
+    )
+  }
   <EventLocation location={location} place={place} client:load transition:animate="fade" />
   <EventStreaming
     streamingUrl={streamingUrl}

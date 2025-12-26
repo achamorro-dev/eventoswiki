@@ -29,12 +29,12 @@ export const removeAttendeeAction = defineAction({
       }
 
       // Check if user is organizer
-      const userIsOrganizer = await OrganizationsLocator.userIsOrganizerEnsurer().execute({
-        userId: user.id,
-        organizationId: meetup.organizationId,
-      })
-
-      if (!userIsOrganizer) {
+      try {
+        await OrganizationsLocator.userIsOrganizerEnsurer().ensure({
+          userId: user.id,
+          organizationId: meetup.organizationId,
+        })
+      } catch {
         throw new BadRequest('No tienes permisos para eliminar asistentes de este meetup')
       }
 
@@ -71,4 +71,3 @@ export const removeAttendeeAction = defineAction({
     }
   },
 })
-
