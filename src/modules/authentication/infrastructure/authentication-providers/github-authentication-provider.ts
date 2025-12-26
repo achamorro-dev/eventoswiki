@@ -37,9 +37,16 @@ export class GitHubAuthenticationProvider implements AuthenticationProvider {
     return this.cookiesManager.get(this.stateCookie)?.value ?? null
   }
 
-  async createAuthorizationCookie(): Promise<URL> {
+  getNextUrlFromState(state: string): string | null {
+    const parts = state.split(':')
+    return parts.length > 1 ? decodeURIComponent(parts[1]) : null
+  }
+
+  async createAuthorizationCookie(nextUrl?: string): Promise<URL> {
     const state = generateState()
-    const url = this.github.createAuthorizationURL(state, this.scopes)
+    // Encode nextUrl in state if provided using format: actualState:encodedNextUrl
+    const stateWithNext = nextUrl ? `${state}:${encodeURIComponent(nextUrl)}` : state
+    const url = this.github.createAuthorizationURL(stateWithNext, this.scopes)
 
     this.cookiesManager.set(this.stateCookie, state, {
       path: '/',

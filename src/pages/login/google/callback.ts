@@ -13,13 +13,16 @@ export async function GET(context: APIContext): Promise<Response> {
   }
 
   try {
+    const provider = AuthenticationLocator.googleProvider(context.cookies)
     await AuthenticationLocator.createSessionCommand(context.cookies).execute({
-      authenticationProvider: AuthenticationLocator.googleProvider(context.cookies),
+      authenticationProvider: provider,
       code,
       state,
     })
 
-    return context.redirect('/')
+    // Get the next URL from the state parameter or default to home
+    const nextUrl = provider.getNextUrlFromState(state) || '/'
+    return context.redirect(nextUrl)
   } catch (e) {
     if (e instanceof OAuth2RequestError) {
       return new Response(null, {

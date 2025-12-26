@@ -36,7 +36,7 @@ const currentAttendeesCount = meetup.attendees?.length ?? 0
     !hasLoggedUser && (
       <>
         <p class="text-sm text-muted-foreground">Debes estar autenticado para poder asistir a este meetup.</p>
-        <Link href={Urls.LOGIN} variant="outline" size="sm">
+        <Link href={`${Urls.LOGIN}?_next=${encodeURIComponent(Astro.url.pathname)}`} variant="outline" size="sm">
           Iniciar sesión
         </Link>
       </>

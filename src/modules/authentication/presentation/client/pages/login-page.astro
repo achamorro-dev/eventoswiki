@@ -6,6 +6,14 @@ import GitHub from '@/ui/social-icons/github.astro'
 import Google from '@/ui/social-icons/google.astro'
 import X from '@/ui/social-icons/x.astro'
 import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  nextUrl?: string | null
+}
+
+const { nextUrl } = Astro.props
+
+const getNextParam = () => (nextUrl ? `?_next=${encodeURIComponent(nextUrl)}` : '')
 ---
 
 <article class="login">
@@ -13,14 +21,23 @@ import { Urls } from '@/ui/urls/urls'
     <img src="/icon.png" alt="Logo" width="180" height="180" class="icon" />
     <SectionTitle>Iniciar sesión</SectionTitle>
     <nav class="social-links">
-      <Link href={Urls.LOGIN_GOOGLE} variant="outline" className="social-link" data-astro-prefetch="false"
-        ><Google classes="social-link-icon" /> Continuar con Google</Link
+      <Link
+        href={`${Urls.LOGIN_GOOGLE}${getNextParam()}`}
+        variant="outline"
+        className="social-link"
+        data-astro-prefetch="false"><Google classes="social-link-icon" /> Continuar con Google</Link
       >
-      <Link href={Urls.LOGIN_GITHUB} variant="outline" className="social-link" data-astro-prefetch="false"
-        ><GitHub classes="social-link-icon" /> Continuar con GitHub</Link
+      <Link
+        href={`${Urls.LOGIN_GITHUB}${getNextParam()}`}
+        variant="outline"
+        className="social-link"
+        data-astro-prefetch="false"><GitHub classes="social-link-icon" /> Continuar con GitHub</Link
       >
-      <Link href={Urls.LOGIN_TWITTER} variant="outline" className="social-link" data-astro-prefetch="false"
-        ><X classes="social-link-icon" /> Continuar con X</Link
+      <Link
+        href={`${Urls.LOGIN_TWITTER}${getNextParam()}`}
+        variant="outline"
+        className="social-link"
+        data-astro-prefetch="false"><X classes="social-link-icon" /> Continuar con X</Link
       >
     </nav>
     <Caption classes="caption"

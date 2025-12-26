@@ -1,13 +1,17 @@
 import { Command } from '@/shared/application/use-case/command'
-import type { CookiesManager } from '@/shared/domain/cookies/cookies-manager'
 import type { AuthenticationProvider } from '../domain/authentication-provider'
 
-export class CreateAuthorizationUrlCommand extends Command<void, URL> {
+interface Params {
+  nextUrl?: string
+}
+
+export class CreateAuthorizationUrlCommand extends Command<Params, URL> {
   constructor(private readonly authenticationProvider: AuthenticationProvider) {
     super()
   }
 
-  async execute(): Promise<URL> {
-    return this.authenticationProvider.createAuthorizationCookie()
+  async execute(params: Params = {}): Promise<URL> {
+    const { nextUrl } = params
+    return this.authenticationProvider.createAuthorizationCookie(nextUrl)
   }
 }

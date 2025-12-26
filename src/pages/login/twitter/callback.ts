@@ -1,7 +1,6 @@
 import { OAuth2RequestError } from 'arctic'
 import type { APIContext } from 'astro'
 import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
-import { Urls } from '@/ui/urls/urls'
 
 export async function GET(context: APIContext): Promise<Response> {
   const code = context.url.searchParams.get('code')
@@ -14,13 +13,16 @@ export async function GET(context: APIContext): Promise<Response> {
   }
 
   try {
+    const provider = AuthenticationLocator.twitterProvider(context.cookies)
     await AuthenticationLocator.createSessionCommand(context.cookies).execute({
-      authenticationProvider: AuthenticationLocator.twitterProvider(context.cookies),
+      authenticationProvider: provider,
       code,
       state,
     })
 
-    return context.redirect(Urls.HOME)
+    // Get the next URL from the state parameter or default to home
+    const nextUrl = provider.getNextUrlFromState(state) || '/'
+    return context.redirect(nextUrl)
   } catch (e) {
     if (e instanceof OAuth2RequestError) {
       return new Response(null, {

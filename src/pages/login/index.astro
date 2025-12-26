@@ -1,8 +1,10 @@
 ---
 import LoginPage from '@/authentication/presentation/client/pages/login-page.astro'
 import Layout from '../../layouts/layout.astro'
+
+const nextUrl = Astro.url.searchParams.get('_next')
 ---
 
 <Layout title="Iniciar sesión" description="Iniciar sesión en eventos.wiki">
-  <LoginPage />
+  <LoginPage nextUrl={nextUrl} />
 </Layout>

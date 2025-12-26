@@ -74,7 +74,10 @@ export class CreateSessionCommand extends Command<Params, void> {
   private ensureIsValidState(authenticationProvider: AuthenticationProvider, state: string) {
     const storedState = authenticationProvider.getStoredState()
 
-    if (storedState !== state) {
+    // Extract original state from the complete state (format: originalState:encodedNextUrl)
+    const originalState = state.split(':')[0]
+
+    if (storedState !== originalState) {
       throw new Error('Invalid state')
     }
   }
