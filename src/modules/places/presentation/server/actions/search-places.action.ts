@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { PlacesLocator } from '@/modules/places/di/places.locator'
+import { SearchPlacesQuery } from '@/modules/places/application/search-places.query'
+import { PlacesContainer } from '@/modules/places/di/places.container'
 import type { Place } from '@/modules/places/domain/place'
 
 export const searchPlacesAction = defineAction({
@@ -10,7 +11,8 @@ export const searchPlacesAction = defineAction({
   }),
   handler: async ({ query }) => {
     try {
-      const places = await PlacesLocator.searchPlacesQuery.execute(query)
+      const searchPlacesQuery = PlacesContainer.get(SearchPlacesQuery)
+      const places = await searchPlacesQuery.execute(query)
       return places.map((place: Place) => place.toPrimitives())
     } catch (error) {
       if (error instanceof ActionError) {
