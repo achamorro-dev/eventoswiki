@@ -8,11 +8,12 @@ import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupEditTabs } from '@/meetups/presentation/client/components/meetup-edit-tabs/meetup-edit-tabs'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import type { Organization } from '@/organizations/domain/organization'
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 const year = Astro.params.year
 const path = Astro.params.path
@@ -32,7 +33,8 @@ let canEdit = false
 
 try {
   meetup = await MeetupsLocator.findMeetupBySlugQuery().execute({ slug: slug })
-  provinces = await ProvincesLocator.getProvincesQuery().execute()
+  const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
+  provinces = await getProvincesQuery.execute()
 
   if (!meetup.hasOrganization()) {
     return Astro.redirect(Urls.MEETUP(slug))

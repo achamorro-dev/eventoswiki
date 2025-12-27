@@ -1,13 +1,15 @@
 ---
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import { ProvinceSelect } from './province-select'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 interface Props {
   value?: string
 }
 
 const { value } = Astro.props
-const provinces = await ProvincesLocator.getProvincesQuery().execute()
+const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
+const provinces = await getProvincesQuery.execute()
 ---
 
 <ProvinceSelect

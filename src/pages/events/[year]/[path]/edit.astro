@@ -6,12 +6,13 @@ import { EventEditForm } from '@/events/presentation/client/components/event-edi
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 const year = Astro.params.year
 const path = Astro.params.path
@@ -30,7 +31,8 @@ let canEdit = false
 
 try {
   event = await EventsLocator.getEventQuery().execute({ slug: slug })
-  provinces = await ProvincesLocator.getProvincesQuery().execute()
+  const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
+  provinces = await getProvincesQuery.execute()
 
   if (!event.hasOrganization()) {
     return Astro.redirect(Urls.EVENT(slug))

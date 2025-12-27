@@ -3,15 +3,17 @@ import NextEventsSlider from '@/events/presentation/server/components/next-event
 import PastEventsSlider from '@/events/presentation/server/components/past-events/past-events-slider.astro'
 import NextMeetupsSlider from '@/meetups/presentation/server/components/next-meetups/next-meetups-slider.astro'
 import PastMeetupsSlider from '@/meetups/presentation/server/components/past-meetups/past-meetups-slider.astro'
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import EventsSliderSkeleton from '@/ui/components/events-slider/events-slider-skeleton.astro'
 import { Link } from '@/ui/components/link'
 import { Urls } from '@/ui/urls/urls'
 import Layout from '../../layouts/layout.astro'
+import { GetProvinceQuery } from '@/provinces/application/get-province.query'
 
 const { province = '' } = Astro.params
 
-const location = await ProvincesLocator.getProvinceQuery().execute({ id: province })
+const getProvinceQuery = ProvincesContainer.get(GetProvinceQuery) as GetProvinceQuery
+const location = await getProvinceQuery.execute({ id: province })
 
 if (!location) {
   return Astro.redirect(Urls.HOME)

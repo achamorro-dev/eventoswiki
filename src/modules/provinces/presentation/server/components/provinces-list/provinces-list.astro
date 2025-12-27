@@ -1,8 +1,10 @@
 ---
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import { Urls } from '@/ui/urls/urls'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
-const provinces = await ProvincesLocator.getProvincesQuery().execute()
+const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
+const provinces = await getProvincesQuery.execute()
 ---
 
 <section class="container mx-auto max-w-7xl py-4 text-center">

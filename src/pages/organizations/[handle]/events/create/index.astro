@@ -4,11 +4,12 @@ import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 const { handle } = Astro.params
 const userId = Astro.locals.user?.id
@@ -20,9 +21,10 @@ if (!handle) {
 let organization
 let provinces: Province[] = []
 try {
+  const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
   ;[organization, provinces] = await Promise.all([
     OrganizationsLocator.getOrganizationQuery().execute({ handle: handle }),
-    ProvincesLocator.getProvincesQuery().execute(),
+    getProvincesQuery.execute(),
   ])
 
   if (!userId || !organization.isOrganizer(userId)) {

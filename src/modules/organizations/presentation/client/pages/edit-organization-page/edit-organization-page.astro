@@ -1,15 +1,17 @@
 ---
 import type { Organization } from '@/organizations/domain/organization'
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { OrganizationEditForm } from '../../components/organization-edit-form/organization-edit-form'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 interface Props {
   organization: Organization
 }
 
 const { organization } = Astro.props as Props
-const provinces = await ProvincesLocator.getProvincesQuery().execute()
+const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
+const provinces = await getProvincesQuery.execute()
 ---
 
 <article>

@@ -1,10 +1,12 @@
 ---
-import { ProvincesLocator } from '@/provinces/di/provinces.locator'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { OrganizationEditForm } from '../../components/organization-edit-form/organization-edit-form'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
-// no props required; the page checks Astro.locals.user for access control
-const provinces = await ProvincesLocator.getProvincesQuery().execute()
+// no props required; page checks Astro.locals.user for access control
+const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
+const provinces = await getProvincesQuery.execute()
 ---
 
 <article>
