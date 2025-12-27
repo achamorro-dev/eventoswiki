@@ -1,6 +1,7 @@
 import { defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { FilesLocator } from '@/files/di/files.locator'
+import { UploadFileCommand } from '@/files/application/upload-file.command'
+import { FilesContainer } from '@/files/di/files.container'
 
 export const uploadFileAction = defineAction({
   accept: 'form',
@@ -10,7 +11,8 @@ export const uploadFileAction = defineAction({
   handler: async input => {
     const { file } = input
 
-    const url = await FilesLocator.uploadFileCommand.execute(file)
+    const uploadFileCommand = FilesContainer.get(UploadFileCommand)
+    const url = await uploadFileCommand.execute(file)
 
     return {
       url,
