@@ -121,6 +121,47 @@ export class CreateEventCommand extends Command<Param, void> {
 }
 ```
 
+## Dependency Injection Patterns
+
+The project uses **diod** library for dependency injection without decorators. Dependencies are manually defined in containers and resolved through constructor injection.
+
+### Container Setup
+
+- **No Decorators**: Avoid using `@Service` or similar decorators
+- **Manual Registration**: Define all dependencies manually in container files
+- **Constructor Injection**: Dependencies are injected through constructors
+- **Module Containers**: Each module has its own container definition
+- **ContainerBuilder**: Use ContainerBuilder for creating containers
+- **CamelCase Exports**: Container names must be in CamelCase (e.g., `provincesContainer`)
+
+Example Container Pattern:
+
+```typescript
+import { ContainerBuilder } from 'diod'
+
+export const eventsContainer = new ContainerBuilder()
+  .register(
+    EventsRepository,
+    AstroDBEventsRepository,
+    { scope: 'singleton' }
+  )
+  .register(
+    CreateEventCommand,
+    CreateEventCommand,
+    { scope: 'transient' }
+  )
+  .build()
+```
+
+### Using Dependencies
+
+Resolve dependencies from the appropriate container when needed:
+
+```typescript
+const createEventCommand = eventsContainer.get(CreateEventCommand)
+await createEventCommand.execute(eventData)
+```
+
 ### Presentation Layer Patterns
 
 - **React Components**: Use functional components with TypeScript
@@ -155,7 +196,7 @@ function Button({ className, variant, size, ...props }: Props) {
 
 - **Schema**: Define tables in `db/config.ts` using Astro DB
 - **Migrations**: Use the content migration system
-- **Repositories**: Implement in infrastructure layer
+- **Repositories**: Define interfaces as abstract classes in domain layer, implement in infrastructure layer
 - **Primitives**: Convert between domain objects and database primitives
 - When altering database tables or seeds, run the relevant script in `db/` and document the dataset or migration steps in your PR
 
@@ -218,7 +259,8 @@ This repo uses `@commitlint/config-conventional`, so follow `type(scope): subjec
 5. Create repository interface
 6. Implement infrastructure repository
 7. Create use cases for operations
-8. Add presentation components
+8. Set up dependency injection container for the module
+9. Add presentation components
 
 ### Creating a New Form
 
@@ -269,6 +311,7 @@ import { EventId } from '@/events/domain/event-id'
 - **react-hook-form**: 7.55.0 (Form management)
 - **Lucia**: 3.2.2 (Authentication)
 - **Astro DB**: 0.18.0 (Database)
+- **diod**: Dependency injection container
 
 ## Environment Variables
 
