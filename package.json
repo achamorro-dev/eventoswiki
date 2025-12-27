@@ -61,6 +61,7 @@
     "compressorjs": "^1.2.1",
     "date-fns": "^4.1.0",
     "dayjs": "1.11.5",
+    "diod": "^3.0.0",
     "framer-motion": "^12.15.0",
     "lucia": "^3.2.2",
     "lucide-react": "^0.487.0",
