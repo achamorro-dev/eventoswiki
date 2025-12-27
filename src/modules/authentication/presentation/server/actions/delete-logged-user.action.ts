@@ -1,5 +1,5 @@
 import { defineAction } from 'astro:actions'
-import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
+import { createDeleteLoggedUserCommand } from '@/authentication/di/authentication.container'
 
 export const deleteLoggedUserAction = defineAction({
   accept: 'json',
@@ -9,7 +9,8 @@ export const deleteLoggedUserAction = defineAction({
       return null
     }
 
-    await AuthenticationLocator.deleteLoggedUserCommand(context.cookies).execute({
+    const command = createDeleteLoggedUserCommand(context.cookies)
+    await command.execute({
       sessionId: session.id,
       userId: user.id,
     })

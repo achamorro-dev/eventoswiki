@@ -16,6 +16,7 @@ import {
   Province,
 } from 'astro:db'
 import type { Filter } from '@/shared/domain/criteria/filter'
+import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
 import { OrderDirection } from '@/shared/domain/criteria/order-direction'
 import { PaginatedResult } from '@/shared/domain/criteria/paginated-result'
@@ -194,7 +195,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       await db.delete(Meetup).where(eq(Meetup.organizationId, id.value))
       await db.delete(OrganizationUser).where(eq(OrganizationUser.organizationId, id.value))
       await db.delete(Organization).where(eq(Organization.id, id.value))
-    } catch (error) {
+    } catch (_error) {
       throw new OrganizationNotFound(id.value)
     }
   }
@@ -329,7 +330,6 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
     if (!parentFilters) return []
 
     if (Array.isArray(parentFilters)) {
-        //@ts-ignore
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
         //@ts-expect-error
@@ -338,37 +338,39 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
       })
     }
 
-    //@ts-expect-error
-    return Object.entries<FilterCriteria | undefined>(parentFilters)
-      .filter(([_, value]) => value !== undefined)
-      .map(([key, filter]) => {
-        if (!filter) return
+    return (
+      Object.entries<FilterCriteria | undefined>(parentFilters)
+        .filter(([_, value]) => value !== undefined)
+        // biome-ignore lint/suspicious/useIterableCallbackReturn: Known issue with typing
+        .map(([key, filter]) => {
+          if (!filter) return
 
-        switch (filter.operator) {
-          case RelationalOperator.EQUALS:
-            //@ts-expect-error
-            return eq(Organization[key], filter.value)
-          case RelationalOperator.GREATER_THAN_OR_EQUAL:
-            //@ts-expect-error
-            return gte(Organization[key], filter.value)
-          case RelationalOperator.LOWER_THAN_OR_EQUAL:
-            //@ts-expect-error
-            return lte(Organization[key], filter.value)
-          case RelationalOperator.GREATER_THAN:
-            //@ts-expect-error
-            return gt(Organization[key], filter.value)
-          case RelationalOperator.LOWER_THAN:
-            //@ts-expect-error
-            return lt(Organization[key], filter.value)
-          case RelationalOperator.LIKE:
-          case RelationalOperator.LIKE_NOT_SENSITIVE:
-            //@ts-expect-error
-            return like(Organization[key], filter.value)
-          case RelationalOperator.NOT_EQUALS:
-            //@ts-expect-error
-            return ne(Organization[key], filter.value)
-        }
-      })
+          switch (filter.operator) {
+            case RelationalOperator.EQUALS:
+              //@ts-expect-error
+              return eq(Organization[key], filter.value)
+            case RelationalOperator.GREATER_THAN_OR_EQUAL:
+              //@ts-expect-error
+              return gte(Organization[key], filter.value)
+            case RelationalOperator.LOWER_THAN_OR_EQUAL:
+              //@ts-expect-error
+              return lte(Organization[key], filter.value)
+            case RelationalOperator.GREATER_THAN:
+              //@ts-expect-error
+              return gt(Organization[key], filter.value)
+            case RelationalOperator.LOWER_THAN:
+              //@ts-expect-error
+              return lt(Organization[key], filter.value)
+            case RelationalOperator.LIKE:
+            case RelationalOperator.LIKE_NOT_SENSITIVE:
+              //@ts-expect-error
+              return like(Organization[key], filter.value)
+            case RelationalOperator.NOT_EQUALS:
+              //@ts-expect-error
+              return ne(Organization[key], filter.value)
+          }
+        })
+    )
   }
 
   private getOrderBy(order: Partial<OrganizationsOrder> | undefined) {

@@ -1,5 +1,5 @@
-import { Datetime } from '@/shared/domain/datetime/datetime'
 import { z } from 'astro:content'
+import { Datetime } from '@/shared/domain/datetime/datetime'
 
 export const saveMeetupActionSchema = z.object({
   title: z.string(),
@@ -36,6 +36,9 @@ export const saveMeetupActionSchema = z.object({
     })
     .optional(),
   allowsAttendees: z.boolean(),
-  registrationEndsAt: z.string().transform(date => Datetime.toDate(date)).optional(),
+  registrationEndsAt: z
+    .string()
+    .transform(date => Datetime.toDate(date))
+    .optional(),
   maxAttendees: z.number().optional(),
 })

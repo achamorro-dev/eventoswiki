@@ -1,39 +1,39 @@
-"use client"
+'use client'
 
-import { actions } from "astro:actions"
-import { navigate } from "astro:transitions/client"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useRef, useState } from "react"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { useUploadFile } from "@/files/presentation/client/hooks/use-upload-file"
-import { useUploadImageForEditor } from "@/files/presentation/client/hooks/use-upload-image-for-editor"
-import type { Meetup } from "@/meetups/domain/meetup"
-import { MeetupTypes } from "@/meetups/domain/meetup-type"
-import type { Place } from "@/modules/places/domain/place"
-import { PlaceEmbedMap } from "@/modules/places/presentation/client/components/place-embed-map/place-embed-map"
-import { PlaceSearch } from "@/modules/places/presentation/client/components/place-search"
-import type { Organization } from "@/organizations/domain/organization"
-import type { Province } from "@/provinces/domain/province"
-import { ProvinceCollection } from "@/provinces/domain/province-collection"
-import { ProvinceSelect } from "@/provinces/presentation/server/components/province-combobox/province-select"
-import { Datetime } from "@/shared/domain/datetime/datetime"
-import type { Primitives } from "@/shared/domain/primitives/primitives"
-import { SlugGenerator } from "@/shared/presentation/services/slugs/slug-generator"
-import { Badge } from "@/ui/badge"
-import { Button } from "@/ui/button"
-import { ColorPicker } from "@/ui/color-picker"
-import { DateTimePicker } from "@/ui/components/date-time-picker"
-import { RichEditor } from "@/ui/components/rich-editor/rich-editor"
-import { SocialForm } from "@/ui/components/social-form/social-form"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/ui/form"
-import { Camera, CameraSlash, Loader, X } from "@/ui/icons"
-import { Input } from "@/ui/input"
-import { Switch } from "@/ui/switch"
-import { Textarea } from "@/ui/textarea"
-import { Urls } from "@/ui/urls/urls"
-import { MeetupTypeSelect } from "../meetup-type-select/meetup-type-select"
-import { type MeetupFormSchema, meetupFormSchema } from "./meetup-form-schema"
+import { actions } from 'astro:actions'
+import { navigate } from 'astro:transitions/client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
+import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
+import type { Meetup } from '@/meetups/domain/meetup'
+import { MeetupTypes } from '@/meetups/domain/meetup-type'
+import type { Place } from '@/modules/places/domain/place'
+import { PlaceEmbedMap } from '@/modules/places/presentation/client/components/place-embed-map/place-embed-map'
+import { PlaceSearch } from '@/modules/places/presentation/client/components/place-search'
+import type { Organization } from '@/organizations/domain/organization'
+import type { Province } from '@/provinces/domain/province'
+import { ProvinceCollection } from '@/provinces/domain/province-collection'
+import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
+import { Datetime } from '@/shared/domain/datetime/datetime'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
+import { Badge } from '@/ui/badge'
+import { Button } from '@/ui/button'
+import { ColorPicker } from '@/ui/color-picker'
+import { DateTimePicker } from '@/ui/components/date-time-picker'
+import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
+import { SocialForm } from '@/ui/components/social-form/social-form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
+import { Camera, CameraSlash, Loader, X } from '@/ui/icons'
+import { Input } from '@/ui/input'
+import { Switch } from '@/ui/switch'
+import { Textarea } from '@/ui/textarea'
+import { Urls } from '@/ui/urls/urls'
+import { MeetupTypeSelect } from '../meetup-type-select/meetup-type-select'
+import { type MeetupFormSchema, meetupFormSchema } from './meetup-form-schema'
 
 interface Props {
   provinces: Province[]
@@ -179,168 +179,286 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
         <div className="space-y-6 py-4">
           <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
             {/* Columna izquierda: Imagen */}
-            <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
-              <FormField control={form.control} name="image" render={({ field }) => (
-                <>
-                  {field.value ? (
-                    <img src={field.value} alt={form.watch('title')} className="h-72 rounded-md border-transparent object-cover" />
-                  ) : (
-                    <div aria-invalid={!!form.formState.errors['image']} className={'aria-invalid:border-destructive border-input bg-input flex w-full items-center justify-center rounded-md border-2'}>
-                      <CameraSlash className="h-72 w-48 text-gray-400" />
-                    </div>
-                  )}
-                  <Button variant="outline" type="button" size="icon" className="z-1 -mt-7 ml-4" disabled={isLoading} onClick={() => fileInputRef.current?.click()}>
-                    {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
-                  </Button>
-                  <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
-                  <FormMessage />
-                </>
-              )} />
+            <div className="flex w-full flex-col items-center gap-2 lg:max-w-1/3">
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <>
+                    {field.value ? (
+                      <img
+                        src={field.value}
+                        alt={form.watch('title')}
+                        className="h-72 rounded-md border-transparent object-cover"
+                      />
+                    ) : (
+                      <div
+                        aria-invalid={!!form.formState.errors.image}
+                        className={
+                          'flex w-full items-center justify-center rounded-md border-2 border-input bg-input aria-invalid:border-destructive'
+                        }
+                      >
+                        <CameraSlash className="h-72 w-48 text-gray-400" />
+                      </div>
+                    )}
+                    <Button
+                      variant="outline"
+                      type="button"
+                      size="icon"
+                      className="-mt-7 z-1 ml-4"
+                      disabled={isLoading}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+                    </Button>
+                    <input type="file" id="image" ref={fileInputRef} className="hidden" onChange={onInputFile} />
+                    <FormMessage />
+                  </>
+                )}
+              />
             </div>
 
             {/* Columna derecha: Todas las secciones excepto Detalles del evento */}
             <div className="w-full flex-1 space-y-6">
               {/* Sección: Información básica */}
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Información básica</h2>
-                <FormField control={form.control} name="title" render={({ field }) => {
-                  const slugError = form.formState.errors.slug
-                  return (
+                <h2 className="font-semibold text-xl">Información básica</h2>
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => {
+                    const slugError = form.formState.errors.slug
+                    return (
+                      <FormItem>
+                        <FormLabel htmlFor="title">Título</FormLabel>
+                        <FormControl>
+                          <Input id="title" placeholder="Título del evento" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        {slugError && !form.formState.errors.title && (
+                          <p className="font-medium text-destructive text-xs">{slugError.message}</p>
+                        )}
+                      </FormItem>
+                    )
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="shortDescription"
+                  render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="title">Título</FormLabel>
+                      <FormLabel htmlFor="shortDescription">Descripción corta</FormLabel>
                       <FormControl>
-                        <Input id="title" placeholder="Título del evento" {...field} />
+                        <Textarea
+                          id="shortDescription"
+                          placeholder="Describe el evento..."
+                          className="min-h-[100px]"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
-                      {slugError && !form.formState.errors.title && (
-                        <p className="text-destructive text-xs font-medium">{slugError.message}</p>
-                      )}
                     </FormItem>
-                  )
-                }} />
-                <FormField control={form.control} name="shortDescription" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="shortDescription">Descripción corta</FormLabel>
-                    <FormControl>
-                      <Textarea id="shortDescription" placeholder="Describe el evento..." className="min-h-[100px]" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+                  )}
+                />
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <FormField control={form.control} name="startsAt" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="startsAt">Fecha de inicio</FormLabel>
-                      <FormControl>
-                        <DateTimePicker disabled={form.formState.isSubmitting} placeholder="Elige una fecha" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+                  <FormField
+                    control={form.control}
+                    name="startsAt"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="startsAt">Fecha de inicio</FormLabel>
+                        <FormControl>
+                          <DateTimePicker
+                            disabled={form.formState.isSubmitting}
+                            placeholder="Elige una fecha"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                  <FormField control={form.control} name="endsAt" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="endsAt">Fecha de fin</FormLabel>
-                      <FormControl>
-                        <DateTimePicker value={field.value} onChange={field.onChange} disabled={form.formState.isSubmitting} placeholder="Elige una fecha" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+                  <FormField
+                    control={form.control}
+                    name="endsAt"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="endsAt">Fecha de fin</FormLabel>
+                        <FormControl>
+                          <DateTimePicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            disabled={form.formState.isSubmitting}
+                            placeholder="Elige una fecha"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
 
               {/* Sección: Tipo y localización */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Tipo y localización</h2>
+                <h2 className="mb-4 font-semibold text-xl">Tipo y localización</h2>
                 <div className="space-y-4">
-                  <FormField control={form.control} name="type" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="type">Tipo de meetup</FormLabel>
-                      <FormControl>
-                        <MeetupTypeSelect id="type" placeholder="Tipo de meetup" className="w-full" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="type">Tipo de meetup</FormLabel>
+                        <FormControl>
+                          <MeetupTypeSelect id="type" placeholder="Tipo de meetup" className="w-full" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   {(type === MeetupTypes.InPerson || type === MeetupTypes.Hybrid) && (
                     <>
-                      <FormField control={form.control} name="location" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel htmlFor="location">Provincia</FormLabel>
-                          <FormControl>
-                            <ProvinceSelect id="location" placeholder="Selecciona una provincia" provinces={provinces} className="w-full" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <FormField control={form.control} name="place" render={({ field }) => (
-                        <>
+                      <FormField
+                        control={form.control}
+                        name="location"
+                        render={({ field }) => (
                           <FormItem>
-                            <FormLabel htmlFor="placeDisplayName">Dirección</FormLabel>
+                            <FormLabel htmlFor="location">Provincia</FormLabel>
                             <FormControl>
-                              <PlaceSearch className="w-full" value={field.value as Primitives<Place> | undefined} onPlaceSelect={(place: Primitives<Place>) => { form.setValue('place', place) }} />
+                              <ProvinceSelect
+                                id="location"
+                                placeholder="Selecciona una provincia"
+                                provinces={provinces}
+                                className="w-full"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
-                          {field.value && <PlaceEmbedMap place={field.value as Primitives<Place> | undefined} height="200px" />}
-                        </>
-                      )} />
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="place"
+                        render={({ field }) => (
+                          <>
+                            <FormItem>
+                              <FormLabel htmlFor="placeDisplayName">Dirección</FormLabel>
+                              <FormControl>
+                                <PlaceSearch
+                                  className="w-full"
+                                  value={field.value as Primitives<Place> | undefined}
+                                  onPlaceSelect={(place: Primitives<Place>) => {
+                                    form.setValue('place', place)
+                                  }}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                            {field.value && (
+                              <PlaceEmbedMap place={field.value as Primitives<Place> | undefined} height="200px" />
+                            )}
+                          </>
+                        )}
+                      />
                     </>
                   )}
 
                   {(type === MeetupTypes.Online || type === MeetupTypes.Hybrid) && (
-                    <FormField control={form.control} name="streamingUrl" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="streamingUrl">URL del streaming</FormLabel>
-                        <FormControl>
-                          <Input id="streamingUrl" type="url" placeholder="https://..." className="w-full" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
+                    <FormField
+                      control={form.control}
+                      name="streamingUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="streamingUrl">URL del streaming</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="streamingUrl"
+                              type="url"
+                              placeholder="https://..."
+                              className="w-full"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   )}
                 </div>
               </div>
 
               {/* Sección: Configuración de asistentes */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Configuración de asistentes</h2>
+                <h2 className="mb-4 font-semibold text-xl">Configuración de asistentes</h2>
                 <div className="space-y-4">
-                  <FormField control={form.control} name="allowsAttendees" render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                      <div className="space-y-0.5">
-                        <FormLabel htmlFor="allowsAttendees">Permitir registro de asistentes</FormLabel>
-                        <p className="text-sm text-muted-foreground">Los usuarios podrán registrarse como asistentes a este meetup</p>
-                      </div>
-                      <FormControl>
-                        <Switch id="allowsAttendees" checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-                  )} />
+                  <FormField
+                    control={form.control}
+                    name="allowsAttendees"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel htmlFor="allowsAttendees">Permitir registro de asistentes</FormLabel>
+                          <p className="text-muted-foreground text-sm">
+                            Los usuarios podrán registrarse como asistentes a este meetup
+                          </p>
+                        </div>
+                        <FormControl>
+                          <Switch id="allowsAttendees" checked={field.value} onCheckedChange={field.onChange} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
                   {form.watch('allowsAttendees') && (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <FormField control={form.control} name="registrationEndsAt" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel htmlFor="registrationEndsAt">Fecha límite de registro</FormLabel>
-                          <p className="text-sm text-muted-foreground mb-2">Los usuarios no podrán registrarse después de esta fecha</p>
-                          <FormControl>
-                            <DateTimePicker disabled={form.formState.isSubmitting} placeholder="Elige una fecha (opcional)" value={field.value} onChange={field.onChange} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <FormField control={form.control} name="maxAttendees" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel htmlFor="maxAttendees">Aforo máximo</FormLabel>
-                          <p className="text-sm text-muted-foreground mb-2">Número máximo de asistentes permitidos</p>
-                          <FormControl>
-                            <Input id="maxAttendees" type="number" min="1" placeholder="Ilimitado" {...field} value={field.value ?? ''} onChange={(e) => { const value = e.target.value; field.onChange(value === '' ? undefined : Number(value)) }} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
+                      <FormField
+                        control={form.control}
+                        name="registrationEndsAt"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor="registrationEndsAt">Fecha límite de registro</FormLabel>
+                            <p className="mb-2 text-muted-foreground text-sm">
+                              Los usuarios no podrán registrarse después de esta fecha
+                            </p>
+                            <FormControl>
+                              <DateTimePicker
+                                disabled={form.formState.isSubmitting}
+                                placeholder="Elige una fecha (opcional)"
+                                value={field.value}
+                                onChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="maxAttendees"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor="maxAttendees">Aforo máximo</FormLabel>
+                            <p className="mb-2 text-muted-foreground text-sm">Número máximo de asistentes permitidos</p>
+                            <FormControl>
+                              <Input
+                                id="maxAttendees"
+                                type="number"
+                                min="1"
+                                placeholder="Ilimitado"
+                                {...field}
+                                value={field.value ?? ''}
+                                onChange={e => {
+                                  const value = e.target.value
+                                  field.onChange(value === '' ? undefined : Number(value))
+                                }}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                   )}
                 </div>
@@ -348,34 +466,51 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
 
               {/* Sección: Categorías */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Categorías</h2>
+                <h2 className="mb-4 font-semibold text-xl">Categorías</h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <FormField control={form.control} name="tags" render={() => (
-                      <FormItem>
-                        <FormLabel>Etiquetas</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Escribe y presiona Enter para agregar etiquetas" onKeyDown={onAddTag} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
+                    <FormField
+                      control={form.control}
+                      name="tags"
+                      render={() => (
+                        <FormItem>
+                          <FormLabel>Etiquetas</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Escribe y presiona Enter para agregar etiquetas" onKeyDown={onAddTag} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                    <FormField control={form.control} name="tagColor" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Color de la etiqueta</FormLabel>
-                        <FormControl>
-                          <ColorPicker color={field.value || ''} onChange={color => form.setValue('tagColor', color)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
+                    <FormField
+                      control={form.control}
+                      name="tagColor"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Color de la etiqueta</FormLabel>
+                          <FormControl>
+                            <ColorPicker
+                              color={field.value || ''}
+                              onChange={color => form.setValue('tagColor', color)}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {form.watch('tags')?.map((tag, index) => (
-                      <Badge key={index} className="text-white" style={{ backgroundColor: form.watch('tagColor') }}>
+                      <Badge key={tag} className="text-white" style={{ backgroundColor: form.watch('tagColor') }}>
                         {tag}
-                        <Button type="button" variant="ghost" size="icon" className="h-4 w-4 p-0 hover:cursor-pointer hover:bg-transparent" onClick={() => onRemoveTag(index)}>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-4 w-4 p-0 hover:cursor-pointer hover:bg-transparent"
+                          onClick={() => onRemoveTag(index)}
+                        >
                           <X className="h-3 w-3" />
                           <span className="sr-only">Eliminar etiqueta</span>
                         </Button>
@@ -387,7 +522,7 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
 
               {/* Sección: Redes sociales */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Redes sociales y enlaces</h2>
+                <h2 className="mb-4 font-semibold text-xl">Redes sociales y enlaces</h2>
                 <SocialForm control={form.control} />
               </div>
             </div>
@@ -395,15 +530,23 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
 
           {/* Sección: Detalles del evento (ancho completo) */}
           <div className="border-t pt-6">
-            <h2 className="text-xl font-semibold mb-4">Detalles del evento</h2>
-            <FormField control={form.control} name="content" render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <RichEditor content={field.value} onContentChange={field.onChange} onUploadImage={uploadImageForEditor} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
+            <h2 className="mb-4 font-semibold text-xl">Detalles del evento</h2>
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <RichEditor
+                      content={field.value}
+                      onContentChange={field.onChange}
+                      onUploadImage={uploadImageForEditor}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <div className="mt-4 flex w-full justify-end">

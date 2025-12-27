@@ -171,7 +171,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
         <div className="space-y-6 py-4">
           <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
             {/* Columna izquierda: Imagen */}
-            <div className="lg:max-w-1/3 flex w-full flex-col items-center gap-2">
+            <div className="flex w-full flex-col items-center gap-2 lg:max-w-1/3">
               <FormField
                 control={form.control}
                 name="image"
@@ -185,9 +185,9 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                       />
                     ) : (
                       <div
-                        aria-invalid={!!form.formState.errors['image']}
+                        aria-invalid={!!form.formState.errors.image}
                         className={
-                          'aria-invalid:border-destructive border-input bg-input flex w-full items-center justify-center rounded-md border-2'
+                          'flex w-full items-center justify-center rounded-md border-2 border-input bg-input aria-invalid:border-destructive'
                         }
                       >
                         <CameraSlash className="h-72 w-48 text-gray-400" />
@@ -197,7 +197,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                       variant="outline"
                       type="button"
                       size="icon"
-                      className="z-1 -mt-7 ml-4"
+                      className="-mt-7 z-1 ml-4"
                       disabled={isLoading}
                       onClick={() => fileInputRef.current?.click()}
                     >
@@ -214,7 +214,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
             <div className="w-full flex-1 space-y-6">
               {/* Sección: Información básica */}
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Información básica</h2>
+                <h2 className="font-semibold text-xl">Información básica</h2>
                 <FormField
                   control={form.control}
                   name="title"
@@ -228,7 +228,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                         </FormControl>
                         <FormMessage />
                         {slugError && !form.formState.errors.title && (
-                          <p className="text-destructive text-xs font-medium">{slugError.message}</p>
+                          <p className="font-medium text-destructive text-xs">{slugError.message}</p>
                         )}
                       </FormItem>
                     )
@@ -294,7 +294,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
 
               {/* Sección: Tipo y localización */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Tipo y localización</h2>
+                <h2 className="mb-4 font-semibold text-xl">Tipo y localización</h2>
                 <div className="space-y-4">
                   <FormField
                     control={form.control}
@@ -388,7 +388,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
 
               {/* Sección: Categorías */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Categorías</h2>
+                <h2 className="mb-4 font-semibold text-xl">Categorías</h2>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <FormField
@@ -412,7 +412,10 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                         <FormItem>
                           <FormLabel>Color de la etiqueta</FormLabel>
                           <FormControl>
-                            <ColorPicker color={field.value || ''} onChange={color => form.setValue('tagColor', color)} />
+                            <ColorPicker
+                              color={field.value || ''}
+                              onChange={color => form.setValue('tagColor', color)}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -421,7 +424,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {form.watch('tags')?.map((tag, index) => (
-                      <Badge key={index} className="text-white" style={{ backgroundColor: form.watch('tagColor') }}>
+                      <Badge key={tag} className="text-white" style={{ backgroundColor: form.watch('tagColor') }}>
                         {tag}
                         <Button
                           type="button"
@@ -441,7 +444,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
 
               {/* Sección: Redes sociales */}
               <div className="border-t pt-6">
-                <h2 className="text-xl font-semibold mb-4">Redes sociales y enlaces</h2>
+                <h2 className="mb-4 font-semibold text-xl">Redes sociales y enlaces</h2>
                 <SocialForm control={form.control} />
               </div>
             </div>
@@ -449,7 +452,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
 
           {/* Sección: Detalles del evento (ancho completo) */}
           <div className="border-t pt-6">
-            <h2 className="text-xl font-semibold mb-4">Detalles del evento</h2>
+            <h2 className="mb-4 font-semibold text-xl">Detalles del evento</h2>
             <FormField
               control={form.control}
               name="content"

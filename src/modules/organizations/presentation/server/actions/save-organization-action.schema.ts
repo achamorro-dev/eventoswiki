@@ -1,4 +1,4 @@
-import { z } from "astro:content";
+import { z } from 'astro:content'
 
 export const saveOrganizationActionSchema = z.object({
   handle: z.string(),
@@ -20,4 +20,4 @@ export const saveOrganizationActionSchema = z.object({
   tiktok: z.string().optional(),
   followers: z.array(z.string()).optional(),
   organizationId: z.string().optional(),
-});
+})

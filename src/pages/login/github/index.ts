@@ -1,11 +1,11 @@
 import type { APIContext } from 'astro'
-import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
+import { getCreateAuthorizationUrlCommand, getGitHubProvider } from '@/authentication/di/authentication.container'
 
 export async function GET(context: APIContext): Promise<Response> {
   const nextUrl = context.url.searchParams.get('_next')
-  const url = await AuthenticationLocator.createAuthorizationUrlCommand(
-    AuthenticationLocator.githubProvider(context.cookies),
-  ).execute({ nextUrl: nextUrl || undefined })
+  const provider = getGitHubProvider(context.cookies)
+  const command = getCreateAuthorizationUrlCommand(provider)
+  const url = await command.execute({ nextUrl: nextUrl || undefined })
 
   return context.redirect(url.toString())
 }

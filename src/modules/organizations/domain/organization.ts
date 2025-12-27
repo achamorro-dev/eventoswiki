@@ -29,7 +29,9 @@ export interface OrganizationProps {
   followers: string[]
 }
 
-export type OrganizationEditableData = Primitives<Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt' | 'organizers'>>
+export type OrganizationEditableData = Primitives<
+  Omit<OrganizationProps, 'id' | 'createdAt' | 'updatedAt' | 'organizers'>
+>
 
 export class Organization implements OrganizationProps {
   readonly id: OrganizationId

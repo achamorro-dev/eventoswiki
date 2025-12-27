@@ -12,9 +12,9 @@ import { EventAlreadyExists } from '../domain/errors/event-already-exists.error'
 import { Event as EventEntity } from '../domain/event'
 import type { EventId } from '../domain/event-id'
 import type { EventsRepository } from '../domain/events.repository'
-import { AstroEventMapper as AstroDbEventMapper } from './mappers/astro-db-event.mapper'
 import type { AstroDbEventDto } from './dtos/astro-db-event.dto'
 import type { AstroDbEventProvinceDto } from './dtos/astro-db-event-province.dto'
+import { AstroEventMapper as AstroDbEventMapper } from './mappers/astro-db-event.mapper'
 
 export class AstroDbEventsRepository implements EventsRepository {
   async match(criteria: EventsCriteria): Promise<PaginatedResult<EventEntity>> {
@@ -29,7 +29,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       eventsQuery.offset(criteria.offset)
     }
 
-    const events = await eventsQuery as { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[]
+    const events = (await eventsQuery) as { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[]
     const count = await countQuery
     const totalPages = Math.ceil(count[0].count / criteria.limit)
 
@@ -47,7 +47,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(id.value)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)!.Event as AstroDbEventDto, result.at(0)!.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province)
   }
 
   async findBySlug(slug: string): Promise<EventEntity> {
@@ -61,12 +61,14 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(slug)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)!.Event as AstroDbEventDto, result.at(0)!.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province)
   }
 
   async findAll(): Promise<EventEntity[]> {
     const eventsAndProvinces = await db.select().from(Event).leftJoin(Province, eq(Province.slug, Event.location))
-    return AstroDbEventMapper.toDomainList(eventsAndProvinces as { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[])
+    return AstroDbEventMapper.toDomainList(
+      eventsAndProvinces as { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[],
+    )
   }
 
   async save(value: EventEntity): Promise<void> {
@@ -79,7 +81,7 @@ export class AstroDbEventsRepository implements EventsRepository {
   async delete(id: EventId): Promise<void> {
     try {
       await db.delete(Event).where(eq(Event.id, id.value))
-    } catch (error) {
+    } catch (_error) {
       throw new EventNotFound(id.value)
     }
   }
@@ -224,7 +226,6 @@ export class AstroDbEventsRepository implements EventsRepository {
     if (!parentFilters) return []
 
     if (Array.isArray(parentFilters)) {
-      //@ts-ignore
       return parentFilters.map((parentFilter: Filter<F>) => {
         const { type, filters } = parentFilter
         //@ts-expect-error
@@ -233,35 +234,38 @@ export class AstroDbEventsRepository implements EventsRepository {
       })
     }
 
-    return Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
-      .filter(([_, value]) => value !== undefined)
-      .map(([key, eventFilter]) => {
-        if (!eventFilter) return
+    return (
+      Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
+        .filter(([_, value]) => value !== undefined)
+        // biome-ignore lint/suspicious/useIterableCallbackReturn: Known issue with types
+        .map(([key, eventFilter]) => {
+          if (!eventFilter) return
 
-        switch (eventFilter.operator) {
-          case RelationalOperator.EQUALS:
-            //@ts-expect-error
-            return eq(Event[key], eventFilter.value)
-          case RelationalOperator.GREATER_THAN_OR_EQUAL:
-            //@ts-expect-error
-            return gte(Event[key], eventFilter.value)
-          case RelationalOperator.LOWER_THAN_OR_EQUAL:
-            //@ts-expect-error
-            return lte(Event[key], eventFilter.value)
-          case RelationalOperator.GREATER_THAN:
-            //@ts-expect-error
-            return gt(Event[key], eventFilter.value)
-          case RelationalOperator.LOWER_THAN:
-            //@ts-expect-error
-            return lt(Event[key], eventFilter.value)
-          case RelationalOperator.LIKE:
-          case RelationalOperator.LIKE_NOT_SENSITIVE:
-            //@ts-expect-error
-            return like(Event[key], eventFilter.value)
-          case RelationalOperator.NOT_EQUALS:
-            //@ts-expect-error
-            return ne(Event[key], eventFilter.value)
-        }
-      })
+          switch (eventFilter.operator) {
+            case RelationalOperator.EQUALS:
+              //@ts-expect-error
+              return eq(Event[key], eventFilter.value)
+            case RelationalOperator.GREATER_THAN_OR_EQUAL:
+              //@ts-expect-error
+              return gte(Event[key], eventFilter.value)
+            case RelationalOperator.LOWER_THAN_OR_EQUAL:
+              //@ts-expect-error
+              return lte(Event[key], eventFilter.value)
+            case RelationalOperator.GREATER_THAN:
+              //@ts-expect-error
+              return gt(Event[key], eventFilter.value)
+            case RelationalOperator.LOWER_THAN:
+              //@ts-expect-error
+              return lt(Event[key], eventFilter.value)
+            case RelationalOperator.LIKE:
+            case RelationalOperator.LIKE_NOT_SENSITIVE:
+              //@ts-expect-error
+              return like(Event[key], eventFilter.value)
+            case RelationalOperator.NOT_EQUALS:
+              //@ts-expect-error
+              return ne(Event[key], eventFilter.value)
+          }
+        })
+    )
   }
 }

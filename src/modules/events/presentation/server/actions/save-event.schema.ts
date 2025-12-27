@@ -1,5 +1,5 @@
-import { Datetime } from '@/shared/domain/datetime/datetime'
 import { z } from 'astro:content'
+import { Datetime } from '@/shared/domain/datetime/datetime'
 
 export const saveEventActionSchema = z.object({
   title: z.string(),

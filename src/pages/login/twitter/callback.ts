@@ -1,6 +1,6 @@
 import { OAuth2RequestError } from 'arctic'
 import type { APIContext } from 'astro'
-import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
+import { createCreateSessionCommand, getTwitterProvider } from '@/authentication/di/authentication.container'
 
 export async function GET(context: APIContext): Promise<Response> {
   const code = context.url.searchParams.get('code')
@@ -13,8 +13,9 @@ export async function GET(context: APIContext): Promise<Response> {
   }
 
   try {
-    const provider = AuthenticationLocator.twitterProvider(context.cookies)
-    await AuthenticationLocator.createSessionCommand(context.cookies).execute({
+    const provider = getTwitterProvider(context.cookies)
+    const command = createCreateSessionCommand(context.cookies)
+    await command.execute({
       authenticationProvider: provider,
       code,
       state,

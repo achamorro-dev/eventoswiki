@@ -6,13 +6,13 @@ import { MeetupEndDateValidator } from './meetup-end-date.validator'
 import { MeetupImageValidator } from './meetup-image.validator'
 import { MeetupLinkValidator } from './meetup-link.validator'
 import { MeetupLocationValidator } from './meetup-location.validator'
+import { MeetupMaxAttendeesValidator } from './meetup-max-attendees.validator'
 import { MeetupPeriodValidator } from './meetup-period.validator'
+import { MeetupRegistrationEndsAtValidator } from './meetup-registration-ends-at.validator'
 import { MeetupShortDescriptionValidator } from './meetup-short-description.validator'
 import { MeetupStartDateValidator } from './meetup-start-date.validator'
 import { MeetupTitleValidator } from './meetup-title.validator'
 import { MeetupTypeValidator } from './meetup-type.validator'
-import { MeetupRegistrationEndsAtValidator } from './meetup-registration-ends-at.validator'
-import { MeetupMaxAttendeesValidator } from './meetup-max-attendees.validator'
 
 const socialKeys = [
   'twitter',

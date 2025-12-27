@@ -8,7 +8,7 @@ export const getAttendeesAction = defineAction({
   input: z.object({
     meetupId: z.string(),
   }),
-  handler: async (input) => {
+  handler: async input => {
     try {
       const { meetupId } = input
 

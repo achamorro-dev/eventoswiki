@@ -171,7 +171,7 @@ export const RichEditor = (props: RichEditorProps) => {
     Image.extend({
       addAttributes() {
         return {
-          //@ts-ignore
+          //@ts-expect-error
           ...this.parent?.(),
           'data-upload-id': {
             default: null,
@@ -201,7 +201,7 @@ export const RichEditor = (props: RichEditorProps) => {
       onContentChange(editor.getHTML())
     },
     editorProps: {
-      handlePaste: (view, event, slice) => {
+      handlePaste: (_view, event, _slice) => {
         const currentEditor = editorRef.current
         const uploadHandler = handleUploadImageRef.current
         if (!uploadHandler || !currentEditor) {
@@ -226,7 +226,7 @@ export const RichEditor = (props: RichEditorProps) => {
 
         return false
       },
-      handleDrop: (view, event, slice, moved) => {
+      handleDrop: (view, event, _slice, _moved) => {
         const currentEditor = editorRef.current
         const uploadHandler = handleUploadImageRef.current
         if (!uploadHandler || !currentEditor) {
@@ -355,7 +355,7 @@ export const RichEditor = (props: RichEditorProps) => {
   }, [editor])
 
   return (
-    <div className="border-input w-full rounded border">
+    <div className="w-full rounded border border-input">
       {isDesktop ? (
         <RichEditorToolbar editor={editor} onUploadImage={handleUploadImage} isUploadingImage={isUploadingImage} />
       ) : null}

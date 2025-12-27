@@ -2,9 +2,9 @@ import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
 import { EventsLocator } from '@/events/di/events.locator'
 import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
+import type { EventEditableData } from '@/events/domain/event'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { saveEventActionSchema } from './save-event.schema'
-import type { EventEditableData } from '@/events/domain/event'
 
 export const saveEventAction = defineAction({
   accept: 'json',

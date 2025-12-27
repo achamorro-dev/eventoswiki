@@ -3,7 +3,7 @@ import { z } from 'astro/zod'
 import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
 import { OrganizationAlreadyExists } from '@/organizations/domain/errors/organization-already-exists.error'
 import type { OrganizationEditableData } from '@/organizations/domain/organization'
-import  { saveOrganizationActionSchema } from './save-organization-action.schema'
+import { saveOrganizationActionSchema } from './save-organization-action.schema'
 
 export const saveOrganizationAction = defineAction({
   accept: 'json',

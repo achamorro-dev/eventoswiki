@@ -1,12 +1,13 @@
 ---
-import { AuthenticationLocator } from '@/authentication/di/authentication.locator'
+import { createInvalidateSessionCommand } from '@/authentication/di/authentication.container'
 import { Urls } from '@/shared/presentation/ui/urls/urls'
 
 if (Astro.locals.session === null) {
   return Astro.redirect(Urls.HOME)
 }
 
-await AuthenticationLocator.invalidateSessionCommand(Astro.cookies).execute({ sessionId: Astro.locals.session.id })
+const command = createInvalidateSessionCommand(Astro.cookies)
+await command.execute({ sessionId: Astro.locals.session.id })
 
 return Astro.redirect(Urls.HOME)
 ---
