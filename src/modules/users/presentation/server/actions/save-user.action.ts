@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { UsersLocator } from '@/users/di/users.locator'
+import { SaveUserCommand } from '@/users/application/save-user.command'
+import { UsersContainer } from '@/users/di/users.container'
 import { InvalidUserProfileError } from '@/users/domain/errors/invalid-user-profile.error'
 import { UserNotFoundError } from '@/users/domain/errors/user-not-found.error'
 import { UsernameAlreadyExistError } from '@/users/domain/errors/username-already-exist.error'
@@ -22,7 +23,7 @@ export const saveUserAction = defineAction({
         return null
       }
 
-      await UsersLocator.saveUserCommand().execute({ userId, name, email, username, avatar })
+      await UsersContainer.get(SaveUserCommand).execute({ userId, name, email, username, avatar })
 
       return
     } catch (error) {

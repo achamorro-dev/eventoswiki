@@ -1,13 +1,14 @@
 ---
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
 import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
-import { UsersLocator } from '@/users/di/users.locator'
 
 interface Props {
   userId: string
 }
 
 const { userId } = Astro.props
-const user = await UsersLocator.getUserQuery().execute({ id: userId })
+const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
 ---
 
 <article class="user-profile">

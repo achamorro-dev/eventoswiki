@@ -1,8 +1,9 @@
 ---
 import { DeleteLoggedUserModal } from '@/authentication/presentation/client/components/delete-logged-user-modal/delete-logged-user-modal'
 import Layout from '@/layouts/layout.astro'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
 import { Urls } from '@/ui/urls/urls'
-import { UsersLocator } from '@/users/di/users.locator'
 import { EditUserProfileModalForm } from '@/users/presentation/client/components/user-profile-modal/edit-user-profile-modal'
 import ProfilePage from '@/users/presentation/server/components/profile-page/profile-page.astro'
 
@@ -12,7 +13,7 @@ if (!userId) {
   return Astro.redirect(Urls.LOGIN)
 }
 
-const user = await UsersLocator.getUserQuery().execute({ id: userId })
+const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
 const userPrimitives = user.toPrimitives()
 ---
 
