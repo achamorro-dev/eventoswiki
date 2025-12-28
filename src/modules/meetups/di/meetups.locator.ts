@@ -1,4 +1,5 @@
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { AttendMeetupCommand } from '../application/attend-meetup.command'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
 import { DeleteMeetupCommand } from '../application/delete-meetup.command'
@@ -43,21 +44,21 @@ export class MeetupsLocator {
   static updateMeetupCommand = (): UpdateMeetupCommand => {
     return new UpdateMeetupCommand(
       MeetupsLocator.createMeetupsRepository(),
-      OrganizationsLocator.userIsOrganizerEnsurer(),
+      OrganizationsContainer.get(UserIsOrganizerEnsurer),
     )
   }
 
   static createMeetupCommand = (): CreateMeetupCommand => {
     return new CreateMeetupCommand(
       MeetupsLocator.createMeetupsRepository(),
-      OrganizationsLocator.userIsOrganizerEnsurer(),
+      OrganizationsContainer.get(UserIsOrganizerEnsurer),
     )
   }
 
   static deleteMeetupCommand = (): DeleteMeetupCommand => {
     return new DeleteMeetupCommand(
       MeetupsLocator.createMeetupsRepository(),
-      OrganizationsLocator.userIsOrganizerEnsurer(),
+      OrganizationsContainer.get(UserIsOrganizerEnsurer),
     )
   }
 
@@ -76,7 +77,7 @@ export class MeetupsLocator {
   static exportAttendeesCommand = (): ExportAttendeesCommand => {
     return new ExportAttendeesCommand(
       MeetupsLocator.createMeetupsRepository(),
-      OrganizationsLocator.userIsOrganizerEnsurer(),
+      OrganizationsContainer.get(UserIsOrganizerEnsurer),
     )
   }
 

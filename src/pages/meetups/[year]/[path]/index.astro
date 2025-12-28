@@ -4,7 +4,8 @@ import EventLayout from '@/layouts/event-layout.astro'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
@@ -29,7 +30,7 @@ try {
   meetup = await MeetupsLocator.findMeetupBySlugQuery().execute({ slug: slug })
 
   if (meetup && userId) {
-    const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+    const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
     isOrganizer = organizations.some(organization => meetup!.isOrganizedBy(organization.id))
   }
 

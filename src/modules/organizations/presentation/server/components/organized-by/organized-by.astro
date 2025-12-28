@@ -1,5 +1,6 @@
 ---
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import type { Organization } from '@/organizations/domain/organization'
 import { OrganizationAvatar } from '@/organizations/presentation/client/components/organization-avatar/organization-avatar'
 import { OrganizationFollowButton } from '@/organizations/presentation/client/components/organization-follow-button/organization-follow-button'
@@ -17,7 +18,7 @@ let isOrganizer = false
 let isFollowing = false
 
 if (organizationId) {
-  organization = await OrganizationsLocator.getOrganizationByIdQuery().execute({
+  organization = await OrganizationsContainer.get(GetOrganizationByIdQuery).execute({
     id: organizationId,
   })
 

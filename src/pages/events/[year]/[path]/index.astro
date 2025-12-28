@@ -1,10 +1,12 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
+import { EventsContainer } from '@/events/di/events.container'
+import { GetEventQuery } from '@/events/application/get-event.query'
 import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import type { Event } from '@/events/domain/event'
 import BaseLayout from '@/layouts/base-layout.astro'
 import EventLayout from '@/layouts/event-layout.astro'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
@@ -26,10 +28,10 @@ let content: string = ''
 let isOrganizer = false
 
 try {
-  event = await EventsLocator.getEventQuery().execute({ slug: slug })
+  event = await EventsContainer.get(GetEventQuery).execute({ slug: slug })
 
   if (event && userId) {
-    const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+    const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
     isOrganizer = organizations.some(organization => event!.isOrganizedBy(organization.id))
   }
 

@@ -1,5 +1,6 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
+import { EventsContainer } from '@/events/di/events.container'
+import { FindEventsQuery } from '@/events/application/find-events.query'
 import { Event } from '@/events/domain/event'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { Meetup } from '@/meetups/domain/meetup'
@@ -24,7 +25,7 @@ let filteredEvents: Event[] = []
 let filteredMeetups: Meetup[] = []
 
 if (eventType === EventType.EVENTS) {
-  const paginatedEvents = await EventsLocator.findEventsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
+  const paginatedEvents = await EventsContainer.get(FindEventsQuery).execute({ startsAt, endsAt, province, limit: 1000 })
   filteredEvents = paginatedEvents.data
 }
 

@@ -1,5 +1,7 @@
 ---
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import { GetOrganizationsFollowedByQuery } from '@/organizations/application/get-organizations-followed-by.query'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import { Link } from '@/ui/components/link'
 import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
@@ -14,8 +16,8 @@ interface Props {
 
 const { userId, activeTab } = Astro.props
 
-const getUserOrganizationsQuery = () => OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
-const getOrganizationsFollowedQuery = () => OrganizationsLocator.getOrganizationsFollowedByQuery().execute({ userId })
+const getUserOrganizationsQuery = () => OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
+const getOrganizationsFollowedQuery = () => OrganizationsContainer.get(GetOrganizationsFollowedByQuery).execute({ userId })
 
 const userOrganizations = activeTab === 'member' ? await getUserOrganizationsQuery() : []
 const organizationsFollowed = activeTab === 'following' ? await getOrganizationsFollowedQuery() : []

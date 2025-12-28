@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { EventsLocator } from '@/events/di/events.locator'
+import { DeleteEventCommand } from '@/events/application/delete-event.command'
+import { EventsContainer } from '@/events/di/events.container'
 import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
@@ -17,7 +18,7 @@ export const deleteEventAction = defineAction({
         throw new BadRequest('Error al eliminar el evento')
       }
 
-      await EventsLocator.deleteEventCommand().execute({
+      await EventsContainer.get(DeleteEventCommand).execute({
         eventId,
         userId: user.id,
       })

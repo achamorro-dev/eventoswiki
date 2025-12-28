@@ -3,7 +3,8 @@ import { z } from 'astro/zod'
 import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupAttendeeDoesNotExist } from '@/meetups/domain/errors/meetup-attendee-does-not-exist.error'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
 export const removeAttendeeAction = defineAction({
@@ -30,7 +31,7 @@ export const removeAttendeeAction = defineAction({
 
       // Check if user is organizer
       try {
-        await OrganizationsLocator.userIsOrganizerEnsurer().ensure({
+        await OrganizationsContainer.get(UserIsOrganizerEnsurer).ensure({
           userId: user.id,
           organizationId: meetup.organizationId,
         })

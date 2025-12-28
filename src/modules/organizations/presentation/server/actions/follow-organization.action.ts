@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { FollowOrganizationCommand } from '@/organizations/application/follow-organization.command'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 
 export const followOrganizationAction = defineAction({
@@ -20,7 +21,7 @@ export const followOrganizationAction = defineAction({
         })
       }
 
-      await OrganizationsLocator.followOrganizationCommand().execute({
+      await OrganizationsContainer.get(FollowOrganizationCommand).execute({
         organizationId,
         userId,
       })

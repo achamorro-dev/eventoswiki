@@ -1,6 +1,8 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { EventsLocator } from '@/events/di/events.locator'
+import { CreateEventCommand } from '@/events/application/create-event.command'
+import { UpdateEventCommand } from '@/events/application/update-event.command'
+import { EventsContainer } from '@/events/di/events.container'
 import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
 import type { EventEditableData } from '@/events/domain/event'
 import { Datetime } from '@/shared/domain/datetime/datetime'
@@ -44,7 +46,7 @@ export const saveEventAction = defineAction({
 })
 
 async function _createEvent(organizationId: string, newEvent: EventEditableData, userId: string) {
-  await EventsLocator.createEventCommand().execute({
+  await EventsContainer.get(CreateEventCommand).execute({
     organizationId,
     userId,
     data: {
@@ -57,7 +59,7 @@ async function _createEvent(organizationId: string, newEvent: EventEditableData,
 }
 
 async function _saveEvent(eventId: string, newEvent: EventEditableData, userId: string) {
-  await EventsLocator.updateEventCommand().execute({
+  await EventsContainer.get(UpdateEventCommand).execute({
     eventId,
     userId,
     data: {

@@ -47,7 +47,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(id.value)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province ?? null)
   }
 
   async findBySlug(slug: string): Promise<EventEntity> {
@@ -61,7 +61,7 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(slug)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province)
+    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province ?? null)
   }
 
   async findAll(): Promise<EventEntity[]> {

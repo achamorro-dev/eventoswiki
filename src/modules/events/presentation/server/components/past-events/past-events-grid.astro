@@ -1,5 +1,6 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
+import { EventsContainer } from '@/events/di/events.container'
+import { GetPastEventsQuery } from '@/events/application/get-past-events.query'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
 import { Urls } from '@/ui/urls/urls'
 
@@ -9,7 +10,7 @@ interface Props {
 }
 
 const { location, page } = Astro.props
-const { data: pastEvents, totalPages } = await EventsLocator.getPastEventsQuery().execute({ count: 12, page, location })
+const { data: pastEvents, totalPages } = await EventsContainer.get(GetPastEventsQuery).execute({ count: 12, page, location })
 ---
 
 <EventsGrid events={pastEvents} page={page} totalPages={totalPages} goToEvent={Urls.EVENT} />

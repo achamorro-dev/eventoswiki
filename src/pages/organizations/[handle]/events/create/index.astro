@@ -2,7 +2,8 @@
 import { EventEditForm } from '@/events/presentation/client/components/event-edit-form/event-edit-form'
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetOrganizationQuery } from '@/organizations/application/get-organization.query'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
@@ -23,7 +24,7 @@ let provinces: Province[] = []
 try {
   const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
   ;[organization, provinces] = await Promise.all([
-    OrganizationsLocator.getOrganizationQuery().execute({ handle: handle }),
+    OrganizationsContainer.get(GetOrganizationQuery).execute({ handle: handle }),
     getProvincesQuery.execute(),
   ])
 

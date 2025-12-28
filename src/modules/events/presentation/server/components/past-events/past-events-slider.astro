@@ -1,5 +1,6 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
+import { EventsContainer } from '@/events/di/events.container'
+import { GetPastEventsQuery } from '@/events/application/get-past-events.query'
 import EventsSlider from '@/ui/components/events-slider/events-slider.astro'
 import { Urls } from '@/ui/urls/urls'
 
@@ -9,7 +10,7 @@ interface Props {
 }
 
 const { locationId, locationName } = Astro.props
-const { data: pastEvents } = await EventsLocator.getPastEventsQuery().execute({ count: 10, location: locationId })
+const { data: pastEvents } = await EventsContainer.get(GetPastEventsQuery).execute({ count: 10, location: locationId })
 ---
 
 <EventsSlider

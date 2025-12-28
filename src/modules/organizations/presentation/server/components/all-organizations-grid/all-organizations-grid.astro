@@ -1,5 +1,6 @@
 ---
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { MatchOrganizationsQuery } from '@/organizations/application/match-organizations.query'
 import PaginatedOrganizationsGrid from '@/organizations/presentation/client/components/organizations-grid/paginated-organizations-grid.astro'
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const { location, page } = Astro.props
-const { data: organizations, totalPages } = await OrganizationsLocator.matchOrganizationsQuery().execute({
+const { data: organizations, totalPages } = await OrganizationsContainer.get(MatchOrganizationsQuery).execute({
   count: 12,
   page,
   location,

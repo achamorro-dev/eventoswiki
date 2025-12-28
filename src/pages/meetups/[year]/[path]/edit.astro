@@ -6,7 +6,8 @@ import { MeetupsLocator } from '@/meetups/di/meetups.locator'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupEditTabs } from '@/meetups/presentation/client/components/meetup-edit-tabs/meetup-edit-tabs'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
 import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
@@ -41,7 +42,7 @@ try {
   }
 
   if (meetup && userId) {
-    const organizations = await OrganizationsLocator.getUserOrganizationsQuery().execute({ userId })
+    const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
     organization = organizations.find(organization => meetup!.isOrganizedBy(organization.id))
     canEdit = organization !== undefined
   }

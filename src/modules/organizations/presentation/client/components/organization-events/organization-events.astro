@@ -1,5 +1,6 @@
 ---
-import { EventsLocator } from '@/events/di/events.locator'
+import { EventsContainer } from '@/events/di/events.container'
+import { FindEventsQuery } from '@/events/application/find-events.query'
 import type { Organization } from '@/organizations/domain/organization'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const { organization, isOrganizer } = Astro.props as Props
-const paginatedEvents = await EventsLocator.findEventsQuery().execute({ organizationId: organization.id.value })
+const paginatedEvents = await EventsContainer.get(FindEventsQuery).execute({ organizationId: organization.id.value })
 const hasEvents = paginatedEvents.data.length > 0
 ---
 

@@ -1,6 +1,8 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { CreateOrganizationCommand } from '@/organizations/application/create-organization.command'
+import { SaveOrganizationCommand } from '@/organizations/application/save-organization.command'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { OrganizationAlreadyExists } from '@/organizations/domain/errors/organization-already-exists.error'
 import type { OrganizationEditableData } from '@/organizations/domain/organization'
 import { saveOrganizationActionSchema } from './save-organization-action.schema'
@@ -44,7 +46,7 @@ export const saveOrganizationAction = defineAction({
 })
 
 async function _createOrganization(organizerId: string, newOrganization: OrganizationEditableData) {
-  await OrganizationsLocator.createOrganizationCommand().execute({
+  await OrganizationsContainer.get(CreateOrganizationCommand).execute({
     organizerId,
     data: {
       ...newOrganization,
@@ -55,7 +57,7 @@ async function _createOrganization(organizerId: string, newOrganization: Organiz
 }
 
 async function _saveOrganization(organizationId: string, newOrganization: OrganizationEditableData) {
-  await OrganizationsLocator.updateOrganizationCommand().execute({
+  await OrganizationsContainer.get(SaveOrganizationCommand).execute({
     organizationId,
     data: {
       ...newOrganization,

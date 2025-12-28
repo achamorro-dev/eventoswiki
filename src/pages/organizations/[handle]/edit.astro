@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetOrganizationQuery } from '@/organizations/application/get-organization.query'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import type { Organization } from '@/organizations/domain/organization'
 import EditOrganizationPage from '@/organizations/presentation/client/pages/edit-organization-page/edit-organization-page.astro'
@@ -19,7 +20,7 @@ if (!handle) {
 const userId = Astro.locals.user?.id
 let organization: Organization | undefined
 try {
-  organization = await OrganizationsLocator.getOrganizationQuery().execute({ handle })
+  organization = await OrganizationsContainer.get(GetOrganizationQuery).execute({ handle })
 
   if (!userId || !organization.isOrganizer(userId)) {
     return Astro.redirect(Urls.ORGANIZATION(organization.handle))

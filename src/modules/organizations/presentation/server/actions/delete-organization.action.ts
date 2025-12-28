@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { OrganizationsLocator } from '@/organizations/di/organizations.locator'
+import { DeleteOrganizationCommand } from '@/organizations/application/delete-organization.command'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
@@ -17,7 +18,7 @@ export const deleteOrganizationAction = defineAction({
         throw new BadRequest('Error al eliminar la organización')
       }
 
-      await OrganizationsLocator.deleteOrganizationCommand().execute({
+      await OrganizationsContainer.get(DeleteOrganizationCommand).execute({
         organizationId,
         userId: user.id,
       })
