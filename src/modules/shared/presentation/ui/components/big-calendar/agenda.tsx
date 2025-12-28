@@ -41,7 +41,32 @@ export const Agenda = (props: Props) => {
     return sortedDates.map(date => new Date(date))
   }, [sortedDates])
 
-  const onSelectDate = (date: Date | undefined) => {
+  const generateDateId = (isoDateString: string): string => {
+    // Convierte "2024-01-15" a "date-20240115"
+    return `date-${isoDateString.replace(/-/g, '')}`
+  }
+
+  const handleDayClick = (date: Date | undefined) => {
+    if (!date) return
+
+    const isoDateString = Datetime.toDateIsoString(date)
+    const elementId = generateDateId(isoDateString)
+    const element = document.getElementById(elementId)
+
+    if (element) {
+      // Scroll suave con margen para el header (aproximadamente 100px)
+      const headerOffset = 100
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY
+      const offsetPosition = elementPosition - headerOffset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  const onMonthChange = (date: Date | undefined) => {
     if (!date) return
 
     const url = new URL(window.location.href)
@@ -56,9 +81,9 @@ export const Agenda = (props: Props) => {
         <Calendar
           mode="single"
           month={selectedDate}
-          onMonthChange={onSelectDate}
+          onMonthChange={onMonthChange}
           onSelect={undefined}
-          onDayClick={onSelectDate}
+          onDayClick={handleDayClick}
           className="mx-auto w-full px-0"
           modifiers={{
             hasEvents: datesWithEvents,
@@ -75,9 +100,10 @@ export const Agenda = (props: Props) => {
               const dayEvents = eventsByDate[dateKey]
               const now = new Date()
               const isToday = Datetime.isSameDay(date, now)
+              const dateId = generateDateId(dateKey)
 
               return (
-                <div key={dateKey} className="space-y-3">
+                <div key={dateId} id={dateId} className="space-y-3">
                   <h3 className={cn('font-medium text-lg', isToday ? 'text-primary' : 'text-foreground')}>
                     {Datetime.toDayString(date)}
                   </h3>
