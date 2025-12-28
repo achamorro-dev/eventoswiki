@@ -1,0 +1,24 @@
+---
+import type { TicketPrimitives } from '@/events/domain/ticket'
+
+interface Props {
+  tickets?: TicketPrimitives[]
+}
+
+const { tickets = [] } = Astro.props
+---
+
+{
+  tickets && tickets.length > 0 && (
+    <div class="space-y-2">
+      {tickets.map((ticket) => (
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-700">{ticket.name}</span>
+          <span class="font-medium text-gray-900">
+            {ticket.price === 0 ? 'Gratuito' : `${ticket.price.toFixed(2)}€`}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}

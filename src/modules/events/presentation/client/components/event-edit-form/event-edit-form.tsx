@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import type { Event } from '@/events/domain/event'
 import { EventTypes } from '@/events/domain/event-type'
 import { EventTypeSelect } from '@/events/presentation/client/components/event-type-select/event-type-select'
+import { TicketForm } from '@/events/presentation/client/components/ticket-form/ticket-form'
 import { useUploadFile } from '@/files/presentation/client/hooks/use-upload-file'
 import { useUploadImageForEditor } from '@/files/presentation/client/hooks/use-upload-image-for-editor'
 import type { Place } from '@/modules/places/domain/place'
@@ -78,6 +79,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
             address: event?.place.address,
           }
         : undefined,
+      tickets: (event?.tickets as any) || [],
       tags: event?.tags ?? [],
       tagColor: event?.tagColor ?? '',
     },
@@ -446,6 +448,11 @@ export const EventEditForm = ({ provinces, organizationId, event, organization }
               <div className="border-t pt-6">
                 <h2 className="mb-4 font-semibold text-xl">Redes sociales y enlaces</h2>
                 <SocialForm control={form.control} />
+              </div>
+
+              {/* Sección: Tipos de entrada */}
+              <div className="border-t pt-6">
+                <TicketForm />
               </div>
             </div>
           </div>

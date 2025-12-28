@@ -102,6 +102,7 @@ function _parseEventDataPayload(input: z.infer<typeof saveEventActionSchema>): E
           address: input.place.address,
         }
       : undefined,
+    tickets: input.tickets || [],
     tags: input.tags,
     tagColor: input.tagColor,
   }

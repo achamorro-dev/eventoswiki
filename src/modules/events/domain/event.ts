@@ -6,6 +6,7 @@ import { InvalidEventError } from './errors/invalid-event.error'
 import { EventId } from './event-id'
 import { EventPlace } from './event-place'
 import { EventType, EventTypes } from './event-type'
+import { TicketCollection } from './ticket-collection'
 import { EventValidator } from './validators/event.validator'
 
 export class Event implements EventProps {
@@ -36,6 +37,7 @@ export class Event implements EventProps {
   content: string
   organizationId?: string
   place?: EventPlace
+  tickets: TicketCollection
 
   private constructor(props: EventProps) {
     this.id = props.id
@@ -65,6 +67,7 @@ export class Event implements EventProps {
     this.content = props.content
     this.organizationId = props.organizationId || undefined
     this.place = props.place
+    this.tickets = props.tickets
   }
 
   static fromPrimitives(primitives: Primitives<Event>): Event {
@@ -96,6 +99,7 @@ export class Event implements EventProps {
       content: primitives.content,
       organizationId: primitives.organizationId,
       place: primitives.place ? EventPlace.fromPrimitives(primitives.place) : undefined,
+      tickets: TicketCollection.fromPrimitives((primitives.tickets as any) || []),
     })
   }
 
@@ -108,6 +112,7 @@ export class Event implements EventProps {
       endsAt: Datetime.toDateTimeIsoString(this.endsAt),
       image: this.image.toString(),
       place: this.place?.toPrimitives(),
+      tickets: this.tickets.toPrimitives(),
     }
   }
 
@@ -120,6 +125,7 @@ export class Event implements EventProps {
       id: uuidv4(),
       location: data.location ?? null,
       type: data.type ?? EventTypes.InPerson,
+      tickets: (data.tickets as any) || [],
     })
 
     return event
@@ -172,6 +178,9 @@ export class Event implements EventProps {
     this.content = data.content ?? this.content
     this.slug = data.slug ?? this.slug
     this.place = data.place ? EventPlace.fromPrimitives(data.place) : this.place
+    if (data.tickets) {
+      this.tickets = TicketCollection.fromPrimitives((data.tickets as any) || [])
+    }
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
@@ -180,6 +189,10 @@ export class Event implements EventProps {
 
   hasOrganization(): boolean {
     return this.organizationId !== undefined
+  }
+
+  getMinTicketPrice(): number | null {
+    return this.tickets.getMinPrice()
   }
 }
 
@@ -211,6 +224,7 @@ export interface EventProps {
   content: string
   organizationId?: string | null
   place?: EventPlace
+  tickets: TicketCollection
 }
 
 export type EventEditableData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

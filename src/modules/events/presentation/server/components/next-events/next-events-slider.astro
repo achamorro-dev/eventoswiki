@@ -11,11 +11,19 @@ interface Props {
 
 const { locationId, locationName } = Astro.props
 const { data: nextEvents } = await EventsContainer.get(GetNextEventsQuery).execute({ count: 10, location: locationId })
+
+const eventsWithPrice = nextEvents.map(event => {
+  const minPrice = 'getMinTicketPrice' in event ? (event as any).getMinTicketPrice() : null
+  return {
+    ...event,
+    minPrice,
+  }
+})
 ---
 
 <EventsSlider
   title={'Próximos eventos' + (locationName ? ` en ${locationName}` : '')}
   seeMoreLink={Urls.EVENTS}
   goToEvent={Urls.EVENT}
-  events={nextEvents}
+  events={eventsWithPrice}
 />

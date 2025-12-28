@@ -1,5 +1,5 @@
 ---
-import type { Event } from '@/events/domain/event'
+import { Event } from '@/events/domain/event'
 import type { Meetup } from '@/meetups/domain/meetup'
 import EventCard from '@/ui/components/event-card/event-card.astro'
 import { Search } from '@/ui/icons'
@@ -13,28 +13,30 @@ interface Props {
   goToEvent: (slug: string) => string
 }
 
-const { events = [], page, totalPages, goToEvent } = Astro.props
+const { events = [], page, totalPages, goToEvent } = Astro.props as Props
 ---
 
 <article>
   <ul class="grid-list">
     {
       events.map((event: Event | Meetup) => {
+        const minPrice = 'getMinTicketPrice' in event ? (event as any).getMinTicketPrice() : null
         return (
           <li>
-            <EventCard
-              event={{
-                slug: event.slug,
-                title: event.title,
-                image: event.image.toString(),
-                tags: event.tags,
-                tagColor: event.tagColor,
-                startsAt: event.startsAt,
-                endsAt: event.endsAt,
-                location: event.location,
-              }}
-              goToEvent={goToEvent}
-            />
+             <EventCard
+               event={{
+                 slug: event.slug,
+                 title: event.title,
+                 image: event.image.toString(),
+                 tags: event.tags,
+                 tagColor: event.tagColor,
+                 startsAt: event.startsAt,
+                 endsAt: event.endsAt,
+                 location: event.location,
+                 minPrice,
+               }}
+               goToEvent={goToEvent}
+             />
           </li>
         )
       })

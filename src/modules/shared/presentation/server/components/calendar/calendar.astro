@@ -35,7 +35,7 @@ if (eventType === EventType.MEETUPS) {
   filteredMeetups = paginatedMeetups.data
 }
 
-const calendarEvents = filteredEvents.concat(filteredMeetups).map<CalendarEvent>((event: Meetup | Event, index) => {
+const calendarEvents = (filteredEvents as Array<Meetup | Event>).concat(filteredMeetups).map<CalendarEvent>((event: Meetup | Event, index) => {
   const isMeetup = event instanceof Meetup
   return {
     id: index,

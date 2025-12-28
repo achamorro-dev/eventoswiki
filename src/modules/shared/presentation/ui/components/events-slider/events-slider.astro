@@ -15,6 +15,7 @@ interface SliderEvent {
   startsAt: Date
   endsAt: Date
   location?: string | null
+  minPrice?: number | null
 }
 
 interface Props {
@@ -39,18 +40,20 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
         {events.map(event => {
           return (
             <Slide>
-              <EventCard
-                event={{
-                  slug: event.slug,
-                  title: event.title,
-                  image: event.image.toString(),
-                  tags: event.tags,
-                  tagColor: event.tagColor,
-                  startsAt: event.startsAt,
-                  endsAt: event.endsAt,
-                }}
-                goToEvent={goToEvent}
-              />
+               <EventCard
+                 event={{
+                   slug: event.slug,
+                   title: event.title,
+                   image: event.image.toString(),
+                   tags: event.tags,
+                   tagColor: event.tagColor,
+                   startsAt: event.startsAt,
+                   endsAt: event.endsAt,
+                   location: event.location,
+                   minPrice: event.minPrice,
+                 }}
+                 goToEvent={goToEvent}
+               />
             </Slide>
           )
         })}

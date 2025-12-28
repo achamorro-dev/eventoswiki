@@ -38,6 +38,7 @@ export class AstroEventMapper {
       content: eventDto.content,
       organizationId: eventDto.organizationId || undefined,
       place: eventDto.place || undefined,
+      tickets: [],
     })
   }
 }

@@ -32,3 +32,12 @@ export interface AstroDbEventDto {
   organizationId: string | null
   place: Primitives<Place> | null | undefined
 }
+
+export interface AstroDbTicketDto {
+  id: string
+  eventId: string
+  name: string
+  price: number
+  createdAt: Date
+  updatedAt: Date
+}

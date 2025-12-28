@@ -51,6 +51,7 @@ export {
   PiTextItalic as TextItalic,
   PiTextStrikethrough as TextStrikethrough,
   PiTextUnderline as TextUnderline,
+  PiTicket as Ticket,
   PiTiktokLogoFill as Tiktok,
   PiTwitchLogo as Twitch,
   PiTwitterLogoFill as Twitter,

@@ -38,6 +38,17 @@ export const Event = defineTable({
   },
 })
 
+export const Ticket = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    eventId: column.text({ optional: false, references: () => Event.columns.id }),
+    name: column.text(),
+    price: column.number(),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
 export const Meetup = defineTable({
   columns: {
     id: column.text({ primaryKey: true, optional: false, unique: true }),
@@ -163,6 +174,7 @@ export const MeetupAttendee = defineTable({
 export default defineDb({
   tables: {
     Event,
+    Ticket,
     Meetup,
     MeetupAttendee,
     Province,

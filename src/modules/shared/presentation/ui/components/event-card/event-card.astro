@@ -1,5 +1,6 @@
 ---
-import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
+import { DateFormat } from '@/shared/domain/datetime/datetime'
+import { Ticket } from '@/ui/icons'
 import { Badge } from '@/ui/badge'
 import { Card, CardContent, CardHeader } from '@/ui/card'
 import DatePeriod from '@/ui/components/date-period/date-period.astro'
@@ -14,6 +15,7 @@ interface CardEvent {
   startsAt: Date
   endsAt: Date
   location?: string | null
+  minPrice?: number | null
 }
 interface Props {
   event: CardEvent
@@ -22,6 +24,13 @@ interface Props {
 }
 
 const { event, classes, goToEvent } = Astro.props
+
+const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+  }).format(price)
+}
 ---
 
 <a
@@ -41,6 +50,12 @@ const { event, classes, goToEvent } = Astro.props
           onerror="this.src='/not-found.jpg'"
           transition:name={`media-image-${event.slug}`}
         />
+        {event.minPrice !== null && event.minPrice !== undefined && (
+          <div class="price-badge">
+            <Ticket size={16} />
+            <span class="price-badge-text">Desde {formatPrice(event.minPrice)}</span>
+          </div>
+        )}
       </div>
     </CardHeader>
     <CardContent className="px-4 pt-0 pb-3">
@@ -75,11 +90,17 @@ const { event, classes, goToEvent } = Astro.props
     }
   }
   .event-cover-container {
-    @apply w-full overflow-hidden rounded-t-xl;
+    @apply relative w-full overflow-hidden rounded-t-xl;
   }
   .event-cover {
     @apply h-56 w-full object-cover;
     transition: 0.4s ease;
+  }
+  .price-badge {
+    @apply absolute right-2 top-2 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1.5 text-white backdrop-blur-sm;
+  }
+  .price-badge-text {
+    @apply text-sm font-medium;
   }
   .event-tags {
     @apply mt-2 flex flex-wrap items-center gap-1;

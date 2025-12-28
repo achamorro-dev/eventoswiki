@@ -13,6 +13,7 @@ import { EventLocation } from '@/ui/components/event-location/event-location'
 import { EventStreaming } from '@/ui/components/event-streaming/event-streaming'
 import EventTags from '@/ui/components/event-tags/event-tags.astro'
 import { EventTypeDisplay } from '../event-type-display/event-type-display'
+import { EventTicketsRow } from '../event-tickets-row/event-tickets-row'
 
 interface Props {
   id: string
@@ -47,6 +48,7 @@ const { title, tags, tagColor, startsAt, endsAt, location, type } = event
 const streamingUrl = event.streamingUrl
 const shouldShowStreamingLink = isOrganizer || isAttending
 const place = event.place?.toPrimitives()
+const tickets = event instanceof Event ? event.tickets.toPrimitives() : undefined
 
 // Get attendees data for meetups that allow attendees
 let initialAttendees: Array<{ name: string; avatar?: string | null }> = []
@@ -77,6 +79,11 @@ if (event instanceof Meetup && event.allowsAttendees && event.hasAttendees()) {
     )
   }
   <EventLocation location={location} place={place} client:load transition:animate="fade" />
+  {
+    tickets && tickets.length > 0 && (
+      <EventTicketsRow client:load tickets={tickets} />
+    )
+  }
   <EventStreaming
     streamingUrl={streamingUrl}
     shouldShowLink={shouldShowStreamingLink}

@@ -12,11 +12,14 @@ import { EventAlreadyExists } from '../domain/errors/event-already-exists.error'
 import { Event as EventEntity } from '../domain/event'
 import type { EventId } from '../domain/event-id'
 import type { EventsRepository } from '../domain/events.repository'
+import { TicketCollection } from '../domain/ticket-collection'
+import type { TicketsRepository } from '../domain/tickets.repository'
 import type { AstroDbEventDto } from './dtos/astro-db-event.dto'
 import type { AstroDbEventProvinceDto } from './dtos/astro-db-event-province.dto'
 import { AstroEventMapper as AstroDbEventMapper } from './mappers/astro-db-event.mapper'
 
 export class AstroDbEventsRepository implements EventsRepository {
+  constructor(private readonly ticketsRepository: TicketsRepository) {}
   async match(criteria: EventsCriteria): Promise<PaginatedResult<EventEntity>> {
     const eventsQuery = this.getEventsQueryWithCriteria(criteria).orderBy(...this.getOrderBy(criteria.order))
     const countQuery = this.getCountEventsQueryWithCriteria(criteria)
@@ -33,7 +36,15 @@ export class AstroDbEventsRepository implements EventsRepository {
     const count = await countQuery
     const totalPages = Math.ceil(count[0].count / criteria.limit)
 
-    return new PaginatedResult(AstroDbEventMapper.toDomainList(events), totalPages, criteria.page, criteria.limit)
+    const domainEvents = AstroDbEventMapper.toDomainList(events)
+
+    // Load tickets for each event
+    for (const event of domainEvents) {
+      const ticketsData = await this.ticketsRepository.findByEventId(event.id.value)
+      event.tickets = new TicketCollection(ticketsData)
+    }
+
+    return new PaginatedResult(domainEvents, totalPages, criteria.page, criteria.limit)
   }
 
   async find(id: EventId): Promise<EventEntity> {
@@ -47,7 +58,13 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(id.value)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province ?? null)
+    const event = AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province ?? null)
+
+    // Load tickets
+    const ticketsData = await this.ticketsRepository.findByEventId(event.id.value)
+    event.tickets = new TicketCollection(ticketsData)
+
+    return event
   }
 
   async findBySlug(slug: string): Promise<EventEntity> {
@@ -61,25 +78,45 @@ export class AstroDbEventsRepository implements EventsRepository {
       throw new EventNotFound(slug)
     }
 
-    return AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province ?? null)
+    const event = AstroDbEventMapper.toDomain(result.at(0)?.Event as AstroDbEventDto, result.at(0)?.Province ?? null)
+
+    // Load tickets
+    const ticketsData = await this.ticketsRepository.findByEventId(event.id.value)
+    event.tickets = new TicketCollection(ticketsData)
+
+    return event
   }
 
   async findAll(): Promise<EventEntity[]> {
     const eventsAndProvinces = await db.select().from(Event).leftJoin(Province, eq(Province.slug, Event.location))
-    return AstroDbEventMapper.toDomainList(
+    const events = AstroDbEventMapper.toDomainList(
       eventsAndProvinces as { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[],
     )
+
+    // Load tickets for each event
+    for (const event of events) {
+      const ticketsData = await this.ticketsRepository.findByEventId(event.id.value)
+      event.tickets = new TicketCollection(ticketsData)
+    }
+
+    return events
   }
 
   async save(value: EventEntity): Promise<void> {
     const event = await db.select().from(Event).where(eq(Event.id, value.id.value))
     const hasEvent = event.length !== 0
 
-    return hasEvent ? this._updateEvent(value) : this._insertEvent(value)
+    await (hasEvent ? this._updateEvent(value) : this._insertEvent(value))
+
+    // Save tickets
+    await this.ticketsRepository.saveByEventId(value.id.value, value.tickets.getTickets())
   }
 
   async delete(id: EventId): Promise<void> {
     try {
+      // Delete associated tickets first
+      await this.ticketsRepository.deleteByEventId(id.value)
+      // Then delete the event
       await db.delete(Event).where(eq(Event.id, id.value))
     } catch (_error) {
       throw new EventNotFound(id.value)

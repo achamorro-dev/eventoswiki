@@ -48,6 +48,20 @@ export const eventFormSchema = z
         name: StringFormField(),
       })
       .optional(),
+    tickets: z
+      .array(
+        z.object({
+          name: z
+            .string()
+            .min(3, 'El nombre del ticket debe tener al menos 3 caracteres')
+            .max(100, 'El nombre del ticket no puede exceder 100 caracteres'),
+          price: z
+            .number({ invalid_type_error: 'El precio debe ser un número' })
+            .min(0, 'El precio no puede ser negativo')
+            .refine(val => Math.round(val * 100) / 100 === val, 'El precio debe tener máximo 2 decimales'),
+        }),
+      )
+      .optional(),
     tags: NotRequiredArrayFormField(z.string()),
     tagColor: NotRequiredStringFormField(),
   })

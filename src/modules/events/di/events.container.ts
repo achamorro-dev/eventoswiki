@@ -11,10 +11,13 @@ import { GetNextEventsQuery } from '../application/get-next-events.query'
 import { GetPastEventsQuery } from '../application/get-past-events.query'
 import { UpdateEventCommand } from '../application/update-event.command'
 import { AstroDbEventsRepository } from '../infrastructure/astro-db-events.repository'
+import { AstroDBTicketsRepository } from '../infrastructure/repositories/astro-db-tickets.repository'
 
 const builder = new ContainerBuilder()
 
-builder.register(AstroDbEventsRepository).use(AstroDbEventsRepository)
+builder.register(AstroDBTicketsRepository).use(AstroDBTicketsRepository)
+
+builder.register(AstroDbEventsRepository).use(AstroDbEventsRepository).withDependencies([AstroDBTicketsRepository])
 
 builder.register(GetEventQuery).use(GetEventQuery).withDependencies([AstroDbEventsRepository])
 

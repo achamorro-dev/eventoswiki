@@ -31,6 +31,14 @@ export const saveEventActionSchema = z.object({
       address: z.string(),
     })
     .optional(),
+  tickets: z
+    .array(
+      z.object({
+        name: z.string(),
+        price: z.number(),
+      }),
+    )
+    .default([]),
   organizationId: z.string(),
   eventId: z.string().optional(),
   tags: z.array(z.string()).default([]),
