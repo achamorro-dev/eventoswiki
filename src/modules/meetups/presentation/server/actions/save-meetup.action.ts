@@ -1,6 +1,8 @@
 import { ActionError, defineAction } from 'astro:actions'
 import type { z } from 'astro:content'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { CreateMeetupCommand } from '@/meetups/application/create-meetup.command'
+import { UpdateMeetupCommand } from '@/meetups/application/update-meetup.command'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupAlreadyExists } from '@/meetups/domain/errors/meetup-already-exists.error'
 import type { MeetupEditableData } from '@/meetups/domain/meetup'
 import { Datetime } from '@/shared/domain/datetime/datetime'
@@ -46,7 +48,7 @@ export const saveMeetupAction = defineAction({
 })
 
 async function _createMeetup(organizationId: string, newMeetup: MeetupEditableData, userId: string) {
-  await MeetupsLocator.createMeetupCommand().execute({
+  await MeetupsContainer.get(CreateMeetupCommand).execute({
     organizationId,
     userId,
     data: {
@@ -59,7 +61,7 @@ async function _createMeetup(organizationId: string, newMeetup: MeetupEditableDa
 }
 
 async function _saveMeetup(meetupId: string, newMeetup: MeetupEditableData, userId: string) {
-  await MeetupsLocator.updateMeetupCommand().execute({
+  await MeetupsContainer.get(UpdateMeetupCommand).execute({
     meetupId,
     userId,
     data: {

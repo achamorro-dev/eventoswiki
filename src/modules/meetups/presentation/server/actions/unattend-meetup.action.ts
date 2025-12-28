@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { UnattendMeetupCommand } from '@/meetups/application/unattend-meetup.command'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupAttendeeDoesNotExist } from '@/meetups/domain/errors/meetup-attendee-does-not-exist.error'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
@@ -18,7 +19,7 @@ export const unattendMeetupAction = defineAction({
         throw new BadRequest('Error al cancelar la asistencia al meetup')
       }
 
-      await MeetupsLocator.unattendMeetupCommand().execute({
+      await MeetupsContainer.get(UnattendMeetupCommand).execute({
         meetupId,
         userId: user.id,
       })

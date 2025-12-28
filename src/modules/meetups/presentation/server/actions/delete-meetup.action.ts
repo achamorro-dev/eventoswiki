@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { DeleteMeetupCommand } from '@/meetups/application/delete-meetup.command'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
@@ -17,7 +18,7 @@ export const deleteMeetupAction = defineAction({
         throw new BadRequest('Error al eliminar el meetup')
       }
 
-      await MeetupsLocator.deleteMeetupCommand().execute({
+      await MeetupsContainer.get(DeleteMeetupCommand).execute({
         meetupId,
         userId: user.id,
       })

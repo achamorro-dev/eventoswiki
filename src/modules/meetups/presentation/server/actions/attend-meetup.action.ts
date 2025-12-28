@@ -1,6 +1,8 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { AttendMeetupCommand } from '@/meetups/application/attend-meetup.command'
+import { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
@@ -18,14 +20,14 @@ export const attendMeetupAction = defineAction({
       }
 
       // Verificar si el meetup permite asistentes y hay cupo
-      const meetup = await MeetupsLocator.findMeetupQuery().execute({ id: meetupId })
+      const meetup = await MeetupsContainer.get(FindMeetupQuery).execute({ id: meetupId })
       const { canAttend, reason } = meetup.canUserAttend()
 
       if (!canAttend) {
         throw new BadRequest(reason || 'No puedes asistir a este meetup')
       }
 
-      await MeetupsLocator.attendMeetupCommand().execute({
+      await MeetupsContainer.get(AttendMeetupCommand).execute({
         meetupId,
         userId: user.id,
       })

@@ -2,7 +2,8 @@
 import { navigate } from 'astro:transitions/client'
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { FindMeetupBySlugQuery } from '@/meetups/application/find-meetup-by-slug.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupEditTabs } from '@/meetups/presentation/client/components/meetup-edit-tabs/meetup-edit-tabs'
@@ -33,7 +34,7 @@ let organization: Organization | undefined
 let canEdit = false
 
 try {
-  meetup = await MeetupsLocator.findMeetupBySlugQuery().execute({ slug: slug })
+  meetup = await MeetupsContainer.get(FindMeetupBySlugQuery).execute({ slug: slug })
   const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
   provinces = await getProvincesQuery.execute()
 
@@ -43,7 +44,7 @@ try {
 
   if (meetup && userId) {
     const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
-    organization = organizations.find(organization => meetup!.isOrganizedBy(organization.id))
+    organization = organizations.find((organization) => meetup!.isOrganizedBy(organization.id))
     canEdit = organization !== undefined
   }
 } catch (error) {

@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '@/layouts/base-layout.astro'
 import EventLayout from '@/layouts/event-layout.astro'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { FindMeetupBySlugQuery } from '@/meetups/application/find-meetup-by-slug.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
@@ -27,11 +28,11 @@ let content: string = ''
 let isOrganizer = false
 
 try {
-  meetup = await MeetupsLocator.findMeetupBySlugQuery().execute({ slug: slug })
+  meetup = await MeetupsContainer.get(FindMeetupBySlugQuery).execute({ slug: slug })
 
   if (meetup && userId) {
     const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
-    isOrganizer = organizations.some(organization => meetup!.isOrganizedBy(organization.id))
+    isOrganizer = organizations.some((organization) => meetup!.isOrganizedBy(organization.id))
   }
 
   content = await marked.parse(meetup.content)

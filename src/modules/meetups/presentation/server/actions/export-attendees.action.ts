@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { ExportAttendeesCommand } from '@/meetups/application/export-attendees.command'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
 
@@ -19,7 +20,7 @@ export const exportAttendeesAction = defineAction({
       }
 
       // Use the export attendees command
-      const result = await MeetupsLocator.exportAttendeesCommand().execute({
+      const result = await MeetupsContainer.get(ExportAttendeesCommand).execute({
         meetupId,
         userId: user.id,
       })

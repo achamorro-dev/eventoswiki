@@ -1,6 +1,8 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
+import { UnattendMeetupCommand } from '@/meetups/application/unattend-meetup.command'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupAttendeeDoesNotExist } from '@/meetups/domain/errors/meetup-attendee-does-not-exist.error'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
@@ -23,7 +25,7 @@ export const removeAttendeeAction = defineAction({
       }
 
       // Verify the meetup exists and user is organizer
-      const meetup = await MeetupsLocator.findMeetupQuery().execute({ id: meetupId })
+      const meetup = await MeetupsContainer.get(FindMeetupQuery).execute({ id: meetupId })
 
       if (!meetup.organizationId) {
         throw new BadRequest('Este meetup no tiene organización')
@@ -40,7 +42,7 @@ export const removeAttendeeAction = defineAction({
       }
 
       // Remove the attendee
-      await MeetupsLocator.unattendMeetupCommand().execute({
+      await MeetupsContainer.get(UnattendMeetupCommand).execute({
         meetupId,
         userId,
       })

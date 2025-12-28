@@ -1,7 +1,8 @@
 ---
+import { GetNextMeetupsQuery } from '@/meetups/application/get-next-meetups.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import EventsSlider from '@/ui/components/events-slider/events-slider.astro'
 import { Urls } from '@/ui/urls/urls'
-import { MeetupsLocator } from '../../../../di/meetups.locator'
 
 interface Props {
   locationId?: string
@@ -9,7 +10,7 @@ interface Props {
 }
 
 const { locationId, locationName } = Astro.props
-const { data: nextMeetups } = await MeetupsLocator.getNextMeetupsQuery().execute({ count: 10, location: locationId })
+const { data: nextMeetups } = await MeetupsContainer.get(GetNextMeetupsQuery).execute({ count: 10, location: locationId })
 ---
 
 <EventsSlider

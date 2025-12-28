@@ -1,5 +1,6 @@
 ---
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { GetPastMeetupsQuery } from '@/meetups/application/get-past-meetups.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
 import { Urls } from '@/ui/urls/urls'
 
@@ -10,7 +11,7 @@ interface Props {
 
 const { location, page } = Astro.props
 
-const { data: meetups, totalPages } = await MeetupsLocator.getPastMeetupsQuery().execute({
+const { data: meetups, totalPages } = await MeetupsContainer.get(GetPastMeetupsQuery).execute({
   count: 12,
   page,
   location,

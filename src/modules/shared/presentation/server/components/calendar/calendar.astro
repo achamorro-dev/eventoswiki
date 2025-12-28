@@ -2,7 +2,8 @@
 import { EventsContainer } from '@/events/di/events.container'
 import { FindEventsQuery } from '@/events/application/find-events.query'
 import { Event } from '@/events/domain/event'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { FindMeetupsQuery } from '@/meetups/application/find-meetups.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { Meetup } from '@/meetups/domain/meetup'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { EventType } from '@/shared/domain/types/event-type'
@@ -30,7 +31,7 @@ if (eventType === EventType.EVENTS) {
 }
 
 if (eventType === EventType.MEETUPS) {
-  const paginatedMeetups = await MeetupsLocator.findMeetupsQuery().execute({ startsAt, endsAt, province, limit: 1000 })
+  const paginatedMeetups = await MeetupsContainer.get(FindMeetupsQuery).execute({ startsAt, endsAt, province, limit: 1000 })
   filteredMeetups = paginatedMeetups.data
 }
 

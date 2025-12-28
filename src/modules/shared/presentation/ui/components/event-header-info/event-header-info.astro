@@ -1,7 +1,9 @@
 ---
 import { EventsContainer } from '@/events/di/events.container'
 import { FindEventQuery } from '@/events/application/find-event.query'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
+import { FindMeetupAttendeesQuery } from '@/meetups/application/find-meetup-attendees.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { Meetup } from '@/meetups/domain/meetup'
 import AttendMeetupSection from '@/meetups/presentation/server/components/attend-meetup-section/attend-meetup-section.astro'
 import { EventAttendeesRow } from '@/shared/presentation/ui/components/event-attendees-row/event-attendees-row'
@@ -27,7 +29,7 @@ try {
   if (entityType === 'event') {
     event = await EventsContainer.get(FindEventQuery).execute({ id })
   } else {
-    event = await MeetupsLocator.findMeetupQuery().execute({ id })
+    event = await MeetupsContainer.get(FindMeetupQuery).execute({ id })
     if (event instanceof Meetup && userId) {
       isAttending = event.isAttending(userId)
     }
@@ -47,13 +49,13 @@ const shouldShowStreamingLink = isOrganizer || isAttending
 const place = event.place?.toPrimitives()
 
 // Get attendees data for meetups that allow attendees
-let initialAttendees: Array<{name: string; avatar?: string | null}> = []
+let initialAttendees: Array<{ name: string; avatar?: string | null }> = []
 if (event instanceof Meetup && event.allowsAttendees && event.hasAttendees()) {
-    try {
-      const attendees = await MeetupsLocator.findMeetupAttendeesQuery().execute(event.id.value)
-      initialAttendees = attendees.map(attendee => attendee.toPrimitives())
-    } catch (error) {
-      // Silently fail if we can't fetch attendees
+  try {
+    const attendees = await MeetupsContainer.get(FindMeetupAttendeesQuery).execute(event.id.value)
+    initialAttendees = attendees.map((attendee) => attendee.toPrimitives())
+  } catch (error) {
+    // Silently fail if we can't fetch attendees
   }
 }
 ---

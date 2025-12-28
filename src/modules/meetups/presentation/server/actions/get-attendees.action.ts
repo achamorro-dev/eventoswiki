@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
-import { MeetupsLocator } from '@/meetups/di/meetups.locator'
+import { FindMeetupAttendeesQuery } from '@/meetups/application/find-meetup-attendees.query'
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 
 export const getAttendeesAction = defineAction({
@@ -13,7 +14,7 @@ export const getAttendeesAction = defineAction({
       const { meetupId } = input
 
       // Get attendees with user data
-      const attendees = await MeetupsLocator.findMeetupAttendeesQuery().execute(meetupId)
+      const attendees = await MeetupsContainer.get(FindMeetupAttendeesQuery).execute(meetupId)
 
       return { attendees: attendees.map(attendee => attendee.toPrimitives()) }
     } catch (error) {
