@@ -1,7 +1,7 @@
 import type { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
 import type { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
-import type { GetUserQuery } from '@/users/application/get-user.query'
 import { Command } from '@/shared/application/use-case/command'
+import type { GetUserQuery } from '@/users/application/get-user.query'
 import type { EmailsRepository } from '../domain/emails.repository'
 import { generateAttendMeetupEmailHtml } from '../infrastructure/templates/generate-attend-meetup-email'
 import { generateIcs } from '../infrastructure/templates/generate-ics'

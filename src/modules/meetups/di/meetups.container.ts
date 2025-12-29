@@ -39,6 +39,11 @@ builder.register(FindMeetupAttendeesQuery).use(FindMeetupAttendeesQuery).withDep
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.get(UserIsOrganizerEnsurer))
 
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder
+  .register(SendMeetupAttendanceConfirmationEmailCommand)
+  .useFactory(_ => EmailsContainer.get(SendMeetupAttendanceConfirmationEmailCommand))
+
 builder
   .register(UpdateMeetupCommand)
   .use(UpdateMeetupCommand)
@@ -57,7 +62,7 @@ builder
 builder
   .register(AttendMeetupCommand)
   .use(AttendMeetupCommand)
-  .withDependencies([AstroDbMeetupsRepository, () => EmailsContainer.get(SendMeetupAttendanceConfirmationEmailCommand)])
+  .withDependencies([AstroDbMeetupsRepository, SendMeetupAttendanceConfirmationEmailCommand])
 
 builder.register(UnattendMeetupCommand).use(UnattendMeetupCommand).withDependencies([AstroDbMeetupsRepository])
 
