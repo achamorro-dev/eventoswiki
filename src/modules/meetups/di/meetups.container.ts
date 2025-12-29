@@ -1,5 +1,5 @@
 import { ContainerBuilder } from 'diod'
-import { SendEmailCommand } from '@/emails/application/send-email.command'
+import { SendMeetupAttendanceConfirmationEmailCommand } from '@/emails/application/send-meetup-attendance-confirmation-email.command'
 import { EmailsContainer } from '@/emails/di/emails.container'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
@@ -57,7 +57,7 @@ builder
 builder
   .register(AttendMeetupCommand)
   .use(AttendMeetupCommand)
-  .withDependencies([AstroDbMeetupsRepository, () => EmailsContainer.get(SendEmailCommand)])
+  .withDependencies([AstroDbMeetupsRepository, () => EmailsContainer.get(SendMeetupAttendanceConfirmationEmailCommand)])
 
 builder.register(UnattendMeetupCommand).use(UnattendMeetupCommand).withDependencies([AstroDbMeetupsRepository])
 

@@ -1,5 +1,4 @@
-import type { SendEmailCommand } from '@/emails/application/send-email.command'
-import { EmailTemplateType } from '@/emails/domain/enums/email-template-type'
+import type { SendMeetupAttendanceConfirmationEmailCommand } from '@/emails/application/send-meetup-attendance-confirmation-email.command'
 import { Command } from '@/shared/application/use-case/command'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
 import { MeetupAttendeeId } from '../domain/meetup-attendee-id'
@@ -15,7 +14,7 @@ interface Param {
 export class AttendMeetupCommand extends Command<Param, void> {
   constructor(
     private readonly meetupsRepository: MeetupsRepository,
-    private readonly sendEmailCommand: SendEmailCommand,
+    private readonly sendMeetupAttendanceConfirmationEmailCommand: SendMeetupAttendanceConfirmationEmailCommand,
   ) {
     super()
   }
@@ -31,16 +30,15 @@ export class AttendMeetupCommand extends Command<Param, void> {
     meetup.addAttendee(MeetupAttendeeId.of(userId))
     await this.meetupsRepository.addAttendees(meetup)
 
-    // Enviar email de notificación (sin fallar si hay error)
+    // Enviar email de confirmación de asistencia (sin fallar si hay error)
     try {
-      await this.sendEmailCommand.execute({
-        templateType: EmailTemplateType.ATTEND_MEETUP,
+      await this.sendMeetupAttendanceConfirmationEmailCommand.execute({
         recipientEmail: userEmail,
         meetupId,
         userId,
       })
     } catch (error: unknown) {
-      console.error('[AttendMeetupCommand] Failed to send notification email:', error)
+      console.error('[AttendMeetupCommand] Failed to send confirmation email:', error)
       // Continuamos sin interrumpir el flujo principal
     }
   }
