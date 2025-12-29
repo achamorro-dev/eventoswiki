@@ -53,6 +53,9 @@ const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
         <Link href={Urls.MY_ORGANIZATIONS} variant="ghost">Mis organizaciones</Link>
       </DropdownItem>
       <DropdownItem>
+        <Link href={Urls.CHANGELOG} variant="ghost" target="_blank">Changelog</Link>
+      </DropdownItem>
+      <DropdownItem>
         <Link href={Urls.LOGOUT} variant="ghost" data-astro-prefetch="false">Cerrar sesión</Link>
       </DropdownItem>
     </DropdownSection>

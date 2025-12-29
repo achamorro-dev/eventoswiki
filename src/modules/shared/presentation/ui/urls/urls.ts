@@ -37,4 +37,5 @@ export const Urls = {
   PROFILE: '/me/profile',
   PRIVACY: '/privacy',
   TERMS: '/terms',
+  CHANGELOG: 'https://eventoswiki.userjot.com/updates',
 }
