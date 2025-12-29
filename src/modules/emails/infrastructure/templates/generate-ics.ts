@@ -29,7 +29,9 @@ export function generateIcs(meetup: Meetup): string {
   const description = escapeIcsString(
     `${meetup.shortDescription}\n\nDetalles: https://eventos.wiki/meetups/${meetup.slug}`,
   )
-  const location = meetup.location ? escapeIcsString(meetup.location) : ''
+
+  // Usar el método encapsulado en Meetup
+  const location = meetup.getFullLocation() ? escapeIcsString(meetup.getFullLocation()) : ''
   const url = `https://eventos.wiki/meetups/${meetup.slug}`
 
   const icsContent = [

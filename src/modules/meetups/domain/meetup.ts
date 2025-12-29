@@ -150,6 +150,23 @@ export class Meetup implements MeetupProps {
     return Datetime.toDateString(this.endsAt)
   }
 
+  getFullLocation(): string {
+    // Si tiene place con name y address
+    if (this.place?.value.name && this.place?.value.address) {
+      return `${this.place.value.name} - ${this.place.value.address}`
+    }
+    // Si solo tiene place.name
+    if (this.place?.value.name) {
+      return this.place.value.name
+    }
+    // Si solo tiene place.address
+    if (this.place?.value.address) {
+      return this.place.value.address
+    }
+    // Fallback al location antiguo
+    return this.location || ''
+  }
+
   occursOnSameDay(): boolean {
     return Datetime.toDateIsoString(this.startsAt) === Datetime.toDateIsoString(this.endsAt)
   }

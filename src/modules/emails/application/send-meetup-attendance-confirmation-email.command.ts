@@ -63,7 +63,7 @@ export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param,
       const icsContent = generateIcs(meetup)
 
       // Generar HTML del email
-      const emailHtml = generateAttendMeetupEmailHtml({
+      const emailHtml = await generateAttendMeetupEmailHtml({
         userName: user.name,
         meetup,
         organization,
