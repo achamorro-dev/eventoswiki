@@ -48,10 +48,13 @@ const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
       </DropdownItem>
     </DropdownSection>
 
-    <DropdownSection isLast>
+    <DropdownSection>
       <DropdownItem>
         <Link href={Urls.MY_ORGANIZATIONS} variant="ghost">Mis organizaciones</Link>
       </DropdownItem>
+    </DropdownSection>
+
+    <DropdownSection isLast>
       <DropdownItem>
         <Link href={Urls.CHANGELOG} variant="ghost" target="_blank">Changelog</Link>
       </DropdownItem>
