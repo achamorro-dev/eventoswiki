@@ -1,10 +1,7 @@
-import { MeetupId } from '@/meetups/domain/meetup-id'
-import type { MeetupsRepository } from '@/meetups/domain/meetups.repository'
-import { OrganizationId } from '@/organizations/domain/organization-id'
-import type { OrganizationsRepository } from '@/organizations/domain/organizations.repository'
+import type { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
+import type { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
+import type { GetUserQuery } from '@/users/application/get-user.query'
 import { Command } from '@/shared/application/use-case/command'
-import { UserId } from '@/users/domain/user-id'
-import type { UsersRepository } from '@/users/domain/users.repository'
 import type { EmailsRepository } from '../domain/emails.repository'
 import { generateAttendMeetupEmailHtml } from '../infrastructure/templates/generate-attend-meetup-email'
 import { generateIcs } from '../infrastructure/templates/generate-ics'
@@ -18,9 +15,9 @@ interface Param {
 export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param, void> {
   constructor(
     private readonly emailsRepository: EmailsRepository,
-    private readonly meetupsRepository: MeetupsRepository,
-    private readonly usersRepository: UsersRepository,
-    private readonly organizationsRepository: OrganizationsRepository,
+    private readonly findMeetupQuery: FindMeetupQuery,
+    private readonly getUserQuery: GetUserQuery,
+    private readonly getOrganizationByIdQuery: GetOrganizationByIdQuery,
   ) {
     super()
   }
@@ -36,24 +33,24 @@ export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param,
       }
 
       // Obtener datos del meetup
-      const meetup = await this.meetupsRepository.find(MeetupId.of(meetupId))
+      const meetup = await this.findMeetupQuery.execute({ id: meetupId })
       if (!meetup) {
         console.error(`[SendMeetupAttendanceConfirmationEmailCommand] Meetup not found: ${meetupId}`)
         return
       }
 
       // Obtener datos del usuario
-      const user = await this.usersRepository.find(UserId.of(userId))
+      const user = await this.getUserQuery.execute({ id: userId })
       if (!user) {
         console.error(`[SendMeetupAttendanceConfirmationEmailCommand] User not found: ${userId}`)
         return
       }
 
       // Obtener datos de la organización si existe
-      let organization: Awaited<ReturnType<typeof this.organizationsRepository.find>> | undefined
+      let organization: Awaited<ReturnType<typeof this.getOrganizationByIdQuery.execute>> | undefined
       if (meetup.organizationId) {
         try {
-          organization = await this.organizationsRepository.find(new OrganizationId(meetup.organizationId))
+          organization = await this.getOrganizationByIdQuery.execute({ id: meetup.organizationId })
         } catch {
           // Si no se encuentra la organización, continuamos sin ella
           console.warn(
