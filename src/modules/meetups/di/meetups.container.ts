@@ -54,7 +54,6 @@ builder
   .use(DeleteMeetupCommand)
   .withDependencies([AstroDbMeetupsRepository, UserIsOrganizerEnsurer])
 
-// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder
   .register(AttendMeetupCommand)
   .use(AttendMeetupCommand)

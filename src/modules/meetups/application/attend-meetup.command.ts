@@ -1,6 +1,6 @@
-import { Command } from '@/shared/application/use-case/command'
 import type { SendEmailCommand } from '@/emails/application/send-email.command'
 import { EmailTemplateType } from '@/emails/domain/enums/email-template-type'
+import { Command } from '@/shared/application/use-case/command'
 import { MeetupNotFound } from '../domain/errors/meetup-not-found'
 import { MeetupAttendeeId } from '../domain/meetup-attendee-id'
 import { MeetupId } from '../domain/meetup-id'

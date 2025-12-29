@@ -1,8 +1,7 @@
+import { Resend } from 'resend'
 import type { EmailTemplate } from '../../domain/email-template'
 import type { EmailsRepository } from '../../domain/emails.repository'
-import { Resend } from 'resend'
 
-// biome-ignore lint/correctness/noConstantCondition: This is set by Astro at build time
 const RESEND_API_KEY = import.meta.env.RESEND_API_KEY as string
 
 const SENDER_EMAIL = 'noreply@eventos.wiki'

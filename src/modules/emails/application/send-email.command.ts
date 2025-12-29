@@ -1,14 +1,14 @@
-import { Command } from '@/shared/application/use-case/command'
 import { MeetupId } from '@/meetups/domain/meetup-id'
 import type { MeetupsRepository } from '@/meetups/domain/meetups.repository'
 import { OrganizationId } from '@/organizations/domain/organization-id'
 import type { OrganizationsRepository } from '@/organizations/domain/organizations.repository'
+import { Command } from '@/shared/application/use-case/command'
 import { UserId } from '@/users/domain/user-id'
 import type { UsersRepository } from '@/users/domain/users.repository'
 import type { EmailsRepository } from '../domain/emails.repository'
 import { EmailTemplateType } from '../domain/enums/email-template-type'
-import { generateIcs } from '../infrastructure/templates/generate-ics'
 import { generateAttendMeetupEmailHtml } from '../infrastructure/templates/generate-attend-meetup-email'
+import { generateIcs } from '../infrastructure/templates/generate-ics'
 
 interface Param {
   templateType: EmailTemplateType
