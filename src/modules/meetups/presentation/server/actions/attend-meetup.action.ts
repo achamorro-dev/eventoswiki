@@ -5,6 +5,8 @@ import { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
 import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
 
 export const attendMeetupAction = defineAction({
   accept: 'json',
@@ -27,9 +29,14 @@ export const attendMeetupAction = defineAction({
         throw new BadRequest(reason || 'No puedes asistir a este meetup')
       }
 
+      // Obtener el email del usuario
+      const userFromDb = await UsersContainer.get(GetUserQuery).execute({ id: user.id })
+      const userEmail = userFromDb?.email || ''
+
       await MeetupsContainer.get(AttendMeetupCommand).execute({
         meetupId,
         userId: user.id,
+        userEmail,
       })
 
       return null
