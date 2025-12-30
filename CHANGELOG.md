@@ -1,0 +1,32 @@
+# Registro de Cambios
+
+## 30 de Diciembre de 2025
+
+### Asistencia a meetups
+
+- Si eres organizador, podrás configurar tus meetups para registrar los asistentes, limitar el aforo, la fecha de registro y exportar los asistentes.
+- Se envían emails de confirmación de asistencia con calendario (.ics) incluido para importar directamente
+- En los detalles del meetup podrás ver el número de asistentes al evento
+- Los emails tienen mejor aspecto con los colores de la marca
+
+### Entradas y precios de eventos
+
+- Ahora podrás configurar los diferentes tipos de entrada y sus precios
+- Podrás ver el precio de partida de un evento desde el listado si están configurados
+
+### Localización de eventos y meetups
+
+- Añadida integración con Google Maps para indicar el lugar exacto de los eventos
+
+### Calendario
+
+- En móvil ahora podrás tocar una fecha de la agenda y automáticamente serás desplazado a ella
+
+### Autenticación y Navegación
+
+- Cuando inicias sesión, vuelves a la página original en la que te encontrabas.
+
+### Otros
+
+- Añadido link al changelog del proyecto público
+- Correcciones menores de estilo y errores
