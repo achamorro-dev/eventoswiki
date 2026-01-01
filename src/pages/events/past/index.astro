@@ -1,5 +1,6 @@
 ---
 import PastEventsGrid from '@/events/presentation/server/components/past-events/past-events-grid.astro'
+import AuthOverlay from '@/shared/presentation/ui/components/auth-overlay/auth-overlay.astro'
 import Layout from '@/layouts/layout.astro'
 import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
 import EventsGridSkeleton from '@/ui/components/events-grid/events-grid-skeleton.astro'
@@ -10,6 +11,10 @@ import { Urls } from '@/ui/urls/urls'
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
 const province = searchParams.get('province') || undefined
+
+// Authentication check for pagination
+const isAuthenticated = Astro.locals.user !== null
+const needsAuthOverlay = !isAuthenticated && page > 1
 ---
 
 <Layout title="eventos.wiki - Eventos pasados">
@@ -19,7 +24,16 @@ const province = searchParams.get('province') || undefined
     </SearchFiltersBar>
   </EventsHeader>
 
-  <PastEventsGrid location={province} page={page} server:defer>
-    <EventsGridSkeleton slot="fallback" />
-  </PastEventsGrid>
+  {
+    needsAuthOverlay ? (
+      <AuthOverlay 
+        redirectUrl={Astro.url.pathname + Astro.url.search}
+        message="¡Sigue explorando todos los eventos!"
+      />
+    ) : (
+      <PastEventsGrid location={province} page={page} server:defer>
+        <EventsGridSkeleton slot="fallback" />
+      </PastEventsGrid>
+    )
+  }
 </Layout>

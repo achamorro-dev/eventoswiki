@@ -152,6 +152,12 @@ export class Datetime {
     return dayjs(dateA).isSame(dateB, 'day')
   }
 
+  static isSameMonth(dateA?: ValidDate, dateB?: ValidDate): boolean {
+    if (!dateA || !dateB) return false
+
+    return dayjs(dateA).isSame(dateB, 'month')
+  }
+
   static getFirstMondayOfMonthWeek(date: Date): Date {
     return dayjs(date).locale('es').startOf('month').startOf('week').toDate()
   }

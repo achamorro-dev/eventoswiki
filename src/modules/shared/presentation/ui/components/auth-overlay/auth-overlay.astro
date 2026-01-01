@@ -1,0 +1,95 @@
+---
+import Caption from '../caption/caption.astro'
+import { Link } from '@/ui/components/link'
+import GitHub from '@/ui/social-icons/github.astro'
+import Google from '@/ui/social-icons/google.astro'
+import X from '@/ui/social-icons/x.astro'
+import { Urls } from '@/ui/urls/urls'
+import SectionSubtitle from '../section-title/section-subtitle.astro'
+
+interface Props {
+  redirectUrl?: string
+  message?: string
+}
+
+const { redirectUrl, message = '¡Descubre todo el contenido! Inicia sesión para ver más páginas de eventos y meetups' } = Astro.props
+
+const getNextParam = () => (redirectUrl ? `?_next=${encodeURIComponent(redirectUrl)}` : '')
+---
+
+<div class="auth-overlay">
+  <div class="auth-overlay-content">
+    <article class="login">
+      <section class="login-access">
+        <img src="/icon.png" alt="Logo" width="180" height="180" class="icon" />
+        <SectionSubtitle class:list={'text-center'}>{message}</SectionSubtitle>
+        <nav class="social-links">
+          <Link
+            href={`${Urls.LOGIN_GOOGLE}${getNextParam()}`}
+            variant="outline"
+            className="social-link"
+            data-astro-prefetch="false"><Google classes="social-link-icon" /> Continuar con Google</Link
+          >
+          <Link
+            href={`${Urls.LOGIN_GITHUB}${getNextParam()}`}
+            variant="outline"
+            className="social-link"
+            data-astro-prefetch="false"><GitHub classes="social-link-icon" /> Continuar con GitHub</Link
+          >
+          <Link
+            href={`${Urls.LOGIN_TWITTER}${getNextParam()}`}
+            variant="outline"
+            className="social-link"
+            data-astro-prefetch="false"><X classes="social-link-icon" /> Continuar con X</Link
+          >
+        </nav>
+        <Caption classes="caption">
+          Al continuar, aceptas las <a href={Urls.TERMS} target="_blank">Condiciones de uso</a> y la <a
+            href={Urls.PRIVACY}
+            target="_blank">Política de privacidad</a
+          > de Eventos.wiki.
+        </Caption>
+      </section>
+    </article>
+  </div>
+</div>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .auth-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm;
+  }
+
+  .auth-overlay-content {
+    @apply w-full max-w-md p-4;
+  }
+
+  .login {
+    @apply bg-card text-card-foreground flex flex-col gap-6 rounded-xl p-6;
+  }
+
+  .login-access {
+    @apply flex flex-col items-center justify-center gap-8;
+  }
+
+  .icon {
+    @apply h-16 w-16;
+  }
+
+  .social-links {
+    @apply flex w-full flex-col items-stretch justify-center gap-4;
+  }
+
+  .social-link {
+    @apply flex flex-1 items-center justify-center gap-2;
+  }
+
+  .social-link-icon {
+    @apply h-6;
+  }
+
+  .caption a {
+    @apply underline;
+  }
+</style>

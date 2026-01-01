@@ -4,6 +4,7 @@ import ProvinceComboboxFilter from '@/provinces/presentation/server/components/p
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import { EventType } from '@/shared/domain/types/event-type'
 import { EventTypeFilter } from '@/ui/components/event-type-filter/event-type-filter'
+import AuthOverlay from '@/shared/presentation/ui/components/auth-overlay/auth-overlay.astro'
 import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Loader } from '@/ui/icons'
@@ -17,6 +18,11 @@ const eventType = (url.searchParams.get('type') as EventType | undefined) || Eve
 const selectedDate = date ? Datetime.toDate(date) : Datetime.now()
 const nextMonth = Datetime.add(selectedDate, 1, 'month')
 const previousMonth = Datetime.subtract(selectedDate, 1, 'month')
+
+// Authentication check for date restrictions
+const isAuthenticated = Astro.locals.user !== null
+const isCurrentMonth = Datetime.isSameMonth(selectedDate, Datetime.now())
+const needsAuthOverlay = !isAuthenticated && !isCurrentMonth
 
 // Create search params for prefetch links
 const createCalendarSearchParams = (targetDate: Date) => {
@@ -46,10 +52,19 @@ const previousMonthParams = createCalendarSearchParams(previousMonth)
     <ProvinceComboboxFilter server:defer value={province} />
   </SearchFiltersBar>
   <article class="mt-4">
-    <CalendarContent server:defer selectedDate={selectedDate} province={province} eventType={eventType}>
-      <div slot="fallback" class="grid h-96 place-content-center">
-        <Loader className="text-primary size-10 animate-spin" />
-      </div>
-    </CalendarContent>
+    {
+      needsAuthOverlay ? (
+        <AuthOverlay 
+          redirectUrl={Astro.url.pathname + Astro.url.search}
+          message="¡Sigue descubriendo todos los eventos del calendario!"
+        />
+      ) : (
+        <CalendarContent server:defer selectedDate={selectedDate} province={province} eventType={eventType}>
+          <div slot="fallback" class="grid h-96 place-content-center">
+            <Loader className="text-primary size-10 animate-spin" />
+          </div>
+        </CalendarContent>
+      )
+    }
   </article>
 </Layout>
