@@ -38,4 +38,6 @@ export const Urls = {
   PRIVACY: '/privacy',
   TERMS: '/terms',
   CHANGELOG: 'https://eventoswiki.userjot.com/updates',
+  FEATURE_REQUEST: 'https://eventoswiki.userjot.com/',
+  BUG_REPORT: 'https://eventoswiki.userjot.com/',
 }
