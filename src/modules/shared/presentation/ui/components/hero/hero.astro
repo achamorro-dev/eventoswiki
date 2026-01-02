@@ -12,9 +12,17 @@ const { data: organizations } = await OrganizationsContainer.get(MatchOrganizati
 })
 
 const organizationData = organizations.map(org => org.toPrimitives())
+
+// Preload organization images
+const preloadLinks = organizationData
+  .filter(org => org.image)
+  .map(org => `<link rel="preload" as="image" href="${org.image}" />`)
+  .join("\n")
 ---
 
-<section class="w-full py-12 px-4 lg:px-8 bg-gradient-to-b from-background to-muted/20">
+<Fragment>
+  <head set:html={preloadLinks} />
+  <section class="w-full py-12 px-4 lg:px-8 bg-gradient-to-b from-background to-muted/20">
   <div class="mx-auto max-w-4xl flex flex-col items-center gap-4 text-center">
     <div class="mb-4">
       <AnimatedAvatarStack organizations={organizationData} client:load />
@@ -36,4 +44,5 @@ const organizationData = organizations.map(org => org.toPrimitives())
       </Link>
     </div>
   </div>
-</section>
+  </section>
+</Fragment>
