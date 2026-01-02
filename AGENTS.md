@@ -61,6 +61,32 @@ Install dependencies with `pnpm install --frozen-lockfile` to stay aligned with 
 
 Prettier enforces two-space indentation, single quotes, trailing commas, and no semicolons; format large sets of changes with `pnpm exec prettier --write .`. Tailwind utility order is normalized by `prettier-plugin-tailwindcss`, so keep class lists descriptive rather than rearranging manually.
 
+#### Clean Code Principles
+
+- **No Line-by-Line Comments**: Write self-documenting code that explains intent through clear naming and structure
+- **Semantic Code**: Use descriptive variable, function, and class names that explain purpose without comments
+- **Single Responsibility**: Each function/class should have one reason to change
+- **Meaningful Names**: Use pronounceable, searchable names that reveal intent
+- **Small Functions**: Keep functions under 20 lines with descriptive names
+- **No Magic Numbers**: Extract constants with meaningful names
+- **Explicit Intent**: Code should read like well-written prose
+
+**Example of Clean Code:**
+```typescript
+// ❌ Avoid this
+const calculate = (a: number, b: number): number => {
+  // Calculate the total price including tax
+  const tax = 0.21 // 21% tax rate
+  return a * b * (1 + tax)
+}
+
+// ✅ Prefer this
+const calculateTotalPriceWithTax = (unitPrice: number, quantity: number): number => {
+  const STANDARD_TAX_RATE = 0.21
+  return unitPrice * quantity * (1 + STANDARD_TAX_RATE)
+}
+```
+
 **File Naming Conventions:**
 
 - **Components**: PascalCase (e.g., `EventEditForm.tsx`)
