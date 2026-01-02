@@ -1,0 +1,39 @@
+---
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { MatchOrganizationsQuery } from '@/organizations/application/match-organizations.query'
+import { Link } from '../link'
+import { AnimatedAvatarStack } from './animated-avatar-stack'
+import { Urls } from '@/ui/urls/urls'
+
+// Get organizations for avatar stack
+const { data: organizations } = await OrganizationsContainer.get(MatchOrganizationsQuery).execute({
+  count: 8,
+  page: 1
+})
+
+const organizationData = organizations.map(org => org.toPrimitives())
+---
+
+<section class="w-full py-12 px-4 lg:px-8 bg-gradient-to-b from-background to-muted/20">
+  <div class="mx-auto max-w-4xl flex flex-col items-center gap-4 text-center">
+    <div class="mb-4">
+      <AnimatedAvatarStack organizations={organizationData} client:load />
+    </div>
+    
+    <h1 class="text-4xl lg:text-7xl font-bold text-black leading-[1] max-w-prose">
+      Descubre todos los eventos tecnológicos en un mismo lugar.
+    </h1>
+    
+    <p class="text-md lg:text-xl text-muted-foreground max-w-prose text-balance">
+      Sigue a tus organizaciones favoritas y mantente al día.
+      <br />
+      Explora todos los eventos y meetups que están ocurriendo en tu ciudad.
+    </p>
+    
+    <div class="mt-4">
+      <Link href={Urls.LOGIN} variant="default">
+        Iniciar sesión
+      </Link>
+    </div>
+  </div>
+</section>

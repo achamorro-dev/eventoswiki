@@ -4,13 +4,18 @@ import PastEventsSlider from '@/events/presentation/server/components/past-event
 import NextMeetupsSlider from '@/meetups/presentation/server/components/next-meetups/next-meetups-slider.astro'
 import PastMeetupsSlider from '@/meetups/presentation/server/components/past-meetups/past-meetups-slider.astro'
 import EventsSliderSkeleton from '@/ui/components/events-slider/events-slider-skeleton.astro'
+import Hero from '@/shared/presentation/ui/components/hero/hero.astro'
 import Layout from '../layouts/layout.astro'
+
+const isAuthenticated = Astro.locals.user !== null
 ---
 
 <Layout
   title="eventos.wiki - Todos los eventos tecnológicos en un mismo lugar"
   classes="flex flex-col w-full gap-8 pb-12 !px-0"
 >
+  {!isAuthenticated && <Hero />}
+  
   <NextEventsSlider server:defer>
     <EventsSliderSkeleton slot="fallback" />
   </NextEventsSlider>
