@@ -4,6 +4,7 @@ import { filesServerActions } from '@/files/presentation/server/actions'
 import { meetupsServerActions } from '@/meetups/presentation/server/actions'
 import { placesServerActions } from '@/modules/places/presentation/server/actions'
 import { organizationServerActions } from '@/organizations/presentation/server/actions'
+import { userSettingsServerActions } from '@/user-settings/presentation/server/actions'
 import { userServerActions } from '@/users/presentation/server/actions'
 
 export const server = {
@@ -14,4 +15,5 @@ export const server = {
   events: eventsServerActions,
   meetups: meetupsServerActions,
   places: placesServerActions,
+  userSettings: userSettingsServerActions,
 }

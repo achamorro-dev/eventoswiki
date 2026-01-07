@@ -1,13 +1,13 @@
 import type { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
 import type { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import { Command } from '@/shared/application/use-case/command'
+import type { GetUserSettingsQuery } from '@/user-settings/application/get-user-settings.query'
 import type { GetUserQuery } from '@/users/application/get-user.query'
 import type { EmailsRepository } from '../domain/emails.repository'
 import { generateAttendMeetupEmailHtml } from '../infrastructure/templates/generate-attend-meetup-email'
 import { generateIcs } from '../infrastructure/templates/generate-ics'
 
 interface Param {
-  recipientEmail: string
   meetupId: string
   userId: string
 }
@@ -18,19 +18,14 @@ export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param,
     private readonly findMeetupQuery: FindMeetupQuery,
     private readonly getUserQuery: GetUserQuery,
     private readonly getOrganizationByIdQuery: GetOrganizationByIdQuery,
+    private readonly getUserSettingsQuery: GetUserSettingsQuery,
   ) {
     super()
   }
 
   async execute(param: Param): Promise<void> {
     try {
-      const { recipientEmail, meetupId, userId } = param
-
-      // Validar email
-      if (!recipientEmail || !recipientEmail.includes('@')) {
-        console.error(`[SendMeetupAttendanceConfirmationEmailCommand] Invalid email: ${recipientEmail}`)
-        return
-      }
+      const { meetupId, userId } = param
 
       // Obtener datos del meetup
       const meetup = await this.findMeetupQuery.execute({ id: meetupId })
@@ -39,10 +34,18 @@ export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param,
         return
       }
 
-      // Obtener datos del usuario
       const user = await this.getUserQuery.execute({ id: userId })
-      if (!user) {
-        console.error(`[SendMeetupAttendanceConfirmationEmailCommand] User not found: ${userId}`)
+      if (!user || !user.email) {
+        console.error(`[SendMeetupAttendanceConfirmationEmailCommand] User or email not found: ${userId}`)
+        return
+      }
+
+      const userSettings = await this.getUserSettingsQuery.execute({ userId })
+      const userHasDisabledEmails = !!userSettings && !userSettings.meetupAttendanceEmailEnabled
+      if (userHasDisabledEmails) {
+        console.info(
+          `[SendMeetupAttendanceConfirmationEmailCommand] User has disabled meetup attendance emails: ${userId}`,
+        )
         return
       }
 
@@ -71,7 +74,7 @@ export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param,
 
       // Enviar email
       await this.emailsRepository.send({
-        recipient: recipientEmail,
+        recipient: user.email,
         subject: `¡Te has registrado en el meetup: ${meetup.title}`,
         html: emailHtml,
         attachments: [

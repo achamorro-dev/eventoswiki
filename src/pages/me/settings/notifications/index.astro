@@ -1,0 +1,74 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { Urls } from '@/ui/urls/urls'
+import { Link } from '@/ui/components/link'
+import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
+import { NotificationSettingsForm } from '@/user-settings/presentation/client/components/notification-settings-form'
+import { GetUserSettingsQuery } from '@/user-settings/application/get-user-settings.query'
+import { userSettingsContainer } from '@/user-settings/di/user-settings.container'
+import { UserSettings } from '@/user-settings/domain/user-settings'
+import { UserSettingsNotFoundError } from '@/user-settings/domain/errors/user-settings-not-found-error'
+
+const userId = Astro.locals.user?.id
+
+if (!userId) {
+  return Astro.redirect(Urls.LOGIN)
+}
+
+const getUserSettingsQuery = userSettingsContainer.get(GetUserSettingsQuery)
+let userSettings = UserSettings.DEFAULT_SETTINGS
+
+try {
+  const settings = await getUserSettingsQuery.execute({ userId })
+  userSettings = {
+    meetupAttendanceEmailEnabled: settings.meetupAttendanceEmailEnabled,
+    organizationUpdatesEmailEnabled: settings.organizationUpdatesEmailEnabled,
+  }
+} catch (error) {
+  if (!(error instanceof UserSettingsNotFoundError)) {
+    throw error
+  }
+}
+---
+
+<Layout title="Ajustes - Notificaciones">
+  <div class="mx-auto max-w-7xl">
+    <SectionTitle>Ajustes</SectionTitle>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] gap-6">
+      <div class="hidden lg:flex flex-col gap-2">
+        <Link href={Urls.SETTINGS_ACCOUNT} variant="ghost" className="justify-start text-muted-foreground">
+          Cuenta
+        </Link>
+        <Link href={Urls.SETTINGS_NOTIFICATIONS} variant="ghost" className="justify-start text-primary">
+          Notificaciones
+        </Link>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="lg:hidden mb-6">
+          <LinkTabs
+            tabs={[
+              { label: 'Cuenta', href: Urls.SETTINGS_ACCOUNT, isActive: false },
+              { label: 'Notificaciones', href: Urls.SETTINGS_NOTIFICATIONS, isActive: true },
+            ]}
+          />
+        </div>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>Preferencias de notificación</CardTitle>
+        <CardDescription>Selecciona qué notificaciones quieres recibir por email</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <NotificationSettingsForm client:only="react" initialValues={userSettings} />
+      </CardContent>
+    </Card>
+      </div>
+
+      <div class="hidden lg:block"></div>
+    </div>
+  </div>
+</Layout>

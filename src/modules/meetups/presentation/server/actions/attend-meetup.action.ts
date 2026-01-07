@@ -29,14 +29,9 @@ export const attendMeetupAction = defineAction({
         throw new BadRequest(reason || 'No puedes asistir a este meetup')
       }
 
-      // Obtener el email del usuario
-      const userFromDb = await UsersContainer.get(GetUserQuery).execute({ id: user.id })
-      const userEmail = userFromDb?.email || ''
-
       await MeetupsContainer.get(AttendMeetupCommand).execute({
         meetupId,
         userId: user.id,
-        userEmail,
       })
 
       return null

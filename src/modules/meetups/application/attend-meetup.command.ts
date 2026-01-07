@@ -8,7 +8,6 @@ import type { MeetupsRepository } from '../domain/meetups.repository'
 interface Param {
   meetupId: string
   userId: string
-  userEmail: string
 }
 
 export class AttendMeetupCommand extends Command<Param, void> {
@@ -20,7 +19,7 @@ export class AttendMeetupCommand extends Command<Param, void> {
   }
 
   async execute(param: Param): Promise<void> {
-    const { meetupId, userId, userEmail } = param
+    const { meetupId, userId } = param
 
     const meetup = await this.meetupsRepository.find(MeetupId.of(meetupId))
     if (!meetup) {
@@ -33,7 +32,6 @@ export class AttendMeetupCommand extends Command<Param, void> {
     // Enviar email de confirmación de asistencia (sin fallar si hay error)
     try {
       await this.sendMeetupAttendanceConfirmationEmailCommand.execute({
-        recipientEmail: userEmail,
         meetupId,
         userId,
       })

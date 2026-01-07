@@ -1,0 +1,50 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
+import { Urls } from '@/ui/urls/urls'
+import { Link } from '@/ui/components/link'
+import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
+import { AccountSettingsPage } from './account-settings-page'
+
+const userId = Astro.locals.user?.id
+
+if (!userId) {
+  return Astro.redirect(Urls.LOGIN)
+}
+
+const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
+---
+
+<Layout title="Ajustes - Cuenta">
+  <div class="mx-auto max-w-7xl">
+    <SectionTitle>Ajustes</SectionTitle>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] gap-6">
+      <div class="hidden lg:flex flex-col gap-2">
+        <Link href={Urls.SETTINGS_ACCOUNT} variant="ghost" className="justify-start text-primary">
+          Cuenta
+        </Link>
+        <Link href={Urls.SETTINGS_NOTIFICATIONS} variant="ghost" className="justify-start text-muted-foreground">
+          Notificaciones
+        </Link>
+      </div>
+
+      <div class="lg:col-span-2">
+        <div class="lg:hidden mb-6">
+          <LinkTabs
+            tabs={[
+              { label: 'Cuenta', href: Urls.SETTINGS_ACCOUNT, isActive: true },
+              { label: 'Notificaciones', href: Urls.SETTINGS_NOTIFICATIONS, isActive: false },
+            ]}
+          />
+        </div>
+
+        <AccountSettingsPage client:idle user={{ ...user.toPrimitives(), id: user.id.value }} />
+      </div>
+
+      <div class="hidden lg:block"></div>
+    </div>
+  </div>
+</Layout>

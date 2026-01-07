@@ -68,6 +68,9 @@ const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
     
     <DropdownSection isLast>
       <DropdownItem>
+        <Link href={Urls.SETTINGS} variant="ghost">Ajustes</Link>
+      </DropdownItem>
+      <DropdownItem>
         <Link href={Urls.LOGOUT} variant="ghost" data-astro-prefetch="false">Cerrar sesión</Link>
       </DropdownItem>
     </DropdownSection>

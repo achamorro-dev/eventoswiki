@@ -171,6 +171,17 @@ export const MeetupAttendee = defineTable({
   },
 })
 
+export const UserSettings = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    meetupAttendanceEmailEnabled: column.boolean({ default: true }),
+    organizationUpdatesEmailEnabled: column.boolean({ default: true }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
 export default defineDb({
   tables: {
     Event,
@@ -183,5 +194,6 @@ export default defineDb({
     Organization,
     OrganizationUser,
     OrganizationFollower,
+    UserSettings,
   },
 })

@@ -15,7 +15,8 @@ const { currentPath } = Astro.props
 const hasActiveSession = Astro.locals.user !== null
 const userId = Astro.locals.user?.id
 
-const getNextParam = () => (currentPath ? `?_next=${encodeURIComponent(currentPath)}` : '')
+const isValidCurrentPath = currentPath && currentPath !== Urls.LOGIN
+const getNextParam = () => (isValidCurrentPath ? `?_next=${encodeURIComponent(currentPath)}` : '')
 ---
 
 <header class="header">
