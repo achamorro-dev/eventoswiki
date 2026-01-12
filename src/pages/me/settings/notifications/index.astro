@@ -7,7 +7,7 @@ import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card'
 import { NotificationSettingsForm } from '@/user-settings/presentation/client/components/notification-settings-form'
 import { GetUserSettingsQuery } from '@/user-settings/application/get-user-settings.query'
-import { userSettingsContainer } from '@/user-settings/di/user-settings.container'
+import { UserSettingsContainer } from '@/user-settings/di/user-settings.container'
 import { UserSettings } from '@/user-settings/domain/user-settings'
 import { UserSettingsNotFoundError } from '@/user-settings/domain/errors/user-settings-not-found-error'
 
@@ -17,7 +17,7 @@ if (!userId) {
   return Astro.redirect(Urls.LOGIN)
 }
 
-const getUserSettingsQuery = userSettingsContainer.get(GetUserSettingsQuery)
+const getUserSettingsQuery = UserSettingsContainer.get(GetUserSettingsQuery)
 let userSettings = UserSettings.DEFAULT_SETTINGS
 
 try {

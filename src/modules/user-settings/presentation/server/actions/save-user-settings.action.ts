@@ -1,7 +1,7 @@
 import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
 import { UpdateUserSettingsCommand } from '@/user-settings/application/update-user-settings.command'
-import { userSettingsContainer } from '@/user-settings/di/user-settings.container'
+import { UserSettingsContainer } from '@/user-settings/di/user-settings.container'
 
 export const saveUserSettingsAction = defineAction({
   accept: 'json',
@@ -21,7 +21,7 @@ export const saveUserSettingsAction = defineAction({
         })
       }
 
-      await userSettingsContainer.get(UpdateUserSettingsCommand).execute({
+      await UserSettingsContainer.get(UpdateUserSettingsCommand).execute({
         userId,
         meetupAttendanceEmailEnabled,
         organizationUpdatesEmailEnabled,

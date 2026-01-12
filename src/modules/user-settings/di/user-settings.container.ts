@@ -20,4 +20,4 @@ builder
   .use(UpdateUserSettingsCommand)
   .withDependencies([AstroDbUserSettingsRepository])
 
-export const userSettingsContainer = builder.build({ autowire: false })
+export const UserSettingsContainer = builder.build({ autowire: false })
