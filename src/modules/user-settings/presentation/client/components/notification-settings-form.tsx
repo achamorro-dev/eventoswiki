@@ -70,7 +70,7 @@ export const NotificationSettingsForm: FC<Props> = ({ initialValues }) => {
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground text-sm">
                   <Mail size={14} />
-                  Recibir notificaciones de nuevos eventos de tus organizaciones favoritas
+                  Recibir notificaciones de nuevos eventos y meetups de tus organizaciones favoritas
                 </div>
               </div>
               <FormControl>

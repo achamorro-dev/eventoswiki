@@ -1,3 +1,4 @@
+import type { SendOrganizationEventCreatedEmailToFollowersCommand } from '@/emails/application/send-organization-event-created-email-to-followers.command'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { Command } from '@/shared/application/use-case/command'
 import { Event, type EventEditableData } from '../domain/event'
@@ -12,6 +13,7 @@ export class CreateEventCommand extends Command<Param, void> {
   constructor(
     private readonly eventsRepository: EventsRepository,
     private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
+    private readonly sendOrganizationEventCreatedEmailToFollowersCommand: SendOrganizationEventCreatedEmailToFollowersCommand,
   ) {
     super()
   }
@@ -24,5 +26,14 @@ export class CreateEventCommand extends Command<Param, void> {
     const event = Event.create(data, organizationId)
 
     await this.eventsRepository.save(event)
+
+    this.sendOrganizationEventCreatedEmailToFollowersCommand
+      .execute({
+        eventId: event.id.value,
+        organizationId,
+      })
+      .catch(error => {
+        console.error('[CreateEventCommand] Error sending email notification:', error)
+      })
   }
 }

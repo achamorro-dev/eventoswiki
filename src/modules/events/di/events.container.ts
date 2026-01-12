@@ -1,4 +1,6 @@
 import { ContainerBuilder } from 'diod'
+import { SendOrganizationEventCreatedEmailToFollowersCommand } from '@/emails/application/send-organization-event-created-email-to-followers.command'
+import { EmailsContainer } from '@/emails/di/emails.container'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { CreateEventCommand } from '../application/create-event.command'
@@ -34,10 +36,19 @@ builder.register(FindEventsQuery).use(FindEventsQuery).withDependencies([AstroDb
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.get(UserIsOrganizerEnsurer))
 
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder
+  .register(SendOrganizationEventCreatedEmailToFollowersCommand)
+  .useFactory(_ => EmailsContainer.get(SendOrganizationEventCreatedEmailToFollowersCommand))
+
 builder
   .register(CreateEventCommand)
   .use(CreateEventCommand)
-  .withDependencies([AstroDbEventsRepository, UserIsOrganizerEnsurer])
+  .withDependencies([
+    AstroDbEventsRepository,
+    UserIsOrganizerEnsurer,
+    SendOrganizationEventCreatedEmailToFollowersCommand,
+  ])
 
 builder
   .register(UpdateEventCommand)
