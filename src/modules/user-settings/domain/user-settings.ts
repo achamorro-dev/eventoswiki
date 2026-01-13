@@ -37,6 +37,14 @@ export class UserSettings implements UserSettingsProps {
     })
   }
 
+  static default(userId: string): UserSettings {
+    return new UserSettings({
+      id: UserSettingsId.of(userId),
+      userId,
+      ...UserSettings.DEFAULT_SETTINGS,
+    })
+  }
+
   toPrimitives(): Primitives<UserSettings> {
     return {
       id: this.id.value,

@@ -2,6 +2,7 @@ import { db, eq, UserSettings as UserSettingsTable } from 'astro:db'
 import { UserSettings } from '@/user-settings/domain/user-settings'
 import type { UserSettingsRepository } from '@/user-settings/domain/user-settings.repository'
 import { UserSettingsId } from '@/user-settings/domain/user-settings-id'
+import { UserSettingsNotFoundError } from '../domain/errors/user-settings-not-found-error'
 
 export class AstroDbUserSettingsRepository implements UserSettingsRepository {
   async save(settings: UserSettings): Promise<void> {
@@ -40,7 +41,7 @@ export class AstroDbUserSettingsRepository implements UserSettingsRepository {
     const result = await db.select().from(UserSettingsTable).where(eq(UserSettingsTable.id, id.value)).get()
 
     if (!result) {
-      throw new Error(`UserSettings not found with id: ${id.value}`)
+      throw new UserSettingsNotFoundError(id.value)
     }
 
     return UserSettings.fromPrimitives({

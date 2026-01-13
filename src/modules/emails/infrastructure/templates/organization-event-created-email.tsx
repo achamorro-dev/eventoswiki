@@ -169,7 +169,7 @@ export function OrganizationEventCreatedEmail({
               <Img
                 src={'https://eventos.wiki/logo.png'}
                 alt={'EventosWiki'}
-                style={{ maxWidth: '100%', height: 'auto' }}
+                style={{ maxWidth: '250px', height: 'auto', margin: '0 auto' }}
               />
             </Section>
             <Text className="m-2 mx-auto text-gray-600 text-xs">
