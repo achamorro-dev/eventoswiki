@@ -63,7 +63,7 @@ export class SendOrganizationMeetupCreatedEmailCommand extends Command<Param, vo
       }
 
       const userSettings = await this.getUserSettingsQuery.execute({ userId: followerId })
-      const userHasDisabledOrganizationUpdatesEmails = !!userSettings && !userSettings.organizationUpdatesEmailEnabled
+      const userHasDisabledOrganizationUpdatesEmails = !userSettings.organizationUpdatesEmailEnabled
       if (userHasDisabledOrganizationUpdatesEmails) {
         console.info(
           `[SendOrganizationMeetupCreatedEmailCommand] User has disabled organization updates emails: ${followerId}`,

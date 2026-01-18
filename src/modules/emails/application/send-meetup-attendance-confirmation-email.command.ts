@@ -41,7 +41,7 @@ export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param,
       }
 
       const userSettings = await this.getUserSettingsQuery.execute({ userId })
-      const userHasDisabledEmails = !!userSettings && !userSettings.meetupAttendanceEmailEnabled
+      const userHasDisabledEmails = !userSettings.meetupAttendanceEmailEnabled
       if (userHasDisabledEmails) {
         console.info(
           `[SendMeetupAttendanceConfirmationEmailCommand] User has disabled meetup attendance emails: ${userId}`,
