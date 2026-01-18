@@ -1,0 +1,92 @@
+---
+import type { User } from '@/users/domain/user'
+import { UsersContainer } from '@/users/di/users.container'
+import { FindUsersByIdsQuery } from '@/users/application/find-users-by-ids.query'
+import type { Organization } from '@/organizations/domain/organization'
+import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
+import { Users } from '@/ui/icons'
+import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
+import { Link } from '@/ui/components/link'
+
+interface Props {
+  organization: Organization
+  isOrganizer: boolean
+}
+
+const { organization, isOrganizer } = Astro.props as Props
+
+let organizers: User[] = []
+
+if (organization.organizers.length > 0) {
+  const paginatedOrganizers = await UsersContainer.get(FindUsersByIdsQuery).execute({
+    userIds: organization.organizers,
+    limit: 100,
+  })
+  organizers = paginatedOrganizers.data
+}
+
+const hasOrganizers = organizers.length > 0
+---
+
+<section class="organizers">
+  {hasOrganizers ? (
+    <div class="organizers-grid">
+      {
+        organizers.map(organizer => (
+          <article class="organizer-card">
+            <div class="organizer-header">
+              <UserAvatar
+                userName={organizer.name}
+                image={organizer.avatar}
+                size="lg"
+                classes="organizer-avatar"
+              />
+            </div>
+            <div class="organizer-info">
+              <h3 class="organizer-name">{organizer.name}</h3>
+              <span class="organizer-username">@{organizer.username}</span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  ) : (
+    <EmptyMessage
+      icon={Users}
+      title="No hay organizadores"
+      description="Aún no se han añadido organizadores a esta comunidad."
+    />
+  )}
+</section>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .organizers {
+    @apply py-4;
+  }
+
+  .organizers-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .organizer-card {
+    @apply flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent;
+  }
+
+  .organizer-header {
+    @apply flex-shrink-0;
+  }
+
+  .organizer-info {
+    @apply flex min-w-0 flex-1 flex-col gap-1 overflow-hidden;
+  }
+
+  .organizer-name {
+    @apply truncate text-base font-semibold text-foreground;
+  }
+
+  .organizer-username {
+    @apply truncate text-sm text-muted-foreground;
+  }
+</style>

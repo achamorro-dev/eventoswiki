@@ -21,4 +21,15 @@ export class UsersCriteria extends Criteria<Partial<UsersFilters>, Partial<Users
     this.and({ username: { operator: RelationalOperator.EQUALS, value: username } })
     return this
   }
+
+  withIds(userIds?: string[]): UsersCriteria {
+    if (!userIds || userIds.length === 0) return this
+
+    const idFilters = userIds.map(id => ({
+      id: { operator: RelationalOperator.EQUALS, value: id },
+    }))
+    // @ts-expect-error - Spread of filters
+    this.or(...idFilters)
+    return this
+  }
 }

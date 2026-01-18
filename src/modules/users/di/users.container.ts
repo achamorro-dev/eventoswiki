@@ -1,4 +1,5 @@
 import { ContainerBuilder } from 'diod'
+import { FindUsersByIdsQuery } from '../application/find-users-by-ids.query'
 import { GetUserQuery } from '../application/get-user.query'
 import { GetUserByUsernameQuery } from '../application/get-user-by-username.query'
 import { SaveUserCommand } from '../application/save-user.command'
@@ -11,6 +12,8 @@ builder.register(AstroDbUsersRepository).use(AstroDbUsersRepository)
 builder.register(GetUserQuery).use(GetUserQuery).withDependencies([AstroDbUsersRepository])
 
 builder.register(GetUserByUsernameQuery).use(GetUserByUsernameQuery).withDependencies([AstroDbUsersRepository])
+
+builder.register(FindUsersByIdsQuery).use(FindUsersByIdsQuery).withDependencies([AstroDbUsersRepository])
 
 builder
   .register(SaveUserCommand)

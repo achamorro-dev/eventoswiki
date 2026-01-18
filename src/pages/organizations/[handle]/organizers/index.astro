@@ -1,0 +1,56 @@
+---
+import BaseLayout from '@/layouts/base-layout.astro'
+import Layout from '@/layouts/layout.astro'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetOrganizationQuery } from '@/organizations/application/get-organization.query'
+import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
+import type { Organization } from '@/organizations/domain/organization'
+import OrganizationPageSkeleton from '@/organizations/presentation/client/pages/organization-page/organization-page-skeleton.astro'
+import OrganizationPage from '@/organizations/presentation/client/pages/organization-page/organization-page.astro'
+import NotFound from '@/ui/components/not-found/not-found.astro'
+
+const handle = Astro.params.handle
+
+if (!handle) {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Not found'
+  return
+}
+
+const userId = Astro.locals.user?.id
+
+let organization: Organization | undefined
+try {
+  organization = await OrganizationsContainer.get(GetOrganizationQuery).execute({ handle })
+} catch (error) {
+  switch (true) {
+    case error instanceof OrganizationNotFound:
+      Astro.response.status = 404
+      Astro.response.statusText = 'Not found'
+      break
+    default:
+      Astro.response.status = 500
+      Astro.response.statusText = 'Internal server error'
+      break
+  }
+}
+---
+
+{
+  organization ? (
+    <Layout
+      title={organization.name}
+      description={organization.bio}
+      image={organization.image?.toString()}
+      url={`https://eventos.wiki/organizations/${handle}/organizers`}
+    >
+      <OrganizationPage organization={organization} userId={userId} activeTab="organizers">
+        <OrganizationPageSkeleton slot="fallback" />
+      </OrganizationPage>
+    </Layout>
+  ) : (
+    <BaseLayout title="Organización no encontrada">
+      <NotFound title="Organización no encontrada" />
+    </BaseLayout>
+  )
+}

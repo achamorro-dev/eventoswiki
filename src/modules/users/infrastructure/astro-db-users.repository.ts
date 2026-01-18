@@ -149,7 +149,7 @@ export class AstroDbUsersRepository implements UsersRepository {
               // @ts-expect-error - Known issue with indexing
               return like(UserTable[key], userFilter.value)
             case RelationalOperator.NOT_EQUALS:
-              // @ts-expect-error - Known issue with indexing
+              // @ts-expect-error
               return ne(UserTable[key], userFilter.value)
           }
         })

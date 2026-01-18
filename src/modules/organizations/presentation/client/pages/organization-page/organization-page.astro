@@ -10,11 +10,13 @@ import { OrganizationAvatar } from '../../components/organization-avatar/organiz
 import OrganizationEvents from '../../components/organization-events/organization-events.astro'
 import { OrganizationFollowButton } from '../../components/organization-follow-button/organization-follow-button'
 import OrganizationMeetups from '../../components/organization-meetups/organization-meetups.astro'
+import OrganizationOrganizers from '../../components/organization-organizers/organization-organizers.astro'
+import OrganizationOrganizersSkeleton from '../../components/organization-organizers/organization-organizers-skeleton.astro'
 
 interface Props {
   organization: Organization
   userId?: string
-  activeTab: 'events' | 'meetups'
+  activeTab: 'events' | 'meetups' | 'organizers'
 }
 
 const { organization, userId, activeTab } = Astro.props as Props
@@ -67,6 +69,7 @@ const isFollowing = userId ? organization.isFollower(userId) : false
       tabs={[
         { label: 'Eventos', href: Urls.ORGANIZATION_EVENTS(organization.handle), isActive: activeTab === 'events' },
         { label: 'Meetups', href: Urls.ORGANIZATION_MEETUPS(organization.handle), isActive: activeTab === 'meetups' },
+        { label: 'Organizadores', href: Urls.ORGANIZATION_ORGANIZERS(organization.handle), isActive: activeTab === 'organizers' },
       ]}
     />
     {
@@ -81,6 +84,13 @@ const isFollowing = userId ? organization.isFollower(userId) : false
         <OrganizationMeetups organization={organization} isOrganizer={isOrganizer} server:defer>
           <EventsGridSkeleton slot="fallback" />
         </OrganizationMeetups>
+      )
+    }
+    {
+      activeTab === 'organizers' && (
+        <OrganizationOrganizers organization={organization} isOrganizer={isOrganizer} server:defer>
+          <OrganizationOrganizersSkeleton slot="fallback" />
+        </OrganizationOrganizers>
       )
     }
   </section>
