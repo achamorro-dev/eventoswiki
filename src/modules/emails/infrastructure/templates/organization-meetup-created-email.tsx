@@ -165,6 +165,16 @@ export function OrganizationMeetupCreatedEmail({
               Este es un correo automático, por favor no responda a este mensaje.
             </Text>
             <Text className="m-2 mx-auto text-gray-600 text-xs">
+              Puedes modificar tus ajustes de notificaciones en{' '}
+              <Link
+                href="https://eventos.wiki/me/settings/notifications"
+                className="font-medium text-blue-600 no-underline hover:underline"
+              >
+                configuración de notificaciones
+              </Link>
+              .
+            </Text>
+            <Text className="m-2 mx-auto text-gray-600 text-xs">
               © 2024 EventosWiki. Todos los derechos reservados.
             </Text>
           </Section>
