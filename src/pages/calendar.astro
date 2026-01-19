@@ -48,9 +48,10 @@ const previousMonthParams = createCalendarSearchParams(previousMonth)
   <SectionTitle>Calendario</SectionTitle>
   <SearchFiltersBar>
     <EventTypeFilter client:only value={eventType} />
-    <div class="grow gap-2"></div>
-    <ProvinceComboboxFilter server:defer value={province} />
   </SearchFiltersBar>
+  <div class="flex justify-start gap-2 mb-4">
+    <ProvinceComboboxFilter server:defer value={province} />
+  </div>
   <article class="mt-4">
     {
       needsAuthOverlay ? (
