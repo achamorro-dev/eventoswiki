@@ -67,7 +67,4 @@ jobs:
 
       - name: Trigger Dokploy deployment
         run: |
-          curl -X POST "${{ secrets.DOKPLOY_URL }}/api/application.deploy" \
-            -H "Content-Type: application/json" \
-            -H "x-api-key: ${{ secrets.DOKPLOY_API_KEY }}" \
-            -d '{"applicationId": "${{ secrets.DOKPLOY_APP_ID }}"}'
+          curl -X GET "${{ secrets.DOKPLOY_URL }}"
