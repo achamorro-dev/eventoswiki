@@ -1,0 +1,58 @@
+[
+  {
+    "id": "org-t3chfest",
+    "handle": "t3chfest",
+    "name": "T3chFest",
+    "bio": "Festival de tecnología gratuito organizado por voluntarios de la UC3M y la comunidad tecnológica.",
+    "image": "https://ui-avatars.com/api/?name=T3chFest&background=7b5bc6&color=fff&size=256",
+    "location": "madrid",
+    "web": "https://t3chfest.es",
+    "twitter": "https://twitter.com/t3chfest",
+    "youtube": "https://youtube.com/user/t3chFest",
+    "github": "https://github.com/t3chfest"
+  },
+  {
+    "id": "org-software-crafters-madrid",
+    "handle": "software-crafters-madrid",
+    "name": "Software Crafters Madrid",
+    "bio": "Comunidad dedicada a promover las prácticas de desarrollo software profesional en Madrid.",
+    "image": "https://ui-avatars.com/api/?name=SC+Madrid&background=95d46c&color=fff&size=256",
+    "location": "madrid",
+    "web": "https://softwarecrafters.madrid",
+    "twitter": "https://twitter.com/CraftersMadrid",
+    "github": "https://github.com/software-crafters-madrid"
+  },
+  {
+    "id": "org-commit-conf",
+    "handle": "commit-conf",
+    "name": "Commit Conf",
+    "bio": "La conferencia de desarrollo software más grande de España, organizada por la comunidad para la comunidad.",
+    "image": "https://ui-avatars.com/api/?name=Commit+Conf&background=dc2626&color=fff&size=256",
+    "location": "madrid",
+    "web": "https://commit-conf.com",
+    "twitter": "https://twitter.com/commitconf",
+    "youtube": "https://youtube.com/commitconf"
+  },
+  {
+    "id": "org-jsconf-espana",
+    "handle": "jsconf-espana",
+    "name": "JSConf España",
+    "bio": "La conferencia oficial de la comunidad JavaScript en España.",
+    "image": "https://ui-avatars.com/api/?name=JSConf+ES&background=f59e0b&color=fff&size=256",
+    "location": "valencia",
+    "web": "https://jsconf.es",
+    "twitter": "https://twitter.com/jsconfes",
+    "github": "https://github.com/jsconf-espana"
+  },
+  {
+    "id": "org-netcoreconf",
+    "handle": "netcoreconf",
+    "name": "NetCoreConf",
+    "bio": "Conferencias sobre .NET y tecnologías Microsoft organizadas por la comunidad.",
+    "image": "https://ui-avatars.com/api/?name=NetCore+Conf&background=512bd4&color=fff&size=256",
+    "location": "barcelona",
+    "web": "https://netcoreconf.com",
+    "twitter": "https://twitter.com/netcoreconf",
+    "github": "https://github.com/netcoreconf"
+  }
+]

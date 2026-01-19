@@ -1,0 +1,42 @@
+[
+  {
+    "organizationId": "org-t3chfest",
+    "userId": "usr-1"
+  },
+  {
+    "organizationId": "org-t3chfest",
+    "userId": "usr-2"
+  },
+  {
+    "organizationId": "org-software-crafters-madrid",
+    "userId": "usr-3"
+  },
+  {
+    "organizationId": "org-commit-conf",
+    "userId": "usr-4"
+  },
+  {
+    "organizationId": "org-jsconf-espana",
+    "userId": "usr-5"
+  },
+  {
+    "organizationId": "org-netcoreconf",
+    "userId": "usr-1"
+  },
+  {
+    "organizationId": "org-t3chfest",
+    "userId": "usr-6"
+  },
+  {
+    "organizationId": "org-software-crafters-madrid",
+    "userId": "usr-7"
+  },
+  {
+    "organizationId": "org-commit-conf",
+    "userId": "usr-6"
+  },
+  {
+    "organizationId": "org-jsconf-espana",
+    "userId": "usr-7"
+  }
+]

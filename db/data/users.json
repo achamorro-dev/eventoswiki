@@ -1,0 +1,51 @@
+[
+  {
+    "id": "usr-1",
+    "username": "javierlopez",
+    "name": "Javier López",
+    "email": "javier@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=Javier+Lopez&background=7b5bc6&color=fff"
+  },
+  {
+    "id": "usr-2",
+    "username": "mariagarcia",
+    "name": "María García",
+    "email": "maria@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=Maria+Garcia&background=2563eb&color=fff"
+  },
+  {
+    "id": "usr-3",
+    "username": "carlosmartinez",
+    "name": "Carlos Martínez",
+    "email": "carlos@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=Carlos+Martinez&background=059669&color=fff"
+  },
+  {
+    "id": "usr-4",
+    "username": "anaruiz",
+    "name": "Ana Ruiz",
+    "email": "ana@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=Ana+Ruiz&background=dc2626&color=fff"
+  },
+  {
+    "id": "usr-5",
+    "username": "pablohernandez",
+    "name": "Pablo Hernández",
+    "email": "pablo@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=Pablo+Hernandez&background=f59e0b&color=fff"
+  },
+  {
+    "id": "usr-6",
+    "username": "laurafernandez",
+    "name": "Laura Fernández",
+    "email": "laura@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=Laura+Fernandez&background=ec4899&color=fff"
+  },
+  {
+    "id": "usr-7",
+    "username": "davidgomez",
+    "name": "David Gómez",
+    "email": "david@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=David+Gomez&background=0891b2&color=fff"
+  }
+]
