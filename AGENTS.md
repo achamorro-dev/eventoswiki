@@ -344,11 +344,14 @@ import { EventId } from '@/events/domain/event-id'
 - `BASE_URL`: Public base URL
 - `ASTRO_DB_REMOTE_URL`: Database connection
 - `ASTRO_DB_APP_TOKEN`: Database token
-- `GITHUB_CLIENT_ID/SECRET`: GitHub OAuth
+- `OAUTH_GITHUB_CLIENT_ID/SECRET`: GitHub OAuth
 - `GOOGLE_CLIENT_ID/SECRET`: Google OAuth
 - `TWITTER_CLIENT_ID/SECRET`: Twitter OAuth
 - `PINATA_JWT`: IPFS storage
 - `PINATA_GATEWAY_URL`: IPFS gateway
+- `GOOGLE_MAPS_PLACES_API_KEY`
+- `PUBLIC_GOOGLE_MAPS_EMBED_API_KEY`
+- `RESEND_API_KEY`
 
 ## Build & Deployment
 

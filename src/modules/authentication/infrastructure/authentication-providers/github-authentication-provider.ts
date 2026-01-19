@@ -1,4 +1,4 @@
-import { BASE_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from 'astro:env/server'
+import { BASE_URL, OAUTH_GITHUB_CLIENT_ID, OAUTH_GITHUB_CLIENT_SECRET } from 'astro:env/server'
 import { GitHub, generateState } from 'arctic'
 import type { AuthenticationProvider } from '@/authentication/domain/authentication-provider'
 import type { OAuth2Tokens } from '@/authentication/domain/oauth2-tokens'
@@ -13,7 +13,7 @@ export class GitHubAuthenticationProvider implements AuthenticationProvider {
 
   constructor(private readonly cookiesManager: CookiesManager) {
     const redirectUri = `${BASE_URL}/login/github/callback`
-    this.github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, redirectUri)
+    this.github = new GitHub(OAUTH_GITHUB_CLIENT_ID, OAUTH_GITHUB_CLIENT_SECRET, redirectUri)
   }
 
   async getRemoteUser(tokens: OAuth2Tokens): Promise<RemoteUser> {
