@@ -88,7 +88,7 @@ const isFollowing = userId ? organization.isFollower(userId) : false
     }
     {
       activeTab === 'organizers' && (
-        <OrganizationOrganizers organization={organization} isOrganizer={isOrganizer} server:defer>
+        <OrganizationOrganizers organization={organization} isOrganizer={isOrganizer} userId={userId} server:defer>
           <OrganizationOrganizersSkeleton slot="fallback" />
         </OrganizationOrganizers>
       )

@@ -1,4 +1,5 @@
 import { ContainerBuilder } from 'diod'
+import { AddOrganizerCommand } from '../application/add-organizer.command'
 import { CreateOrganizationCommand } from '../application/create-organization.command'
 import { DeleteOrganizationCommand } from '../application/delete-organization.command'
 import { FollowOrganizationCommand } from '../application/follow-organization.command'
@@ -7,6 +8,7 @@ import { GetOrganizationByIdQuery } from '../application/get-organization-by-id.
 import { GetOrganizationsFollowedByQuery } from '../application/get-organizations-followed-by.query'
 import { GetUserOrganizationsQuery } from '../application/get-user-organizations.query'
 import { MatchOrganizationsQuery } from '../application/match-organizations.query'
+import { RemoveOrganizerCommand } from '../application/remove-organizer.command'
 import { SaveOrganizationCommand } from '../application/save-organization.command'
 import { UnfollowOrganizationCommand } from '../application/unfollow-organization.command'
 import { UserIsOrganizerEnsurer } from '../application/user-is-organizer-ensurer.service'
@@ -63,6 +65,10 @@ builder
   .register(UnfollowOrganizationCommand)
   .use(UnfollowOrganizationCommand)
   .withDependencies([AstroDbOrganizationsRepository])
+
+builder.register(AddOrganizerCommand).use(AddOrganizerCommand).withDependencies([AstroDbOrganizationsRepository])
+
+builder.register(RemoveOrganizerCommand).use(RemoveOrganizerCommand).withDependencies([AstroDbOrganizationsRepository])
 
 builder.register(UserIsOrganizerEnsurer).use(UserIsOrganizerEnsurer).withDependencies([GetUserOrganizationsQuery])
 

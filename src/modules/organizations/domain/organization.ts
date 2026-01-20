@@ -192,6 +192,10 @@ export class Organization implements OrganizationProps {
     this.followers = this.followers.filter(follower => follower !== userId)
   }
 
+  removeOrganizer(organizerId: string) {
+    this.organizers = this.organizers.filter(organizer => organizer !== organizerId)
+  }
+
   private static ensureIsValidOrganization(organization: OrganizationEditableData) {
     const validator = new OrganizationValidator(organization)
     const error = validator.validate()

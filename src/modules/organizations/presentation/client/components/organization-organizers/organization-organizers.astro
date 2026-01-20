@@ -6,14 +6,16 @@ import type { Organization } from '@/organizations/domain/organization'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import { Users } from '@/ui/icons'
 import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
-import { Link } from '@/ui/components/link'
+import { AddOrganizerModal } from '@/organizations/presentation/client/components/add-organizer-modal/add-organizer-modal'
+import { RemoveOrganizerModal } from '@/organizations/presentation/client/components/remove-organizer-modal/remove-organizer-modal'
 
 interface Props {
   organization: Organization
   isOrganizer: boolean
+  userId?: string
 }
 
-const { organization, isOrganizer } = Astro.props as Props
+const { organization, isOrganizer, userId } = Astro.props as Props
 
 let organizers: User[] = []
 
@@ -29,6 +31,12 @@ const hasOrganizers = organizers.length > 0
 ---
 
 <section class="organizers">
+  {isOrganizer && userId && (
+    <header class="organizers-header">
+      <AddOrganizerModal client:idle organizationId={organization.id.value} />
+    </header>
+  )}
+
   {hasOrganizers ? (
     <div class="organizers-grid">
       {
@@ -46,6 +54,14 @@ const hasOrganizers = organizers.length > 0
               <h3 class="organizer-name">{organizer.name}</h3>
               <span class="organizer-username">@{organizer.username}</span>
             </div>
+            {isOrganizer && userId && organizer.id.value !== userId && (
+              <RemoveOrganizerModal
+                client:idle
+                organizationId={organization.id.value}
+                organizerId={organizer.id.value}
+                organizerName={organizer.name}
+              />
+            )}
           </article>
         ))
       }
@@ -62,8 +78,8 @@ const hasOrganizers = organizers.length > 0
 <style>
   @reference "../../../../../../styles/global.css";
 
-  .organizers {
-    @apply py-4;
+  .organizers-header {
+    @apply flex items-center justify-between mb-6;
   }
 
   .organizers-grid {

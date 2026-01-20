@@ -148,6 +148,8 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
           updatedAt: new Date(),
         })
         .where(eq(Organization.id, value.id.value))
+
+      await this.updateOrganizers(value)
     } catch (error) {
       this._mapError(error, value)
     }
@@ -226,6 +228,44 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
           followersToInsert.map(follower => ({
             organizationId: organization.id.value,
             userId: follower,
+          })),
+        )
+      }
+    } catch (error) {
+      this._mapError(error, organization)
+    }
+  }
+
+  async updateOrganizers(organization: OrganizationEntity): Promise<void> {
+    try {
+      const existingOrganizers = await db
+        .select()
+        .from(OrganizationUser)
+        .where(eq(OrganizationUser.organizationId, organization.id.value))
+
+      const organizersToDelete = existingOrganizers.filter(
+        organizer => !organization.organizers.includes(organizer.userId),
+      )
+      const organizersToInsert = organization.organizers.filter(
+        organizer => !existingOrganizers.some(o => o.userId === organizer),
+      )
+
+      if (organizersToDelete.length > 0) {
+        await db.delete(OrganizationUser).where(
+          inArray(
+            OrganizationUser.userId,
+            organizersToDelete.map(o => o.userId),
+          ),
+        )
+      }
+
+      if (organizersToInsert.length > 0) {
+        await db.insert(OrganizationUser).values(
+          organizersToInsert.map(organizerId => ({
+            organizationId: organization.id.value,
+            userId: organizerId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
           })),
         )
       }

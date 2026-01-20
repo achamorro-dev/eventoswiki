@@ -3,6 +3,7 @@ import { FindUsersByIdsQuery } from '../application/find-users-by-ids.query'
 import { GetUserQuery } from '../application/get-user.query'
 import { GetUserByUsernameQuery } from '../application/get-user-by-username.query'
 import { SaveUserCommand } from '../application/save-user.command'
+import { SearchUsersQuery } from '../application/search-users.query'
 import { AstroDbUsersRepository } from '../infrastructure/astro-db-users.repository'
 
 const builder = new ContainerBuilder()
@@ -14,6 +15,8 @@ builder.register(GetUserQuery).use(GetUserQuery).withDependencies([AstroDbUsersR
 builder.register(GetUserByUsernameQuery).use(GetUserByUsernameQuery).withDependencies([AstroDbUsersRepository])
 
 builder.register(FindUsersByIdsQuery).use(FindUsersByIdsQuery).withDependencies([AstroDbUsersRepository])
+
+builder.register(SearchUsersQuery).use(SearchUsersQuery).withDependencies([AstroDbUsersRepository])
 
 builder
   .register(SaveUserCommand)

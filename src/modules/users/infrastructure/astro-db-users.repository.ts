@@ -93,7 +93,7 @@ export class AstroDbUsersRepository implements UsersRepository {
     return db
       .select()
       .from(UserTable)
-      .where(filters.length > 0 ? filters[0] : undefined)
+      .where(filters.length === 0 ? undefined : filters.length === 1 ? filters[0] : and(...filters))
   }
 
   private getCountUsersQueryWithCriteria(criteria: UsersCriteria) {
@@ -101,7 +101,7 @@ export class AstroDbUsersRepository implements UsersRepository {
     return db
       .select({ count: count() })
       .from(UserTable)
-      .where(filters.length > 0 ? filters[0] : undefined)
+      .where(filters.length === 0 ? undefined : filters.length === 1 ? filters[0] : and(...filters))
   }
 
   private getUsersFiltersByCriteria(criteria: UsersCriteria) {
@@ -114,6 +114,10 @@ export class AstroDbUsersRepository implements UsersRepository {
 
     if (Array.isArray(parentFilters)) {
       return parentFilters.map((parentFilter: Filter<F>) => {
+        if (!('type' in parentFilter && 'filters' in parentFilter)) {
+          const result: Array<unknown> = this.getFiltersToApply(parentFilter as F)
+          return result[0]
+        }
         const { type, filters } = parentFilter
         // @ts-expect-error
         const criterias = this.getFiltersToApply(filters)
@@ -121,38 +125,38 @@ export class AstroDbUsersRepository implements UsersRepository {
       })
     }
 
-    return (
-      Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
-        .filter(([_, value]) => value !== undefined)
-        // biome-ignore lint/suspicious/useIterableCallbackReturn: Known issue with typing
-        .map(([key, userFilter]) => {
-          if (!userFilter) return
+    return Object.entries<FilterCriteria | undefined>(parentFilters as Record<string, FilterCriteria>)
+      .filter(([_, value]) => value !== undefined)
+      .map(([key, userFilter]) => {
+        if (!userFilter) return undefined
+        return this.getConditionFromFilter(key, userFilter)
+      })
+  }
 
-          switch (userFilter.operator) {
-            case RelationalOperator.EQUALS:
-              // @ts-expect-error - Known issue with indexing
-              return eq(UserTable[key], userFilter.value)
-            case RelationalOperator.GREATER_THAN_OR_EQUAL:
-              // @ts-expect-error - Known issue with indexing
-              return gte(UserTable[key], userFilter.value)
-            case RelationalOperator.LOWER_THAN_OR_EQUAL:
-              // @ts-expect-error - Known issue with indexing
-              return lte(UserTable[key], userFilter.value)
-            case RelationalOperator.GREATER_THAN:
-              // @ts-expect-error - Known issue with indexing
-              return gt(UserTable[key], userFilter.value)
-            case RelationalOperator.LOWER_THAN:
-              // @ts-expect-error - Known issue with indexing
-              return lt(UserTable[key], userFilter.value)
-            case RelationalOperator.LIKE:
-            case RelationalOperator.LIKE_NOT_SENSITIVE:
-              // @ts-expect-error - Known issue with indexing
-              return like(UserTable[key], userFilter.value)
-            case RelationalOperator.NOT_EQUALS:
-              // @ts-expect-error
-              return ne(UserTable[key], userFilter.value)
-          }
-        })
-    )
+  private getConditionFromFilter(key: string, userFilter: FilterCriteria) {
+    switch (userFilter.operator) {
+      case RelationalOperator.EQUALS:
+        // @ts-expect-error - Known issue with indexing
+        return eq(UserTable[key as keyof typeof UserTable], userFilter.value)
+      case RelationalOperator.GREATER_THAN_OR_EQUAL:
+        // @ts-expect-error - Known issue with indexing
+        return gte(UserTable[key as keyof typeof UserTable], userFilter.value)
+      case RelationalOperator.LOWER_THAN_OR_EQUAL:
+        // @ts-expect-error - Known issue with indexing
+        return lte(UserTable[key as keyof typeof UserTable], userFilter.value)
+      case RelationalOperator.GREATER_THAN:
+        // @ts-expect-error - Known issue with indexing
+        return gt(UserTable[key as keyof typeof UserTable], userFilter.value)
+      case RelationalOperator.LOWER_THAN:
+        // @ts-expect-error - Known issue with indexing
+        return lt(UserTable[key as keyof typeof UserTable], userFilter.value)
+      case RelationalOperator.LIKE:
+      case RelationalOperator.LIKE_NOT_SENSITIVE:
+        // @ts-expect-error - Known issue with indexing
+        return like(UserTable[key as keyof typeof UserTable], userFilter.value)
+      case RelationalOperator.NOT_EQUALS:
+        // @ts-expect-error
+        return ne(UserTable[key as keyof typeof UserTable], userFilter.value)
+    }
   }
 }

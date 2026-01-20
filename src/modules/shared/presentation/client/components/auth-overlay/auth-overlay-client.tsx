@@ -85,7 +85,7 @@ export const AuthOverlayClient = ({ redirectUrl, message }: AuthOverlayProps) =>
         <article className="flex flex-col gap-6 rounded-xl bg-card p-6 text-card-foreground">
           <section className="flex flex-col items-center justify-center gap-8">
             <img src="/icon.png" alt="Logo" width="180" height="180" className="h-16 w-16" />
-            <h2 className="text-center text-xl font-semibold">{message}</h2>
+            <h2 className="text-center font-semibold text-xl">{message}</h2>
             <nav className="flex w-full flex-col items-stretch justify-center gap-4">
               <SocialLink provider="google" href={`${Urls.LOGIN_GOOGLE}${getNextParam()}`}>
                 Continuar con Google
@@ -97,7 +97,7 @@ export const AuthOverlayClient = ({ redirectUrl, message }: AuthOverlayProps) =>
                 Continuar con X
               </SocialLink>
             </nav>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Al continuar, aceptas las{' '}
               <a href={Urls.TERMS} target="_blank" rel="noopener noreferrer" className="underline">
                 Condiciones de uso
