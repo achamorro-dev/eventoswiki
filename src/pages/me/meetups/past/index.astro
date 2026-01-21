@@ -1,0 +1,19 @@
+---
+import Layout from '@/layouts/layout.astro'
+import MyMeetupsPage from '@/meetups/presentation/client/pages/my-meetups-page/my-meetups-page.astro'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { Urls } from '@/ui/urls/urls'
+
+const userId = Astro.locals.user?.id
+
+if (!userId) {
+  return Astro.redirect(Urls.LOGIN)
+}
+---
+
+<Layout title="Mis meetups - Pasados">
+  <header class="mb-4">
+    <SectionTitle>Mis meetups</SectionTitle>
+  </header>
+  <MyMeetupsPage userId={userId} activeTab="past" />
+</Layout>

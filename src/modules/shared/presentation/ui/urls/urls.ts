@@ -24,6 +24,7 @@ export const Urls = {
   ORGANIZATION_ORGANIZERS: (handle: string) => `${Urls.ORGANIZATIONS}/${handle}/organizers`,
   ORGANIZATION_EDIT: (handle: string) => `${Urls.ORGANIZATIONS}/${handle}/edit`,
   MY_ORGANIZATIONS: '/me/organizations/',
+  MY_MEETUPS: '/me/meetups/',
   FOLLOWING_ORGANIZATIONS: '/me/organizations/following',
   MEMBER_ORGANIZATIONS: '/me/organizations/member',
   CREATE_ORGANIZATION: '/me/organizations/create',

@@ -240,6 +240,39 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     return attendees.map(attendee => MeetupAttendeeEntity.fromPrimitives(attendee))
   }
 
+  async findMeetupsAttendedByUserId(userId: string): Promise<MeetupEntity[]> {
+    const result = await db
+      .select({ Meetup, Province })
+      .from(Meetup)
+      .leftJoin(Province, eq(Province.slug, Meetup.location))
+      .innerJoin(MeetupAttendee, eq(Meetup.id, MeetupAttendee.meetupId))
+      .where(eq(MeetupAttendee.userId, userId))
+
+    const meetupIds = result.map(({ Meetup }) => Meetup.id)
+    const uniqueMeetupIds = [...new Set(meetupIds)]
+
+    const attendeesPromises = uniqueMeetupIds.map(async meetupId => {
+      const attendees = await db.select().from(MeetupAttendee).where(eq(MeetupAttendee.meetupId, meetupId))
+      return { meetupId, attendeesIds: attendees.map(a => ({ meetupId: a.meetupId, userId: a.userId })) }
+    })
+    const attendeesResults = await Promise.all(attendeesPromises)
+
+    const attendeesMap = new Map<string, { meetupId: string; userId: string }[]>()
+    attendeesResults.forEach(result => {
+      attendeesMap.set(result.meetupId, result.attendeesIds)
+    })
+
+    return result
+      .filter((item, index, self) => index === self.findIndex(m => m.Meetup.id === item.Meetup.id))
+      .map(({ Meetup, Province }) =>
+        AstroDbMeetupMapper.toDomain({
+          meetupDto: Meetup as AstroDbMeetupDto,
+          provinceDto: Province,
+          attendeesIds: attendeesMap.get(Meetup.id) ?? [],
+        }),
+      )
+  }
+
   private async _getAttendees(meetupId: string) {
     return await db
       .select({

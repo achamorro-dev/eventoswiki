@@ -1,0 +1,56 @@
+---
+import { MeetupsContainer } from '@/meetups/di/meetups.container'
+import { GetUpcomingMeetupsAttendedByUserQuery } from '@/meetups/application/get-upcoming-meetups-attended-by-user.query'
+import { GetPastMeetupsAttendedByUserQuery } from '@/meetups/application/get-past-meetups-attended-by-user.query'
+import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
+import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
+import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
+import { Calendar, CalendarBlank } from '@/ui/icons'
+import { Urls } from '@/ui/urls/urls'
+
+interface Props {
+  userId: string
+  activeTab: 'upcoming' | 'past'
+}
+
+const { userId, activeTab } = Astro.props
+
+const getUpcomingMeetups = () => MeetupsContainer.get(GetUpcomingMeetupsAttendedByUserQuery).execute({ userId })
+const getPastMeetups = () => MeetupsContainer.get(GetPastMeetupsAttendedByUserQuery).execute({ userId })
+
+const meetups = activeTab === 'upcoming' ? await getUpcomingMeetups() : await getPastMeetups()
+---
+
+<header class="mb-4 lg:mb-8">
+  <LinkTabs
+    tabs={[
+      { label: 'Próximos', href: Urls.MY_MEETUPS, isActive: activeTab === 'upcoming' },
+      { label: 'Pasados', href: `${Urls.MY_MEETUPS}past`, isActive: activeTab === 'past' },
+    ]}
+  />
+</header>
+
+<EventsGrid
+  events={meetups}
+  page={1}
+  totalPages={1}
+  goToEvent={slug => Urls.MEETUP(slug)}
+>
+  <slot name="empty" slot="empty" />
+</EventsGrid>
+
+{meetups.length === 0 && activeTab === 'upcoming' && (
+  <EmptyMessage
+    icon={Calendar}
+    title="Aún no tienes ningún meetup próximo"
+    description="Busca meetups en tu zona y apúntate para verlos aquí."
+  />
+)}
+
+{meetups.length === 0 && activeTab === 'past' && (
+  <EmptyMessage
+    icon={CalendarBlank}
+    title="Aún no has asistido a ningún meetup"
+    description="Cuando te apuntes a un meetup, aparecerá aquí después de que termine."
+  />
+)}

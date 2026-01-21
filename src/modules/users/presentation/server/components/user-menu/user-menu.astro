@@ -50,6 +50,9 @@ const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
 
     <DropdownSection>
       <DropdownItem>
+        <Link href={Urls.MY_MEETUPS} variant="ghost">Mis meetups</Link>
+      </DropdownItem>
+      <DropdownItem>
         <Link href={Urls.MY_ORGANIZATIONS} variant="ghost">Mis organizaciones</Link>
       </DropdownItem>
     </DropdownSection>

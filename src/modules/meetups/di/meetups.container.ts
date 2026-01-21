@@ -13,8 +13,11 @@ import { FindMeetupAttendeesQuery } from '../application/find-meetup-attendees.q
 import { FindMeetupBySlugQuery } from '../application/find-meetup-by-slug.query'
 import { FindMeetupsQuery } from '../application/find-meetups.query'
 import { GetMeetupsQuery } from '../application/get-meetups.query'
+import { GetMeetupsAttendedByUserQuery } from '../application/get-meetups-attended-by-user/get-meetups-attended-by-user.query'
 import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
+import { GetPastMeetupsAttendedByUserQuery } from '../application/get-past-meetups-attended-by-user.query'
+import { GetUpcomingMeetupsAttendedByUserQuery } from '../application/get-upcoming-meetups-attended-by-user.query'
 import { UnattendMeetupCommand } from '../application/unattend-meetup.command'
 import { UpdateMeetupCommand } from '../application/update-meetup.command'
 import { AstroDbMeetupsRepository } from '../infrastructure/astro-db-meetups.repository'
@@ -36,6 +39,21 @@ builder.register(GetMeetupsQuery).use(GetMeetupsQuery).withDependencies([AstroDb
 builder.register(FindMeetupsQuery).use(FindMeetupsQuery).withDependencies([AstroDbMeetupsRepository])
 
 builder.register(FindMeetupAttendeesQuery).use(FindMeetupAttendeesQuery).withDependencies([AstroDbMeetupsRepository])
+
+builder
+  .register(GetUpcomingMeetupsAttendedByUserQuery)
+  .use(GetUpcomingMeetupsAttendedByUserQuery)
+  .withDependencies([AstroDbMeetupsRepository])
+
+builder
+  .register(GetPastMeetupsAttendedByUserQuery)
+  .use(GetPastMeetupsAttendedByUserQuery)
+  .withDependencies([AstroDbMeetupsRepository])
+
+builder
+  .register(GetMeetupsAttendedByUserQuery)
+  .use(GetMeetupsAttendedByUserQuery)
+  .withDependencies([AstroDbMeetupsRepository])
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.get(UserIsOrganizerEnsurer))

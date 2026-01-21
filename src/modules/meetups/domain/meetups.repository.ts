@@ -21,4 +21,5 @@ export interface MeetupsRepository
   addAttendees(meetup: Meetup): Promise<void>
   removeAttendee(meetupId: MeetupId, attendeeId: MeetupAttendeeId): Promise<void>
   findAllAttendees(meetupId: string): Promise<MeetupAttendee[]>
+  findMeetupsAttendedByUserId(userId: string): Promise<Meetup[]>
 }
