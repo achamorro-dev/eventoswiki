@@ -1,16 +1,5 @@
-interface Props {
-  width?: number
-  height?: number
-}
-const Logo = ({ width = 160, height = 160 }: Props) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={width}
-    height={height}
-    fill="none"
-    viewBox="0 0 1879 440"
-    aria-label="Logo eventos.wiki"
-  >
+const Logo = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1879 440" aria-label="Logo eventos.wiki">
     <title>Logo eventos.wiki</title>
     <path
       strokeLinejoin="round"
