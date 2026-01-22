@@ -94,7 +94,12 @@ export function AddOrganizerModal({ organizationId }: AddOrganizerModalProps) {
     setOpen(false)
     setQuery('')
     setUsers([])
-    await navigate(window.location.pathname)
+    refreshPage()
+  }
+
+  const refreshPage = () => {
+    const currentUrl = new URL(window.location.href)
+    navigate(currentUrl.pathname + currentUrl.search, { history: 'replace' })
   }
 
   useEffect(() => {

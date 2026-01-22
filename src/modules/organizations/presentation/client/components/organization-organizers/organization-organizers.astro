@@ -7,6 +7,7 @@ import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import { Users } from '@/ui/icons'
 import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
 import { AddOrganizerModal } from '@/organizations/presentation/client/components/add-organizer-modal/add-organizer-modal'
+import { LeaveOrganizationModal } from '@/organizations/presentation/client/components/leave-organization-modal/leave-organization-modal'
 import { RemoveOrganizerModal } from '@/organizations/presentation/client/components/remove-organizer-modal/remove-organizer-modal'
 
 interface Props {
@@ -60,6 +61,13 @@ const hasOrganizers = organizers.length > 0
                 organizationId={organization.id.value}
                 organizerId={organizer.id.value}
                 organizerName={organizer.name}
+              />
+            )}
+            {isOrganizer && userId && organizer.id.value === userId && organizers.length > 1 && (
+              <LeaveOrganizationModal
+                client:idle
+                organizationId={organization.id.value}
+                organizationName={organization.name}
               />
             )}
           </article>
