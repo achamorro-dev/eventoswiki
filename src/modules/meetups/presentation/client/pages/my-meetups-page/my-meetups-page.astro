@@ -34,7 +34,7 @@ const meetups = activeTab === 'upcoming' ? await getUpcomingMeetups() : await ge
   events={meetups}
   page={1}
   totalPages={1}
-  goToEvent={slug => Urls.MEETUP(slug)}
+  goToEvent={(slug: string) => Urls.MEETUP(slug)}
 >
   <slot name="empty" slot="empty" />
 </EventsGrid>
