@@ -326,6 +326,20 @@ import { Event } from '@/events/domain/event'
 import { EventId } from '@/events/domain/event-id'
 ```
 
+### Prohibited Patterns
+
+- **No `window.location.reload()`**: Do not use full page reloads for refreshing data. Instead, use Astro's View Transitions `navigate()` function with `{ history: 'replace' }` option to refresh data without a full page reload.
+
+**Correct pattern for refreshing data:**
+```typescript
+import { navigate } from 'astro:transitions/client'
+
+const refreshPage = () => {
+  const currentUrl = new URL(window.location.href)
+  navigate(currentUrl.pathname + currentUrl.search, { history: 'replace' })
+}
+```
+
 ## Dependencies
 
 - **Astro**: 5.14.8 (SSG/SSR framework)
