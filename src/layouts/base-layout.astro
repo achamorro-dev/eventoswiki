@@ -30,7 +30,7 @@ const currentPath = Astro.url.pathname
     <Footer transition:persist>
       <ProvincesList />
     </Footer>
-    <Toaster client:only />
+    <Toaster client:only transition:persist />
     <style is:global>
       @reference "../styles/global.css";
 
