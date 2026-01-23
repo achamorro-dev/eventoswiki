@@ -7,6 +7,6 @@ export class UmamiAnalyticsService extends AnalyticsService {
     // @ts-expect-error
     const umami = window.umami
     if (!umami) return
-    umami.trackEvent(name, data)
+    umami.track(name, data)
   }
 }
