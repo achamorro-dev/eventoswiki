@@ -16,6 +16,7 @@ export enum DateTimeFormat {
   DD_MMM_YYYY_HH_MM = 'DD MMM YYYY HH:mm',
   DD_MMMM_YYYY_HH_MM = 'DD MMMM YYYY HH:mm',
   DDD_MMM_YYYY_HH_MM = 'ddd DD MMM YYYY HH:mm',
+  DDD_MMM_YYYY = 'ddd DD MMM YYYY',
 }
 
 export type TimeUnit = 'month' | 'year' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond'

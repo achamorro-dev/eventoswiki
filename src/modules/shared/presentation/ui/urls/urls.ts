@@ -42,7 +42,7 @@ export const Urls = {
   SETTINGS_NOTIFICATIONS: '/me/settings/notifications',
   PRIVACY: '/privacy',
   TERMS: '/terms',
-  CHANGELOG: 'https://eventoswiki.userjot.com/updates',
+  CHANGELOG: '/changelog',
   FEATURE_REQUEST: 'https://eventoswiki.userjot.com/',
   BUG_REPORT: 'https://eventoswiki.userjot.com/',
 }

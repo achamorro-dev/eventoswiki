@@ -1,0 +1,54 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { Datetime, DateTimeFormat } from '@/shared/domain/datetime/datetime'
+import ContentPage from '@/ui/components/content-page/content-page.astro'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { getCollection, type CollectionEntry } from 'astro:content'
+
+const changelogEntries = await getCollection('changelog', ({ data }: CollectionEntry<'changelog'>) => {
+  return data.date <= new Date()
+})
+
+// Ordenar entradas por fecha (más reciente primero)
+const sortedEntries = changelogEntries.sort((a: CollectionEntry<'changelog'>, b: CollectionEntry<'changelog'>) => 
+  b.data.date.getTime() - a.data.date.getTime()
+)
+
+// Renderizar el contenido de las entradas
+const renderedEntries = await Promise.all(
+  sortedEntries.map(async (entry: CollectionEntry<'changelog'>) => {
+    const { Content, headings } = await entry.render()
+    return { entry, Content, headings }
+  })
+)
+---
+
+<Layout title="Changelog">
+  <ContentPage>
+    <h1>Changelog</h1>
+    {renderedEntries.map(({ entry, Content }) => (
+      <article class="changelog-entry">
+        <h2>{Datetime.toDateTimeString(entry.data.date, DateTimeFormat.DDD_MMM_YYYY)}</h2>
+        <div class="changelog-content">
+          <Content />
+        </div>
+      </article>
+    ))}
+  </ContentPage>
+</Layout>
+
+<style>
+   @reference "../styles/global.css";
+
+  .changelog-entry {
+    @apply mb-12;
+  }
+  
+  .changelog-date {
+    @apply block text-lg font-semibold text-gray-600 dark:text-gray-400 mb-6;
+  }
+  
+  .changelog-content {
+    @apply space-y-6;
+  }
+</style>
