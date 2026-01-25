@@ -1,6 +1,9 @@
 export {
   PiArrowArcLeft as ArrowArcLeft,
   PiArrowArcRight as ArrowArcRight,
+  PiArrowFatUp as ArrowFatUp,
+  PiArrowFatUpFill as ArrowFatUpFill,
+  PiArrowUp as ArrowUp,
   PiAtBold as At,
   PiBroadcast as Broadcast,
   PiCalendar as Calendar,

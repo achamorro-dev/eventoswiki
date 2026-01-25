@@ -1,0 +1,41 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { FeatureRequestsContainer } from '@/modules/feature-requests/di/feature-requests.container'
+import { ListFeatureRequestsQuery } from '@/modules/feature-requests/application/list-feature-requests.query'
+import FeatureRequestsList from '@/modules/feature-requests/presentation/client/FeatureRequestsList'
+import CreateFeatureRequestForm from '@/modules/feature-requests/presentation/client/CreateFeatureRequestForm'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+
+const user = Astro.locals.user
+const requests = await FeatureRequestsContainer.get(ListFeatureRequestsQuery).execute({ currentUserId: user?.id })
+---
+
+<Layout title="Feature Requests">
+  <div class="mx-auto pb-10">
+    <SectionTitle>Nuevas funcionalidades</SectionTitle>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="md:col-span-2">
+        <FeatureRequestsList client:load initialRequests={requests.map(r => r.toPrimitives())} />
+      </div>
+      <div>
+        <div class="bg-gray-100 p-6 rounded-lg sticky top-6">
+          <h2 class="text-xl font-semibold mb-4">Solicitar Funcionalidad</h2>
+          {
+            user ? (
+              <CreateFeatureRequestForm client:load />
+            ) : (
+              <p class="text-gray-600">
+                Debes{' '}
+                <a href="/login" class="text-blue-600 hover:underline">
+                  iniciar sesión
+                </a>{' '}
+                para crear una solicitud.
+              </p>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

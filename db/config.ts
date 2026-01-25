@@ -182,6 +182,25 @@ export const UserSettings = defineTable({
   },
 })
 
+export const FeatureRequest = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    title: column.text(),
+    description: column.text(),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const FeatureRequestVote = defineTable({
+  columns: {
+    featureRequestId: column.text({ optional: false, references: () => FeatureRequest.columns.id }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    createdAt: column.date({ default: NOW }),
+  },
+})
+
 export default defineDb({
   tables: {
     Event,
@@ -195,5 +214,7 @@ export default defineDb({
     OrganizationUser,
     OrganizationFollower,
     UserSettings,
+    FeatureRequest,
+    FeatureRequestVote,
   },
 })
