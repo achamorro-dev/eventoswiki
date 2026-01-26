@@ -1,0 +1,48 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { FeatureRequestsContainer } from '@/modules/feature-requests/di/feature-requests.container'
+import { GetFeatureRequestQuery } from '@/modules/feature-requests/application/get-feature-request.query'
+import FeatureRequestDetails from '@/modules/feature-requests/presentation/client/FeatureRequestDetails'
+import { Urls } from '@/ui/urls/urls'
+import { GetUserQuery } from '@/modules/users/application/get-user.query'
+import { CheckUserIsAdminQuery } from '@/modules/users/application/check-user-is-admin.query'
+import { UsersContainer } from '@/modules/users/di/users.container'
+import { DateTimeFormat, Datetime } from '@/shared/domain/datetime/datetime'
+
+const { id } = Astro.params
+if (!id) return Astro.redirect('/feature-requests')
+
+const user = Astro.locals.user
+let isAdmin = false
+
+if (user) {
+  try {
+    const userEntity = await UsersContainer.get(GetUserQuery).execute({ id: user.id })
+    if (userEntity && userEntity.email) {
+      isAdmin = await UsersContainer.get(CheckUserIsAdminQuery).execute({ email: userEntity.email })
+    }
+  } catch (error) {
+    // Handle error
+  }
+}
+
+const featureRequest = await FeatureRequestsContainer.get(GetFeatureRequestQuery).execute({ id })
+
+if (!featureRequest) {
+  return Astro.redirect('/404')
+}
+---
+
+<Layout title={`Funcionalidad: ${featureRequest.title}`}>
+  <div class="mx-auto pb-10 max-w-4xl">
+    <FeatureRequestDetails 
+      client:load 
+      featureRequest={{
+        ...featureRequest.toPrimitives(),
+        id: featureRequest.id.value
+      }} 
+      isAdmin={isAdmin} 
+      currentUserId={user?.id} 
+    />
+  </div>
+</Layout>

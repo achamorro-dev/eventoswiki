@@ -19,6 +19,7 @@ export class AstroDbFeatureRequestsRepository implements FeatureRequestsReposito
         .set({
           title: featureRequest.title,
           description: featureRequest.description,
+          status: featureRequest.status,
           updatedAt: featureRequest.updatedAt,
         })
         .where(eq(FeatureRequest.id, featureRequest.id.value))
@@ -28,10 +29,43 @@ export class AstroDbFeatureRequestsRepository implements FeatureRequestsReposito
         userId: featureRequest.userId,
         title: featureRequest.title,
         description: featureRequest.description,
+        status: featureRequest.status,
         createdAt: featureRequest.createdAt,
         updatedAt: featureRequest.updatedAt,
       })
     }
+  }
+
+  async findById(id: string): Promise<FeatureRequestEntity | null> {
+    const result = await db.select().from(FeatureRequest).where(eq(FeatureRequest.id, id)).limit(1)
+
+    if (result.length === 0) {
+      return null
+    }
+
+    const request = result[0] as AstroDbFeatureRequestDto
+
+    // Get vote count
+    const votes = await db
+      .select({ count: count(FeatureRequestVote.userId) })
+      .from(FeatureRequestVote)
+      .where(eq(FeatureRequestVote.featureRequestId, id))
+
+    const votesCount = votes[0]?.count ?? 0
+
+    return AstroDbFeatureRequestMapper.toDomain(request, votesCount, false)
+  }
+
+  async update(featureRequest: FeatureRequestEntity): Promise<void> {
+    await db
+      .update(FeatureRequest)
+      .set({
+        title: featureRequest.title,
+        description: featureRequest.description,
+        status: featureRequest.status,
+        updatedAt: featureRequest.updatedAt,
+      })
+      .where(eq(FeatureRequest.id, featureRequest.id.value))
   }
 
   async findAll(currentUserId?: string): Promise<FeatureRequestEntity[]> {
@@ -91,5 +125,13 @@ export class AstroDbFeatureRequestsRepository implements FeatureRequestsReposito
         userId: userId,
       })
     }
+  }
+
+  async delete(id: string): Promise<void> {
+    // First delete all votes for this feature request
+    await db.delete(FeatureRequestVote).where(eq(FeatureRequestVote.featureRequestId, id))
+
+    // Then delete the feature request itself
+    await db.delete(FeatureRequest).where(eq(FeatureRequest.id, id))
   }
 }

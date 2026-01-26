@@ -3,11 +3,19 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { FeatureRequestId } from './feature-request-id'
 
+export enum FeatureRequestStatus {
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+  REJECTED = 'REJECTED',
+}
+
 export class FeatureRequest {
   id: FeatureRequestId
   userId: string
   title: string
   description: string
+  status: FeatureRequestStatus
   createdAt: Date
   updatedAt: Date
   votesCount: number
@@ -18,6 +26,7 @@ export class FeatureRequest {
     this.userId = props.userId
     this.title = props.title
     this.description = props.description
+    this.status = props.status
     this.createdAt = props.createdAt
     this.updatedAt = props.updatedAt
     this.votesCount = props.votesCount ?? 0
@@ -30,6 +39,7 @@ export class FeatureRequest {
       userId: data.userId,
       title: data.title,
       description: data.description,
+      status: FeatureRequestStatus.PENDING,
       createdAt: Datetime.now(),
       updatedAt: Datetime.now(),
       votesCount: 0,
@@ -45,6 +55,7 @@ export class FeatureRequest {
       userId: primitives.userId,
       title: primitives.title,
       description: primitives.description,
+      status: primitives.status as FeatureRequestStatus,
       createdAt: new Date(primitives.createdAt),
       updatedAt: new Date(primitives.updatedAt),
       votesCount: primitives.votesCount,
@@ -58,6 +69,7 @@ export class FeatureRequest {
       userId: this.userId,
       title: this.title,
       description: this.description,
+      status: this.status,
       createdAt: this.createdAt.toISOString(),
       updatedAt: this.updatedAt.toISOString(),
       votesCount: this.votesCount,
@@ -71,6 +83,7 @@ export interface FeatureRequestProps {
   userId: string
   title: string
   description: string
+  status: FeatureRequestStatus
   createdAt: Date
   updatedAt: Date
   votesCount?: number

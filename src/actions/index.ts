@@ -2,6 +2,7 @@ import { authenticationServerActions } from '@/authentication/presentation/serve
 import { eventsServerActions } from '@/events/presentation/server/actions'
 import { filesServerActions } from '@/files/presentation/server/actions'
 import { meetupsServerActions } from '@/meetups/presentation/server/actions'
+import { bugsServerActions } from '@/modules/bugs/presentation/server/actions'
 import { featureRequestsServerActions } from '@/modules/feature-requests/presentation/server/actions'
 import { placesServerActions } from '@/modules/places/presentation/server/actions'
 import { organizationServerActions } from '@/organizations/presentation/server/actions'
@@ -18,4 +19,5 @@ export const server = {
   places: placesServerActions,
   userSettings: userSettingsServerActions,
   featureRequests: featureRequestsServerActions,
+  bugs: bugsServerActions,
 }

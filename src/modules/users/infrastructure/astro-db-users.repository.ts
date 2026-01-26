@@ -1,4 +1,4 @@
-import { and, asc, count, db, desc, eq, gt, gte, like, lt, lte, ne, or, User as UserTable } from 'astro:db'
+import { AdminUser, and, asc, count, db, desc, eq, gt, gte, like, lt, lte, ne, or, User as UserTable } from 'astro:db'
 import type { Filter } from '@/shared/domain/criteria/filter'
 import type { FilterCriteria } from '@/shared/domain/criteria/filter-criteria'
 import { FilterType } from '@/shared/domain/criteria/filter-type'
@@ -14,6 +14,11 @@ import type { UserId } from '../domain/user-id'
 import type { UsersRepository } from '../domain/users.repository'
 
 export class AstroDbUsersRepository implements UsersRepository {
+  async isAdmin(email: string): Promise<boolean> {
+    const admin = await db.select().from(AdminUser).where(eq(AdminUser.email, email)).limit(1)
+    return admin.length > 0
+  }
+
   async find(id: UserId): Promise<User> {
     const users = await db.select().from(UserTable).where(eq(UserTable.id, id.value))
 

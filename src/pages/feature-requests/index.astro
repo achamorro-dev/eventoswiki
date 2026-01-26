@@ -5,6 +5,7 @@ import { ListFeatureRequestsQuery } from '@/modules/feature-requests/application
 import FeatureRequestsList from '@/modules/feature-requests/presentation/client/FeatureRequestsList'
 import CreateFeatureRequestForm from '@/modules/feature-requests/presentation/client/CreateFeatureRequestForm'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { Card, CardHeader, CardTitle, CardContent } from '@/ui/card'
 
 const user = Astro.locals.user
 const requests = await FeatureRequestsContainer.get(ListFeatureRequestsQuery).execute({ currentUserId: user?.id })
@@ -19,19 +20,25 @@ const requests = await FeatureRequestsContainer.get(ListFeatureRequestsQuery).ex
         <FeatureRequestsList client:load initialRequests={requests.map(r => r.toPrimitives())} />
       </div>
       <div>
-        <div class="bg-gray-100 p-6 rounded-lg sticky top-6">
-          <h2 class="text-xl font-semibold mb-4">Solicitar Funcionalidad</h2>
+        <div class="sticky top-6">
           {
             user ? (
               <CreateFeatureRequestForm client:load />
             ) : (
-              <p class="text-gray-600">
-                Debes{' '}
-                <a href="/login" class="text-blue-600 hover:underline">
-                  iniciar sesión
-                </a>{' '}
-                para crear una solicitud.
-              </p>
+              <Card className="bg-muted/50 border border-border">
+                <CardHeader>
+                  <CardTitle>Solicitar Funcionalidad</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p class="text-gray-600 dark:text-gray-400">
+                    Debes{' '}
+                    <a href="/login" class="text-primary hover:underline">
+                      iniciar sesión
+                    </a>{' '}
+                    para crear una solicitud.
+                  </p>
+                </CardContent>
+              </Card>
             )
           }
         </div>

@@ -145,6 +145,39 @@ export class CreateEventCommand extends Command<Param, void> {
     /* ... */
   }
 }
+
+### Infrastructure Layer Patterns
+
+- **Mappers**: Use mapper classes to convert between database objects and domain entities.
+- **DTOs (Data Transfer Objects)**: Define interfaces for raw database objects to ensure type safety in mappers.
+- **Organization**:
+  - Place mappers in `infrastructure/mappers/`.
+  - Place DTOs in `infrastructure/dtos/`.
+  - Always extract DTO interfaces to their own files.
+- **Naming Conventions**:
+  - DTOs: `AstroDb{Entity}Dto` (e.g., `AstroDbBugDto`)
+  - Mappers: `AstroDb{Entity}Mapper` (e.g., `AstroDbBugMapper`)
+
+Example Mapper Pattern:
+
+```typescript
+import { Bug } from '../../domain/bug'
+import type { AstroDbBugDto } from '../dtos/astro-db-bug.dto'
+
+export class AstroDbBugMapper {
+  static toDomain(raw: AstroDbBugDto, userName?: string): Bug {
+    return new Bug({
+      /* ... mapping logic ... */
+    })
+  }
+
+  static toPersistence(bug: Bug) {
+    return {
+      /* ... mapping logic ... */
+    }
+  }
+}
+```
 ```
 
 ## Dependency Injection Patterns

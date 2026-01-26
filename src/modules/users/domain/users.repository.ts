@@ -10,4 +10,6 @@ import type { UserId } from './user-id'
 export interface UsersRepository
   extends FindableByIdRepository<UserId, User>,
     SaveableRepository<User>,
-    MatcheableRepository<Partial<UsersFilters>, Partial<UsersOrder>, UsersCriteria, User> {}
+    MatcheableRepository<Partial<UsersFilters>, Partial<UsersOrder>, UsersCriteria, User> {
+  isAdmin(email: string): Promise<boolean>
+}

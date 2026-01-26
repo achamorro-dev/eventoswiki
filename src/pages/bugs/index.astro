@@ -1,0 +1,70 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { BugsContainer } from '@/modules/bugs/di/bugs.container'
+import { ListBugsQuery } from '@/modules/bugs/application/list-bugs.query'
+import BugList from '@/modules/bugs/presentation/client/BugList'
+import CreateBugForm from '@/modules/bugs/presentation/client/CreateBugForm'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
+
+import { GetUserQuery } from '@/modules/users/application/get-user.query'
+import { CheckUserIsAdminQuery } from '@/modules/users/application/check-user-is-admin.query'
+import { UsersContainer } from '@/modules/users/di/users.container'
+import { Card, CardHeader, CardTitle, CardContent } from '@/ui/card'
+
+const user = Astro.locals.user
+let isAdmin = false
+
+if (user) {
+  try {
+     const userEntity = await UsersContainer.get(GetUserQuery).execute({ id: user.id })
+     if (userEntity && userEntity.email) {
+       isAdmin = await UsersContainer.get(CheckUserIsAdminQuery).execute({ email: userEntity.email })
+     }
+  } catch (error) {
+    // User might not exist in our DB if just authenticated via provider but not synced? 
+    // Or normally GetUserQuery throws if not found? 
+    // It throws UserNotFoundError. We can ignore or handle.
+  }
+}
+
+const bugs = await BugsContainer.get(ListBugsQuery).execute({
+  userId: user?.id,
+  isAdmin,
+})
+---
+
+<Layout title="Bugs">
+  <div class="mx-auto pb-10">
+    <SectionTitle>Errores</SectionTitle>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="md:col-span-2">
+        <BugList client:load initialBugs={bugs} />
+      </div>
+      <div>
+        <div class="sticky top-6">
+          {
+            user ? (
+              <CreateBugForm client:load />
+            ) : (
+              <Card className="bg-muted/50 border-border border">
+                <CardHeader>
+                  <CardTitle>Reportar un Bug</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p class="text-gray-600 dark:text-gray-400">
+                    Debes{' '}
+                    <a href="/login" class="text-primary hover:underline">
+                      iniciar sesión
+                    </a>{' '}
+                    para reportar un bug.
+                  </p>
+                </CardContent>
+              </Card>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

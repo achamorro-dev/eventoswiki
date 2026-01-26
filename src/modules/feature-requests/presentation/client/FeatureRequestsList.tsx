@@ -4,9 +4,12 @@ import { actions } from 'astro:actions'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import type { FeatureRequest } from '@/modules/feature-requests/domain/feature-request'
+import { FeatureRequestStatus } from '@/modules/feature-requests/domain/feature-request'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Button } from '@/ui/button'
+import { Card, CardContent } from '@/ui/card'
 import { ArrowFatUp, ArrowFatUpFill } from '@/ui/icons'
+import FeatureRequestStatusBadge from './FeatureRequestStatusBadge'
 
 interface Props {
   initialRequests: Primitives<FeatureRequest>[]
@@ -47,20 +50,29 @@ export default function FeatureRequestsList({ initialRequests }: Props) {
         <p className="text-gray-500">No hay solicitudes todavía.</p>
       ) : (
         requests.map(request => (
-          <div key={request.id} className="flex gap-4 rounded-lg bg-white p-6 shadow-sm">
-            <Button
-              variant={request.hasVoted ? 'default' : 'outline'}
-              onClick={() => handleVote(request.id)}
-              className="flex h-16 w-16 flex-col items-center justify-center gap-1 p-2"
-            >
-              {request.hasVoted ? <ArrowFatUpFill className="h-6 w-6" /> : <ArrowFatUp className="h-6 w-6" />}
-              <span className="font-bold">{request.votesCount}</span>
-            </Button>
-            <div className="flex-1">
-              <h3 className="font-bold text-xl">{request.title}</h3>
-              <p className="mt-2 text-gray-600">{request.description}</p>
-            </div>
-          </div>
+          <a key={request.id} href={`/feature-requests/${request.id}`} className="transition-opacity hover:opacity-80">
+            <Card className="border">
+              <CardContent>
+                <div className="flex gap-4">
+                  <Button
+                    variant={request.hasVoted ? 'default' : 'outline'}
+                    onClick={() => handleVote(request.id)}
+                    className="flex h-16 w-16 flex-col items-center justify-center gap-1 p-2"
+                  >
+                    {request.hasVoted ? <ArrowFatUpFill className="h-6 w-6" /> : <ArrowFatUp className="h-6 w-6" />}
+                    <span className="font-bold">{request.votesCount}</span>
+                  </Button>
+                  <div className="flex w-full items-start justify-between gap-2">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-xl">{request.title}</h3>
+                      <p className="mt-2 text-muted-foreground">{request.description}</p>
+                    </div>
+                    <FeatureRequestStatusBadge status={request.status as FeatureRequestStatus} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </a>
         ))
       )}
     </div>

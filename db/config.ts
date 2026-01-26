@@ -188,6 +188,7 @@ export const FeatureRequest = defineTable({
     userId: column.text({ optional: false, references: () => User.columns.id }),
     title: column.text(),
     description: column.text(),
+    status: column.text({ default: 'PENDING' }), // PENDING, IN_PROGRESS, COMPLETED, REJECTED
     createdAt: column.date({ default: NOW }),
     updatedAt: column.date({ default: NOW }),
   },
@@ -197,6 +198,37 @@ export const FeatureRequestVote = defineTable({
   columns: {
     featureRequestId: column.text({ optional: false, references: () => FeatureRequest.columns.id }),
     userId: column.text({ optional: false, references: () => User.columns.id }),
+    createdAt: column.date({ default: NOW }),
+  },
+})
+
+export const Bug = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    title: column.text(),
+    description: column.text(),
+    status: column.text({ default: 'OPEN' }), // OPEN, IN_REVIEW, CANCELED, FIXED
+    visibility: column.text({ default: 'PUBLIC' }), // PUBLIC, PRIVATE
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const BugComment = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    bugId: column.text({ optional: false, references: () => Bug.columns.id }),
+    userId: column.text({ optional: false, references: () => User.columns.id }),
+    content: column.text(),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const AdminUser = defineTable({
+  columns: {
+    email: column.text({ primaryKey: true, optional: false, unique: true }),
     createdAt: column.date({ default: NOW }),
   },
 })
@@ -216,5 +248,8 @@ export default defineDb({
     UserSettings,
     FeatureRequest,
     FeatureRequestVote,
+    Bug,
+    BugComment,
+    AdminUser,
   },
 })

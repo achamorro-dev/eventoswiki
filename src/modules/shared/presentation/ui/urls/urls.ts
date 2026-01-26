@@ -44,5 +44,7 @@ export const Urls = {
   TERMS: '/terms',
   CHANGELOG: '/changelog',
   FEATURE_REQUEST: '/feature-requests',
-  BUG_REPORT: 'https://eventoswiki.userjot.com/',
+  FEATURE_REQUEST_DETAILS: (id: string) => `/feature-requests/${id}`,
+  BUG_REPORT: '/bugs',
+  BUG_REPORT_DETAILS: (id: string) => `/bugs/${id}`,
 }

@@ -1,6 +1,6 @@
 import { Command } from '@/shared/application/use-case/command'
 import { FeatureRequest } from '../domain/feature-request'
-import { FeatureRequestsRepository } from '../domain/feature-requests.repository'
+import type { FeatureRequestsRepository } from '../domain/feature-requests.repository'
 
 interface Param {
   title: string

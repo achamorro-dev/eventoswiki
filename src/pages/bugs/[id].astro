@@ -1,0 +1,67 @@
+---
+import Layout from '@/layouts/layout.astro'
+import { BugsContainer } from '@/modules/bugs/di/bugs.container'
+import { GetBugQuery } from '@/modules/bugs/application/get-bug.query'
+import { GetBugCommentsQuery } from '@/modules/bugs/application/get-bug-comments.query'
+import { BugStatus, BugVisibility } from '@/modules/bugs/domain/bug'
+
+
+import { Badge } from '@/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardAction } from '@/ui/card'
+import { Separator } from '@/ui/separator'
+import BugComments from '@/modules/bugs/presentation/client/BugComments'
+import BugDetails from '@/modules/bugs/presentation/client/BugDetails'
+import { Urls } from '@/ui/urls/urls'
+
+const { id } = Astro.params
+if (!id) return Astro.redirect('/bugs')
+
+import { GetUserQuery } from '@/modules/users/application/get-user.query'
+import { CheckUserIsAdminQuery } from '@/modules/users/application/check-user-is-admin.query'
+import { UsersContainer } from '@/modules/users/di/users.container'
+import { DateFormat, Datetime, DateTimeFormat } from '@/shared/domain/datetime/datetime'
+
+const user = Astro.locals.user
+let isAdmin = false
+
+if (user) {
+  try {
+     const userEntity = await UsersContainer.get(GetUserQuery).execute({ id: user.id })
+     if (userEntity && userEntity.email) {
+       isAdmin = await UsersContainer.get(CheckUserIsAdminQuery).execute({ email: userEntity.email })
+     }
+  } catch (error) {
+     // Handle error
+  }
+}
+
+const bug = await BugsContainer.get(GetBugQuery).execute({ id })
+
+if (!bug) {
+  return Astro.redirect('/404')
+}
+
+// Access Control
+if (bug.visibility === BugVisibility.PRIVATE) {
+  if (!user || (user.id !== bug.userId && !isAdmin)) {
+    return Astro.redirect(Urls.BUG_REPORT) // Or 404/403
+  }
+}
+
+const comments = await BugsContainer.get(GetBugCommentsQuery).execute({ bugId: id })
+---
+
+<Layout title={`Bug: ${bug.title}`}>
+  <div class="mx-auto pb-10 max-w-4xl">
+    <BugDetails 
+      client:load 
+      bug={{
+        ...bug,
+        createdAt: bug.createdAt.toISOString()
+      }} 
+      isAdmin={isAdmin} 
+      currentUserId={user?.id} 
+    />
+    <BugComments client:load bugId={bug.id} initialComments={comments} currentUserId={user?.id} />
+  </div>
+</Layout>

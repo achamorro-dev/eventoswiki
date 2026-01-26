@@ -1,4 +1,4 @@
-import { FeatureRequest } from '../../domain/feature-request'
+import { FeatureRequest, FeatureRequestStatus } from '../../domain/feature-request'
 import type { AstroDbFeatureRequestDto } from '../dtos/astro-db-feature-request.dto'
 
 export class AstroDbFeatureRequestMapper {
@@ -8,6 +8,7 @@ export class AstroDbFeatureRequestMapper {
       userId: dto.userId,
       title: dto.title,
       description: dto.description,
+      status: dto.status as FeatureRequestStatus,
       createdAt: dto.createdAt.toISOString(),
       updatedAt: dto.updatedAt.toISOString(),
       votesCount,
