@@ -1,6 +1,7 @@
 'use client'
 
 import { actions } from 'astro:actions'
+import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import type { FeatureRequest } from '@/modules/feature-requests/domain/feature-request'
@@ -14,10 +15,12 @@ import FeatureRequestStatusBadge from './FeatureRequestStatusBadge'
 
 interface Props {
   initialRequests: Primitives<FeatureRequest>[]
+  currentUserId?: string
 }
 
-export default function FeatureRequestsList({ initialRequests }: Props) {
+export default function FeatureRequestsList({ initialRequests, currentUserId }: Props) {
   const [requests, setRequests] = useState(initialRequests)
+  const isAuthenticated = currentUserId !== undefined
 
   const handleVote = async (id: string) => {
     try {
@@ -51,16 +54,25 @@ export default function FeatureRequestsList({ initialRequests }: Props) {
         <p className="text-gray-500">No hay solicitudes todavía.</p>
       ) : (
         requests.map(request => (
-          <a key={request.id} href={Urls.FEATURE_REQUEST_DETAILS(request.id)} className="block">
+          <motion.a
+            key={request.id}
+            href={Urls.FEATURE_REQUEST_DETAILS(request.id)}
+            className="block"
+            layout
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          >
             <Card className="border">
               <CardContent>
                 <div className="flex gap-4">
                   <Button
                     variant={request.hasVoted ? 'default' : 'outline'}
+                    disabled={!isAuthenticated}
                     onClick={e => {
+                      if (!isAuthenticated) return
                       e.preventDefault()
                       handleVote(request.id)
                     }}
+                    title={!isAuthenticated ? 'Inicia sesión para votar' : undefined}
                     className="flex h-16 w-16 flex-col items-center justify-center gap-1 p-2"
                   >
                     {request.hasVoted ? <ArrowFatUpFill className="h-6 w-6" /> : <ArrowFatUp className="h-6 w-6" />}
@@ -76,7 +88,7 @@ export default function FeatureRequestsList({ initialRequests }: Props) {
                 </div>
               </CardContent>
             </Card>
-          </a>
+          </motion.a>
         ))
       )}
     </div>

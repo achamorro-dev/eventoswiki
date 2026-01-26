@@ -17,7 +17,11 @@ const requests = await FeatureRequestsContainer.get(ListFeatureRequestsQuery).ex
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="md:col-span-2">
-        <FeatureRequestsList client:load initialRequests={requests.map(r => r.toPrimitives())} />
+        <FeatureRequestsList
+          client:load
+          initialRequests={requests.map(r => r.toPrimitives())}
+          currentUserId={user?.id}
+        />
       </div>
       <div>
         <div class="sticky top-6">
