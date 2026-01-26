@@ -9,6 +9,8 @@ import { DeleteOrganizationModal } from '../../components/delete-organization-mo
 import { OrganizationAvatar } from '../../components/organization-avatar/organization-avatar'
 import OrganizationEvents from '../../components/organization-events/organization-events.astro'
 import { OrganizationFollowButton } from '../../components/organization-follow-button/organization-follow-button'
+import OrganizationFollowers from '../../components/organization-followers/organization-followers.astro'
+import OrganizationFollowersSkeleton from '../../components/organization-followers/organization-followers-skeleton.astro'
 import OrganizationMeetups from '../../components/organization-meetups/organization-meetups.astro'
 import OrganizationOrganizers from '../../components/organization-organizers/organization-organizers.astro'
 import OrganizationOrganizersSkeleton from '../../components/organization-organizers/organization-organizers-skeleton.astro'
@@ -16,7 +18,7 @@ import OrganizationOrganizersSkeleton from '../../components/organization-organi
 interface Props {
   organization: Organization
   userId?: string
-  activeTab: 'events' | 'meetups' | 'organizers'
+  activeTab: 'events' | 'meetups' | 'organizers' | 'followers'
 }
 
 const { organization, userId, activeTab } = Astro.props as Props
@@ -70,6 +72,7 @@ const isFollowing = userId ? organization.isFollower(userId) : false
         { label: 'Eventos', href: Urls.ORGANIZATION_EVENTS(organization.handle), isActive: activeTab === 'events' },
         { label: 'Meetups', href: Urls.ORGANIZATION_MEETUPS(organization.handle), isActive: activeTab === 'meetups' },
         { label: 'Organizadores', href: Urls.ORGANIZATION_ORGANIZERS(organization.handle), isActive: activeTab === 'organizers' },
+        { label: 'Seguidores', href: Urls.ORGANIZATION_FOLLOWERS(organization.handle), isActive: activeTab === 'followers' },
       ]}
     />
     {
@@ -91,6 +94,13 @@ const isFollowing = userId ? organization.isFollower(userId) : false
         <OrganizationOrganizers organization={organization} isOrganizer={isOrganizer} userId={userId} server:defer>
           <OrganizationOrganizersSkeleton slot="fallback" />
         </OrganizationOrganizers>
+      )
+    }
+    {
+      activeTab === 'followers' && (
+        <OrganizationFollowers organization={organization} userId={userId} server:defer>
+          <OrganizationFollowersSkeleton slot="fallback" />
+        </OrganizationFollowers>
       )
     }
   </section>

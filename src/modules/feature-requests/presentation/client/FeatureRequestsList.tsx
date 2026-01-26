@@ -50,7 +50,11 @@ export default function FeatureRequestsList({ initialRequests }: Props) {
         <p className="text-gray-500">No hay solicitudes todavía.</p>
       ) : (
         requests.map(request => (
-          <a key={request.id} href={`/feature-requests/${request.id}`} className="transition-opacity hover:opacity-80">
+          <a
+            key={request.id}
+            href={`/feature-requests/${request.id}`}
+            className="block transition-opacity hover:opacity-80"
+          >
             <Card className="border">
               <CardContent>
                 <div className="flex gap-4">

@@ -1,0 +1,87 @@
+---
+import type { User } from '@/users/domain/user'
+import { UsersContainer } from '@/users/di/users.container'
+import { FindUsersByIdsQuery } from '@/users/application/find-users-by-ids.query'
+import type { Organization } from '@/organizations/domain/organization'
+import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
+import { Users } from '@/ui/icons'
+import UserAvatar from '@/ui/components/user-avatar/user-avatar.astro'
+
+interface Props {
+  organization: Organization
+  userId?: string
+}
+
+const { organization, userId } = Astro.props as Props
+
+let followers: User[] = []
+
+if (organization.followers.length > 0) {
+  const paginatedFollowers = await UsersContainer.get(FindUsersByIdsQuery).execute({
+    userIds: organization.followers,
+    limit: 100,
+  })
+  followers = paginatedFollowers.data
+}
+
+const hasFollowers = followers.length > 0
+---
+
+<section class="followers">
+  {hasFollowers ? (
+    <div class="followers-grid">
+      {
+        followers.map(follower => (
+          <article class="follower-card">
+            <div class="follower-header">
+              <UserAvatar
+                userName={follower.name}
+                image={follower.avatar}
+                size="lg"
+                classes="follower-avatar"
+              />
+            </div>
+            <div class="follower-info">
+              <h3 class="follower-name">{follower.name}</h3>
+              <span class="follower-username">@{follower.username}</span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  ) : (
+    <EmptyMessage
+      icon={Users}
+      title="No hay seguidores"
+      description="Aún no hay usuarios siguiendo a esta comunidad."
+    />
+  )}
+</section>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .followers-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .follower-card {
+    @apply flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent;
+  }
+
+  .follower-header {
+    @apply flex-shrink-0;
+  }
+
+  .follower-info {
+    @apply flex min-w-0 flex-1 flex-col gap-1 overflow-hidden;
+  }
+
+  .follower-name {
+    @apply truncate text-base font-semibold text-foreground;
+  }
+
+  .follower-username {
+    @apply truncate text-sm text-muted-foreground;
+  }
+</style>

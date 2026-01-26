@@ -1,0 +1,56 @@
+---
+import VisuallyHidden from '@/ui/components/visually-hidden/visually-hidden.astro'
+
+interface Props {
+  totalElements?: number
+}
+
+const { totalElements = 8 } = Astro.props
+---
+
+<article>
+  <VisuallyHidden>Cargando seguidores</VisuallyHidden>
+  <div class="followers-grid">
+    {
+      new Array(totalElements).fill(0).map(_ => {
+        return (
+          <div class="follower-card-skeleton">
+            <div class="follower-avatar-skeleton"></div>
+            <div class="follower-info-skeleton">
+              <div class="follower-name-skeleton"></div>
+              <div class="follower-username-skeleton"></div>
+            </div>
+          </div>
+        )
+      })
+    }
+  </div>
+</article>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .followers-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .follower-card-skeleton {
+    @apply flex items-center gap-4 rounded-lg border border-border bg-card p-4;
+  }
+
+  .follower-avatar-skeleton {
+    @apply flex h-16 w-16 flex-shrink-0 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700;
+  }
+
+  .follower-info-skeleton {
+    @apply flex min-w-0 flex-1 flex-col gap-1 overflow-hidden;
+  }
+
+  .follower-name-skeleton {
+    @apply h-6 w-3/4 animate-pulse rounded bg-gray-200 dark:bg-gray-700;
+  }
+
+  .follower-username-skeleton {
+    @apply h-4 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-gray-700;
+  }
+</style>
