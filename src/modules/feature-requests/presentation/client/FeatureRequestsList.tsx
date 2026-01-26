@@ -9,6 +9,7 @@ import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Button } from '@/ui/button'
 import { Card, CardContent } from '@/ui/card'
 import { ArrowFatUp, ArrowFatUpFill } from '@/ui/icons'
+import { Urls } from '@/ui/urls/urls'
 import FeatureRequestStatusBadge from './FeatureRequestStatusBadge'
 
 interface Props {
@@ -50,17 +51,16 @@ export default function FeatureRequestsList({ initialRequests }: Props) {
         <p className="text-gray-500">No hay solicitudes todavía.</p>
       ) : (
         requests.map(request => (
-          <a
-            key={request.id}
-            href={`/feature-requests/${request.id}`}
-            className="block transition-opacity hover:opacity-80"
-          >
+          <a key={request.id} href={Urls.FEATURE_REQUEST_DETAILS(request.id)} className="block">
             <Card className="border">
               <CardContent>
                 <div className="flex gap-4">
                   <Button
                     variant={request.hasVoted ? 'default' : 'outline'}
-                    onClick={() => handleVote(request.id)}
+                    onClick={e => {
+                      e.preventDefault()
+                      handleVote(request.id)
+                    }}
                     className="flex h-16 w-16 flex-col items-center justify-center gap-1 p-2"
                   >
                     {request.hasVoted ? <ArrowFatUpFill className="h-6 w-6" /> : <ArrowFatUp className="h-6 w-6" />}
