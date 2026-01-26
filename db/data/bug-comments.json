@@ -1,0 +1,80 @@
+[
+  {
+    "id": "comment-1",
+    "bugId": "bug-1",
+    "userId": "usr-2",
+    "content": "Confirmado. Me pasa lo mismo cuando intento actualizar mi foto de perfil. Pasa tanto con Google como con GitHub."
+  },
+  {
+    "id": "comment-2",
+    "bugId": "bug-1",
+    "userId": "usr-3",
+    "content": "Parece que el problema está en la URL de la imagen. Las URLs de Google necesitan un parámetro adicional para ser accesibles públicamente."
+  },
+  {
+    "id": "comment-3",
+    "bugId": "bug-2",
+    "userId": "usr-4",
+    "content": "No puedo reproducirlo en Safari desktop, pero sí ocurre en iOS 17. Podría ser un problema con el event listener."
+  },
+  {
+    "id": "comment-4",
+    "bugId": "bug-2",
+    "userId": "usr-5",
+    "content": "También lo noté en Chrome móvil. Tal vez sea un problema de compatibilidad con el server action de Astro."
+  },
+  {
+    "id": "comment-5",
+    "bugId": "bug-3",
+    "userId": "usr-1",
+    "content": "Ya lo he arreglado. Añadí una validación en el formulario para asegurar que todos los enlaces empiecen por https://"
+  },
+  {
+    "id": "comment-6",
+    "bugId": "bug-4",
+    "userId": "usr-5",
+    "content": "Esto es importante. Deberíamos añadir una validación en el backend para evitar que se creen eventos con fechas inválidas."
+  },
+  {
+    "id": "comment-7",
+    "bugId": "bug-4",
+    "userId": "usr-6",
+    "content": "Estoy de acuerdo. Además, podemos mostrar un mensaje de error claro al usuario si intenta hacerlo."
+  },
+  {
+    "id": "comment-8",
+    "bugId": "bug-4",
+    "userId": "usr-2",
+    "content": "También podríamos añadir validación en el frontend para dar feedback inmediato antes de enviar el formulario."
+  },
+  {
+    "id": "comment-9",
+    "bugId": "bug-5",
+    "userId": "usr-3",
+    "content": "He estado revisando el código. El problema es que estamos cargando todos los eventos a la vez sin paginación."
+  },
+  {
+    "id": "comment-10",
+    "bugId": "bug-5",
+    "userId": "usr-7",
+    "content": "Propongo implementar infinite scroll o paginación. Además, deberíamos cachear los resultados en el cliente."
+  },
+  {
+    "id": "comment-11",
+    "bugId": "bug-6",
+    "userId": "usr-4",
+    "content": "La API key de Google Maps expiró. Necesitamos regenerarla o usar una alternativa como Leaflet."
+  },
+  {
+    "id": "comment-12",
+    "bugId": "bug-6",
+    "userId": "usr-1",
+    "content": "Leaflet sería una buena alternativa open source. No requiere API key y funciona bien con OpenStreetMap."
+  },
+  {
+    "id": "comment-13",
+    "bugId": "bug-7",
+    "userId": "usr-5",
+    "content": "Cancelando este ticket. Al final decidimos no permitir eliminar organizaciones para mantener la integridad de los datos históricos."
+  }
+]

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "feat-1",
+    "userId": "usr-1",
+    "title": "Añadir filtros avanzados de búsqueda de eventos",
+    "description": "Me gustaría poder filtrar eventos por tipo, ubicación, fecha y etiquetas de forma más granular.",
+    "status": "PENDING"
+  },
+  {
+    "id": "feat-2",
+    "userId": "usr-2",
+    "title": "Integración con calendarios externos (Google Calendar, Outlook)",
+    "description": "Permitir a los usuarios exportar eventos a sus calendarios personales.",
+    "status": "IN_PROGRESS"
+  },
+  {
+    "id": "feat-3",
+    "userId": "usr-3",
+    "title": "Sistema de notificaciones push",
+    "description": "Enviar notificaciones cuando se publiquen nuevos eventos o meetups de interés.",
+    "status": "PENDING"
+  },
+  {
+    "id": "feat-4",
+    "userId": "usr-4",
+    "title": "Gestión de tickets y asistencia",
+    "description": "Añadir sistema de tickets, check-in de asistencia y certificados de participación.",
+    "status": "COMPLETED"
+  },
+  {
+    "id": "feat-5",
+    "userId": "usr-5",
+    "title": "Foro de discusión por evento",
+    "description": "Crear un espacio para que los asistentes puedan hacer preguntas y compartir recursos antes del evento.",
+    "status": "PENDING"
+  },
+  {
+    "id": "feat-6",
+    "userId": "usr-6",
+    "title": "Búsqueda semántica",
+    "description": "Implementar búsqueda que entienda el contexto y encuentre eventos relacionados aunque no coincidan exactamente.",
+    "status": "PENDING"
+  },
+  {
+    "id": "feat-7",
+    "userId": "usr-7",
+    "title": "Dashboard de organización mejorado",
+    "description": "Añadir métricas de engagement, estadísticas de eventos y herramientas de gestión para organizaciones.",
+    "status": "REJECTED"
+  }
+]

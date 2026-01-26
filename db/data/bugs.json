@@ -1,0 +1,58 @@
+[
+  {
+    "id": "bug-1",
+    "userId": "usr-1",
+    "title": "Error al cargar la imagen de perfil",
+    "description": "Al intentar actualizar la imagen de perfil desde Google, la imagen no se muestra correctamente y aparece un icono roto.",
+    "status": "OPEN",
+    "visibility": "PUBLIC"
+  },
+  {
+    "id": "bug-2",
+    "userId": "usr-2",
+    "title": "El botón de unirse a meetup no funciona en Safari",
+    "description": "Al hacer clic en 'Unirme a meetup' usando Safari en iPhone, no ocurre nada y no se muestra ningún mensaje de error.",
+    "status": "IN_REVIEW",
+    "visibility": "PUBLIC"
+  },
+  {
+    "id": "bug-3",
+    "userId": "usr-3",
+    "title": "Los enlaces de redes sociales en organizaciones no son válidos",
+    "description": "Algunas organizaciones tienen enlaces que no empiezan por https:// y no funcionan correctamente.",
+    "status": "FIXED",
+    "visibility": "PUBLIC"
+  },
+  {
+    "id": "bug-4",
+    "userId": "usr-4",
+    "title": "Fallo en la validación de fechas al crear evento",
+    "description": "Es posible crear un evento con fecha de fin anterior a la fecha de inicio, lo que causa errores en la visualización.",
+    "status": "OPEN",
+    "visibility": "PUBLIC"
+  },
+  {
+    "id": "bug-5",
+    "userId": "usr-5",
+    "title": "Problema de rendimiento en lista de eventos",
+    "description": "La lista de eventos tarda más de 5 segundos en cargar cuando hay más de 50 eventos.",
+    "status": "IN_REVIEW",
+    "visibility": "PUBLIC"
+  },
+  {
+    "id": "bug-6",
+    "userId": "usr-6",
+    "title": "El mapa de ubicación no se carga correctamente",
+    "description": "El embed de Google Maps muestra un error de API key invalid cuando se visualiza un evento presencial.",
+    "status": "OPEN",
+    "visibility": "PRIVATE"
+  },
+  {
+    "id": "bug-7",
+    "userId": "usr-7",
+    "title": "Error al eliminar organización",
+    "description": "No se puede eliminar una organización que tiene eventos asociados, aunque se eliminen primero los eventos.",
+    "status": "CANCELED",
+    "visibility": "PUBLIC"
+  }
+]

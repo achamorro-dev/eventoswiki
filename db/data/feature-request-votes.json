@@ -1,0 +1,86 @@
+[
+  {
+    "featureRequestId": "feat-1",
+    "userId": "usr-2"
+  },
+  {
+    "featureRequestId": "feat-1",
+    "userId": "usr-3"
+  },
+  {
+    "featureRequestId": "feat-1",
+    "userId": "usr-4"
+  },
+  {
+    "featureRequestId": "feat-1",
+    "userId": "usr-5"
+  },
+  {
+    "featureRequestId": "feat-2",
+    "userId": "usr-1"
+  },
+  {
+    "featureRequestId": "feat-2",
+    "userId": "usr-3"
+  },
+  {
+    "featureRequestId": "feat-2",
+    "userId": "usr-6"
+  },
+  {
+    "featureRequestId": "feat-2",
+    "userId": "usr-7"
+  },
+  {
+    "featureRequestId": "feat-3",
+    "userId": "usr-1"
+  },
+  {
+    "featureRequestId": "feat-3",
+    "userId": "usr-2"
+  },
+  {
+    "featureRequestId": "feat-3",
+    "userId": "usr-4"
+  },
+  {
+    "featureRequestId": "feat-4",
+    "userId": "usr-2"
+  },
+  {
+    "featureRequestId": "feat-4",
+    "userId": "usr-3"
+  },
+  {
+    "featureRequestId": "feat-4",
+    "userId": "usr-5"
+  },
+  {
+    "featureRequestId": "feat-4",
+    "userId": "usr-6"
+  },
+  {
+    "featureRequestId": "feat-4",
+    "userId": "usr-7"
+  },
+  {
+    "featureRequestId": "feat-5",
+    "userId": "usr-3"
+  },
+  {
+    "featureRequestId": "feat-5",
+    "userId": "usr-4"
+  },
+  {
+    "featureRequestId": "feat-6",
+    "userId": "usr-1"
+  },
+  {
+    "featureRequestId": "feat-6",
+    "userId": "usr-5"
+  },
+  {
+    "featureRequestId": "feat-6",
+    "userId": "usr-6"
+  }
+]
