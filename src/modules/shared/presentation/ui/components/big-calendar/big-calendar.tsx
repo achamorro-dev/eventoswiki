@@ -49,7 +49,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate, classN
 
   const onSelectEvent = (event: CalendarEvent) => {
     linkRef.current!.href = event.url
-    linkRef.current!.click()
+    linkRef.current?.click()
   }
 
   const onDateChange = (date: Date) => {
@@ -98,6 +98,8 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate, classN
         onSelectEvent={onSelectEvent}
         onNavigate={onDateChange}
       />
+      {/** biome-ignore lint/a11y/useValidAnchor: This link is used to navigate to event details */}
+      {/** biome-ignore lint/a11y/useAnchorContent: This link is used to navigate to event details */}
       <a ref={linkRef} target="_blank" aria-hidden />
     </section>
   )

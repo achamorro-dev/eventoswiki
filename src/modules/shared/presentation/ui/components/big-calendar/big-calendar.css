@@ -23,8 +23,8 @@ div.rbc-time-view .event,
 div.rbc-overlay .rbc-event.event {
   @apply rounded-md text-sm font-medium;
   color: var(--event-color, var(--primary));
-  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, white) !important;
-  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 10%, white) !important;
+  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, white);
+  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 10%, white);
 }
 
 html.dark .rbc-month-view .event,
@@ -32,8 +32,8 @@ html.dark .rbc-time-view .event,
 html.dark .rbc-overlay .rbc-event.event {
   @apply rounded-md text-sm font-medium;
   color: color-mix(in srgb, var(--event-color, var(--primary)) 25%, white);
-  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 75%, white) !important;
-  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 75%, white);
+  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, transparent);
 }
 
 div.rbc-row-segment {
@@ -74,11 +74,11 @@ div.rbc-agenda-time-cell span {
 }
 
 .rbc-toolbar-label {
-  @apply text-primary !text-right text-xl font-medium;
+  @apply absolute text-primary text-xl font-medium;
 }
 
 div.rbc-toolbar {
-  @apply mb-0 gap-4 rounded-t-md border border-b-0 p-4;
+  @apply relative h-16 mb-0 gap-4 rounded-t-md border border-b-0 p-4;
 }
 
 div.rbc-toolbar button {
@@ -91,6 +91,10 @@ div.rbc-off-range-bg {
 
 .rbc-today {
   @apply !bg-primary/25 !opacity-75;
+}
+
+div.rbc-toolbar .rbc-btn-group {
+  @apply absolute right-4;
 }
 
 .rbc-btn-group button {
@@ -119,15 +123,15 @@ button.rbc-button-link {
 
 /* Event Card Styles */
 .event-card {
-  background-color: color-mix(in srgb, var(--event-background-color) 10%, white) !important;
-  border-color: color-mix(in srgb, var(--event-background-color) 25%, white) !important;
-  color: var(--event-color) !important;
+  background-color: color-mix(in srgb, var(--event-background-color) 10%, white);
+  border-color: color-mix(in srgb, var(--event-background-color) 25%, white);
+  color: var(--event-color);
 }
 
 html.dark .event-card {
-  background-color: color-mix(in srgb, var(--event-background-color) 25%, transparent) !important;
-  border-color: color-mix(in srgb, var(--event-background-color) 75%, white) !important;
-  color: color-mix(in srgb, var(--event-color) 25%, white) !important;
+  background-color: color-mix(in srgb, var(--event-background-color) 25%, transparent);
+  border-color: color-mix(in srgb, var(--event-background-color) 75%, white);
+  color: color-mix(in srgb, var(--event-color) 25%, white);
 }
 
 .agenda-day-with-events {
