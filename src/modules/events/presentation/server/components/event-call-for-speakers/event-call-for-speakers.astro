@@ -1,0 +1,48 @@
+---
+import { Datetime } from '@/shared/domain/datetime/datetime'
+import type { Event } from '@/events/domain/event'
+
+interface Props {
+  event: Event
+}
+
+const { event } = Astro.props
+const isActive = event.isCallForSpeakersActive()
+const now = new Date()
+const startDate = new Date(event.callForSpeakersStartsAt!)
+const endDate = new Date(event.callForSpeakersEndsAt!)
+const isUpcoming = now < startDate
+const isEnded = now > endDate
+
+let periodText = ''
+if (isUpcoming) {
+  periodText = `El call for speakers comenzará el día ${Datetime.toDateString(event.callForSpeakersStartsAt!)}.`
+} else if (isEnded) {
+  periodText = `El call for speakers finalizó el día ${Datetime.toDateString(event.callForSpeakersEndsAt!)}.`
+} else {
+  periodText = `El call for speakers finalizará el día ${Datetime.toDateString(event.callForSpeakersEndsAt!)}.`
+}
+---
+
+<div class="space-y-6">
+  <div class="mt-4 rounded-lg bg-muted/50 p-3">
+    <div class="flex items-center gap-4">
+      <div
+        class={
+          'inline-flex items-center gap-2 rounded-full px-2 py-0.5 text-sm font-medium ' +
+          (isActive ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400')
+        }
+      >
+        {isActive ? 'Período abierto' : 'Período cerrado'}
+      </div>
+
+      <span class="text-sm font-medium">{periodText}</span>
+    </div>
+  </div>
+
+      <span class="text-sm">{periodText}</span>
+    </div>
+  </div>
+
+  <article set:html={event.callForSpeakersContent ?? ''} class="prose prose-slate max-w-none" />
+</div>

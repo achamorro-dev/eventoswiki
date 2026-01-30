@@ -35,6 +35,12 @@ export const Event = defineTable({
     content: column.text(),
     organizationId: column.text({ optional: true, references: () => Organization.columns.id }),
     place: column.json({ optional: true }),
+    callForSponsorsEnabled: column.boolean({ default: false }),
+    callForSponsorsContent: column.text({ optional: true }),
+    callForSpeakersEnabled: column.boolean({ default: false }),
+    callForSpeakersStartsAt: column.date({ optional: true }),
+    callForSpeakersEndsAt: column.date({ optional: true }),
+    callForSpeakersContent: column.text({ optional: true }),
   },
 })
 

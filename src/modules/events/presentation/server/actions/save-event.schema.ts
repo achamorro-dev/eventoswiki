@@ -43,4 +43,16 @@ export const saveEventActionSchema = z.object({
   eventId: z.string().optional(),
   tags: z.array(z.string()).default([]),
   tagColor: z.string().default(''),
+  callForSponsorsEnabled: z.boolean().optional().default(false),
+  callForSponsorsContent: z.string().optional(),
+  callForSpeakersEnabled: z.boolean().optional().default(false),
+  callForSpeakersStartsAt: z
+    .string()
+    .optional()
+    .transform(date => (date ? Datetime.toDate(date) : undefined)),
+  callForSpeakersEndsAt: z
+    .string()
+    .optional()
+    .transform(date => (date ? Datetime.toDate(date) : undefined)),
+  callForSpeakersContent: z.string().optional(),
 })

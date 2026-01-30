@@ -31,6 +31,12 @@ export interface AstroDbEventDto {
   content: string
   organizationId: string | null
   place: Primitives<Place> | null | undefined
+  callForSponsorsEnabled: boolean
+  callForSponsorsContent: string | null
+  callForSpeakersEnabled: boolean
+  callForSpeakersStartsAt: Date | null
+  callForSpeakersEndsAt: Date | null
+  callForSpeakersContent: string | null
 }
 
 export interface AstroDbTicketDto {

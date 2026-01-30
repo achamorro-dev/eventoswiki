@@ -1,0 +1,9 @@
+---
+interface Props {
+  content: string
+}
+
+const { content } = Astro.props
+---
+
+<article set:html={content} class="prose prose-slate max-w-none" />

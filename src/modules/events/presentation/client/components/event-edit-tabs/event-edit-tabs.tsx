@@ -1,0 +1,63 @@
+'use client'
+
+import { useState } from 'react'
+import type { Event } from '@/events/domain/event'
+import type { Organization } from '@/organizations/domain/organization'
+import type { Province } from '@/provinces/domain/province'
+import type { Primitives } from '@/shared/domain/primitives/primitives'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs'
+import { EventEditForm } from '../event-edit-form/event-edit-form'
+
+interface Props {
+  event?: Primitives<Event>
+  provinces: Array<Province>
+  organization: Primitives<Organization>
+}
+
+export const EventEditTabs = ({ event, provinces, organization }: Props) => {
+  const [activeTab, setActiveTab] = useState<'info' | 'sponsors' | 'speakers'>('info')
+
+  if (!event) {
+    return <EventEditForm provinces={provinces} organizationId={organization.id} />
+  }
+
+  return (
+    <Tabs value={activeTab} onValueChange={value => setActiveTab(value as any)} className="w-full">
+      <TabsList>
+        <TabsTrigger value="info">Información del evento</TabsTrigger>
+        <TabsTrigger value="sponsors">Call for Sponsors</TabsTrigger>
+        <TabsTrigger value="speakers">Call for Speakers</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="info">
+        <EventEditForm
+          event={event}
+          provinces={provinces}
+          organizationId={organization.id}
+          organization={organization}
+          tab="info"
+        />
+      </TabsContent>
+
+      <TabsContent value="sponsors">
+        <EventEditForm
+          event={event}
+          provinces={provinces}
+          organizationId={organization.id}
+          organization={organization}
+          tab="sponsors"
+        />
+      </TabsContent>
+
+      <TabsContent value="speakers">
+        <EventEditForm
+          event={event}
+          provinces={provinces}
+          organizationId={organization.id}
+          organization={organization}
+          tab="speakers"
+        />
+      </TabsContent>
+    </Tabs>
+  )
+}

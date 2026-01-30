@@ -255,6 +255,7 @@ function Button({ className, variant, size, ...props }: Props) {
 
 - **Schema**: Define tables in `db/config.ts` using Astro DB
 - **Migrations**: Use the content migration system
+- **IMPORTANT**: Never run database migrations automatically. After modifying `db/config.ts`, only run `pnpm exec astro db push` when explicitly instructed by the user
 - **Repositories**: Define interfaces as abstract classes in domain layer, implement in infrastructure layer
 - **Primitives**: Convert between domain objects and database primitives
 - When altering database tables or seeds, run the relevant script in `db/` and document the dataset or migration steps in your PR

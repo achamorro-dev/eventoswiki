@@ -64,6 +64,57 @@ export const eventFormSchema = z
       .optional(),
     tags: NotRequiredArrayFormField(z.string()),
     tagColor: NotRequiredStringFormField(),
+    callForSponsorsEnabled: z.boolean().optional(),
+    callForSponsorsContent: z.string().optional(),
+    callForSpeakersEnabled: z.boolean().optional(),
+    callForSpeakersStartsAt: z.date().optional(),
+    callForSpeakersEndsAt: z.date().optional(),
+    callForSpeakersContent: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.callForSponsorsEnabled && !data.callForSponsorsContent?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'El contenido de Call for Sponsors es obligatorio cuando está activado',
+        path: ['callForSponsorsContent'],
+      })
+    }
+  })
+  .superRefine((data, ctx) => {
+    if (data.callForSpeakersEnabled) {
+      if (!data.callForSpeakersContent?.trim()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'El contenido de Call for Speakers es obligatorio cuando está activado',
+          path: ['callForSpeakersContent'],
+        })
+      }
+      if (!data.callForSpeakersStartsAt) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'La fecha de inicio es obligatoria',
+          path: ['callForSpeakersStartsAt'],
+        })
+      }
+      if (!data.callForSpeakersEndsAt) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'La fecha de fin es obligatoria',
+          path: ['callForSpeakersEndsAt'],
+        })
+      }
+      if (
+        data.callForSpeakersStartsAt &&
+        data.callForSpeakersEndsAt &&
+        data.callForSpeakersStartsAt >= data.callForSpeakersEndsAt
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'La fecha de fin debe ser posterior a la fecha de inicio',
+          path: ['callForSpeakersEndsAt'],
+        })
+      }
+    }
   })
   .superRefine((data, ctx) => {
     const periodValidator = new EventPeriodValidator({ startsAt: data.startsAt, endsAt: data.endsAt })

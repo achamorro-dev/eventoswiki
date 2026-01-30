@@ -1,19 +1,20 @@
 ---
+import { navigate } from 'astro:transitions/client'
 import { EventsContainer } from '@/events/di/events.container'
 import { GetEventQuery } from '@/events/application/get-event.query'
 import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import type { Event } from '@/events/domain/event'
-import { EventEditForm } from '@/events/presentation/client/components/event-edit-form/event-edit-form'
+import { EventEditTabs } from '@/events/presentation/client/components/event-edit-tabs/event-edit-tabs'
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { Urls } from '@/ui/urls/urls'
-import { navigate } from 'astro:transitions/client'
 import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 const year = Astro.params.year
@@ -29,6 +30,7 @@ const slug = `${year}/${path}`
 
 let event: Event | undefined
 let provinces: Province[] = []
+let organization: Organization | undefined
 let canEdit = false
 
 try {
@@ -42,7 +44,8 @@ try {
 
   if (event && userId) {
     const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
-    canEdit = organizations.some(organization => event!.isOrganizedBy(organization.id))
+    organization = organizations.find(org => event!.isOrganizedBy(org.id))
+    canEdit = organization !== undefined
   }
 } catch (error) {
   switch (true) {
@@ -59,16 +62,16 @@ try {
 ---
 
 {
-  event && canEdit ? (
+  event && organization && canEdit ? (
     <>
       <Layout title={'Editar evento'}>
         <article>
           <SectionTitle>Editar evento</SectionTitle>
-          <EventEditForm
+          <EventEditTabs
             client:only="react"
             event={event.toPrimitives()}
-            organizationId={event.organizationId!}
             provinces={provinces}
+            organization={organization.toPrimitives()}
           />
         </article>
       </Layout>

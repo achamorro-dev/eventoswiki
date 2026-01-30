@@ -153,6 +153,12 @@ export class AstroDbEventsRepository implements EventsRepository {
           tagColor: value.tagColor,
           content: value.content,
           place: value.place ? value.place.toPrimitives() : null,
+          callForSponsorsEnabled: value.callForSponsorsEnabled,
+          callForSponsorsContent: value.callForSponsorsContent,
+          callForSpeakersEnabled: value.callForSpeakersEnabled,
+          callForSpeakersStartsAt: value.callForSpeakersStartsAt,
+          callForSpeakersEndsAt: value.callForSpeakersEndsAt,
+          callForSpeakersContent: value.callForSpeakersContent,
         })
         .where(eq(Event.id, value.id.value))
     } catch (error) {
@@ -190,6 +196,12 @@ export class AstroDbEventsRepository implements EventsRepository {
         content: value.content,
         organizationId: value.organizationId,
         place: value.place ? value.place.toPrimitives() : null,
+        callForSponsorsEnabled: value.callForSponsorsEnabled,
+        callForSponsorsContent: value.callForSponsorsContent,
+        callForSpeakersEnabled: value.callForSpeakersEnabled,
+        callForSpeakersStartsAt: value.callForSpeakersStartsAt,
+        callForSpeakersEndsAt: value.callForSpeakersEndsAt,
+        callForSpeakersContent: value.callForSpeakersContent,
       })
     } catch (error) {
       this._mapError(error, value)

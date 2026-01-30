@@ -105,5 +105,15 @@ function _parseEventDataPayload(input: z.infer<typeof saveEventActionSchema>): E
     tickets: input.tickets || [],
     tags: input.tags,
     tagColor: input.tagColor,
+    callForSponsorsEnabled: input.callForSponsorsEnabled ?? false,
+    callForSponsorsContent: input.callForSponsorsContent ?? undefined,
+    callForSpeakersEnabled: input.callForSpeakersEnabled ?? false,
+    callForSpeakersStartsAt: input.callForSpeakersStartsAt
+      ? Datetime.toDateTimeIsoString(input.callForSpeakersStartsAt)
+      : undefined,
+    callForSpeakersEndsAt: input.callForSpeakersEndsAt
+      ? Datetime.toDateTimeIsoString(input.callForSpeakersEndsAt)
+      : undefined,
+    callForSpeakersContent: input.callForSpeakersContent ?? undefined,
   }
 }

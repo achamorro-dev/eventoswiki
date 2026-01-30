@@ -39,6 +39,12 @@ export class AstroEventMapper {
       organizationId: eventDto.organizationId || undefined,
       place: eventDto.place || undefined,
       tickets: [],
+      callForSponsorsEnabled: eventDto.callForSponsorsEnabled,
+      callForSponsorsContent: eventDto.callForSponsorsContent ?? undefined,
+      callForSpeakersEnabled: eventDto.callForSpeakersEnabled,
+      callForSpeakersStartsAt: eventDto.callForSpeakersStartsAt?.toISOString() ?? undefined,
+      callForSpeakersEndsAt: eventDto.callForSpeakersEndsAt?.toISOString() ?? undefined,
+      callForSpeakersContent: eventDto.callForSpeakersContent ?? undefined,
     })
   }
 }

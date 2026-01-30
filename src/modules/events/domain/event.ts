@@ -38,6 +38,12 @@ export class Event implements EventProps {
   organizationId?: string
   place?: EventPlace
   tickets: TicketCollection
+  callForSponsorsEnabled: boolean
+  callForSponsorsContent?: string
+  callForSpeakersEnabled: boolean
+  callForSpeakersStartsAt?: Date
+  callForSpeakersEndsAt?: Date
+  callForSpeakersContent?: string
 
   private constructor(props: EventProps) {
     this.id = props.id
@@ -68,6 +74,12 @@ export class Event implements EventProps {
     this.organizationId = props.organizationId || undefined
     this.place = props.place
     this.tickets = props.tickets
+    this.callForSponsorsEnabled = props.callForSponsorsEnabled
+    this.callForSponsorsContent = props.callForSponsorsContent
+    this.callForSpeakersEnabled = props.callForSpeakersEnabled
+    this.callForSpeakersStartsAt = props.callForSpeakersStartsAt
+    this.callForSpeakersEndsAt = props.callForSpeakersEndsAt
+    this.callForSpeakersContent = props.callForSpeakersContent
   }
 
   static fromPrimitives(primitives: Primitives<Event>): Event {
@@ -100,6 +112,14 @@ export class Event implements EventProps {
       organizationId: primitives.organizationId,
       place: primitives.place ? EventPlace.fromPrimitives(primitives.place) : undefined,
       tickets: TicketCollection.fromPrimitives((primitives.tickets as any) || []),
+      callForSponsorsEnabled: primitives.callForSponsorsEnabled ?? false,
+      callForSponsorsContent: primitives.callForSponsorsContent ?? undefined,
+      callForSpeakersEnabled: primitives.callForSpeakersEnabled ?? false,
+      callForSpeakersStartsAt: primitives.callForSpeakersStartsAt
+        ? new Date(primitives.callForSpeakersStartsAt)
+        : undefined,
+      callForSpeakersEndsAt: primitives.callForSpeakersEndsAt ? new Date(primitives.callForSpeakersEndsAt) : undefined,
+      callForSpeakersContent: primitives.callForSpeakersContent ?? undefined,
     })
   }
 
@@ -113,6 +133,12 @@ export class Event implements EventProps {
       image: this.image.toString(),
       place: this.place?.toPrimitives(),
       tickets: this.tickets.toPrimitives(),
+      callForSponsorsEnabled: this.callForSponsorsEnabled,
+      callForSponsorsContent: this.callForSponsorsContent ?? null,
+      callForSpeakersEnabled: this.callForSpeakersEnabled,
+      callForSpeakersStartsAt: this.callForSpeakersStartsAt?.toISOString() ?? null,
+      callForSpeakersEndsAt: this.callForSpeakersEndsAt?.toISOString() ?? null,
+      callForSpeakersContent: this.callForSpeakersContent ?? null,
     }
   }
 
@@ -126,6 +152,12 @@ export class Event implements EventProps {
       location: data.location ?? null,
       type: data.type ?? EventTypes.InPerson,
       tickets: (data.tickets as any) || [],
+      callForSponsorsEnabled: false,
+      callForSponsorsContent: undefined,
+      callForSpeakersEnabled: false,
+      callForSpeakersStartsAt: undefined,
+      callForSpeakersEndsAt: undefined,
+      callForSpeakersContent: undefined,
     })
 
     return event
@@ -181,6 +213,16 @@ export class Event implements EventProps {
     if (data.tickets) {
       this.tickets = TicketCollection.fromPrimitives((data.tickets as any) || [])
     }
+    this.callForSponsorsEnabled = data.callForSponsorsEnabled ?? this.callForSponsorsEnabled
+    this.callForSponsorsContent = data.callForSponsorsContent ?? this.callForSponsorsContent
+    this.callForSpeakersEnabled = data.callForSpeakersEnabled ?? this.callForSpeakersEnabled
+    this.callForSpeakersStartsAt = data.callForSpeakersStartsAt
+      ? Datetime.toDate(data.callForSpeakersStartsAt)
+      : this.callForSpeakersStartsAt
+    this.callForSpeakersEndsAt = data.callForSpeakersEndsAt
+      ? Datetime.toDate(data.callForSpeakersEndsAt)
+      : this.callForSpeakersEndsAt
+    this.callForSpeakersContent = data.callForSpeakersContent ?? this.callForSpeakersContent
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
@@ -193,6 +235,26 @@ export class Event implements EventProps {
 
   getMinTicketPrice(): number | null {
     return this.tickets.getMinPrice()
+  }
+
+  hasCallForSponsors(): boolean {
+    return this.callForSponsorsEnabled && !!this.callForSponsorsContent
+  }
+
+  hasCallForSpeakers(): boolean {
+    return (
+      this.callForSpeakersEnabled &&
+      !!this.callForSpeakersContent &&
+      !!this.callForSpeakersStartsAt &&
+      !!this.callForSpeakersEndsAt
+    )
+  }
+
+  isCallForSpeakersActive(): boolean {
+    if (!this.hasCallForSpeakers()) return false
+
+    const now = new Date()
+    return now >= this.callForSpeakersStartsAt! && now <= this.callForSpeakersEndsAt!
   }
 }
 
@@ -225,6 +287,14 @@ export interface EventProps {
   organizationId?: string | null
   place?: EventPlace
   tickets: TicketCollection
+  callForSponsorsEnabled: boolean
+  callForSponsorsContent?: string
+  callForSpeakersEnabled: boolean
+  callForSpeakersStartsAt?: Date
+  callForSpeakersEndsAt?: Date
+  callForSpeakersContent?: string
 }
 
-export type EventEditableData = Primitives<Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>
+export type EventEditableData = Primitives<
+  Omit<EventProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId' | 'year'>
+>

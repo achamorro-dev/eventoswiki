@@ -16,24 +16,6 @@ interface PlaceSearchProps {
   value?: Primitives<Place>
 }
 
-const examplePlaces: Primitives<Place>[] = [
-  {
-    id: '1',
-    name: 'Lugar 1',
-    address: 'Dirección 1',
-  },
-  {
-    id: '2',
-    name: 'Lugar 2',
-    address: 'Dirección 2',
-  },
-  {
-    id: '3',
-    name: 'Lugar 3',
-    address: 'Dirección 3',
-  },
-]
-
 export const PlaceSearch = ({
   onPlaceSelect,
   placeholder = 'Escribe la dirección o el nombre del lugar...',
@@ -109,13 +91,13 @@ export const PlaceSearch = ({
     }, 300)
 
     return () => clearTimeout(timer)
-  }, [query, setError, setResults, setIsLoading])
+  }, [query, value?.name])
 
   useEffect(() => {
     if (value?.name !== undefined && value.name !== query) {
       setQuery(value.name)
     }
-  }, [value])
+  }, [value, query])
 
   const handleSelect = (place: Primitives<Place>) => {
     onPlaceSelect?.(place)
@@ -127,7 +109,7 @@ export const PlaceSearch = ({
     <Command shouldFilter={false} className={cn('relative overflow-visible', className)} ref={containerRef}>
       <CommandInput value={query} onValueChange={setQuery} placeholder={placeholder} />
       <CommandList
-        className={cn('absolute w-full bg-background top-[calc(100%+4px)] rounded-md', {
+        className={cn('absolute top-[calc(100%+4px)] w-full rounded-md bg-background', {
           'border border-input': showResults,
         })}
       >

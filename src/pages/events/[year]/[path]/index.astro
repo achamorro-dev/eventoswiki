@@ -3,11 +3,15 @@ import { EventsContainer } from '@/events/di/events.container'
 import { GetEventQuery } from '@/events/application/get-event.query'
 import { EventNotFound } from '@/events/domain/errors/event-not-found'
 import type { Event } from '@/events/domain/event'
+import EventCallForSponsors from '@/events/presentation/server/components/event-call-for-sponsors/event-call-for-sponsors.astro'
+import EventCallForSpeakers from '@/events/presentation/server/components/event-call-for-speakers/event-call-for-speakers.astro'
+import EventContent from '@/events/presentation/server/components/event-content/event-content.astro'
 import BaseLayout from '@/layouts/base-layout.astro'
 import EventLayout from '@/layouts/event-layout.astro'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
 import NotFound from '@/ui/components/not-found/not-found.astro'
+import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
 import { marked } from 'marked'
@@ -22,6 +26,7 @@ if (!year || !path) {
 
 const userId = Astro.locals.user?.id
 const slug = `${year}/${path}`
+const activeTab = Astro.url.searchParams.get('tab') ?? 'details'
 
 let event: Event | undefined
 let content: string = ''
@@ -48,12 +53,33 @@ try {
       break
   }
 }
+
+const tabs = [
+  { label: 'Detalles', 
+      href: `${Urls.EVENT(event?.slug ?? '')}?tab=details`,
+  isActive: activeTab === 'details' },
+  {
+    label: 'Call for Sponsors',
+    href: `${Urls.EVENT(event?.slug ?? '')}?tab=sponsors`,
+    isActive: activeTab === 'sponsors',
+    show: event?.hasCallForSponsors() ?? false,
+  },
+  {
+    label: 'Call for Speakers',
+    href: `${Urls.EVENT(event?.slug ?? '')}?tab=speakers`,
+    isActive: activeTab === 'speakers',
+    show: event?.hasCallForSpeakers() ?? false,
+  },
+]
 ---
 
 {
   event && content ? (
     <EventLayout event={event} isOrganizer={isOrganizer}>
-      <article set:html={content} />
+      <LinkTabs tabs={tabs.filter(t => t.show !== false)} />
+      {activeTab === 'details' && <EventContent content={content} />}
+      {activeTab === 'sponsors' && <EventCallForSponsors content={event.callForSponsorsContent ?? ''} />}
+      {activeTab === 'speakers' && <EventCallForSpeakers event={event} />}
     </EventLayout>
   ) : (
     <BaseLayout title="Evento no encontrado">
@@ -61,3 +87,4 @@ try {
     </BaseLayout>
   )
 }
+
