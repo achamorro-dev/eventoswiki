@@ -14,7 +14,7 @@
     "tags": "agile,scrum,kanban",
     "tagColor": "#2563eb",
     "content": "## Agile Open Spain\n\nLa conferencia de referencia sobre metodologías ágiles en España reuniendo a profesionales de toda Europa.",
-    "place": { "name": "Madrid", "address": "Hotel Marriott Auditorium" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -32,7 +32,7 @@
     "tags": "development,cloud,architecture",
     "tagColor": "#059669",
     "content": "## Bilbostack\n\nLa conferencia tecnológica de Bilbao que reúne a desarrolladores de toda España.",
-    "place": { "name": "Bilbao", "address": "Euskalduna Jauregia" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -51,7 +51,7 @@
     "tags": "development,community,software",
     "tagColor": "#dc2626",
     "content": "## Commit Conf\n\nLa conferencia de desarrollo software más grande de España.",
-    "place": { "name": "Madrid", "address": "Campus Google Madrid" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -69,7 +69,7 @@
     "tags": "lean,design,product",
     "tagColor": "#7c3aed",
     "content": "## Congreso Lean Design\n\nLa conferencia sobre metodologías de diseño y desarrollo de productos.",
-    "place": { "name": "Barcelona", "address": "CCIB" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -87,7 +87,7 @@
     "tags": "azure,microsoft,cloud",
     "tagColor": "#0891b2",
     "content": "## Global Azure Madrid\n\nEl evento de referencia sobre Microsoft Azure en Madrid.",
-    "place": { "name": "Madrid", "address": "Microsoft Reactor" },
+    "place": null,
     "organizationId": "org-netcoreconf"
   },
   {
@@ -105,7 +105,7 @@
     "tags": "gaming,game-dev,unity",
     "tagColor": "#ea580c",
     "content": "## Granada Gaming\n\nLa conferencia sobre desarrollo de videojuegos en Granada.",
-    "place": { "name": "Granada", "address": "Universidad de Granada" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -123,7 +123,7 @@
     "tags": "outdoor,community,tech",
     "tagColor": "#16a34a",
     "content": "## Guadalindie\n\nEl meetup tecnológico en plena naturaleza.",
-    "place": { "name": "Granada", "address": "Sierra de Lújar" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -141,7 +141,7 @@
     "tags": "hackathon,innovation,startups",
     "tagColor": "#4f46e5",
     "content": "## Hack EN\n\nEl hackathon empresarial del sur de España.",
-    "place": { "name": "Sevilla", "address": "Cluster de Automocion" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -159,7 +159,7 @@
     "tags": "beginners,coding,education",
     "tagColor": "#0891b2",
     "content": "## Hola Mundo Day\n\nEl día para aprender a programar.",
-    "place": { "name": "Madrid", "address": "Campus Villaverde" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -177,7 +177,7 @@
     "tags": "javascript,web,frontend",
     "tagColor": "#f59e0b",
     "content": "## J on the Beach\n\nLa conferencia de JavaScript en la playa.",
-    "place": { "name": "Málaga", "address": "Málaga Tech Park" },
+    "place": null,
     "organizationId": "org-jsconf-espana"
   },
   {
@@ -195,7 +195,7 @@
     "tags": "javascript,community,node",
     "tagColor": "#ea580c",
     "content": "## JSConf España\n\nLa conferencia oficial de JavaScript en España.",
-    "place": { "name": "Valencia", "address": "Centre de Congressos" },
+    "place": null,
     "organizationId": "org-jsconf-espana"
   },
   {
@@ -213,7 +213,7 @@
     "tags": "product,ux,design",
     "tagColor": "#db2777",
     "content": "## La Product Conf\n\nLa conferencia de producto digital.",
-    "place": { "name": "Barcelona", "address": "Ayre Hotel Gran Via" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -231,7 +231,7 @@
     "tags": "metaverse,ai,emerging-tech",
     "tagColor": "#7c3aed",
     "content": "## Meta World Congress\n\nLa conferencia sobre tecnologías del futuro.",
-    "place": { "name": "Madrid", "address": "IFEMA" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -249,7 +249,7 @@
     "tags": ".net,c#,microsoft",
     "tagColor": "#512bd4",
     "content": "## NetCoreConf Barcelona\n\nLa conferencia de .NET en Barcelona.",
-    "place": { "name": "Barcelona", "address": "Microsoft BC" },
+    "place": null,
     "organizationId": "org-netcoreconf"
   },
   {
@@ -269,7 +269,7 @@
     "tags": "general,technology,festival",
     "tagColor": "#7b5bc6",
     "content": "## T3chFest 2025\n\nEdición 2025 del festival de tecnología gratuito en Madrid.",
-    "place": { "name": "Madrid", "address": "Universidad Carlos III - Campus de Leganés" },
+    "place": null,
     "organizationId": "org-t3chfest"
   },
   {
@@ -287,7 +287,7 @@
     "tags": "reliability,distributed-systems,devops",
     "tagColor": "#dc2626",
     "content": "## Tech Quake\n\nLa conferencia sobre sistemas resilientes.",
-    "place": { "name": "Alicante", "address": "Estadio Rico Pérez" },
+    "place": null,
     "organizationId": "org-commit-conf"
   },
   {
@@ -305,7 +305,7 @@
     "tags": "general,technology,festival",
     "tagColor": "#7b5bc6",
     "content": "## T3chFest 2026\n\nVuelve el festival de tecnología gratuito más grande de Madrid.",
-    "place": { "name": "Madrid", "address": "Universidad Carlos III - Campus de Leganés" },
+    "place": null,
     "organizationId": "org-t3chfest"
   }
 ]
