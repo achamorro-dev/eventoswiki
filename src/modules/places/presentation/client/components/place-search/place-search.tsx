@@ -22,7 +22,8 @@ export const PlaceSearch = ({
   className,
   value,
 }: PlaceSearchProps) => {
-  const [query, setQuery] = useState(value?.name || '')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isInitialized, setIsInitialized] = useState(false)
   const [results, setResults] = useState<Primitives<Place>[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -51,11 +52,14 @@ export const PlaceSearch = ({
   }, [])
 
   useEffect(() => {
-    if (value?.name === query) {
-      return
+    if (!isInitialized && value?.name) {
+      setSearchQuery(value.name)
+      setIsInitialized(true)
     }
+  }, [value, isInitialized])
 
-    const trimmedQuery = query.trim()
+  useEffect(() => {
+    const trimmedQuery = searchQuery.trim()
 
     if (!trimmedQuery) {
       setShowResults(false)
@@ -91,23 +95,18 @@ export const PlaceSearch = ({
     }, 300)
 
     return () => clearTimeout(timer)
-  }, [query, value?.name])
-
-  useEffect(() => {
-    if (value?.name !== undefined && value.name !== query) {
-      setQuery(value.name)
-    }
-  }, [value, query])
+  }, [searchQuery])
 
   const handleSelect = (place: Primitives<Place>) => {
     onPlaceSelect?.(place)
+    setSearchQuery(place.name || '')
     setResults([])
     setShowResults(false)
   }
 
   return (
     <Command shouldFilter={false} className={cn('relative overflow-visible', className)} ref={containerRef}>
-      <CommandInput value={query} onValueChange={setQuery} placeholder={placeholder} />
+      <CommandInput value={searchQuery} onValueChange={setSearchQuery} placeholder={placeholder} />
       <CommandList
         className={cn('absolute top-[calc(100%+4px)] w-full rounded-md bg-background', {
           'border border-input': showResults,
