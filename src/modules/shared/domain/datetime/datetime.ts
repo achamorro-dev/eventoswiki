@@ -166,4 +166,9 @@ export class Datetime {
   static getLastSundayOfMonth(date: Date): Date {
     return dayjs(date).locale('es').endOf('month').endOf('week').toDate()
   }
+
+  static toDateTimeHuman(dateToFormat: ValidDate): string {
+    if (!dateToFormat) return ''
+    return dayjs(dateToFormat).locale('es').format('DD MMM YYYY HH:mm')
+  }
 }

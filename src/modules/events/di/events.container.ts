@@ -12,6 +12,10 @@ import { GetEventsQuery } from '../application/get-events.query'
 import { GetNextEventsQuery } from '../application/get-next-events.query'
 import { GetPastEventsQuery } from '../application/get-past-events.query'
 import { UpdateEventCommand } from '../application/update-event.command'
+import { AstroDbAgendaItemsRepository } from '../infrastructure/agenda/astro-db-agenda-items.repository'
+import { AstroDbAgendaSessionsRepository } from '../infrastructure/agenda/astro-db-agenda-sessions.repository'
+import { AstroDbAgendaSpeakersRepository } from '../infrastructure/agenda/astro-db-agenda-speakers.repository'
+import { AstroDbAgendaTracksRepository } from '../infrastructure/agenda/astro-db-agenda-tracks.repository'
 import { AstroDbEventsRepository } from '../infrastructure/astro-db-events.repository'
 import { AstroDBTicketsRepository } from '../infrastructure/repositories/astro-db-tickets.repository'
 
@@ -19,7 +23,29 @@ const builder = new ContainerBuilder()
 
 builder.register(AstroDBTicketsRepository).use(AstroDBTicketsRepository)
 
-builder.register(AstroDbEventsRepository).use(AstroDbEventsRepository).withDependencies([AstroDBTicketsRepository])
+// Agenda repositories - register speakers first (no dependencies)
+builder.register(AstroDbAgendaSpeakersRepository).use(AstroDbAgendaSpeakersRepository)
+
+// Sessions depends on speakers
+builder
+  .register(AstroDbAgendaSessionsRepository)
+  .use(AstroDbAgendaSessionsRepository)
+  .withDependencies([AstroDbAgendaSpeakersRepository])
+
+// Tracks depends on sessions
+builder
+  .register(AstroDbAgendaTracksRepository)
+  .use(AstroDbAgendaTracksRepository)
+  .withDependencies([AstroDbAgendaSessionsRepository])
+
+// Agenda items has no dependencies
+builder.register(AstroDbAgendaItemsRepository).use(AstroDbAgendaItemsRepository)
+
+// Events repository depends on tickets and agenda repositories
+builder
+  .register(AstroDbEventsRepository)
+  .use(AstroDbEventsRepository)
+  .withDependencies([AstroDBTicketsRepository, AstroDbAgendaTracksRepository, AstroDbAgendaItemsRepository])
 
 builder.register(GetEventQuery).use(GetEventQuery).withDependencies([AstroDbEventsRepository])
 

@@ -29,16 +29,26 @@ const socialKeys = [
 
 export class EventValidator extends Validator<EventEditableData> {
   validate() {
-    const nameValidator = new EventTitleValidator(this.value.title)
-    const shortDescriptionValidator = new EventShortDescriptionValidator(this.value.shortDescription)
-    const imageValidator = new EventImageValidator(this.value.image)
+    const nameValidator = new EventTitleValidator(this.value.title ?? '')
+    const shortDescriptionValidator = new EventShortDescriptionValidator(this.value.shortDescription ?? '')
+    const imageValidator = new EventImageValidator(this.value.image ?? '')
     const locationValidator = new EventLocationValidator(this.value.location ?? null)
-    const contentValidator = new EventContentValidator(this.value.content)
-    const startsAtValidator = new EventStartDateValidator(Datetime.toDate(this.value.startsAt))
-    const endsAtValidator = new EventEndDateValidator(Datetime.toDate(this.value.endsAt))
+    const contentValidator = new EventContentValidator(this.value.content ?? '')
+    const normalizedStartsAt = this.value.startsAt
+      ? this.value.startsAt instanceof Date
+        ? this.value.startsAt.toISOString()
+        : this.value.startsAt
+      : new Date().toISOString()
+    const normalizedEndsAt = this.value.endsAt
+      ? this.value.endsAt instanceof Date
+        ? this.value.endsAt.toISOString()
+        : this.value.endsAt
+      : new Date().toISOString()
+    const startsAtValidator = new EventStartDateValidator(Datetime.toDate(normalizedStartsAt))
+    const endsAtValidator = new EventEndDateValidator(Datetime.toDate(normalizedEndsAt))
     const periodValidator = new EventPeriodValidator({
-      startsAt: Datetime.toDate(this.value.startsAt),
-      endsAt: Datetime.toDate(this.value.endsAt),
+      startsAt: Datetime.toDate(normalizedStartsAt),
+      endsAt: Datetime.toDate(normalizedEndsAt),
     })
     const typeValidator = new EventTypeValidator(this.value.type ?? EventTypes.InPerson)
 
@@ -51,11 +61,7 @@ export class EventValidator extends Validator<EventEditableData> {
 
     const streamingUrlValidator = new EventLinkValidator(this.value.streamingUrl ?? null)
 
-    const eventType = this.value.type ?? EventTypes.InPerson
-
-    // Validación condicional: si es Online o Hybrid, streamingUrl puede estar presente
-    // Validación condicional: si es InPerson o Hybrid, place puede estar presente
-    // Estas validaciones se manejan principalmente en el formulario, pero podemos añadir validaciones básicas aquí
+    const _eventType = this.value.type ?? EventTypes.InPerson
 
     return (
       nameValidator.validate() ||

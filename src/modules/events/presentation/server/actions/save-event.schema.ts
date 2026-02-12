@@ -55,4 +55,58 @@ export const saveEventActionSchema = z.object({
     .optional()
     .transform(date => (date ? Datetime.toDate(date) : undefined)),
   callForSpeakersContent: z.string().optional(),
+  agenda: z
+    .object({
+      tracks: z
+        .array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            description: z.string().optional(),
+            sessions: z.array(
+              z.object({
+                id: z.string(),
+                title: z.string(),
+                description: z.string(),
+                image: z.string().optional(),
+                categories: z.array(z.string()).optional(),
+                language: z.string().optional(),
+                startsAt: z.string().transform(date => Datetime.toDate(date)),
+                endsAt: z.string().transform(date => Datetime.toDate(date)),
+                speakers: z.array(
+                  z.object({
+                    id: z.string(),
+                    name: z.string(),
+                    image: z.string().optional(),
+                    bio: z.string().optional(),
+                    position: z.string().optional(),
+                    socialLinks: z
+                      .object({
+                        twitter: z.string().optional(),
+                        linkedin: z.string().optional(),
+                        github: z.string().optional(),
+                        web: z.string().optional(),
+                      })
+                      .optional(),
+                  }),
+                ),
+              }),
+            ),
+          }),
+        )
+        .optional(),
+      commonElements: z
+        .array(
+          z.object({
+            id: z.string(),
+            title: z.string(),
+            description: z.string().optional(),
+            startsAt: z.string().transform(date => Datetime.toDate(date)),
+            endsAt: z.string().transform(date => Datetime.toDate(date)),
+            type: z.enum(['coffee-break', 'lunch', 'registration', 'keynote', 'other']),
+          }),
+        )
+        .optional(),
+    })
+    .optional(),
 })

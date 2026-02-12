@@ -70,6 +70,60 @@ export const eventFormSchema = z
     callForSpeakersStartsAt: z.date().optional(),
     callForSpeakersEndsAt: z.date().optional(),
     callForSpeakersContent: z.string().optional(),
+    agenda: z
+      .object({
+        tracks: z
+          .array(
+            z.object({
+              id: z.string(),
+              name: z.string().min(1, 'El nombre del track es obligatorio'),
+              description: z.string().optional(),
+              sessions: z.array(
+                z.object({
+                  id: z.string(),
+                  title: z.string().min(1, 'El título es obligatorio'),
+                  description: z.string().min(1, 'La descripción es obligatoria'),
+                  image: z.string().optional(),
+                  categories: z.array(z.string()).optional(),
+                  language: z.string().optional(),
+                  startsAt: z.date(),
+                  endsAt: z.date(),
+                  speakers: z.array(
+                    z.object({
+                      id: z.string(),
+                      name: z.string().min(1, 'El nombre del speaker es obligatorio'),
+                      image: z.string().optional(),
+                      bio: z.string().optional(),
+                      position: z.string().optional(),
+                      socialLinks: z
+                        .object({
+                          twitter: z.string().optional(),
+                          linkedin: z.string().optional(),
+                          github: z.string().optional(),
+                          web: z.string().optional(),
+                        })
+                        .optional(),
+                    }),
+                  ),
+                }),
+              ),
+            }),
+          )
+          .optional(),
+        commonElements: z
+          .array(
+            z.object({
+              id: z.string(),
+              title: z.string().min(1, 'El título es obligatorio'),
+              description: z.string().optional(),
+              startsAt: z.date(),
+              endsAt: z.date(),
+              type: z.enum(['coffee-break', 'lunch', 'registration', 'keynote', 'other']),
+            }),
+          )
+          .optional(),
+      })
+      .optional(),
   })
   .superRefine((data, ctx) => {
     if (data.callForSponsorsEnabled && !data.callForSponsorsContent?.trim()) {
@@ -124,6 +178,34 @@ export const eventFormSchema = z
         code: z.ZodIssueCode.custom,
         message: periodError,
         path: ['startsAt'],
+      })
+    }
+  })
+  .superRefine((data, ctx) => {
+    // Validate agenda if present
+    if (data.agenda) {
+      // Validate sessions have end date after start date
+      data.agenda.tracks?.forEach((track, trackIndex) => {
+        track.sessions?.forEach((session, sessionIndex) => {
+          if (session.endsAt <= session.startsAt) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'La fecha de fin debe ser posterior a la fecha de inicio',
+              path: ['agenda', 'tracks', trackIndex, 'sessions', sessionIndex, 'endsAt'],
+            })
+          }
+        })
+      })
+
+      // Validate common elements have end date after start date
+      data.agenda.commonElements?.forEach((element, index) => {
+        if (element.endsAt <= element.startsAt) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'La fecha de fin debe ser posterior a la fecha de inicio',
+            path: ['agenda', 'commonElements', index, 'endsAt'],
+          })
+        }
       })
     }
   })

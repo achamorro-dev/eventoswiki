@@ -55,6 +55,74 @@ export const Ticket = defineTable({
   },
 })
 
+export const AgendaTrack = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    eventId: column.text({ optional: false, references: () => Event.columns.id }),
+    name: column.text(),
+    description: column.text({ optional: true }),
+    order: column.number({ default: 0 }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const AgendaSession = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    trackId: column.text({ optional: false, references: () => AgendaTrack.columns.id }),
+    title: column.text(),
+    description: column.text(),
+    image: column.text({ optional: true }),
+    categories: column.text({ optional: true }),
+    language: column.text({ optional: true }),
+    startsAt: column.date(),
+    endsAt: column.date(),
+    order: column.number({ default: 0 }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const AgendaSpeaker = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    name: column.text(),
+    image: column.text({ optional: true }),
+    bio: column.text({ optional: true }),
+    position: column.text({ optional: true }),
+    twitter: column.text({ optional: true }),
+    linkedin: column.text({ optional: true }),
+    github: column.text({ optional: true }),
+    web: column.text({ optional: true }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
+export const AgendaSessionSpeaker = defineTable({
+  columns: {
+    sessionId: column.text({ optional: false, references: () => AgendaSession.columns.id }),
+    speakerId: column.text({ optional: false, references: () => AgendaSpeaker.columns.id }),
+    createdAt: column.date({ default: NOW }),
+  },
+})
+
+export const Agenda = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true, optional: false, unique: true }),
+    eventId: column.text({ optional: false, references: () => Event.columns.id }),
+    type: column.text(),
+    title: column.text(),
+    description: column.text({ optional: true }),
+    startsAt: column.date(),
+    endsAt: column.date(),
+    order: column.number({ default: 0 }),
+    createdAt: column.date({ default: NOW }),
+    updatedAt: column.date({ default: NOW }),
+  },
+})
+
 export const Meetup = defineTable({
   columns: {
     id: column.text({ primaryKey: true, optional: false, unique: true }),
@@ -243,6 +311,11 @@ export default defineDb({
   tables: {
     Event,
     Ticket,
+    AgendaTrack,
+    AgendaSession,
+    AgendaSpeaker,
+    AgendaSessionSpeaker,
+    Agenda,
     Meetup,
     MeetupAttendee,
     Province,

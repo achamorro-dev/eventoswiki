@@ -6,6 +6,7 @@ import type { Event } from '@/events/domain/event'
 import EventCallForSponsors from '@/events/presentation/server/components/event-call-for-sponsors/event-call-for-sponsors.astro'
 import EventCallForSpeakers from '@/events/presentation/server/components/event-call-for-speakers/event-call-for-speakers.astro'
 import EventContent from '@/events/presentation/server/components/event-content/event-content.astro'
+import EventAgenda from '@/events/presentation/server/components/event-agenda/event-agenda.astro'
 import BaseLayout from '@/layouts/base-layout.astro'
 import EventLayout from '@/layouts/event-layout.astro'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
@@ -70,6 +71,12 @@ const tabs = [
     isActive: activeTab === 'speakers',
     show: event?.hasCallForSpeakers() ?? false,
   },
+  {
+    label: 'Agenda',
+    href: `${Urls.EVENT(event?.slug ?? '')}?tab=agenda`,
+    isActive: activeTab === 'agenda',
+    show: event?.hasAgenda() ?? false,
+  },
 ]
 ---
 
@@ -80,6 +87,7 @@ const tabs = [
       {activeTab === 'details' && <EventContent content={content} />}
       {activeTab === 'sponsors' && <EventCallForSponsors content={event.callForSponsorsContent ?? ''} />}
       {activeTab === 'speakers' && <EventCallForSpeakers event={event} />}
+      {activeTab === 'agenda' && event.agenda && <EventAgenda agenda={event.agenda} />}
     </EventLayout>
   ) : (
     <BaseLayout title="Evento no encontrado">

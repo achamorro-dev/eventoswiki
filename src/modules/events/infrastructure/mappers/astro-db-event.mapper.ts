@@ -1,15 +1,22 @@
 import { Datetime } from '@/shared/domain/datetime/datetime'
+import type { Agenda } from '../../domain/agenda/agenda'
 import { Event } from '../../domain/event'
 import { EventTypes } from '../../domain/event-type'
 import type { AstroDbEventDto } from '../dtos/astro-db-event.dto'
 import type { AstroDbEventProvinceDto } from '../dtos/astro-db-event-province.dto'
 
 export class AstroEventMapper {
-  static toDomainList(dtos: { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[]): Event[] {
-    return dtos.map(({ Event, Province }) => AstroEventMapper.toDomain(Event, Province))
+  static toDomainList(
+    dtos: { Event: AstroDbEventDto; Province: AstroDbEventProvinceDto | null }[],
+    agendas?: (Agenda | undefined)[],
+  ): Event[] {
+    return dtos.map(({ Event, Province }, index) => {
+      const agenda = agendas?.[index]
+      return AstroEventMapper.toDomain(Event, Province, agenda)
+    })
   }
 
-  static toDomain(eventDto: AstroDbEventDto, provinceDto: AstroDbEventProvinceDto | null): Event {
+  static toDomain(eventDto: AstroDbEventDto, provinceDto: AstroDbEventProvinceDto | null, agenda?: Agenda): Event {
     return Event.fromPrimitives({
       id: eventDto.id ?? '',
       slug: eventDto.slug,
@@ -45,6 +52,7 @@ export class AstroEventMapper {
       callForSpeakersStartsAt: eventDto.callForSpeakersStartsAt?.toISOString() ?? undefined,
       callForSpeakersEndsAt: eventDto.callForSpeakersEndsAt?.toISOString() ?? undefined,
       callForSpeakersContent: eventDto.callForSpeakersContent ?? undefined,
+      agenda: agenda ? agenda.toPrimitives() : undefined,
     })
   }
 }

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import type { Event } from '@/events/domain/event'
+import type { EventPrimitives } from '@/events/domain/event'
 import { EventTypes } from '@/events/domain/event-type'
 import { EventTypeSelect } from '@/events/presentation/client/components/event-type-select/event-type-select'
 import { TicketForm } from '@/events/presentation/client/components/ticket-form/ticket-form'
@@ -34,14 +34,15 @@ import { Input } from '@/ui/input'
 import { Switch } from '@/ui/switch'
 import { Textarea } from '@/ui/textarea'
 import { Urls } from '@/ui/urls/urls'
+import { AgendaForm } from '../agenda-form/agenda-form'
 import { type EventFormSchema, eventFormSchema } from './event-form-schema'
 
 interface Props {
   provinces: Province[]
-  event?: Primitives<Event>
+  event?: EventPrimitives
   organizationId: string
   organization?: Primitives<Organization>
-  tab?: 'info' | 'sponsors' | 'speakers'
+  tab?: 'info' | 'sponsors' | 'speakers' | 'agenda'
 }
 
 export const EventEditForm = ({ provinces, organizationId, event, organization, tab = 'info' }: Props) => {
@@ -92,6 +93,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
         : undefined,
       callForSpeakersEndsAt: event?.callForSpeakersEndsAt ? Datetime.toDate(event.callForSpeakersEndsAt) : undefined,
       callForSpeakersContent: event?.callForSpeakersContent ?? '',
+      agenda: event?.agenda ? (event.agenda as any) : undefined,
     },
     resolver: zodResolver(eventFormSchema),
   })
@@ -132,6 +134,24 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
       endsAt: values.endsAt.toISOString(),
       callForSpeakersStartsAt: values.callForSpeakersStartsAt?.toISOString(),
       callForSpeakersEndsAt: values.callForSpeakersEndsAt?.toISOString(),
+      agenda: values.agenda
+        ? {
+            ...values.agenda,
+            tracks: values.agenda.tracks?.map(track => ({
+              ...track,
+              sessions: track.sessions?.map(session => ({
+                ...session,
+                startsAt: session.startsAt.toISOString(),
+                endsAt: session.endsAt.toISOString(),
+              })),
+            })),
+            commonElements: values.agenda.commonElements?.map(element => ({
+              ...element,
+              startsAt: element.startsAt.toISOString(),
+              endsAt: element.endsAt.toISOString(),
+            })),
+          }
+        : undefined,
       organizationId,
       eventId: event?.id,
     }
@@ -605,6 +625,20 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
                       />
                     </>
                   )}
+                </div>
+              )}
+
+              {/* Sección: Agenda (solo en pestaña agenda) */}
+              {tab === 'agenda' && (
+                <div className="border-t pt-6">
+                  <h2 className="mb-4 font-semibold text-xl">Agenda del evento</h2>
+                  <p className="mb-4 text-gray-500 text-sm">
+                    Opcional - Configura la agenda con tracks, sesiones y speakers
+                  </p>
+
+                  <div className="mt-4">
+                    <AgendaForm />
+                  </div>
                 </div>
               )}
             </div>

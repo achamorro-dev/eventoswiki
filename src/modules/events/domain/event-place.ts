@@ -3,10 +3,6 @@ import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { ValueObject } from '@/shared/domain/value-object'
 
 export class EventPlace extends ValueObject<Place> {
-  constructor(value: Place) {
-    super(value)
-  }
-
   static fromPrimitives(primitives: Primitives<Place>): EventPlace {
     return new EventPlace(
       Place.fromPrimitives({

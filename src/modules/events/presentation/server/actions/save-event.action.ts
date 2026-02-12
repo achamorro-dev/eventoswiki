@@ -5,7 +5,6 @@ import { UpdateEventCommand } from '@/events/application/update-event.command'
 import { EventsContainer } from '@/events/di/events.container'
 import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
 import type { EventEditableData } from '@/events/domain/event'
-import { Datetime } from '@/shared/domain/datetime/datetime'
 import { saveEventActionSchema } from './save-event.schema'
 
 export const saveEventAction = defineAction({
@@ -52,8 +51,6 @@ async function _createEvent(organizationId: string, newEvent: EventEditableData,
     data: {
       ...newEvent,
       location: newEvent.location ?? null,
-      startsAt: Datetime.toDateTimeIsoString(newEvent.startsAt),
-      endsAt: Datetime.toDateTimeIsoString(newEvent.endsAt),
     },
   })
 }
@@ -65,8 +62,6 @@ async function _saveEvent(eventId: string, newEvent: EventEditableData, userId: 
     data: {
       ...newEvent,
       location: newEvent.location ?? null,
-      startsAt: Datetime.toDateTimeIsoString(newEvent.startsAt),
-      endsAt: Datetime.toDateTimeIsoString(newEvent.endsAt),
     },
   })
 }
@@ -77,8 +72,8 @@ function _parseEventDataPayload(input: z.infer<typeof saveEventActionSchema>): E
     slug: input.slug,
     shortDescription: input.shortDescription,
     content: input.content,
-    startsAt: Datetime.toDateTimeIsoString(input.startsAt),
-    endsAt: Datetime.toDateTimeIsoString(input.endsAt),
+    startsAt: input.startsAt instanceof Date ? input.startsAt.toISOString() : input.startsAt,
+    endsAt: input.endsAt instanceof Date ? input.endsAt.toISOString() : input.endsAt,
     image: input.image,
     type: input.type,
     location: input.location ?? null,
@@ -109,11 +104,32 @@ function _parseEventDataPayload(input: z.infer<typeof saveEventActionSchema>): E
     callForSponsorsContent: input.callForSponsorsContent ?? undefined,
     callForSpeakersEnabled: input.callForSpeakersEnabled ?? false,
     callForSpeakersStartsAt: input.callForSpeakersStartsAt
-      ? Datetime.toDateTimeIsoString(input.callForSpeakersStartsAt)
+      ? input.callForSpeakersStartsAt instanceof Date
+        ? input.callForSpeakersStartsAt.toISOString()
+        : input.callForSpeakersStartsAt
       : undefined,
     callForSpeakersEndsAt: input.callForSpeakersEndsAt
-      ? Datetime.toDateTimeIsoString(input.callForSpeakersEndsAt)
+      ? input.callForSpeakersEndsAt instanceof Date
+        ? input.callForSpeakersEndsAt.toISOString()
+        : input.callForSpeakersEndsAt
       : undefined,
     callForSpeakersContent: input.callForSpeakersContent ?? undefined,
+    agenda: input.agenda
+      ? {
+          tracks: (input.agenda.tracks ?? []).map(track => ({
+            ...track,
+            sessions: track.sessions.map(session => ({
+              ...session,
+              startsAt: session.startsAt instanceof Date ? session.startsAt.toISOString() : session.startsAt,
+              endsAt: session.endsAt instanceof Date ? session.endsAt.toISOString() : session.endsAt,
+            })),
+          })),
+          commonElements: (input.agenda.commonElements ?? []).map(element => ({
+            ...element,
+            startsAt: element.startsAt instanceof Date ? element.startsAt.toISOString() : element.startsAt,
+            endsAt: element.endsAt instanceof Date ? element.endsAt.toISOString() : element.endsAt,
+          })),
+        }
+      : undefined,
   }
 }
