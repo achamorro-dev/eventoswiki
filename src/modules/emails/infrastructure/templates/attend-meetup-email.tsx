@@ -98,10 +98,10 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
                             style={{ objectFit: 'cover' }}
                           />
                         )}
-                        <div>
+                        <Container>
                           <Text className="m-0 font-bold text-gray-900">{organization.name}</Text>
                           {organization.bio && <Text className="mt-1 text-gray-600 text-xs">{organization.bio}</Text>}
-                        </div>
+                        </Container>
                       </Section>
 
                       {(organization.web ||
@@ -110,34 +110,22 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
                         organization.instagram) && (
                         <Section className="mt-3 flex gap-3">
                           {organization.web && (
-                            <Link
-                              href={organization.web}
-                              className="font-medium text-blue-600 text-xs no-underline hover:underline"
-                            >
+                            <Link href={organization.web} className="font-medium text-blue-600 text-xs underline">
                               Web
                             </Link>
                           )}
                           {organization.twitter && (
-                            <Link
-                              href={organization.twitter}
-                              className="font-medium text-blue-600 text-xs no-underline hover:underline"
-                            >
+                            <Link href={organization.twitter} className="font-medium text-blue-600 text-xs underline">
                               Twitter
                             </Link>
                           )}
                           {organization.linkedin && (
-                            <Link
-                              href={organization.linkedin}
-                              className="font-medium text-blue-600 text-xs no-underline hover:underline"
-                            >
+                            <Link href={organization.linkedin} className="font-medium text-blue-600 text-xs underline">
                               LinkedIn
                             </Link>
                           )}
                           {organization.instagram && (
-                            <Link
-                              href={organization.instagram}
-                              className="font-medium text-blue-600 text-xs no-underline hover:underline"
-                            >
+                            <Link href={organization.instagram} className="font-medium text-blue-600 text-xs underline">
                               Instagram
                             </Link>
                           )}
@@ -153,7 +141,7 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
             <Section className="px-5 py-6 text-center">
               <Button
                 href={meetupUrl}
-                className="rounded-lg bg-primary px-8 py-3 text-center font-bold text-primary-foreground text-sm no-underline"
+                className="rounded-lg bg-blue-600 px-8 py-3 text-center font-bold text-sm text-white no-underline"
               >
                 Ver detalles del evento
               </Button>
@@ -175,7 +163,7 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
               Puedes modificar tus ajustes de notificaciones en{' '}
               <Link
                 href="https://eventos.wiki/me/settings/notifications"
-                className="font-medium text-blue-600 no-underline hover:underline"
+                className="font-medium text-blue-600 underline"
               >
                 configuración de notificaciones
               </Link>
