@@ -2,10 +2,11 @@
 import Logo from '@/ui/components/logo/logo.astro'
 import DesktopMenu from '@/ui/components/menu/desktop-menu.astro'
 import { Urls } from '@/ui/urls/urls'
-import UserMenu from '@/users/presentation/server/components/user-menu/user-menu.astro'
 import { Link } from '../link'
 import MobileMenu from '../menu/mobile-menu.astro'
-import UserAvatarSkeleton from '../user-avatar/user-avatar-skeleton.astro'
+import { UserMenu } from '@/modules/users/presentation/client/components/user-menu/user-menu'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
 
 interface Props {
   currentPath?: string
@@ -14,6 +15,11 @@ interface Props {
 const { currentPath } = Astro.props
 const hasActiveSession = Astro.locals.user !== null
 const userId = Astro.locals.user?.id
+
+let user = null
+if (hasActiveSession && userId) {
+  user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
+}
 
 const isValidCurrentPath = currentPath && currentPath !== Urls.LOGIN
 const getNextParam = () => (isValidCurrentPath ? `?_next=${encodeURIComponent(currentPath)}` : '')
@@ -31,10 +37,13 @@ const getNextParam = () => (isValidCurrentPath ? `?_next=${encodeURIComponent(cu
       )
     }
     {
-      hasActiveSession && userId && (
-        <UserMenu userId={userId} server:defer>
-          <UserAvatarSkeleton slot="fallback" />
-        </UserMenu>
+      hasActiveSession && user && (
+        <UserMenu
+          client:load
+          userName={user.name}
+          email={user.email || ''}
+          avatarUrl={user.avatar?.toString() || null}
+        />
       )
     }
   </section>
