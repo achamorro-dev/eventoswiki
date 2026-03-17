@@ -51,7 +51,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.PROFILE}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Mi perfil
           </Link>
@@ -65,7 +65,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.CREATE_ORGANIZATION}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Crear organización
           </Link>
@@ -74,7 +74,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.EVENTS_CREATE}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Crear evento
           </Link>
@@ -83,7 +83,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.MEETUPS_CREATE}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Crear meetup
           </Link>
@@ -93,7 +93,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.MY_MEETUPS}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Mis meetups
           </Link>
@@ -102,7 +102,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.MY_ORGANIZATIONS}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Mis organizaciones
           </Link>
@@ -112,7 +112,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.FEATURE_REQUEST}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Solicita una funcionalidad
           </Link>
@@ -121,7 +121,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.BUG_REPORT}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Reporta un error
           </Link>
@@ -130,7 +130,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.CHANGELOG}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Changelog
           </Link>
@@ -140,7 +140,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.SETTINGS}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Ajustes
           </Link>
@@ -149,7 +149,7 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           <Link
             href={Urls.LOGOUT}
             variant="ghost"
-            className="w-full justify-start focus-visible:ring-0 focus-visible:border-none"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
             data-astro-prefetch="false"
           >
             Cerrar sesión
