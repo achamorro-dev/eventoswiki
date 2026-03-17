@@ -1,7 +1,7 @@
 @reference "../../../../../../styles/global.css";
 
 .theme-toggle {
-  @apply flex items-center justify-between gap-4 px-4;
+  @apply flex items-center justify-center gap-4;
 }
 
 .title {

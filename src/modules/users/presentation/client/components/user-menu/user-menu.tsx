@@ -42,24 +42,39 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
           </Avatar>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-56 px-2">
         <div className="flex flex-col space-y-1 px-2 py-1.5">
           <p className="font-medium text-sm">{userName}</p>
           <p className="text-muted-foreground text-xs">{email}</p>
         </div>
         <DropdownMenuItem asChild>
-          <Link
-            href={Urls.PROFILE}
-            variant="ghost"
-            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
-          >
+          <Link href={Urls.PROFILE} variant="secondary" size={'sm'}>
             Mi perfil
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <div className="px-2 py-1.5">
+        <div className="w-full py-1.5">
           <ThemeModeToggle />
         </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link
+            href={Urls.MY_MEETUPS}
+            variant="ghost"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
+          >
+            Mis meetups
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            href={Urls.MY_ORGANIZATIONS}
+            variant="ghost"
+            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
+          >
+            Mis organizaciones
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link
@@ -86,25 +101,6 @@ export function UserMenu({ userName, email, avatarUrl }: UserMenuProps) {
             className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
           >
             Crear meetup
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link
-            href={Urls.MY_MEETUPS}
-            variant="ghost"
-            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
-          >
-            Mis meetups
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link
-            href={Urls.MY_ORGANIZATIONS}
-            variant="ghost"
-            className="w-full justify-start focus-visible:border-none focus-visible:ring-0"
-          >
-            Mis organizaciones
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

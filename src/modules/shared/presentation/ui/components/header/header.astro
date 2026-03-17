@@ -39,7 +39,7 @@ const getNextParam = () => (isValidCurrentPath ? `?_next=${encodeURIComponent(cu
     {
       hasActiveSession && user && (
         <UserMenu
-          client:load
+          client:idle
           userName={user.name}
           email={user.email || ''}
           avatarUrl={user.avatar?.toString() || null}

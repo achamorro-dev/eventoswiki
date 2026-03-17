@@ -14,7 +14,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = () => {
 
   return (
     <section className={styles['theme-toggle']}>
-      <h3 className={styles.title}>Tema</h3>
+      {/* <h3 className={styles.title}>Tema</h3> */}
       <div className={styles.buttons}>
         <Button
           variant="ghost"
