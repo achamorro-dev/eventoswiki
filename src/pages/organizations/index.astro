@@ -32,7 +32,7 @@ const needsAuthOverlay = !isAuthenticated && page > 1
           message="¡Descubre más organizaciones! Inicia sesión para explorar todas las organizaciones que forman parte de eventos.wiki"
         />
       ) : (
-        <AllOrganizationsGrid page={page} server:defer>
+        <AllOrganizationsGrid page={page} location={province} server:defer>
           <OrganizationGridSkeleton slot="fallback" />
         </AllOrganizationsGrid>
       )
