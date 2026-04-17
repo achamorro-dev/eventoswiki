@@ -46,19 +46,30 @@ export class SendOrganizationMeetupCreatedEmailCommand extends Command<Param, vo
         return
       }
 
+      const sentEmails = new Set<string>()
       for (const followerId of followerIds) {
-        await this.sendEmailToFollower(followerId, meetup, organization)
+        await this.sendEmailToFollower(followerId, meetup, organization, sentEmails)
       }
     } catch (error: unknown) {
       console.error('[SendOrganizationMeetupCreatedEmailCommand] Unexpected error:', error)
     }
   }
 
-  private async sendEmailToFollower(followerId: string, meetup: Meetup, organization: Organization) {
+  private async sendEmailToFollower(
+    followerId: string,
+    meetup: Meetup,
+    organization: Organization,
+    sentEmails: Set<string>,
+  ) {
     try {
       const user = await this.getUserQuery.execute({ id: followerId })
       if (!user || !user.email) {
         console.warn(`[SendOrganizationMeetupCreatedEmailCommand] User or email not found: ${followerId}`)
+        return
+      }
+
+      if (sentEmails.has(user.email)) {
+        console.info(`[SendOrganizationMeetupCreatedEmailCommand] Skipping duplicate email for address: ${user.email}`)
         return
       }
 
@@ -82,6 +93,8 @@ export class SendOrganizationMeetupCreatedEmailCommand extends Command<Param, vo
         subject: `${organization.name} ha creado un nuevo meetup: ${meetup.title}`,
         html: emailHtml,
       })
+
+      sentEmails.add(user.email)
     } catch (error: unknown) {
       console.error(`[SendOrganizationMeetupCreatedEmailCommand] Error sending email to follower ${followerId}:`, error)
     }

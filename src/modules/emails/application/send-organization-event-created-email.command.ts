@@ -46,19 +46,30 @@ export class SendOrganizationEventCreatedEmailCommand extends Command<Param, voi
         return
       }
 
+      const sentEmails = new Set<string>()
       for (const followerId of followerIds) {
-        await this.sendEmailToFollower(followerId, event, organization)
+        await this.sendEmailToFollower(followerId, event, organization, sentEmails)
       }
     } catch (error: unknown) {
       console.error('[SendOrganizationEventCreatedEmailCommand] Unexpected error:', error)
     }
   }
 
-  private async sendEmailToFollower(followerId: string, event: Event, organization: Organization) {
+  private async sendEmailToFollower(
+    followerId: string,
+    event: Event,
+    organization: Organization,
+    sentEmails: Set<string>,
+  ) {
     try {
       const user = await this.getUserQuery.execute({ id: followerId })
       if (!user || !user.email) {
         console.warn(`[SendOrganizationEventCreatedEmailCommand] User or email not found: ${followerId}`)
+        return
+      }
+
+      if (sentEmails.has(user.email)) {
+        console.info(`[SendOrganizationEventCreatedEmailCommand] Skipping duplicate email for address: ${user.email}`)
         return
       }
 
@@ -82,6 +93,8 @@ export class SendOrganizationEventCreatedEmailCommand extends Command<Param, voi
         subject: `${organization.name} ha creado un nuevo evento: ${event.title}`,
         html: emailHtml,
       })
+
+      sentEmails.add(user.email)
     } catch (error: unknown) {
       console.error(`[SendOrganizationEventCreatedEmailCommand] Error sending email to follower ${followerId}:`, error)
     }
