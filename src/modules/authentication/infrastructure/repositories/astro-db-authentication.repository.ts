@@ -21,6 +21,8 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
     return new LoggedUser({
       id: user.id,
       githubId: user.githubId || undefined,
+      googleId: user.googleId || undefined,
+      twitterId: user.twitterId || undefined,
       name: user.name,
       username: user.username,
       email: user.email,
@@ -39,6 +41,14 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
       filters.push(eq(UserTable.googleId, loggedUserFilters.googleId))
     }
 
+    if (loggedUserFilters.twitterId) {
+      filters.push(eq(UserTable.twitterId, loggedUserFilters.twitterId))
+    }
+
+    if (loggedUserFilters.email) {
+      filters.push(eq(UserTable.email, loggedUserFilters.email))
+    }
+
     return filters
   }
 
@@ -53,6 +63,17 @@ export class AstroDbAuthenticationRepository implements AuthenticationRepository
       email: user.email,
       avatar: user.avatar,
     })
+  }
+
+  async updateLoggedUser(user: LoggedUser): Promise<void> {
+    await db
+      .update(UserTable)
+      .set({
+        githubId: user.githubId ?? undefined,
+        googleId: user.googleId ?? undefined,
+        twitterId: user.twitterId ?? undefined,
+      })
+      .where(eq(UserTable.id, user.id))
   }
 
   generateId(): string {

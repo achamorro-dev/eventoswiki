@@ -46,7 +46,32 @@ export class CreateSessionCommand extends Command<Params, void> {
     let loggedUser = await this.authenticationRepository.getLoggedUser({
       githubId: remoteUser.githubId,
       googleId: remoteUser.googleId,
+      twitterId: remoteUser.twitterId,
     })
+
+    if (!loggedUser && remoteUser.email) {
+      // Try to find an existing account with the same email (different provider)
+      const existingUserByEmail = await this.authenticationRepository.getLoggedUser({
+        email: remoteUser.email,
+      })
+
+      if (existingUserByEmail) {
+        // Merge: link the new provider ID onto the existing account
+        const mergedUser = new LoggedUser({
+          id: existingUserByEmail.id,
+          githubId: existingUserByEmail.githubId ?? remoteUser.githubId,
+          googleId: existingUserByEmail.googleId ?? remoteUser.googleId,
+          twitterId: existingUserByEmail.twitterId ?? remoteUser.twitterId,
+          name: existingUserByEmail.name,
+          username: existingUserByEmail.username,
+          email: existingUserByEmail.email,
+          avatar: existingUserByEmail.avatar,
+        })
+
+        await this.authenticationRepository.updateLoggedUser(mergedUser)
+        loggedUser = mergedUser
+      }
+    }
 
     if (!loggedUser) {
       const userId = this.authenticationRepository.generateId()
@@ -54,6 +79,7 @@ export class CreateSessionCommand extends Command<Params, void> {
         id: userId,
         githubId: remoteUser.githubId,
         googleId: remoteUser.googleId,
+        twitterId: remoteUser.twitterId,
         name: remoteUser.name,
         username: remoteUser.username,
         email: remoteUser.email,
