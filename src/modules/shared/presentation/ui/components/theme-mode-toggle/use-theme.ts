@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 const themeModeKey = 'theme-mode'
 export enum ThemeMode {
@@ -6,6 +6,23 @@ export enum ThemeMode {
   dark = 'dark',
   system = 'system',
 }
+
+const applyThemeClass = (mode: string) => {
+  const darkClass = ThemeMode.dark
+
+  if (mode === ThemeMode.dark) {
+    document.documentElement.classList.add(darkClass)
+    return
+  }
+
+  if (mode === ThemeMode.system) {
+    document.documentElement.classList.toggle(darkClass, window.matchMedia('(prefers-color-scheme: dark)').matches)
+    return
+  }
+
+  document.documentElement.classList.remove(darkClass)
+}
+
 export const useTheme = () => {
   const [theme, setTheme] = useState<string>(ThemeMode.light)
 
@@ -29,74 +46,25 @@ export const useTheme = () => {
   }
 
   useEffect(() => {
-    const setInitialThemeState = () => {
-      const localStorageValue = localStorage?.getItem(themeModeKey)
+    const localStorageValue = localStorage?.getItem(themeModeKey)
 
-      if (localStorageValue) {
-        setTheme(localStorageValue)
-        return
-      }
-
-      setTheme(ThemeMode.light)
+    if (localStorageValue) {
+      setTheme(localStorageValue)
+      return
     }
 
-    setInitialThemeState()
+    setTheme(ThemeMode.light)
   }, [])
 
-  const removeDarkClass = () => {
-    return document.documentElement.classList.remove(ThemeMode.dark)
-  }
-
-  const addDarkClass = () => {
-    document.documentElement.classList.add(ThemeMode.dark)
-  }
-
-  const isDarkSelected = useMemo(() => {
-    return theme === ThemeMode.dark
-  }, [theme])
-
-  const isSystemSelected = useMemo(() => {
-    return theme === ThemeMode.system
-  }, [theme])
-
-  const onColorSchemeChange = useCallback(
-    ({ matches }: MediaQueryListEvent): void => {
-      if (theme !== ThemeMode.system) return
-
-      if (matches) {
-        addDarkClass()
-        return
-      }
-
-      removeDarkClass()
-    },
-    [theme],
-  )
-
   useEffect(() => {
-    if (isSystemSelected) {
-      window.matchMedia('(prefers-color-scheme: dark)').matches ? addDarkClass() : removeDarkClass()
-      return
-    }
+    if (!theme) return
 
-    if (isDarkSelected) {
-      addDarkClass()
-      return
-    }
-
-    removeDarkClass()
-  }, [theme])
-
-  useEffect(() => {
-    const matchMedia = window.matchMedia('(prefers-color-scheme: dark)')
-    matchMedia.addEventListener('change', onColorSchemeChange)
-
-    return () => matchMedia.removeEventListener('change', onColorSchemeChange)
-  }, [onColorSchemeChange])
-
-  useEffect(() => {
+    applyThemeClass(theme)
     localStorage.setItem(themeModeKey, theme)
   }, [theme])
+
+  const isDarkSelected = useMemo(() => theme === ThemeMode.dark, [theme])
+  const isSystemSelected = useMemo(() => theme === ThemeMode.system, [theme])
 
   return {
     toggleTheme,

@@ -47,19 +47,33 @@ const {
   <ClientRouter />
 
   <script is:inline>
-    const setTheme = () => {
-      const localStorageValue = localStorage.getItem('theme-mode')
-      const darkTheme = 'dark'
+    const darkClass = 'dark'
+    const storageKey = 'theme-mode'
 
-      if (localStorageValue === darkTheme) {
-        document.documentElement.classList.add(darkTheme)
+    const applyTheme = () => {
+      const mode = localStorage.getItem(storageKey)
+
+      if (mode === 'dark') {
+        document.documentElement.classList.add(darkClass)
+      } else if (mode === 'system' || !mode) {
+        document.documentElement.classList.toggle(
+          darkClass,
+          window.matchMedia('(prefers-color-scheme: dark)').matches,
+        )
       } else {
-        document.documentElement.classList.remove(darkTheme)
+        document.documentElement.classList.remove(darkClass)
       }
     }
 
-    document.addEventListener('astro:after-swap', setTheme)
-    setTheme()
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      const mode = localStorage.getItem(storageKey)
+      if (mode === 'system' || !mode) {
+        document.documentElement.classList.toggle(darkClass, e.matches)
+      }
+    })
+
+    document.addEventListener('astro:after-swap', applyTheme)
+    applyTheme()
   </script>
   {import.meta.env.PROD && (
     <script defer src="https://analytics.eventos.wiki/script.js" data-website-id="5f3a0b4e-9154-4a67-8aa5-0f2080a167a6"></script>
