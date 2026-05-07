@@ -75,8 +75,9 @@ export class SendMeetupAttendanceConfirmationEmailCommand extends Command<Param,
       // Enviar email
       await this.emailsRepository.send({
         recipient: user.email,
-        subject: `¡Te has registrado en el meetup: ${meetup.title}`,
+        subject: `Te has registrado en: ${meetup.title}`,
         html: emailHtml,
+        senderName: organization?.name,
         attachments: [
           {
             filename: 'evento.ics',

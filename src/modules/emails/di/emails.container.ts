@@ -2,6 +2,7 @@ import { ContainerBuilder } from 'diod'
 import { FindEventQuery } from '@/events/application/find-event.query'
 import { EventsContainer } from '@/events/di/events.container'
 import { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
+import { FindMeetupAttendeesQuery } from '@/meetups/application/find-meetup-attendees.query'
 import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
@@ -12,8 +13,10 @@ import { UsersContainer } from '@/users/di/users.container'
 import { SendMeetupAttendanceConfirmationEmailCommand } from '../application/send-meetup-attendance-confirmation-email.command'
 import { SendOrganizationEventCreatedEmailCommand } from '../application/send-organization-event-created-email.command'
 import { SendOrganizationEventCreatedEmailToFollowersCommand } from '../application/send-organization-event-created-email-to-followers.command'
+import { SendOrganizationEventUpdatedEmailCommand } from '../application/send-organization-event-updated-email.command'
 import { SendOrganizationMeetupCreatedEmailCommand } from '../application/send-organization-meetup-created-email.command'
 import { SendOrganizationMeetupCreatedEmailToFollowersCommand } from '../application/send-organization-meetup-created-email-to-followers.command'
+import { SendOrganizationMeetupUpdatedEmailCommand } from '../application/send-organization-meetup-updated-email.command'
 import { ResendEmailsRepository } from '../infrastructure/repositories/resend-emails.repository'
 
 const builder = new ContainerBuilder()
@@ -31,6 +34,9 @@ builder.register(GetOrganizationByIdQuery).useFactory(_ => OrganizationsContaine
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(GetUserSettingsQuery).useFactory(_ => UserSettingsContainer.get(GetUserSettingsQuery))
+
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder.register(FindMeetupAttendeesQuery).useFactory(_ => MeetupsContainer.get(FindMeetupAttendeesQuery))
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(FindEventQuery).useFactory(_ => EventsContainer.get(FindEventQuery))
@@ -60,12 +66,7 @@ builder
 builder
   .register(SendOrganizationMeetupCreatedEmailToFollowersCommand)
   .use(SendOrganizationMeetupCreatedEmailToFollowersCommand)
-  .withDependencies([
-    SendOrganizationMeetupCreatedEmailCommand,
-    FindMeetupQuery,
-    GetOrganizationByIdQuery,
-    GetUserQuery,
-  ])
+  .withDependencies([SendOrganizationMeetupCreatedEmailCommand, FindMeetupQuery, GetOrganizationByIdQuery])
 
 builder
   .register(SendOrganizationEventCreatedEmailCommand)
@@ -81,6 +82,29 @@ builder
 builder
   .register(SendOrganizationEventCreatedEmailToFollowersCommand)
   .use(SendOrganizationEventCreatedEmailToFollowersCommand)
-  .withDependencies([SendOrganizationEventCreatedEmailCommand, FindEventQuery, GetOrganizationByIdQuery, GetUserQuery])
+  .withDependencies([SendOrganizationEventCreatedEmailCommand, FindEventQuery, GetOrganizationByIdQuery])
+
+builder
+  .register(SendOrganizationEventUpdatedEmailCommand)
+  .use(SendOrganizationEventUpdatedEmailCommand)
+  .withDependencies([
+    ResendEmailsRepository,
+    FindEventQuery,
+    GetOrganizationByIdQuery,
+    GetUserQuery,
+    GetUserSettingsQuery,
+  ])
+
+builder
+  .register(SendOrganizationMeetupUpdatedEmailCommand)
+  .use(SendOrganizationMeetupUpdatedEmailCommand)
+  .withDependencies([
+    ResendEmailsRepository,
+    FindMeetupQuery,
+    FindMeetupAttendeesQuery,
+    GetOrganizationByIdQuery,
+    GetUserQuery,
+    GetUserSettingsQuery,
+  ])
 
 export const EmailsContainer = builder.build({ autowire: false })

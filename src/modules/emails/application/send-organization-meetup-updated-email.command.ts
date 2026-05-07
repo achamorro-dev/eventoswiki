@@ -1,4 +1,5 @@
 import type { FindMeetupQuery } from '@/meetups/application/find-meetup.query'
+import type { FindMeetupAttendeesQuery } from '@/meetups/application/find-meetup-attendees.query'
 import type { Meetup } from '@/meetups/domain/meetup'
 import type { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import type { Organization } from '@/organizations/domain/organization'
@@ -6,17 +7,18 @@ import { Command } from '@/shared/application/use-case/command'
 import type { GetUserSettingsQuery } from '@/user-settings/application/get-user-settings.query'
 import type { GetUserQuery } from '@/users/application/get-user.query'
 import type { EmailsRepository } from '../domain/emails.repository'
-import { generateOrganizationMeetupCreatedEmailHtml } from '../infrastructure/templates/generate-organization-meetup-created-email'
+import { generateOrganizationMeetupUpdatedEmailHtml } from '../infrastructure/templates/generate-organization-meetup-updated-email'
 
 interface Param {
   meetupId: string
   organizationId: string
 }
 
-export class SendOrganizationMeetupCreatedEmailCommand extends Command<Param, void> {
+export class SendOrganizationMeetupUpdatedEmailCommand extends Command<Param, void> {
   constructor(
     private readonly emailsRepository: EmailsRepository,
     private readonly findMeetupQuery: FindMeetupQuery,
+    private readonly findMeetupAttendeesQuery: FindMeetupAttendeesQuery,
     private readonly getOrganizationByIdQuery: GetOrganizationByIdQuery,
     private readonly getUserQuery: GetUserQuery,
     private readonly getUserSettingsQuery: GetUserSettingsQuery,
@@ -30,59 +32,63 @@ export class SendOrganizationMeetupCreatedEmailCommand extends Command<Param, vo
 
       const meetup = await this.findMeetupQuery.execute({ id: meetupId })
       if (!meetup) {
-        console.error(`[SendOrganizationMeetupCreatedEmailCommand] Meetup not found: ${meetupId}`)
+        console.error(`[SendOrganizationMeetupUpdatedEmailCommand] Meetup not found: ${meetupId}`)
         return
       }
 
       const organization = await this.getOrganizationByIdQuery.execute({ id: organizationId })
       if (!organization) {
-        console.error(`[SendOrganizationMeetupCreatedEmailCommand] Organization not found: ${organizationId}`)
+        console.error(`[SendOrganizationMeetupUpdatedEmailCommand] Organization not found: ${organizationId}`)
         return
       }
 
       const followerIds = organization.followers
-      if (followerIds.length === 0) {
-        console.info(`[SendOrganizationMeetupCreatedEmailCommand] No followers for organization: ${organizationId}`)
+      const attendees = await this.findMeetupAttendeesQuery.execute(meetupId)
+      const attendeeUserIds = attendees.map(a => a.userId)
+
+      const recipientIds = [...new Set([...followerIds, ...attendeeUserIds])]
+      if (recipientIds.length === 0) {
+        console.info(`[SendOrganizationMeetupUpdatedEmailCommand] No recipients for meetup: ${meetupId}`)
         return
       }
 
       const sentEmails = new Set<string>()
-      for (const followerId of followerIds) {
-        await this.sendEmailToFollower(followerId, meetup, organization, sentEmails)
+      for (const recipientId of recipientIds) {
+        await this.sendEmailToRecipient(recipientId, meetup, organization, sentEmails)
       }
     } catch (error: unknown) {
-      console.error('[SendOrganizationMeetupCreatedEmailCommand] Unexpected error:', error)
+      console.error('[SendOrganizationMeetupUpdatedEmailCommand] Unexpected error:', error)
     }
   }
 
-  private async sendEmailToFollower(
-    followerId: string,
+  private async sendEmailToRecipient(
+    recipientId: string,
     meetup: Meetup,
     organization: Organization,
     sentEmails: Set<string>,
   ) {
     try {
-      const user = await this.getUserQuery.execute({ id: followerId })
+      const user = await this.getUserQuery.execute({ id: recipientId })
       if (!user || !user.email) {
-        console.warn(`[SendOrganizationMeetupCreatedEmailCommand] User or email not found: ${followerId}`)
+        console.warn(`[SendOrganizationMeetupUpdatedEmailCommand] User or email not found: ${recipientId}`)
         return
       }
 
       if (sentEmails.has(user.email)) {
-        console.info(`[SendOrganizationMeetupCreatedEmailCommand] Skipping duplicate email for address: ${user.email}`)
+        console.info(`[SendOrganizationMeetupUpdatedEmailCommand] Skipping duplicate email for address: ${user.email}`)
         return
       }
 
-      const userSettings = await this.getUserSettingsQuery.execute({ userId: followerId })
+      const userSettings = await this.getUserSettingsQuery.execute({ userId: recipientId })
       const userHasDisabledOrganizationUpdatesEmails = !userSettings.organizationUpdatesEmailEnabled
       if (userHasDisabledOrganizationUpdatesEmails) {
         console.info(
-          `[SendOrganizationMeetupCreatedEmailCommand] User has disabled organization updates emails: ${followerId}`,
+          `[SendOrganizationMeetupUpdatedEmailCommand] User has disabled organization updates emails: ${recipientId}`,
         )
         return
       }
 
-      const emailHtml = await generateOrganizationMeetupCreatedEmailHtml({
+      const emailHtml = await generateOrganizationMeetupUpdatedEmailHtml({
         userName: user.name,
         meetup,
         organization,
@@ -90,14 +96,17 @@ export class SendOrganizationMeetupCreatedEmailCommand extends Command<Param, vo
 
       await this.emailsRepository.send({
         recipient: user.email,
-        subject: `Nuevo meetup: ${meetup.title}`,
+        subject: `Meetup actualizado: ${meetup.title}`,
         html: emailHtml,
         senderName: organization.name,
       })
 
       sentEmails.add(user.email)
     } catch (error: unknown) {
-      console.error(`[SendOrganizationMeetupCreatedEmailCommand] Error sending email to follower ${followerId}:`, error)
+      console.error(
+        `[SendOrganizationMeetupUpdatedEmailCommand] Error sending email to recipient ${recipientId}:`,
+        error,
+      )
     }
   }
 }

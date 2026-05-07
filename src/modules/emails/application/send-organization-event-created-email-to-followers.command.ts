@@ -1,9 +1,6 @@
 import type { FindEventQuery } from '@/events/application/find-event.query'
-import type { Event } from '@/events/domain/event'
 import type { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
-import type { Organization } from '@/organizations/domain/organization'
 import { Command } from '@/shared/application/use-case/command'
-import type { GetUserQuery } from '@/users/application/get-user.query'
 import { SendOrganizationEventCreatedEmailCommand } from './send-organization-event-created-email.command'
 
 interface Param {
@@ -16,7 +13,6 @@ export class SendOrganizationEventCreatedEmailToFollowersCommand extends Command
     private readonly sendOrganizationEventCreatedEmailCommand: SendOrganizationEventCreatedEmailCommand,
     private readonly findEventQuery: FindEventQuery,
     private readonly getOrganizationByIdQuery: GetOrganizationByIdQuery,
-    private readonly getUserQuery: GetUserQuery,
   ) {
     super()
   }
@@ -37,31 +33,10 @@ export class SendOrganizationEventCreatedEmailToFollowersCommand extends Command
         return
       }
 
-      const followerIds = organization.followers
-      if (followerIds.length === 0) {
+      if (organization.followers.length === 0) {
         console.info(
           `[SendOrganizationEventCreatedEmailToFollowersCommand] No followers for organization: ${organizationId}`,
         )
-        return
-      }
-
-      const emailPromises = followerIds.map(followerId => this.sendEmailToFollower(followerId, event, organization))
-
-      emailPromises.forEach(promise => {
-        promise.catch(error => {
-          console.error(`[SendOrganizationEventCreatedEmailToFollowersCommand] Error in email promise:`, error)
-        })
-      })
-    } catch (error: unknown) {
-      console.error('[SendOrganizationEventCreatedEmailToFollowersCommand] Unexpected error:', error)
-    }
-  }
-
-  private async sendEmailToFollower(followerId: string, event: Event, organization: Organization) {
-    try {
-      const user = await this.getUserQuery.execute({ id: followerId })
-      if (!user || !user.email) {
-        console.warn(`[SendOrganizationEventCreatedEmailToFollowersCommand] User or email not found: ${followerId}`)
         return
       }
 
@@ -70,10 +45,7 @@ export class SendOrganizationEventCreatedEmailToFollowersCommand extends Command
         organizationId: organization.id.value,
       })
     } catch (error: unknown) {
-      console.error(
-        `[SendOrganizationEventCreatedEmailToFollowersCommand] Error sending email to follower ${followerId}:`,
-        error,
-      )
+      console.error('[SendOrganizationEventCreatedEmailToFollowersCommand] Unexpected error:', error)
     }
   }
 }

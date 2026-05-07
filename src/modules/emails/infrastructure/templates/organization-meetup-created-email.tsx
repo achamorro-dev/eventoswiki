@@ -1,7 +1,14 @@
 import { Body, Button, Container, Head, Hr, Html, Img, Link, Preview, Section, Text } from '@react-email/components'
 import { Tailwind } from '@react-email/tailwind'
 import type { Meetup } from '@/meetups/domain/meetup'
+import { MeetupTypes } from '@/meetups/domain/meetup-type'
 import type { Organization } from '@/organizations/domain/organization'
+
+const MeetupTypeLabels: Record<string, string> = {
+  [MeetupTypes.InPerson]: 'Presencial',
+  [MeetupTypes.Online]: 'Online',
+  [MeetupTypes.Hybrid]: 'Presencial-Online',
+}
 
 interface OrganizationMeetupCreatedEmailProps {
   userName: string
@@ -16,27 +23,37 @@ export function OrganizationMeetupCreatedEmail({
   organization,
   meetupUrl,
 }: OrganizationMeetupCreatedEmailProps) {
+  const timeZone = 'Europe/Madrid'
+
   const formattedDate = meetup.startsAt.toLocaleDateString('es-ES', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone,
   })
   const formattedTime = meetup.startsAt.toLocaleTimeString('es-ES', {
     hour: '2-digit',
     minute: '2-digit',
+    timeZone,
   })
   const endTime = meetup.endsAt.toLocaleTimeString('es-ES', {
     hour: '2-digit',
     minute: '2-digit',
+    timeZone,
   })
+  const timeZoneAbbr =
+    new Intl.DateTimeFormat('es-ES', {
+      timeZone,
+      timeZoneName: 'short',
+    })
+      .formatToParts(meetup.startsAt)
+      .find(p => p.type === 'timeZoneName')?.value ?? ''
 
   return (
     <Html>
       <Head />
-      <Preview>
-        {organization.name} ha creado un nuevo meetup: {meetup.title}
-      </Preview>
+      <Preview>Nuevo meetup: {meetup.title}</Preview>
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
           <Container className="mx-auto max-w-2xl">
@@ -59,7 +76,7 @@ export function OrganizationMeetupCreatedEmail({
                     className="m-0 inline-block rounded px-3 py-1.5 font-bold text-white text-xs"
                     style={{ backgroundColor: meetup.tagColor || '#3b82f6' }}
                   >
-                    {meetup.type.value}
+                    {MeetupTypeLabels[meetup.type.value] ?? meetup.type.value}
                   </Text>
                 </Section>
 
@@ -73,7 +90,7 @@ export function OrganizationMeetupCreatedEmail({
                   <Text className="mb-1 font-bold text-gray-600 text-xs">📅 Fecha y Hora</Text>
                   <Text className="my-2 text-gray-900 text-sm">{formattedDate}</Text>
                   <Text className="my-2 text-gray-900 text-sm">
-                    {formattedTime} - {endTime}
+                    {formattedTime} - {endTime} {timeZoneAbbr}
                   </Text>
                 </Section>
 
@@ -105,27 +122,35 @@ export function OrganizationMeetupCreatedEmail({
                   </Section>
 
                   {(organization.web || organization.twitter || organization.linkedin || organization.instagram) && (
-                    <Section className="mt-3 flex gap-3">
-                      {organization.web && (
-                        <Link href={organization.web} className="font-medium text-blue-600 text-xs underline">
-                          Web
-                        </Link>
-                      )}
-                      {organization.twitter && (
-                        <Link href={organization.twitter} className="font-medium text-blue-600 text-xs underline">
-                          Twitter
-                        </Link>
-                      )}
-                      {organization.linkedin && (
-                        <Link href={organization.linkedin} className="font-medium text-blue-600 text-xs underline">
-                          LinkedIn
-                        </Link>
-                      )}
-                      {organization.instagram && (
-                        <Link href={organization.instagram} className="font-medium text-blue-600 text-xs underline">
-                          Instagram
-                        </Link>
-                      )}
+                    <Section className="mt-3">
+                      {[
+                        organization.web && (
+                          <Link href={organization.web} className="font-medium text-blue-600 text-xs underline">
+                            Web
+                          </Link>
+                        ),
+                        organization.twitter && (
+                          <Link href={organization.twitter} className="font-medium text-blue-600 text-xs underline">
+                            Twitter
+                          </Link>
+                        ),
+                        organization.linkedin && (
+                          <Link href={organization.linkedin} className="font-medium text-blue-600 text-xs underline">
+                            LinkedIn
+                          </Link>
+                        ),
+                        organization.instagram && (
+                          <Link href={organization.instagram} className="font-medium text-blue-600 text-xs underline">
+                            Instagram
+                          </Link>
+                        ),
+                      ]
+                        .filter(Boolean)
+                        .reduce<React.ReactNode[]>((acc, link, i) => {
+                          if (i > 0) acc.push(' · ')
+                          acc.push(link)
+                          return acc
+                        }, [])}
                     </Section>
                   )}
                 </Section>

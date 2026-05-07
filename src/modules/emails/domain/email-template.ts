@@ -8,5 +8,6 @@ export interface EmailTemplate {
   recipient: string
   subject: string
   html: string
+  senderName?: string
   attachments?: EmailAttachment[]
 }

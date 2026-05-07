@@ -90,8 +90,9 @@ export class SendOrganizationEventCreatedEmailCommand extends Command<Param, voi
 
       await this.emailsRepository.send({
         recipient: user.email,
-        subject: `${organization.name} ha creado un nuevo evento: ${event.title}`,
+        subject: `Nuevo evento: ${event.title}`,
         html: emailHtml,
+        senderName: organization.name,
       })
 
       sentEmails.add(user.email)

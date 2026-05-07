@@ -10,14 +10,19 @@ const MeetupTypeLabels: Record<string, string> = {
   [MeetupTypes.Hybrid]: 'Presencial-Online',
 }
 
-interface AttendMeetupEmailProps {
+interface OrganizationMeetupUpdatedEmailProps {
   userName: string
   meetup: Meetup
-  organization?: Organization
+  organization: Organization
   meetupUrl: string
 }
 
-export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }: AttendMeetupEmailProps) {
+export function OrganizationMeetupUpdatedEmail({
+  userName,
+  meetup,
+  organization,
+  meetupUrl,
+}: OrganizationMeetupUpdatedEmailProps) {
   const timeZone = 'Europe/Madrid'
 
   const formattedDate = meetup.startsAt.toLocaleDateString('es-ES', {
@@ -48,25 +53,24 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
   return (
     <Html>
       <Head />
-      <Preview>¡Te has registrado en {meetup.title}!</Preview>
+      <Preview>Meetup actualizado: {meetup.title}</Preview>
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
           <Container className="mx-auto max-w-2xl">
-            {/* Event Image */}
             <Section className="px-5">
               <Img src={meetup.image.toString()} alt={meetup.title} className="mb-6 w-full rounded-lg" />
             </Section>
 
-            {/* Greeting */}
             <Section className="px-5">
               <Text className="mb-3 font-bold text-2xl text-gray-900">¡Hola {userName}!</Text>
-              <Text className="text-base text-gray-700">Te has registrado correctamente en el siguiente meetup:</Text>
+              <Text className="text-base text-gray-700">
+                <span className="font-bold text-gray-900">{organization.name}</span> ha actualizado un meetup en el que
+                podrías estar interesado:
+              </Text>
             </Section>
 
-            {/* Meetup Card */}
             <Section className="px-5 py-8">
               <Container className="rounded-lg bg-white p-6 shadow-sm">
-                {/* Tag */}
                 <Section className="mb-3">
                   <Text
                     className="m-0 inline-block rounded px-3 py-1.5 font-bold text-white text-xs"
@@ -76,19 +80,16 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
                   </Text>
                 </Section>
 
-                {/* Title and Description */}
                 <Section className="mb-5">
                   <Text className="mt-0 mb-2 font-bold text-gray-900 text-xl">{meetup.title}</Text>
                   <Text className="my-3 text-gray-700 text-sm leading-6">{meetup.shortDescription}</Text>
                 </Section>
 
-                {/* Date and Location */}
                 <Hr className="border-gray-200 py-2" />
                 <Section>
                   <Text className="mb-1 font-bold text-gray-600 text-xs">📅 Fecha y Hora</Text>
+                  <Text className="my-2 text-gray-900 text-sm">{formattedDate}</Text>
                   <Text className="my-2 text-gray-900 text-sm">
-                    {formattedDate}
-                    <br />
                     {formattedTime} - {endTime} {timeZoneAbbr}
                   </Text>
                 </Section>
@@ -100,87 +101,71 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
                   </Section>
                 )}
 
-                {/* Organizer Section */}
-                {organization && (
-                  <>
-                    <Hr className="border-gray-200 py-2" />
-                    <Section>
-                      <Text className="mb-3 font-bold text-gray-600 text-xs">Organizado por</Text>
-                      <Section className="flex gap-3">
-                        {organization.image && (
-                          <Img
-                            src={organization.image.toString()}
-                            alt={organization.name}
-                            width={40}
-                            height={40}
-                            className="rounded"
-                            style={{ objectFit: 'cover' }}
-                          />
-                        )}
-                        <Container>
-                          <Text className="m-0 font-bold text-gray-900">{organization.name}</Text>
-                          {organization.bio && <Text className="mt-1 text-gray-600 text-xs">{organization.bio}</Text>}
-                        </Container>
-                      </Section>
+                <Hr className="border-gray-200 py-2" />
+                <Section>
+                  <Text className="mb-3 font-bold text-gray-600 text-xs">Organizado por</Text>
+                  <Section className="flex gap-3">
+                    {organization.image && (
+                      <Img
+                        src={organization.image.toString()}
+                        alt={organization.name}
+                        width={40}
+                        height={40}
+                        className="rounded"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    )}
+                  </Section>
+                  <Section>
+                    <Text className="m-0 font-bold text-gray-900">{organization.name}</Text>
+                    {organization.bio && <Text className="mt-1 text-gray-600 text-xs">{organization.bio}</Text>}
+                  </Section>
 
-                      {(organization.web ||
-                        organization.twitter ||
-                        organization.linkedin ||
-                        organization.instagram) && (
-                        <Section className="mt-3">
-                          {[
-                            organization.web && (
-                              <Link href={organization.web} className="font-medium text-blue-600 text-xs underline">
-                                Web
-                              </Link>
-                            ),
-                            organization.twitter && (
-                              <Link href={organization.twitter} className="font-medium text-blue-600 text-xs underline">
-                                Twitter
-                              </Link>
-                            ),
-                            organization.linkedin && (
-                              <Link
-                                href={organization.linkedin}
-                                className="font-medium text-blue-600 text-xs underline"
-                              >
-                                LinkedIn
-                              </Link>
-                            ),
-                            organization.instagram && (
-                              <Link
-                                href={organization.instagram}
-                                className="font-medium text-blue-600 text-xs underline"
-                              >
-                                Instagram
-                              </Link>
-                            ),
-                          ]
-                            .filter(Boolean)
-                            .reduce<React.ReactNode[]>((acc, link, i) => {
-                              if (i > 0) acc.push(' · ')
-                              acc.push(link)
-                              return acc
-                            }, [])}
-                        </Section>
-                      )}
+                  {(organization.web || organization.twitter || organization.linkedin || organization.instagram) && (
+                    <Section className="mt-3">
+                      {[
+                        organization.web && (
+                          <Link href={organization.web} className="font-medium text-blue-600 text-xs underline">
+                            Web
+                          </Link>
+                        ),
+                        organization.twitter && (
+                          <Link href={organization.twitter} className="font-medium text-blue-600 text-xs underline">
+                            Twitter
+                          </Link>
+                        ),
+                        organization.linkedin && (
+                          <Link href={organization.linkedin} className="font-medium text-blue-600 text-xs underline">
+                            LinkedIn
+                          </Link>
+                        ),
+                        organization.instagram && (
+                          <Link href={organization.instagram} className="font-medium text-blue-600 text-xs underline">
+                            Instagram
+                          </Link>
+                        ),
+                      ]
+                        .filter(Boolean)
+                        .reduce<React.ReactNode[]>((acc, link, i) => {
+                          if (i > 0) acc.push(' · ')
+                          acc.push(link)
+                          return acc
+                        }, [])}
                     </Section>
-                  </>
-                )}
+                  )}
+                </Section>
               </Container>
             </Section>
 
-            {/* CTA Button */}
             <Section className="px-5 py-6 text-center">
               <Button
                 href={meetupUrl}
                 className="rounded-lg bg-blue-600 px-8 py-3 text-center font-bold text-sm text-white no-underline"
               >
-                Ver detalles del evento
+                Ver detalles del meetup
               </Button>
             </Section>
           </Container>
-          {/* Footer */}
           <Section className="border-gray-200 border-t bg-gray-100 px-5 py-5 text-center">
             <Section className="mx-auto max-w-2xl py-5 text-center">
               <Img

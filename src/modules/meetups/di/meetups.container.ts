@@ -1,6 +1,7 @@
 import { ContainerBuilder } from 'diod'
 import { SendMeetupAttendanceConfirmationEmailCommand } from '@/emails/application/send-meetup-attendance-confirmation-email.command'
 import { SendOrganizationMeetupCreatedEmailToFollowersCommand } from '@/emails/application/send-organization-meetup-created-email-to-followers.command'
+import { SendOrganizationMeetupUpdatedEmailCommand } from '@/emails/application/send-organization-meetup-updated-email.command'
 import { EmailsContainer } from '@/emails/di/emails.container'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
@@ -68,10 +69,15 @@ builder
   .register(SendOrganizationMeetupCreatedEmailToFollowersCommand)
   .useFactory(_ => EmailsContainer.get(SendOrganizationMeetupCreatedEmailToFollowersCommand))
 
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder
+  .register(SendOrganizationMeetupUpdatedEmailCommand)
+  .useFactory(_ => EmailsContainer.get(SendOrganizationMeetupUpdatedEmailCommand))
+
 builder
   .register(UpdateMeetupCommand)
   .use(UpdateMeetupCommand)
-  .withDependencies([AstroDbMeetupsRepository, UserIsOrganizerEnsurer])
+  .withDependencies([AstroDbMeetupsRepository, UserIsOrganizerEnsurer, SendOrganizationMeetupUpdatedEmailCommand])
 
 builder
   .register(CreateMeetupCommand)

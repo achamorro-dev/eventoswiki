@@ -10,19 +10,19 @@ const EventTypeLabels: Record<string, string> = {
   [EventTypes.Hybrid]: 'Presencial-Online',
 }
 
-interface OrganizationEventCreatedEmailProps {
+interface OrganizationEventUpdatedEmailProps {
   userName: string
   event: Event
   organization: Organization
   eventUrl: string
 }
 
-export function OrganizationEventCreatedEmail({
+export function OrganizationEventUpdatedEmail({
   userName,
   event,
   organization,
   eventUrl,
-}: OrganizationEventCreatedEmailProps) {
+}: OrganizationEventUpdatedEmailProps) {
   const timeZone = 'Europe/Madrid'
 
   const formattedDate = event.startsAt.toLocaleDateString('es-ES', {
@@ -57,7 +57,7 @@ export function OrganizationEventCreatedEmail({
   return (
     <Html>
       <Head />
-      <Preview>Nuevo evento: {event.title}</Preview>
+      <Preview>Evento actualizado: {event.title}</Preview>
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
           <Container className="mx-auto max-w-2xl">
@@ -68,8 +68,8 @@ export function OrganizationEventCreatedEmail({
             <Section className="px-5">
               <Text className="mb-3 font-bold text-2xl text-gray-900">¡Hola {userName}!</Text>
               <Text className="text-base text-gray-700">
-                <span className="font-bold text-gray-900">{organization.name}</span> ha creado un nuevo evento que te
-                puede interesar:
+                <span className="font-bold text-gray-900">{organization.name}</span> ha actualizado un evento en el que
+                podrías estar interesado:
               </Text>
             </Section>
 

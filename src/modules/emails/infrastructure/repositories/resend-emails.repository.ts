@@ -26,8 +26,10 @@ export class ResendEmailsRepository implements EmailsRepository {
           await this.delay(RETRY_DELAYS[attempt - 1])
         }
 
+        const senderName = template.senderName ?? SENDER_NAME
+
         await this.resend.emails.send({
-          from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+          from: `${senderName} <${SENDER_EMAIL}>`,
           to: template.recipient,
           subject: template.subject,
           html: template.html,
