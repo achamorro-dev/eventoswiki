@@ -23,6 +23,7 @@ import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generat
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
 import { ColorPicker } from '@/ui/color-picker'
+import { DateRangeTimePicker } from '@/ui/components/date-range-time-picker'
 import { DateTimePicker } from '@/ui/components/date-time-picker'
 import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
@@ -260,44 +261,31 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <FormField
-                    control={form.control}
-                    name="startsAt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="startsAt">Fecha de inicio</FormLabel>
-                        <FormControl>
-                          <DateTimePicker
-                            disabled={form.formState.isSubmitting}
-                            placeholder="Elige una fecha"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="endsAt"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel htmlFor="endsAt">Fecha de fin</FormLabel>
-                        <FormControl>
-                          <DateTimePicker
-                            value={field.value}
-                            onChange={field.onChange}
-                            disabled={form.formState.isSubmitting}
-                            placeholder="Elige una fecha"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="startsAt"
+                  render={({ field: startsAtField }) => (
+                    <FormField
+                      control={form.control}
+                      name="endsAt"
+                      render={({ field: endsAtField }) => (
+                        <FormItem>
+                          <FormLabel>Fecha de inicio y fin</FormLabel>
+                          <FormControl>
+                            <DateRangeTimePicker
+                              startsAt={startsAtField.value}
+                              endsAt={endsAtField.value}
+                              onStartsAtChange={startsAtField.onChange}
+                              onEndsAtChange={endsAtField.onChange}
+                              disabled={form.formState.isSubmitting}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                />
               </div>
 
               {/* Sección: Tipo y localización */}

@@ -12,6 +12,7 @@ interface TimePickerProps {
   minutesLabel?: string
   secondsLabel?: string
   showSeconds?: boolean
+  showIcon?: boolean
 }
 
 export function TimePicker(props: TimePickerProps) {
@@ -22,6 +23,7 @@ export function TimePicker(props: TimePickerProps) {
     minutesLabel = 'Minutos',
     secondsLabel = 'Segundos',
     showSeconds = false,
+    showIcon = true,
   } = props
   const minuteRef = React.useRef<HTMLInputElement>(null)
   const hourRef = React.useRef<HTMLInputElement>(null)
@@ -29,9 +31,11 @@ export function TimePicker(props: TimePickerProps) {
 
   return (
     <div className="flex items-end gap-2">
-      <div className="flex h-10 items-center">
-        <Clock className="ml-2 h-4 w-4" />
-      </div>
+      {showIcon && (
+        <div className="flex h-10 items-center">
+          <Clock className="ml-2 h-4 w-4" />
+        </div>
+      )}
       <div className="grid gap-1 text-center">
         <Label htmlFor="hours" className="justify-center text-xs">
           {hoursLabel}
