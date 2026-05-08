@@ -8,7 +8,9 @@ import { EventEditTabs } from '@/events/presentation/client/components/event-edi
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
-import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
+import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
@@ -43,9 +45,13 @@ try {
   }
 
   if (event && userId) {
-    const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
-    organization = organizations.find(org => event!.isOrganizedBy(org.id))
-    canEdit = organization !== undefined
+    try {
+      await OrganizationsContainer.get(UserIsOrganizerEnsurer).ensure({ userId, organizationId: event.organizationId! })
+      canEdit = true
+      organization = await OrganizationsContainer.get(GetOrganizationByIdQuery).execute({ id: event.organizationId! })
+    } catch (error) {
+      if (!(error instanceof OrganizerNotFound)) throw error
+    }
   }
 } catch (error) {
   switch (true) {

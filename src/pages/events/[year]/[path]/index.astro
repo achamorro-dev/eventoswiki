@@ -10,7 +10,8 @@ import EventAgenda from '@/events/presentation/server/components/event-agenda/ev
 import BaseLayout from '@/layouts/base-layout.astro'
 import EventLayout from '@/layouts/event-layout.astro'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
-import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
+import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
 import { Urls } from '@/ui/urls/urls'
@@ -36,9 +37,13 @@ let isOrganizer = false
 try {
   event = await EventsContainer.get(GetEventQuery).execute({ slug: slug })
 
-  if (event && userId) {
-    const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
-    isOrganizer = organizations.some(organization => event!.isOrganizedBy(organization.id))
+  if (event && userId && event.organizationId) {
+    try {
+      await OrganizationsContainer.get(UserIsOrganizerEnsurer).ensure({ userId, organizationId: event.organizationId })
+      isOrganizer = true
+    } catch (error) {
+      if (!(error instanceof OrganizerNotFound)) throw error
+    }
   }
 
   content = await marked.parse(event.content)

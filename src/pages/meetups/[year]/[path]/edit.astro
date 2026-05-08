@@ -8,7 +8,9 @@ import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupEditTabs } from '@/meetups/presentation/client/components/meetup-edit-tabs/meetup-edit-tabs'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
-import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
+import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
@@ -43,9 +45,13 @@ try {
   }
 
   if (meetup && userId) {
-    const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
-    organization = organizations.find((organization) => meetup!.isOrganizedBy(organization.id))
-    canEdit = organization !== undefined
+    try {
+      await OrganizationsContainer.get(UserIsOrganizerEnsurer).ensure({ userId, organizationId: meetup.organizationId! })
+      canEdit = true
+      organization = await OrganizationsContainer.get(GetOrganizationByIdQuery).execute({ id: meetup.organizationId! })
+    } catch (error) {
+      if (!(error instanceof OrganizerNotFound)) throw error
+    }
   }
 } catch (error) {
   switch (true) {

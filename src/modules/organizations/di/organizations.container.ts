@@ -1,4 +1,7 @@
 import { ContainerBuilder } from 'diod'
+import { CheckUserIsAdminQuery } from '@/users/application/check-user-is-admin.query'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
 import { AddOrganizerCommand } from '../application/add-organizer.command'
 import { CreateOrganizationCommand } from '../application/create-organization.command'
 import { DeleteOrganizationCommand } from '../application/delete-organization.command'
@@ -70,6 +73,13 @@ builder.register(AddOrganizerCommand).use(AddOrganizerCommand).withDependencies(
 
 builder.register(RemoveOrganizerCommand).use(RemoveOrganizerCommand).withDependencies([AstroDbOrganizationsRepository])
 
-builder.register(UserIsOrganizerEnsurer).use(UserIsOrganizerEnsurer).withDependencies([GetUserOrganizationsQuery])
+// biome-ignore lint/correctness/useHookAtTopLevel: useFactory is a diod container method, not a React hook
+builder.register(UserIsOrganizerEnsurer).useFactory(() => {
+  return new UserIsOrganizerEnsurer(
+    new GetUserOrganizationsQuery(new AstroDbOrganizationsRepository()),
+    UsersContainer.get(GetUserQuery),
+    UsersContainer.get(CheckUserIsAdminQuery),
+  )
+})
 
 export const OrganizationsContainer = builder.build({ autowire: false })

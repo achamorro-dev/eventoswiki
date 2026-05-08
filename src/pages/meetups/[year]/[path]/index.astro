@@ -6,7 +6,8 @@ import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
 import type { Meetup } from '@/meetups/domain/meetup'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
-import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
+import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
@@ -30,9 +31,13 @@ let isOrganizer = false
 try {
   meetup = await MeetupsContainer.get(FindMeetupBySlugQuery).execute({ slug: slug })
 
-  if (meetup && userId) {
-    const organizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
-    isOrganizer = organizations.some((organization) => meetup!.isOrganizedBy(organization.id))
+  if (meetup && userId && meetup.organizationId) {
+    try {
+      await OrganizationsContainer.get(UserIsOrganizerEnsurer).ensure({ userId, organizationId: meetup.organizationId })
+      isOrganizer = true
+    } catch (error) {
+      if (!(error instanceof OrganizerNotFound)) throw error
+    }
   }
 
   content = await marked.parse(meetup.content)
