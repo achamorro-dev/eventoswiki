@@ -222,17 +222,17 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
                       <div
                         aria-invalid={!!form.formState.errors.image}
                         className={
-                          'flex w-full items-center justify-center rounded-md border-2 border-input bg-input aria-invalid:border-destructive'
+                          'flex w-full items-center justify-center rounded-md border-2 border-input bg-background bg-input aria-invalid:border-destructive'
                         }
                       >
                         <CameraSlash className="h-72 w-48 text-gray-400" />
                       </div>
                     )}
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       type="button"
                       size="icon"
-                      className="-mt-7 z-1 ml-4"
+                      className="-mt-7 z-1 ml-4 border-2"
                       disabled={isLoading}
                       onClick={() => fileInputRef.current?.click()}
                     >
