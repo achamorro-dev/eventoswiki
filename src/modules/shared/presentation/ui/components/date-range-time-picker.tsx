@@ -3,6 +3,7 @@
 import { add } from 'date-fns'
 
 import { Datetime } from '@/shared/domain/datetime/datetime'
+import { useMediaQuery } from '@/ui/hooks/use-media-query'
 import { Calendar as CalendarIcon } from '@/ui/icons'
 import { Button } from '../button'
 import { Calendar } from '../calendar'
@@ -27,6 +28,8 @@ export function DateRangeTimePicker({
   disabled = false,
   placeholder = 'Selecciona un rango de fechas',
 }: DateRangeTimePickerProps) {
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+
   const displayValue = () => {
     if (!startsAt || !endsAt) return null
     const isSameDay = Datetime.isSameDay(startsAt, endsAt)
@@ -56,6 +59,16 @@ export function DateRangeTimePicker({
     }
   }
 
+  const handleStartTimeChange = (newDate: Date | undefined) => {
+    if (!startsAt) return
+    onStartsAtChange(newDate)
+  }
+
+  const handleEndTimeChange = (newDate: Date | undefined) => {
+    if (!endsAt) return
+    onEndsAtChange(newDate)
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -79,17 +92,16 @@ export function DateRangeTimePicker({
           selected={{ from: startsAt, to: endsAt }}
           defaultMonth={startsAt}
           onSelect={handleRangeSelect}
-          numberOfMonths={2}
-          initialFocus
+          numberOfMonths={isDesktop ? 2 : 1}
         />
         <div className="grid grid-cols-2 gap-4 border-border border-t p-3">
           <div className="space-y-1">
             <p className="font-medium text-muted-foreground text-xs">Hora de inicio</p>
-            <TimePicker date={startsAt} setDate={onStartsAtChange} showIcon={false} />
+            <TimePicker date={startsAt} setDate={handleStartTimeChange} showIcon={false} />
           </div>
           <div className="space-y-1">
             <p className="font-medium text-muted-foreground text-xs">Hora de fin</p>
-            <TimePicker date={endsAt} setDate={onEndsAtChange} showIcon={false} />
+            <TimePicker date={endsAt} setDate={handleEndTimeChange} showIcon={false} />
           </div>
         </div>
       </PopoverContent>
