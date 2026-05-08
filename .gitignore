@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # Netlify
 .netlify
+
+# Admin seed data (local only)
+db/data/admin-users.json

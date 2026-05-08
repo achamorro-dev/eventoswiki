@@ -1,4 +1,5 @@
 import {
+  AdminUser,
   Bug,
   BugComment,
   db,
@@ -48,6 +49,7 @@ export default async function seed() {
   await db.delete(Organization).run()
   await db.delete(User).run()
   await db.delete(Province).run()
+  await db.delete(AdminUser).run()
 
   await Promise.all(provincesData.map(async (province: any) => await db.insert(Province).values(province)))
 
@@ -103,4 +105,13 @@ export default async function seed() {
       }
     }),
   )
+
+  try {
+    const adminUsersData = await import('./data/admin-users.json')
+    if (Array.isArray(adminUsersData.default) && adminUsersData.default.length > 0) {
+      await Promise.all(
+        adminUsersData.default.map(async (email: string) => await db.insert(AdminUser).values({ email })),
+      )
+    }
+  } catch {}
 }
