@@ -97,13 +97,13 @@
     "commit-msg": "npx --no-install commitlint --edit ${1}"
   },
   "volta": {
-    "node": "20.15.0",
-    "npm": "9.6.7"
+    "node": "24.16.0"
   },
   "engines": {
-    "node": ">=20.15.0",
-    "npm": ">=9.6.7"
+    "node": ">=24.16.0",
+    "pnpm": ">=11.5.2"
   },
+  "packageManager": "pnpm@11.5.2",
   "devDependencies": {
     "@biomejs/biome": "^2.3.5",
     "@commitlint/config-conventional": "19.1.0",

@@ -127,7 +127,7 @@ El Dockerfile utiliza un build multi-stage para optimizar el tamaño de la image
 
 ### Optimizaciones
 
-- **pnpm**: Usa pnpm en versión específica (9.15.2) para instalación rápida y eficiente de dependencias
+- **pnpm**: Usa pnpm en versión específica (11.5.2) gestionada por Corepack para instalación rápida y eficiente de dependencias
 - **Caché de capas**: Docker cachea cada etapa para builds más rápidos en iteraciones sucesivas
 - **Multi-stage build**: Reduce el tamaño final de la imagen al ~50% comparado con single-stage
 - **Alpine Linux**: Base ligera que reduce el footprint de ~1GB a ~300MB
@@ -143,7 +143,7 @@ Si recibes un error similar a:
 ERROR: failed to build: failed to solve: process "/bin/sh -c corepack enable && corepack prepare pnpm@latest --activate" did not complete successfully: exit code: 1
 ```
 
-Este error se ha solucionado en el Dockerfile actual usando una versión específica de pnpm (9.15.2) en lugar de `@latest` y configurando correctamente las variables de entorno de pnpm.
+Este error se ha solucionado en el Dockerfile actual usando una versión específica de pnpm (11.5.2) vía Corepack (sincronizada con el campo `packageManager` de `package.json`) en lugar de `@latest` y configurando correctamente las variables de entorno de pnpm.
 
 ### El contenedor no inicia
 

@@ -1,11 +1,11 @@
 # Etapa 1: Dependencias
-FROM node:20.15.0-alpine AS deps
+FROM node:24.16.0-alpine AS deps
 
-# Instalar pnpm globalmente de forma más robusta
+# Corepack gestiona pnpm según el campo "packageManager" de package.json
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && \
-    corepack prepare pnpm@9.15.2 --activate && \
+    corepack prepare pnpm@11.5.2 --activate && \
     pnpm config set store-dir /pnpm/store
 
 WORKDIR /app
@@ -17,13 +17,13 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Etapa 2: Builder
-FROM node:20.15.0-alpine AS builder
+FROM node:24.16.0-alpine AS builder
 
-# Instalar pnpm globalmente
+# Corepack gestiona pnpm según el campo "packageManager" de package.json
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && \
-    corepack prepare pnpm@9.15.2 --activate
+    corepack prepare pnpm@11.5.2 --activate
 
 WORKDIR /app
 
@@ -67,7 +67,7 @@ ENV PINATA_GATEWAY_URL=$PINATA_GATEWAY_URL
 RUN pnpm build
 
 # Etapa 3: Runner - Imagen de producción
-FROM node:20.15.0-alpine AS runner
+FROM node:24.16.0-alpine AS runner
 
 WORKDIR /app
 
