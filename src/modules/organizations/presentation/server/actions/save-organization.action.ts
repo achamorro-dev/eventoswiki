@@ -86,6 +86,7 @@ function _parseOrganizationDataPayload(input: z.infer<typeof saveOrganizationAct
     whatsapp: input.whatsapp,
     discord: input.discord,
     tiktok: input.tiktok,
+    meetup: input.meetup,
     followers: input.followers ?? [],
   }
 }

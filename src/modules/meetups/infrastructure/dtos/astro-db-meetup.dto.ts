@@ -34,4 +34,5 @@ export interface AstroDbMeetupDto {
   allowsAttendees: boolean
   registrationEndsAt: Date | null
   maxAttendees: number | null
+  externalId: string | null
 }

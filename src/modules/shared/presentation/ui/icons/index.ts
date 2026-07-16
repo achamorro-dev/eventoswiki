@@ -3,6 +3,7 @@ export {
   PiArrowArcRight as ArrowArcRight,
   PiArrowFatUp as ArrowFatUp,
   PiArrowFatUpFill as ArrowFatUpFill,
+  PiArrowsClockwise as ArrowsClockwise,
   PiArrowUp as ArrowUp,
   PiAtBold as At,
   PiBroadcast as Broadcast,
@@ -69,3 +70,4 @@ export {
   PiXLogoBold as XLogo,
   PiYoutubeLogo as Youtube,
 } from 'react-icons/pi'
+export { TbBrandMeetup as Meetup } from 'react-icons/tb'

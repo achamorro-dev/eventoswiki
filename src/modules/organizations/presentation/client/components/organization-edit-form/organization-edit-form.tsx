@@ -50,6 +50,7 @@ export const OrganizationEditForm = ({ provinces, organization }: Props) => {
       telegram: organization?.telegram,
       whatsapp: organization?.whatsapp,
       tiktok: organization?.tiktok,
+      meetup: organization?.meetup,
     },
     resolver: zodResolver(organizationFormSchema),
   })
@@ -103,7 +104,7 @@ export const OrganizationEditForm = ({ provinces, organization }: Props) => {
                   variant="outline"
                   type="button"
                   size="icon"
-                  className="z-1 -mt-8 ml-12"
+                  className="-mt-8 z-1 ml-12"
                   disabled={isLoading}
                   onClick={() => fileInputRef.current?.click()}
                 >
@@ -177,7 +178,11 @@ export const OrganizationEditForm = ({ provinces, organization }: Props) => {
             </div>
           </div>
 
-          <SocialForm control={form.control} />
+          <SocialForm control={form.control} extraFields={['meetup']} />
+
+          <p className="text-muted-foreground text-sm">
+            Añade el enlace de tu grupo de Meetup para poder sincronizar tus meetups.
+          </p>
         </div>
         <div className="mt-4 flex w-full justify-end">
           <Button type="submit" className="w-full md:w-min" disabled={isSaving}>

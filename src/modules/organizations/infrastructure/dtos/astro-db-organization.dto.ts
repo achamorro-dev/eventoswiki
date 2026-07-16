@@ -17,6 +17,7 @@ export interface AstroDbOrganizationDto {
   whatsapp: string | null
   discord: string | null
   tiktok: string | null
+  meetup: string | null
   createdAt: Date
   updatedAt: Date
 }

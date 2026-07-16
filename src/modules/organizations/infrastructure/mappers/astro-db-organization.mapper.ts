@@ -45,6 +45,7 @@ export class AstroOrganizationMapper {
       whatsapp: organization.whatsapp || undefined,
       discord: organization.discord || undefined,
       tiktok: organization.tiktok || undefined,
+      meetup: organization.meetup || undefined,
       createdAt: Datetime.toIsoString(organization.createdAt),
       updatedAt: Datetime.toIsoString(organization.updatedAt),
       organizers: organizerIds,

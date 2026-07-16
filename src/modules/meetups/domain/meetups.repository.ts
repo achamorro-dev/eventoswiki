@@ -18,6 +18,7 @@ export interface MeetupsRepository
     SaveableRepository<Meetup>,
     DeletableByIdRepository<MeetupId> {
   findBySlug(slug: string): Promise<Meetup>
+  findByOrganizationId(organizationId: string): Promise<Meetup[]>
   addAttendees(meetup: Meetup): Promise<void>
   removeAttendee(meetupId: MeetupId, attendeeId: MeetupAttendeeId): Promise<void>
   findAllAttendees(meetupId: string): Promise<MeetupAttendee[]>

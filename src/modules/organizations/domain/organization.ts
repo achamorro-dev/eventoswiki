@@ -24,6 +24,7 @@ export interface OrganizationProps {
   whatsapp?: string
   discord?: string
   tiktok?: string
+  meetup?: string
   createdAt: Date
   updatedAt: Date
   followers: string[]
@@ -53,6 +54,7 @@ export class Organization implements OrganizationProps {
   whatsapp?: string
   discord?: string
   tiktok?: string
+  meetup?: string
   createdAt: Date
   updatedAt: Date
   followers: string[]
@@ -77,6 +79,7 @@ export class Organization implements OrganizationProps {
     this.whatsapp = props.whatsapp
     this.discord = props.discord
     this.tiktok = props.tiktok
+    this.meetup = props.meetup
     this.createdAt = props.createdAt
     this.updatedAt = props.updatedAt
     this.followers = props.followers
@@ -128,6 +131,7 @@ export class Organization implements OrganizationProps {
       whatsapp: this.whatsapp,
       discord: this.discord,
       tiktok: this.tiktok,
+      meetup: this.meetup,
       createdAt: Datetime.toDateIsoString(this.createdAt),
       updatedAt: Datetime.toDateIsoString(this.updatedAt),
       followers: this.followers,
@@ -176,6 +180,7 @@ export class Organization implements OrganizationProps {
     this.whatsapp = newOrganizationData.whatsapp ?? this.whatsapp
     this.discord = newOrganizationData.discord ?? this.discord
     this.tiktok = newOrganizationData.tiktok ?? this.tiktok
+    this.meetup = newOrganizationData.meetup ?? this.meetup
   }
 
   addFollower(userId: string) {

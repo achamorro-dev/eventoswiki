@@ -18,6 +18,7 @@ export const saveOrganizationActionSchema = z.object({
   whatsapp: z.string().optional(),
   discord: z.string().optional(),
   tiktok: z.string().optional(),
+  meetup: z.string().optional(),
   followers: z.array(z.string()).optional(),
   organizationId: z.string().optional(),
 })

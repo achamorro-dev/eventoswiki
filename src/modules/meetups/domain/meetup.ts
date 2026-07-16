@@ -42,6 +42,7 @@ export class Meetup implements MeetupProps {
   allowsAttendees: boolean
   registrationEndsAt?: Date
   maxAttendees?: number
+  externalId?: string
 
   private constructor(props: MeetupProps) {
     this.id = props.id
@@ -75,6 +76,7 @@ export class Meetup implements MeetupProps {
     this.allowsAttendees = props.allowsAttendees
     this.registrationEndsAt = props.registrationEndsAt
     this.maxAttendees = props.maxAttendees
+    this.externalId = props.externalId
   }
 
   static create(data: MeetupEditableData, organizationId: string) {
@@ -123,6 +125,7 @@ export class Meetup implements MeetupProps {
       allowsAttendees: primitives.allowsAttendees,
       registrationEndsAt: primitives.registrationEndsAt ? Datetime.toDate(primitives.registrationEndsAt) : undefined,
       maxAttendees: primitives.maxAttendees,
+      externalId: primitives.externalId,
     })
   }
 
@@ -139,6 +142,7 @@ export class Meetup implements MeetupProps {
       allowsAttendees: this.allowsAttendees,
       registrationEndsAt: this.registrationEndsAt ? Datetime.toDateTimeIsoString(this.registrationEndsAt) : undefined,
       maxAttendees: this.maxAttendees,
+      externalId: this.externalId,
     }
   }
 
@@ -204,6 +208,7 @@ export class Meetup implements MeetupProps {
       ? Datetime.toDate(data.registrationEndsAt)
       : this.registrationEndsAt
     this.maxAttendees = data.maxAttendees ?? this.maxAttendees
+    this.externalId = data.externalId ?? this.externalId
   }
 
   isOrganizedBy(organizationId: OrganizationId): boolean {
@@ -334,6 +339,7 @@ export interface MeetupProps {
   allowsAttendees: boolean
   registrationEndsAt?: Date
   maxAttendees?: number
+  externalId?: string
 }
 
 export type MeetupEditableData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>

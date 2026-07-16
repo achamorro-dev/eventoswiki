@@ -103,7 +103,7 @@
     "node": ">=24.16.0",
     "pnpm": ">=11.5.2"
   },
-  "packageManager": "pnpm@11.5.2",
+  "packageManager": "pnpm@11.11.0",
   "devDependencies": {
     "@biomejs/biome": "^2.3.5",
     "@commitlint/config-conventional": "19.1.0",

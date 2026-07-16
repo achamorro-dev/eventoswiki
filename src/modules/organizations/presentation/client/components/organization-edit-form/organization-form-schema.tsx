@@ -26,6 +26,7 @@ export const organizationFormSchema = z.object({
   twitch: NotRequiredStringFormField(OrganizationLinkValidator),
   github: NotRequiredStringFormField(OrganizationLinkValidator),
   linkedin: NotRequiredStringFormField(OrganizationLinkValidator),
+  meetup: NotRequiredStringFormField(OrganizationLinkValidator),
 })
 
 export type OrganizationFormSchema = z.infer<typeof organizationFormSchema>

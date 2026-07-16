@@ -4,6 +4,7 @@ import { exportAttendeesAction } from './export-attendees.action'
 import { getAttendeesAction } from './get-attendees.action'
 import { removeAttendeeAction } from './remove-attendee.action'
 import { saveMeetupAction } from './save-meetup.action'
+import { syncMeetupsFromMeetupAction } from './sync-meetups-from-meetup.action'
 import { unattendMeetupAction } from './unattend-meetup.action'
 
 export const meetupsServerActions = {
@@ -14,4 +15,5 @@ export const meetupsServerActions = {
   removeAttendeeAction,
   exportAttendeesAction,
   getAttendeesAction,
+  syncMeetupsFromMeetupAction,
 }

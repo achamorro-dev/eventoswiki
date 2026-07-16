@@ -9,6 +9,7 @@ import {
   Globe,
   Instagram,
   Linkedin,
+  Meetup,
   Telegram,
   Tiktok,
   Twitch,
@@ -32,6 +33,7 @@ type Social = {
   twitch?: string
   github?: string
   linkedin?: string
+  meetup?: string
 }
 
 type SocialKeys = keyof Social
@@ -97,23 +99,34 @@ const socialFields: Record<SocialKeys, { label: string; icon: React.ReactNode; p
     icon: <Tiktok className="h-4 w-4" />,
     placeholder: 'https://tiktok.com/@usuario',
   },
+  meetup: {
+    label: 'Meetup',
+    icon: <Meetup className="h-4 w-4" />,
+    placeholder: 'https://www.meetup.com/tu-grupo',
+  },
 }
+
+const optionalSocialKeys: SocialKeys[] = ['meetup']
+const defaultSocialKeys = (Object.keys(socialFields) as SocialKeys[]).filter(key => !optionalSocialKeys.includes(key))
 
 interface Props<T extends FieldValues> {
   control: Control<T>
+  extraFields?: SocialKeys[]
 }
 
-export const SocialForm = <T extends Social & FieldValues>({ control }: Props<T>) => {
+export const SocialForm = <T extends Social & FieldValues>({ control, extraFields = [] }: Props<T>) => {
   const values = useWatch({ control })
   const [activeFields, setActiveFields] = useState<SocialKeys[]>(getSocialKeysWithValues(values))
+
+  const visibleFields = useMemo(() => [...defaultSocialKeys, ...extraFields], [extraFields])
 
   // Campos vacíos y no activados
   const emptyFields = useMemo(
     () =>
-      (Object.keys(socialFields) as SocialKeys[]).filter(
+      visibleFields.filter(
         key => (!values?.[key] || values[key]?.toString().trim() === '') && !activeFields.includes(key),
       ),
-    [values, activeFields],
+    [values, activeFields, visibleFields],
   )
 
   return (
@@ -121,7 +134,7 @@ export const SocialForm = <T extends Social & FieldValues>({ control }: Props<T>
       <Label>Links</Label>
 
       {emptyFields.length > 0 && (
-        <div className="flex flex-wrap gap-2 pb-4 pt-2">
+        <div className="flex flex-wrap gap-2 pt-2 pb-4">
           {emptyFields.map(socialKey => {
             const { icon, label } = socialFields[socialKey]
             return (

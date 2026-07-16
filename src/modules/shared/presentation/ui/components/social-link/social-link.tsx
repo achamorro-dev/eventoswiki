@@ -7,6 +7,7 @@ import {
   Globe,
   Instagram,
   Linkedin,
+  Meetup,
   Telegram,
   Tiktok,
   Twitch,
@@ -34,6 +35,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   discord: <Discord />,
   tiktok: <Tiktok />,
   web: <Globe />,
+  meetup: <Meetup />,
 }
 
 export const SocialLink: FC<SocialLinkProps> = props => {

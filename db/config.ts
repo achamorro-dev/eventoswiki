@@ -159,6 +159,7 @@ export const Meetup = defineTable({
     allowsAttendees: column.boolean({ default: true }),
     registrationEndsAt: column.date({ optional: true }),
     maxAttendees: column.number({ optional: true }),
+    externalId: column.text({ optional: true }),
   },
 })
 
@@ -213,6 +214,7 @@ export const Organization = defineTable({
     whatsapp: column.text({ optional: true }),
     discord: column.text({ optional: true }),
     tiktok: column.text({ optional: true }),
+    meetup: column.text({ optional: true }),
     createdAt: column.date({ default: NOW }),
     updatedAt: column.date({ default: NOW }),
   },

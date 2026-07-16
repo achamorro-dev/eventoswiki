@@ -51,6 +51,7 @@ export class AstroDbMeetupMapper {
       allowsAttendees: meetupDto.allowsAttendees,
       registrationEndsAt: meetupDto.registrationEndsAt ? Datetime.toIsoString(meetupDto.registrationEndsAt) : undefined,
       maxAttendees: meetupDto.maxAttendees || undefined,
+      externalId: meetupDto.externalId || undefined,
     })
   }
 }

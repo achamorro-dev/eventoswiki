@@ -3,6 +3,7 @@ import { SendMeetupAttendanceConfirmationEmailCommand } from '@/emails/applicati
 import { SendOrganizationMeetupCreatedEmailToFollowersCommand } from '@/emails/application/send-organization-meetup-created-email-to-followers.command'
 import { SendOrganizationMeetupUpdatedEmailCommand } from '@/emails/application/send-organization-meetup-updated-email.command'
 import { EmailsContainer } from '@/emails/di/emails.container'
+import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { AttendMeetupCommand } from '../application/attend-meetup.command'
@@ -19,9 +20,11 @@ import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
 import { GetPastMeetupsAttendedByUserQuery } from '../application/get-past-meetups-attended-by-user.query'
 import { GetUpcomingMeetupsAttendedByUserQuery } from '../application/get-upcoming-meetups-attended-by-user.query'
+import { SyncMeetupsFromMeetupCommand } from '../application/sync-meetups-from-meetup.command'
 import { UnattendMeetupCommand } from '../application/unattend-meetup.command'
 import { UpdateMeetupCommand } from '../application/update-meetup.command'
 import { AstroDbMeetupsRepository } from '../infrastructure/astro-db-meetups.repository'
+import { MeetupComEventsProvider } from '../infrastructure/meetup-com/meetup-com-events-provider'
 
 const builder = new ContainerBuilder()
 
@@ -58,6 +61,21 @@ builder
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.get(UserIsOrganizerEnsurer))
+
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder.register(GetOrganizationByIdQuery).useFactory(_ => OrganizationsContainer.get(GetOrganizationByIdQuery))
+
+builder.register(MeetupComEventsProvider).use(MeetupComEventsProvider)
+
+builder
+  .register(SyncMeetupsFromMeetupCommand)
+  .use(SyncMeetupsFromMeetupCommand)
+  .withDependencies([
+    AstroDbMeetupsRepository,
+    UserIsOrganizerEnsurer,
+    GetOrganizationByIdQuery,
+    MeetupComEventsProvider,
+  ])
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder

@@ -15,6 +15,7 @@ interface Props {
   whatsapp?: string
   discord?: string
   web?: string
+  meetup?: string
   className?: string
 }
 
@@ -31,11 +32,12 @@ export const SocialRow = (props: Props) => {
     whatsapp,
     discord,
     web,
+    meetup,
     className,
   } = props
 
   return (
-    <div className={cn('left-0 right-0 -ml-2 flex w-full justify-start gap-1 xl:px-0', className)}>
+    <div className={cn('-ml-2 right-0 left-0 flex w-full justify-start gap-1 xl:px-0', className)}>
       {web && <SocialLink name={web} href={web} type={SocialNetwork.web} />}
       {twitter && <SocialLink name={twitter} href={twitter} type={SocialNetwork.twitter} />}
       {twitch && <SocialLink name={twitch} href={twitch} type={SocialNetwork.twitch} />}
@@ -47,6 +49,7 @@ export const SocialRow = (props: Props) => {
       {telegram && <SocialLink name={telegram} href={telegram} type={SocialNetwork.telegram} />}
       {whatsapp && <SocialLink name={whatsapp} href={whatsapp} type={SocialNetwork.whatsapp} />}
       {discord && <SocialLink name={discord} href={discord} type={SocialNetwork.discord} />}
+      {meetup && <SocialLink name={meetup} href={meetup} type={SocialNetwork.meetup} />}
     </div>
   )
 }

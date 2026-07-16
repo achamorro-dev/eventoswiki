@@ -117,6 +117,18 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
     )
   }
 
+  async findByOrganizationId(organizationId: string): Promise<MeetupEntity[]> {
+    const meetups = await db
+      .select()
+      .from(Meetup)
+      .leftJoin(Province, eq(Province.slug, Meetup.location))
+      .where(eq(Meetup.organizationId, organizationId))
+
+    return AstroDbMeetupMapper.toDomainList(
+      meetups as { Meetup: AstroDbMeetupDto; Province: AstroDbMeetupProvinceDto | null }[],
+    )
+  }
+
   async save(value: MeetupEntity): Promise<void> {
     const meetup = await db.select().from(Meetup).where(eq(Meetup.id, value.id.value))
     const hasMeetup = meetup.length !== 0
@@ -165,6 +177,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
           allowsAttendees: value.allowsAttendees,
           registrationEndsAt: value.registrationEndsAt ?? null,
           maxAttendees: value.maxAttendees ?? null,
+          externalId: value.externalId ?? null,
         })
         .where(eq(Meetup.id, value.id.value))
     } catch (error) {
@@ -205,6 +218,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
         allowsAttendees: value.allowsAttendees,
         registrationEndsAt: value.registrationEndsAt ?? null,
         maxAttendees: value.maxAttendees ?? null,
+        externalId: value.externalId ?? null,
       })
     } catch (error) {
       this._mapError(error, value)
