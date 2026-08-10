@@ -1,5 +1,5 @@
 allowBuilds:
-  esbuild: set this to true or false
-  protobufjs: set this to true or false
-  sharp: set this to true or false
-  simple-git-hooks: set this to true or false
+  esbuild: true
+  protobufjs: true
+  sharp: true
+  simple-git-hooks: true
