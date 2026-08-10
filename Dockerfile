@@ -11,7 +11,7 @@ RUN corepack enable && \
 WORKDIR /app
 
 # Copiar archivos de dependencias
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Instalar dependencias
 RUN pnpm install --frozen-lockfile
