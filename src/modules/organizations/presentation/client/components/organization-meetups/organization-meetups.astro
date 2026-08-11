@@ -22,7 +22,7 @@ const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
 
 {
   isOrganizer && hasMeetups && (
-    <div class="flex flex-wrap items-center justify-center gap-2">
+    <div class="flex flex-wrap items-center gap-2">
       <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
         Crear meetup
       </Link>

@@ -20,7 +20,7 @@ const hasEvents = paginatedEvents.data.length > 0
 
 {
   isOrganizer && hasEvents && (
-    <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min mx-auto">
+    <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min">
       Crear evento
     </Link>
   )
