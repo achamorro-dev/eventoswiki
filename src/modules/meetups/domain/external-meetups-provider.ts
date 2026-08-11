@@ -10,6 +10,7 @@ export interface ExternalMeetupEvent {
   venueAddress: string | null
   venueCity: string | null
   imageUrl: string | null
+  tags: string[]
 }
 
 export interface ExternalMeetupsProvider {

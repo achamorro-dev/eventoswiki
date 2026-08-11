@@ -84,7 +84,7 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
       type: externalEvent.type,
       location: null,
       web: externalEvent.eventUrl,
-      tags: existingMeetup?.tags ?? [],
+      tags: existingMeetup?.tags ?? externalEvent.tags,
       tagColor: existingMeetup?.tagColor ?? '',
       allowsAttendees: existingMeetup?.allowsAttendees ?? false,
       externalId: externalEvent.externalId,

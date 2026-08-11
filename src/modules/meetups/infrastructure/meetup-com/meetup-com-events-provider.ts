@@ -22,6 +22,7 @@ const EVENTS_QUERY = `
             eventType
             venues { name address city }
             featuredEventPhoto { baseUrl highResUrl }
+            topics { edges { node { name } } }
           }
         }
       }
@@ -39,6 +40,7 @@ interface MeetupApiEventNode {
   eventType: 'PHYSICAL' | 'ONLINE' | 'HYBRID' | null
   venues: { name: string | null; address: string | null; city: string | null }[] | null
   featuredEventPhoto: { baseUrl: string | null; highResUrl: string | null } | null
+  topics: { edges: { node: { name: string } }[] } | null
 }
 
 interface MeetupApiResponse {
@@ -126,6 +128,7 @@ export class MeetupComEventsProvider implements ExternalMeetupsProvider {
       venueAddress: venue?.address ?? null,
       venueCity: venue?.city ?? null,
       imageUrl: node.featuredEventPhoto?.highResUrl ?? node.featuredEventPhoto?.baseUrl ?? null,
+      tags: node.topics?.edges.map(edge => edge.node.name) ?? [],
     }
   }
 
