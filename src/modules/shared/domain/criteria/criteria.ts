@@ -6,7 +6,7 @@ export abstract class Criteria<Filters, Order> {
 
   protected constructor(
     public order?: Order,
-    public limit: number = 9,
+    public limit: number = 12,
     public page: number = 1,
   ) {
     this.filters = []
