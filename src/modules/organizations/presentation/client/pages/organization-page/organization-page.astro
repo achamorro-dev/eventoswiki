@@ -18,12 +18,14 @@ import OrganizationOrganizersSkeleton from '../../components/organization-organi
 interface Props {
   organization: Organization
   userId?: string
+  isAdmin?: boolean
   activeTab: 'events' | 'meetups' | 'organizers' | 'followers'
 }
 
-const { organization, userId, activeTab } = Astro.props as Props
+const { organization, userId, isAdmin = false, activeTab } = Astro.props as Props
 const isOrganizer = userId ? organization.isOrganizer(userId) : false
 const isFollowing = userId ? organization.isFollower(userId) : false
+const canManageEvents = isOrganizer || isAdmin
 ---
 
 <article class="organization">
@@ -77,14 +79,14 @@ const isFollowing = userId ? organization.isFollower(userId) : false
     />
     {
       activeTab === 'events' && (
-        <OrganizationEvents organization={organization} isOrganizer={isOrganizer} server:defer>
+        <OrganizationEvents organization={organization} isOrganizer={canManageEvents} server:defer>
           <EventsGridSkeleton slot="fallback" />
         </OrganizationEvents>
       )
     }
     {
       activeTab === 'meetups' && (
-        <OrganizationMeetups organization={organization} isOrganizer={isOrganizer} server:defer>
+        <OrganizationMeetups organization={organization} isOrganizer={canManageEvents} server:defer>
           <EventsGridSkeleton slot="fallback" />
         </OrganizationMeetups>
       )

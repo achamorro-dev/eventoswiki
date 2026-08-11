@@ -7,6 +7,9 @@ import { OrganizationNotFound } from '@/organizations/domain/errors/organization
 import type { Organization } from '@/organizations/domain/organization'
 import OrganizationPageSkeleton from '@/organizations/presentation/client/pages/organization-page/organization-page-skeleton.astro'
 import OrganizationPage from '@/organizations/presentation/client/pages/organization-page/organization-page.astro'
+import { CheckUserIsAdminQuery } from '@/users/application/check-user-is-admin.query'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 
 const handle = Astro.params.handle
@@ -17,7 +20,20 @@ if (!handle) {
   return
 }
 
-const userId = Astro.locals.user?.id
+const user = Astro.locals.user
+const userId = user?.id
+
+let isAdmin = false
+if (userId) {
+  try {
+    const userEntity = await UsersContainer.get(GetUserQuery).execute({ id: userId })
+    if (userEntity?.email) {
+      isAdmin = await UsersContainer.get(CheckUserIsAdminQuery).execute({ email: userEntity.email })
+    }
+  } catch {
+    isAdmin = false
+  }
+}
 
 let organization: Organization | undefined
 try {
@@ -44,7 +60,7 @@ try {
       image={organization.image?.toString()}
       url={`https://eventos.wiki/organizations/${handle}`}
     >
-      <OrganizationPage organization={organization} userId={userId} activeTab="events">
+      <OrganizationPage organization={organization} userId={userId} isAdmin={isAdmin} activeTab="events">
         <OrganizationPageSkeleton slot="fallback" />
       </OrganizationPage>
     </Layout>
