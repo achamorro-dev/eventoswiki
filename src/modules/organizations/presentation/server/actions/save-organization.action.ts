@@ -2,8 +2,10 @@ import { ActionError, defineAction } from 'astro:actions'
 import { z } from 'astro/zod'
 import { CreateOrganizationCommand } from '@/organizations/application/create-organization.command'
 import { SaveOrganizationCommand } from '@/organizations/application/save-organization.command'
+import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { OrganizationAlreadyExists } from '@/organizations/domain/errors/organization-already-exists.error'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
 import type { OrganizationEditableData } from '@/organizations/domain/organization'
 import { saveOrganizationActionSchema } from './save-organization-action.schema'
 
@@ -20,9 +22,17 @@ export const saveOrganizationAction = defineAction({
           message: 'No estás autorizado para guardar esta organización',
         })
       }
-      const newOrganization = _parseOrganizationDataPayload(input)
 
       const isNewOrganization = !organizationId
+      if (!isNewOrganization) {
+        await OrganizationsContainer.get(UserIsOrganizerEnsurer).ensure({
+          userId: organizerId,
+          organizationId,
+        })
+      }
+
+      const newOrganization = _parseOrganizationDataPayload(input)
+
       isNewOrganization
         ? await _createOrganization(organizerId, newOrganization)
         : await _saveOrganization(organizationId, newOrganization)
@@ -34,6 +44,11 @@ export const saveOrganizationAction = defineAction({
           throw new ActionError({
             code: 'BAD_REQUEST',
             message: 'El nombre de la organización ya está en uso',
+          })
+        case error instanceof OrganizerNotFound:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'No estás autorizado para editar esta organización',
           })
         default:
           throw new ActionError({

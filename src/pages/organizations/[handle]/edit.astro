@@ -6,6 +6,9 @@ import { GetOrganizationQuery } from '@/organizations/application/get-organizati
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import type { Organization } from '@/organizations/domain/organization'
 import EditOrganizationPage from '@/organizations/presentation/client/pages/edit-organization-page/edit-organization-page.astro'
+import { CheckUserIsAdminQuery } from '@/users/application/check-user-is-admin.query'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { Urls } from '@/ui/urls/urls'
 
@@ -18,11 +21,24 @@ if (!handle) {
 }
 
 const userId = Astro.locals.user?.id
+
+let isAdmin = false
+if (userId) {
+  try {
+    const userEntity = await UsersContainer.get(GetUserQuery).execute({ id: userId })
+    if (userEntity?.email) {
+      isAdmin = await UsersContainer.get(CheckUserIsAdminQuery).execute({ email: userEntity.email })
+    }
+  } catch {
+    isAdmin = false
+  }
+}
+
 let organization: Organization | undefined
 try {
   organization = await OrganizationsContainer.get(GetOrganizationQuery).execute({ handle })
 
-  if (!userId || !organization.isOrganizer(userId)) {
+  if (!userId || (!organization.isOrganizer(userId) && !isAdmin)) {
     return Astro.redirect(Urls.ORGANIZATION(organization.handle))
   }
 } catch (error) {
