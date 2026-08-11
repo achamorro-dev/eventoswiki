@@ -18,6 +18,13 @@ const paginatedEvents = await EventsContainer.get(FindEventsQuery).execute({ org
 const hasEvents = paginatedEvents.data.length > 0
 ---
 
+{
+  isOrganizer && hasEvents && (
+    <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min mx-auto">
+      Crear evento
+    </Link>
+  )
+}
 <EventsGrid
   events={paginatedEvents.data}
   page={paginatedEvents.page}
@@ -39,11 +46,3 @@ const hasEvents = paginatedEvents.data.length > 0
     }
   </EmptyMessage>
 </EventsGrid>
-
-{
-  isOrganizer && hasEvents && (
-    <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min mx-auto">
-      Crear evento
-    </Link>
-  )
-}

@@ -20,6 +20,22 @@ const hasMeetups = paginatedMeetups.data.length > 0
 const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
 ---
 
+{
+  isOrganizer && hasMeetups && (
+    <div class="flex flex-wrap items-center justify-center gap-2">
+      <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
+        Crear meetup
+      </Link>
+      {canSyncMeetups && (
+        <SyncMeetupsButton
+          client:load
+          organizationId={organization.id.value}
+          organizationHandle={organization.handle}
+        />
+      )}
+    </div>
+  )
+}
 <EventsGrid
   events={paginatedMeetups.data}
   page={paginatedMeetups.page}
@@ -30,7 +46,7 @@ const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
     slot="empty"
     icon={ChalkboardTeacher}
     title="No hay meetups"
-    description="Cuando haya algún meetup dado de alta podrás verlo aquí."
+    description="Cuando haya algún meetup dado de alto podrás verlo aquí."
   >
     {
       isOrganizer && (
@@ -50,20 +66,3 @@ const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
     }
   </EmptyMessage>
 </EventsGrid>
-
-{
-  isOrganizer && hasMeetups && (
-    <div class="flex flex-wrap items-center justify-center gap-2">
-      <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
-        Crear meetup
-      </Link>
-      {canSyncMeetups && (
-        <SyncMeetupsButton
-          client:load
-          organizationId={organization.id.value}
-          organizationHandle={organization.handle}
-        />
-      )}
-    </div>
-  )
-}
