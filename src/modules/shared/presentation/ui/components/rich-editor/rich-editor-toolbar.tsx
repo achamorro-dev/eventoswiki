@@ -2,6 +2,13 @@ import { Editor } from '@tiptap/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '@/ui/dropdown-menu'
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
 import {
   ArrowArcLeft,
@@ -12,11 +19,13 @@ import {
   Link,
   ListNumbers,
   Loader,
+  Palette,
   Quotes,
   TextAlignCenter,
   TextAlignJustify,
   TextAlignLeft,
   TextAlignRight,
+  TextAa,
   TextBold,
   TextHFour,
   TextHThree,
@@ -30,6 +39,23 @@ import { Separator } from '@/ui/separator'
 import { Toggle } from '@/ui/toggle'
 import { InsertLinkDialog } from './insert-link-dialog'
 import { InsertYoutubeDialog } from './insert-youtube-dialog'
+
+const DEFAULT_TEXT_STYLE_VALUE = 'default'
+
+const TEXT_COLORS = [
+  { label: 'Predeterminado', value: DEFAULT_TEXT_STYLE_VALUE, swatch: 'transparent' },
+  { label: 'Gris', value: '#6b7280', swatch: '#6b7280' },
+  { label: 'Rojo', value: '#dc2626', swatch: '#dc2626' },
+  { label: 'Naranja', value: '#ea580c', swatch: '#ea580c' },
+  { label: 'Ámbar', value: '#d97706', swatch: '#d97706' },
+  { label: 'Verde', value: '#16a34a', swatch: '#16a34a' },
+  { label: 'Turquesa', value: '#0d9488', swatch: '#0d9488' },
+  { label: 'Azul', value: '#2563eb', swatch: '#2563eb' },
+  { label: 'Violeta', value: '#7c3aed', swatch: '#7c3aed' },
+  { label: 'Rosa', value: '#db2777', swatch: '#db2777' },
+]
+
+const FONT_SIZES = ['12px', '14px', '16px', '18px', '20px', '24px', '30px']
 
 interface RichEditorToolbarProps {
   editor: Editor | null
@@ -119,6 +145,32 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     setIsYoutubeDialogOpen(true)
   }
 
+  function onSelectTextColor(value: string) {
+    if (!editor) {
+      return
+    }
+
+    if (value === DEFAULT_TEXT_STYLE_VALUE) {
+      editor.chain().focus().unsetColor().run()
+      return
+    }
+
+    editor.chain().focus().setColor(value).run()
+  }
+
+  function onSelectFontSize(value: string) {
+    if (!editor) {
+      return
+    }
+
+    if (value === DEFAULT_TEXT_STYLE_VALUE) {
+      editor.chain().focus().unsetFontSize().run()
+      return
+    }
+
+    editor.chain().focus().setFontSize(value).run()
+  }
+
   function onToggleImage() {
     if (!editor || !onUploadImage || isUploadingImage) {
       return
@@ -164,11 +216,12 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     return null
   }
 
+  const currentColor = (editor.getAttributes('textStyle').color as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
+  const currentFontSize =
+    (editor.getAttributes('textStyle').fontSize as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
+
   return (
-    <div
-      className="bg-background rounded-xs flex w-full flex-wrap justify-start gap-2 border-b-[1px] py-2 md:justify-center"
-      style={{ scrollbarWidth: 'none' }}
-    >
+    <div className="bg-background rounded-xs z-10 flex w-full flex-wrap justify-start gap-2 border-b-[1px] py-2 md:sticky md:top-0 md:justify-center">
       <div className="flex flex-wrap">
         <Button
           type="button"
@@ -244,13 +297,51 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         </Toggle>
         <Toggle
           variant="default"
-          aria-label=""
+          aria-label="Strikethrough"
           pressed={editor.isActive('strike')}
           onPressedChange={() => editor.chain().focus().toggleStrike().run()}
           disabled={!editor.can().chain().focus().toggleStrike().run()}
         >
           <TextStrikethrough />
         </Toggle>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="ghost" size="icon" aria-label="Color del texto">
+              <Palette />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuRadioGroup value={currentColor} onValueChange={onSelectTextColor}>
+              {TEXT_COLORS.map(color => (
+                <DropdownMenuRadioItem key={color.value} value={color.value}>
+                  <span
+                    aria-hidden="true"
+                    className="h-3 w-3 shrink-0 rounded-full border border-border"
+                    style={{ backgroundColor: color.swatch }}
+                  />
+                  {color.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="ghost" size="icon" aria-label="Tamaño del texto">
+              <TextAa />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuRadioGroup value={currentFontSize} onValueChange={onSelectFontSize}>
+              <DropdownMenuRadioItem value={DEFAULT_TEXT_STYLE_VALUE}>Predeterminado</DropdownMenuRadioItem>
+              {FONT_SIZES.map(size => (
+                <DropdownMenuRadioItem key={size} value={size}>
+                  {size}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
         {!isMobile && <Separator orientation="vertical" />}
       </div>
       <div className="flex flex-wrap">

@@ -1,4 +1,3 @@
-import { Color } from '@tiptap/extension-color'
 import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 import ListItem from '@tiptap/extension-list-item'
@@ -145,8 +144,10 @@ export const RichEditor = (props: RichEditorProps) => {
   }, [handleUploadImage])
 
   const extensions = [
-    Color.configure({ types: [TextStyleKit.name, ListItem.name] }),
-    TextStyleKit.configure(),
+    TextStyleKit.configure({
+      color: { types: [ListItem.name] },
+      fontSize: { types: [ListItem.name] },
+    }),
     TextAlign.configure({ types: ['heading', 'paragraph'] }),
     Underline,
     StarterKit.configure({
