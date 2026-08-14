@@ -6,6 +6,8 @@ import { EmailsContainer } from '@/emails/di/emails.container'
 import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import { AttendMeetupCommand } from '../application/attend-meetup.command'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
 import { DeleteMeetupCommand } from '../application/delete-meetup.command'
@@ -65,6 +67,9 @@ builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(GetOrganizationByIdQuery).useFactory(_ => OrganizationsContainer.get(GetOrganizationByIdQuery))
 
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder.register(GetProvincesQuery).useFactory(_ => ProvincesContainer.get(GetProvincesQuery))
+
 builder.register(MeetupComEventsProvider).use(MeetupComEventsProvider)
 
 builder
@@ -75,6 +80,7 @@ builder
     UserIsOrganizerEnsurer,
     GetOrganizationByIdQuery,
     MeetupComEventsProvider,
+    GetProvincesQuery,
   ])
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook

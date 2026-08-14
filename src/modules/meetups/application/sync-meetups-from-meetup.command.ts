@@ -1,5 +1,7 @@
 import type { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
+import type { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
+import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { Command } from '@/shared/application/use-case/command'
 import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
 import { OrganizationMeetupUrlMissing } from '../domain/errors/organization-meetup-url-missing.error'
@@ -22,11 +24,13 @@ export interface SyncMeetupsResult {
 }
 
 export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResult> {
+  private provinces: ProvinceCollection = new ProvinceCollection([])
   constructor(
     private readonly meetupsRepository: MeetupsRepository,
     private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
     private readonly getOrganizationByIdQuery: GetOrganizationByIdQuery,
     private readonly externalMeetupsProvider: ExternalMeetupsProvider,
+    private readonly getProvincesQuery: GetProvincesQuery,
   ) {
     super()
   }
@@ -41,8 +45,12 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
       throw new OrganizationMeetupUrlMissing(organizationId)
     }
 
-    const externalEvents = await this.externalMeetupsProvider.getEvents(organization.meetup)
-    const meetupsByExternalId = await this._getMeetupsByExternalId(organizationId)
+    const [externalEvents, meetupsByExternalId, provinces] = await Promise.all([
+      this.externalMeetupsProvider.getEvents(organization.meetup),
+      this._getMeetupsByExternalId(organizationId),
+      this.getProvincesQuery.execute(),
+    ])
+    this.provinces = new ProvinceCollection(provinces)
 
     const result: SyncMeetupsResult = { created: 0, updated: 0 }
 
@@ -82,13 +90,20 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
       endsAt: this._endsAt(externalEvent),
       image: externalEvent.imageUrl ?? DEFAULT_MEETUP_IMAGE,
       type: externalEvent.type,
-      location: null,
+      location: this._toLocation(externalEvent, existingMeetup),
       web: externalEvent.eventUrl,
       tags: existingMeetup?.tags ?? externalEvent.tags,
       tagColor: existingMeetup?.tagColor ?? '',
       allowsAttendees: existingMeetup?.allowsAttendees ?? false,
       externalId: externalEvent.externalId,
     }
+  }
+
+  private _toLocation(externalEvent: ExternalMeetupEvent, existingMeetup?: Meetup): string | null {
+    const venueProvinceSlug = this.provinces.slugWithCity(externalEvent.venueCity)
+    if (venueProvinceSlug) return venueProvinceSlug
+
+    return this.provinces.slugWithName(existingMeetup?.location ?? undefined) ?? null
   }
 
   private _toContent(externalEvent: ExternalMeetupEvent): string {
