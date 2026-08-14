@@ -12,12 +12,30 @@ import OrganizedBy from '@/organizations/presentation/server/components/organize
 import { DeleteEventModal } from '@/events/presentation/client/components/delete-event-modal/delete-event-modal'
 import { DeleteMeetupModal } from '@/meetups/presentation/client/components/delete-meetup-modal/delete-meetup-modal'
 import EventHeaderInfo from '@/ui/components/event-header-info/event-header-info.astro'
+import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import type { Organization } from '@/organizations/domain/organization'
+import { toOteEvent } from '@/ote/domain/ote-event.mapper'
+import { oteEventToJsonLd } from '@/ote/domain/ote-json-ld.mapper'
+import { OteUrls } from '@/ote/domain/ote-urls'
 
 interface Props {
   event: Event | Meetup
   isOrganizer?: boolean
 }
 const { event, isOrganizer = false } = Astro.props
+
+let organization: Organization | undefined
+if (event.organizationId) {
+  try {
+    organization = await OrganizationsContainer.get(GetOrganizationByIdQuery).execute({ id: event.organizationId })
+  } catch {
+    // Los datos estructurados son accesorios: sin organización se emiten sin organizer.
+  }
+}
+
+const jsonLd = oteEventToJsonLd(toOteEvent(event, organization))
+const feedUrl = organization ? OteUrls.ORGANIZATION_FEED(organization.handle) : OteUrls.FEED
 
 const {
   slug,
@@ -51,6 +69,9 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
   description={shortDescription}
   image={image.toString()}
   url={`https://eventos.wiki${url}`}
+  ogType="event"
+  jsonLd={jsonLd}
+  feedUrl={feedUrl}
 >
   <header
     class="max-w-5xl w-full mx-auto mt-4 flex flex-col justify-center lg:items-start px-4 lg:px-0 lg:justify-start gap-4 md:flex-row"

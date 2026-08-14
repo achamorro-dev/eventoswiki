@@ -10,6 +10,7 @@ import OrganizationPage from '@/organizations/presentation/client/pages/organiza
 import { CheckUserIsAdminQuery } from '@/users/application/check-user-is-admin.query'
 import { GetUserQuery } from '@/users/application/get-user.query'
 import { UsersContainer } from '@/users/di/users.container'
+import { OteUrls } from '@/ote/domain/ote-urls'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 
 const handle = Astro.params.handle
@@ -59,6 +60,7 @@ try {
       description={organization.bio}
       image={organization.image?.toString()}
       url={`https://eventos.wiki/organizations/${handle}`}
+      feedUrl={OteUrls.ORGANIZATION_FEED(handle)}
     >
       <OrganizationPage organization={organization} userId={userId} isAdmin={isAdmin} activeTab="events">
         <OrganizationPageSkeleton slot="fallback" />

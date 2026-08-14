@@ -14,15 +14,26 @@ interface Props {
   image?: string
   url?: string
   mainContentId?: string
+  ogType?: string
+  jsonLd?: Record<string, unknown>
+  feedUrl?: string
 }
 
-const { title, description, image, url, mainContentId } = Astro.props
+const { title, description, image, url, mainContentId, ogType, jsonLd, feedUrl } = Astro.props
 const currentPath = Astro.url.pathname
 ---
 
 <!doctype html>
 <html lang="es">
-  <BaseHead title={`${title} - eventos.wiki`} description={description} image={image} url={url} />
+  <BaseHead
+    title={`${title} - eventos.wiki`}
+    description={description}
+    image={image}
+    url={url}
+    ogType={ogType}
+    jsonLd={jsonLd}
+    feedUrl={feedUrl}
+  />
   <body>
     <SkipToContent contentId={mainContentId} />
     <Header currentPath={currentPath} transition:persist />

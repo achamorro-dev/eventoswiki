@@ -19,6 +19,7 @@
       "@/places/*": ["./src/modules/places/*"],
       "@/emails/*": ["./src/modules/emails/*"],
       "@/user-settings/*": ["./src/modules/user-settings/*"],
+      "@/ote/*": ["./src/modules/ote/*"],
       "@/*": ["./src/*"]
     }
   }

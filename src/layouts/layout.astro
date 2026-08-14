@@ -7,12 +7,23 @@ interface Props {
   image?: string
   url?: string
   classes?: string
+  ogType?: string
+  jsonLd?: Record<string, unknown>
+  feedUrl?: string
 }
 
-const { title, description, image, url, classes, ...rest } = Astro.props
+const { title, description, image, url, classes, ogType, jsonLd, feedUrl, ...rest } = Astro.props
 ---
 
-<BaseLayout title={title} description={description} image={image} url={url}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  url={url}
+  ogType={ogType}
+  jsonLd={jsonLd}
+  feedUrl={feedUrl}
+>
   <main id="main" class:list={['h-full min-h-[calc(100vh-12rem)] pb-12 px-4 lg:px-8 pt-4 md:pt-8', classes]} {...rest}>
     <slot />
   </main>

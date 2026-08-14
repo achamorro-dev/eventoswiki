@@ -1,6 +1,11 @@
 import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
 
 import 'dayjs/locale/es'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 type ValidDate = string | Date
 
@@ -73,6 +78,36 @@ export class Datetime {
   static toDateTimeIsoString(dateToFormat: ValidDate): string {
     if (!dateToFormat) return ''
     return dayjs(dateToFormat).locale('es').toISOString()
+  }
+
+  /**
+   * Fecha y hora de pared (sin offset) en la zona indicada: `YYYY-MM-DDTHH:mm`.
+   * Es el formato que exige OpenTechEvents para startDate/endDate.
+   */
+  static toWallClockString(dateToFormat: ValidDate, timeZone: string): string {
+    if (!dateToFormat) return ''
+
+    return dayjs(dateToFormat).tz(timeZone).format('YYYY-MM-DDTHH:mm')
+  }
+
+  /**
+   * Fecha y hora con el offset de la zona indicada: `YYYY-MM-DDTHH:mm:ss+02:00`.
+   * Es lo que espera schema.org, que no admite una hora de pared suelta.
+   */
+  static toZonedOffsetString(dateToFormat: ValidDate, timeZone: string): string {
+    if (!dateToFormat) return ''
+
+    return dayjs.tz(dateToFormat, timeZone).format()
+  }
+
+  /**
+   * Instante absoluto en UTC: `YYYY-MM-DDTHH:mm:ss.sssZ`.
+   * Para marcas de tiempo (updatedAt) y plazos (cierre de CFP), que sí llevan offset.
+   */
+  static toInstantString(dateToFormat: ValidDate): string {
+    if (!dateToFormat) return ''
+
+    return dayjs(dateToFormat).toISOString()
   }
 
   static isBeforeToday(date: ValidDate): boolean {

@@ -1,10 +1,16 @@
 ---
 import { ClientRouter } from 'astro:transitions'
+import { OTE_MEDIA_TYPE } from '@/ote/domain/ote-event'
+import { OteUrls } from '@/ote/domain/ote-urls'
+
 type BaseHeadProps = {
   title?: string
   description?: string
   image?: string
   url?: string
+  ogType?: string
+  jsonLd?: Record<string, unknown>
+  feedUrl?: string
 }
 
 const {
@@ -12,11 +18,17 @@ const {
   description = 'En eventos.wiki tendrás todos los eventos tecnológicos en un mismo lugar',
   image = 'https://eventos.wiki/og.jpg',
   url = 'https://eventos.wiki/',
+  ogType = 'website',
+  jsonLd,
+  feedUrl = OteUrls.FEED,
 } = Astro.props as BaseHeadProps
+
+// `</script>` dentro de un título rompería el bloque JSON-LD: se escapa el `<`.
+const jsonLdContent = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined
 ---
 
 <head>
-  <meta charset="utf-8" dir="rtl" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -28,7 +40,7 @@ const {
   <meta name="description" content={description} />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={ogType} />
   <meta property="og:url" content={url} />
   <meta property="og:title" content={title} />
   <meta property="og:image" content={image} />
@@ -43,7 +55,9 @@ const {
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={image} />
   <link rel="canonical" href={url} />
+  <link rel="alternate" type={OTE_MEDIA_TYPE} href={feedUrl} title="Feed OpenTechEvents" />
   <title>{title}</title>
+  {jsonLdContent && <script type="application/ld+json" set:html={jsonLdContent} />}
   <ClientRouter />
 
   <script is:inline>
