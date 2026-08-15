@@ -220,7 +220,7 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
   const currentFontSize = (editor.getAttributes('textStyle').fontSize as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
 
   return (
-    <div className="z-10 flex w-full flex-wrap justify-start gap-2 rounded-xs border-b-[1px] bg-background py-2 md:sticky md:top-0 md:justify-center">
+    <div className="z-10 flex w-full flex-wrap justify-start gap-2 rounded-xs border-b-[1px] bg-background py-2 md:sticky md:top-14 md:justify-center lg:top-16">
       <div className="flex flex-wrap">
         <Button
           type="button"
@@ -243,6 +243,44 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         {!isMobile && <Separator orientation="vertical" />}
       </div>
       <div className="flex flex-wrap">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="ghost" size="icon" aria-label="Tamaño del texto">
+              <TextAa />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuRadioGroup value={currentFontSize} onValueChange={onSelectFontSize}>
+              <DropdownMenuRadioItem value={DEFAULT_TEXT_STYLE_VALUE}>Predeterminado</DropdownMenuRadioItem>
+              {FONT_SIZES.map(size => (
+                <DropdownMenuRadioItem key={size} value={size}>
+                  {size}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="ghost" size="icon" aria-label="Color del texto">
+              <Palette />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuRadioGroup value={currentColor} onValueChange={onSelectTextColor}>
+              {TEXT_COLORS.map(color => (
+                <DropdownMenuRadioItem key={color.value} value={color.value}>
+                  <span
+                    aria-hidden="true"
+                    className="mr-2 h-3 w-3 shrink-0 rounded-full border border-border"
+                    style={{ backgroundColor: color.swatch }}
+                  />
+                  {color.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <Toggle
           variant="default"
           aria-label="Heading 2"
@@ -303,44 +341,6 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         >
           <TextStrikethrough />
         </Toggle>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button type="button" variant="ghost" size="icon" aria-label="Color del texto">
-              <Palette />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuRadioGroup value={currentColor} onValueChange={onSelectTextColor}>
-              {TEXT_COLORS.map(color => (
-                <DropdownMenuRadioItem key={color.value} value={color.value}>
-                  <span
-                    aria-hidden="true"
-                    className="h-3 w-3 shrink-0 rounded-full border border-border"
-                    style={{ backgroundColor: color.swatch }}
-                  />
-                  {color.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button type="button" variant="ghost" size="icon" aria-label="Tamaño del texto">
-              <TextAa />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
-            <DropdownMenuRadioGroup value={currentFontSize} onValueChange={onSelectFontSize}>
-              <DropdownMenuRadioItem value={DEFAULT_TEXT_STYLE_VALUE}>Predeterminado</DropdownMenuRadioItem>
-              {FONT_SIZES.map(size => (
-                <DropdownMenuRadioItem key={size} value={size}>
-                  {size}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
         {!isMobile && <Separator orientation="vertical" />}
       </div>
       <div className="flex flex-wrap">
