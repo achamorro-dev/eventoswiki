@@ -33,12 +33,7 @@ export const EventActionsMenu = ({ type, slug, entityId, organizationHandle }: P
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-8 text-muted-foreground hover:text-foreground"
-            aria-label="Acciones"
-          >
+          <Button size="icon" className="size-8 text-muted-foreground hover:text-foreground" aria-label="Administrar">
             <DotsThreeVerticalBold />
           </Button>
         </DropdownMenuTrigger>
