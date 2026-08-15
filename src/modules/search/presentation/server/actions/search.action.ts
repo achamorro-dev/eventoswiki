@@ -8,7 +8,7 @@ import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import { GlobalSearchQuery } from '@/search/application/global-search.query'
 import { SearchContainer } from '@/search/di/search.container'
 import type { GlobalSearchResultsDto, SearchItemDto } from '@/search/presentation/types/search-results.dto'
-import { Datetime } from '@/shared/domain/datetime/datetime'
+import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
 import { Urls } from '@/ui/urls/urls'
 
 const MAX_QUERY_LENGTH = 100
@@ -60,14 +60,14 @@ const toEventItem = (event: Event, provinceNamesBySlug: Map<string, string>): Se
   id: event.id.value,
   title: event.title,
   url: Urls.EVENT(event.slug),
-  subtitle: buildStartsAtSubtitle(event.startsAt, event.location, provinceNamesBySlug),
+  subtitle: buildDatePeriodSubtitle(event.startsAt, event.endsAt, event.location, provinceNamesBySlug),
 })
 
 const toMeetupItem = (meetup: Meetup, provinceNamesBySlug: Map<string, string>): SearchItemDto => ({
   id: meetup.id.value,
   title: meetup.title,
   url: Urls.MEETUP(meetup.slug),
-  subtitle: buildStartsAtSubtitle(meetup.startsAt, meetup.location, provinceNamesBySlug),
+  subtitle: buildDatePeriodSubtitle(meetup.startsAt, meetup.endsAt, meetup.location, provinceNamesBySlug),
 })
 
 const toOrganizationItem = (organization: Organization, provinceNamesBySlug: Map<string, string>): SearchItemDto => ({
@@ -84,12 +84,18 @@ const toProvinceItem = (province: { slug: string; name: string }): SearchItemDto
   subtitle: null,
 })
 
-const buildStartsAtSubtitle = (
+const buildDatePeriodSubtitle = (
   startsAt: Date,
+  endsAt: Date,
   location: string | null,
   provinceNamesBySlug: Map<string, string>,
 ): string | null => {
-  const formattedDate = Datetime.toDateTimeHuman(startsAt)
+  const formattedStartDate = Datetime.toDateString(startsAt, DateFormat.DD_MMM_YYYY)
+  const shouldShowEndDate = !Datetime.isSameDay(startsAt, endsAt)
+  const formattedDate = shouldShowEndDate
+    ? `${formattedStartDate}${SUBTITLE_SEPARATOR}${Datetime.toDateString(endsAt, DateFormat.DD_MMM_YYYY)}`
+    : formattedStartDate
+
   const provinceName = location ? provinceNamesBySlug.get(location) : undefined
   if (!provinceName) return formattedDate
 
