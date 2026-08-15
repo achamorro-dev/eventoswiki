@@ -116,7 +116,7 @@ const formatPrice = (price: number): string => {
     height: calc(var(--tag-height) + var(--tag-gap));
   }
   .event-date-location {
-    @apply text-muted-foreground flex w-full items-center justify-between gap-1 font-light;
+    @apply text-muted-foreground mt-1 flex w-full flex-col items-start gap-1 font-light sm:flex-row sm:items-center sm:justify-between;
   }
   .event-title {
     @apply text-foreground mt-2 line-clamp-1 p-0 text-xl font-semibold dark:text-gray-100;
