@@ -3,14 +3,10 @@ import { Event } from '@/modules/events/domain/event'
 import BaseLayout from './base-layout.astro'
 import AddToCalendarButton from '@/ui/components/add-to-calendar-button/add-to-calendar-button.astro'
 import Container from '@/ui/components/container/container.astro'
-import { Link as LinkIcon, Pencil } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 import { Meetup } from '@/meetups/domain/meetup'
 import { SocialRow } from '@/ui/components/social-row/social-row'
-import { Link } from '@/ui/components/link'
 import OrganizedBy from '@/organizations/presentation/server/components/organized-by/organized-by.astro'
-import { DeleteEventModal } from '@/events/presentation/client/components/delete-event-modal/delete-event-modal'
-import { DeleteMeetupModal } from '@/meetups/presentation/client/components/delete-meetup-modal/delete-meetup-modal'
 import EventHeaderInfo from '@/ui/components/event-header-info/event-header-info.astro'
 import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
@@ -87,23 +83,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
         onerror="this.src='/not-found.jpg'"
         transition:name={`media-image-${url}`}
       />
-      <OrganizedBy organizationId={organizationId}>
-        {
-          isOrganizer && (
-            <div slot="actions" class="flex flex-row flex-wrap md:flex-col gap-2">
-              <Link variant="secondary" href={event instanceof Meetup ? Urls.MEETUP_EDIT(slug) : Urls.EVENT_EDIT(slug)}>
-                <Pencil />
-                Editar
-              </Link>
-              {event instanceof Meetup ? (
-                <DeleteMeetupModal client:load meetupId={event.id.value} />
-              ) : (
-                <DeleteEventModal client:load eventId={event.id.value} />
-              )}
-            </div>
-          )
-        }
-      </OrganizedBy>
+      <OrganizedBy organizationId={organizationId} />
       <SocialRow
         name={title}
         twitter={twitter}
@@ -123,6 +103,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
       id={event.id.value}
       type={event instanceof Meetup ? 'meetup' : 'event'}
       isOrganizer={isOrganizer}
+      organizationHandle={organization?.handle}
     />
   </header>
   <main class="lg:mt-4">

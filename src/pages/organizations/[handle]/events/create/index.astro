@@ -1,9 +1,13 @@
 ---
 import { EventEditForm } from '@/events/presentation/client/components/event-edit-form/event-edit-form'
+import { FindEventQuery } from '@/events/application/find-event.query'
+import { EventsContainer } from '@/events/di/events.container'
+import type { Event } from '@/events/domain/event'
 import BaseLayout from '@/layouts/base-layout.astro'
 import Layout from '@/layouts/layout.astro'
-import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import { GetOrganizationQuery } from '@/organizations/application/get-organization.query'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
@@ -11,10 +15,12 @@ import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { Urls } from '@/ui/urls/urls'
 import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 const { handle } = Astro.params
 const userId = Astro.locals.user?.id
+const duplicateId = Astro.url.searchParams.get('duplicate') ?? undefined
 
 if (!handle) {
   return Astro.redirect(Urls.HOME)
@@ -48,18 +54,43 @@ try {
       break
   }
 }
+
+let duplicatedEvent: Event | undefined
+if (duplicateId && userId && organization) {
+  try {
+    const sourceEvent = await EventsContainer.get(FindEventQuery).execute({ id: duplicateId })
+
+    if (sourceEvent.organizationId !== organization.id.value) {
+      const sourceOrganization = await OrganizationsContainer.get(GetOrganizationByIdQuery).execute({
+        id: sourceEvent.organizationId!,
+      })
+      return Astro.redirect(`${Urls.CREATE_EVENT(sourceOrganization.handle)}?duplicate=${duplicateId}`)
+    }
+
+    duplicatedEvent = sourceEvent
+  } catch {
+    duplicatedEvent = undefined
+  }
+}
+
+const duplicatedEventValues = (() => {
+  if (!duplicatedEvent) return undefined
+  const { id, slug, ...values } = duplicatedEvent.toPrimitives()
+  return { ...values, title: `${values.title} (copia)` }
+})()
 ---
 
 {
   organization ? (
     <Layout title={'Crear evento'}>
       <article>
-        <SectionTitle>Crear evento</SectionTitle>
+        <SectionTitle>{duplicatedEventValues ? 'Duplicar evento' : 'Crear evento'}</SectionTitle>
         <EventEditForm
           client:only="react"
           organizationId={organization.id.value}
           organization={organization.toPrimitives()}
           provinces={provinces}
+          event={duplicatedEventValues}
         />
       </article>
     </Layout>

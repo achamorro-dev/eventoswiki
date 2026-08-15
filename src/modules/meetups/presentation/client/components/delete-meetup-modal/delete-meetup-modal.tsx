@@ -11,16 +11,16 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/ui/alert-dialog'
-import { Button } from '@/ui/button'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
   meetupId: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
-export const DeleteMeetupModal: FC<Props> = ({ meetupId }) => {
+export const DeleteMeetupModal: FC<Props> = ({ meetupId, open, onOpenChange }) => {
   const onDelete = async () => {
     const { error } = await actions.meetups.deleteMeetupAction({
       meetupId,
@@ -35,10 +35,7 @@ export const DeleteMeetupModal: FC<Props> = ({ meetupId }) => {
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">Eliminar</Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Eliminar meetup</AlertDialogTitle>

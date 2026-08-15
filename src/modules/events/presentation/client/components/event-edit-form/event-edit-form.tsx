@@ -38,9 +38,11 @@ import { Urls } from '@/ui/urls/urls'
 import { AgendaForm } from '../agenda-form/agenda-form'
 import { type EventFormSchema, eventFormSchema } from './event-form-schema'
 
+type EventFormValues = Omit<EventPrimitives, 'id' | 'slug'> & Partial<Pick<EventPrimitives, 'id' | 'slug'>>
+
 interface Props {
   provinces: Province[]
-  event?: EventPrimitives
+  event?: EventFormValues
   organizationId: string
   organization?: Primitives<Organization>
   tab?: 'info' | 'sponsors' | 'speakers' | 'agenda'

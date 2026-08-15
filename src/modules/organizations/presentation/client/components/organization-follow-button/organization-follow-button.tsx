@@ -6,9 +6,10 @@ import { HeartBold, HeartBreakBold, Loader } from '@/ui/icons'
 interface Props {
   organizationId: string
   isFollowing: boolean
+  minimal?: boolean
 }
 export const OrganizationFollowButton = (props: Props) => {
-  const { organizationId } = props
+  const { organizationId, minimal = false } = props
   const [isFollowing, setIsFollowing] = useState(props.isFollowing)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,7 +35,13 @@ export const OrganizationFollowButton = (props: Props) => {
 
   return (
     <Button
-      variant="secondary"
+      variant={minimal ? 'ghost' : 'secondary'}
+      size={minimal ? 'sm' : 'default'}
+      className={
+        minimal
+          ? 'mt-1 -ml-1 h-6 gap-1 px-2 text-xs text-muted-foreground [&_svg]:size-3 hover:text-foreground'
+          : undefined
+      }
       aria-label="Seguir organización"
       onClick={isFollowing ? unfollow : follow}
       disabled={isLoading}
@@ -44,7 +51,7 @@ export const OrganizationFollowButton = (props: Props) => {
           <Loader className="animate-spin" /> Guardando
         </>
       )}
-      {!isLoading && (isFollowing ? <HeartBreakBold /> : <HeartBold />)}{' '}
+      {!isLoading && (isFollowing ? <HeartBreakBold /> : <HeartBold />)}
       {!isLoading && (isFollowing ? 'Dejar de seguir' : 'Seguir')}
     </Button>
   )

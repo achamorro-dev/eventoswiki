@@ -39,12 +39,16 @@ if (organizationId) {
           <a class="text-sm font-medium hover:text-primary" href={Urls.ORGANIZATION(organization.handle)}>
             {organization.name}
           </a>
+          {userId && !isOrganizer && (
+            <OrganizationFollowButton
+              client:load
+              minimal
+              organizationId={organization.id.value}
+              isFollowing={isFollowing}
+            />
+          )}
         </div>
       </section>
-      {userId && !isOrganizer && (
-        <OrganizationFollowButton client:load organizationId={organization.id.value} isFollowing={isFollowing} />
-      )}
-      <slot name="actions" />
     </div>
   )
 }

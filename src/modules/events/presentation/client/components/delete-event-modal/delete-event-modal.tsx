@@ -11,16 +11,16 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/ui/alert-dialog'
-import { Button } from '@/ui/button'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
   eventId: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
-export const DeleteEventModal: FC<Props> = ({ eventId }) => {
+export const DeleteEventModal: FC<Props> = ({ eventId, open, onOpenChange }) => {
   const onDelete = async () => {
     const { error } = await actions.events.deleteEventAction({
       eventId,
@@ -35,10 +35,7 @@ export const DeleteEventModal: FC<Props> = ({ eventId }) => {
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">Eliminar</Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Eliminar evento</AlertDialogTitle>
