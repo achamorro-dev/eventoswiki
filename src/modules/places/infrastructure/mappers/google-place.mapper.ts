@@ -12,6 +12,8 @@ export class GooglePlaceMapper {
         id: place.id,
         name: place.displayName.text,
         address: place.formattedAddress,
+        latitude: place.location?.latitude,
+        longitude: place.location?.longitude,
       })
   }
 }

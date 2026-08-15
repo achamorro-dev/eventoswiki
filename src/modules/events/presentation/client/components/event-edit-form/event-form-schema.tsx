@@ -12,6 +12,7 @@ import { EventTitleValidator } from '@/events/domain/validators/event-title.vali
 import { EventTypeValidator } from '@/events/domain/validators/event-type.validator'
 import { DateFormField } from '@/shared/presentation/forms/date-form-field'
 import { NotRequiredArrayFormField } from '@/shared/presentation/forms/not-required-array-form-field'
+import { NotRequiredNumberFormField } from '@/shared/presentation/forms/not-required-number-form-field'
 import { NotRequiredStringFormField } from '@/shared/presentation/forms/not-required-string-form-field'
 import { StringFormField } from '@/shared/presentation/forms/string-form-field'
 
@@ -46,6 +47,8 @@ export const eventFormSchema = z
         id: StringFormField(),
         address: StringFormField(),
         name: StringFormField(),
+        latitude: NotRequiredNumberFormField(),
+        longitude: NotRequiredNumberFormField(),
       })
       .optional(),
     tickets: z

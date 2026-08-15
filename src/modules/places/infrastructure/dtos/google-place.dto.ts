@@ -5,4 +5,8 @@ export interface GooglePlaceDto {
     text: string
   }
   formattedAddress: string
+  location?: {
+    latitude: number
+    longitude: number
+  }
 }

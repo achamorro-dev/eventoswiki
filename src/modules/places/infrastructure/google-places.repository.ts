@@ -17,7 +17,9 @@ export class GooglePlacesRepository implements PlacesRepository {
       headers: {
         'Content-Type': 'application/json',
         'X-Goog-Api-Key': GOOGLE_MAPS_PLACES_API_KEY,
-        'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress',
+        // `places.location` está en el mismo SKU Pro que displayName y formattedAddress,
+        // así que pedir las coordenadas no encarece la llamada.
+        'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.location',
       },
       body: JSON.stringify({
         textQuery: query,

@@ -9,6 +9,8 @@ export class EventPlace extends ValueObject<Place> {
         id: primitives.id,
         name: primitives.name,
         address: primitives.address,
+        latitude: primitives.latitude,
+        longitude: primitives.longitude,
       }),
     )
   }

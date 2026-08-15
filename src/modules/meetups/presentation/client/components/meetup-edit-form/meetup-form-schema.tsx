@@ -49,6 +49,8 @@ export const meetupFormSchema = z
         id: StringFormField(),
         address: StringFormField(),
         name: StringFormField(),
+        latitude: NotRequiredNumberFormField(),
+        longitude: NotRequiredNumberFormField(),
       })
       .optional(),
     tags: NotRequiredArrayFormField(z.string()),

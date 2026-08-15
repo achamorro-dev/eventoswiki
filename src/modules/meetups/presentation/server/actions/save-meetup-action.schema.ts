@@ -33,6 +33,8 @@ export const saveMeetupActionSchema = z.object({
       id: z.string(),
       name: z.string(),
       address: z.string(),
+      latitude: z.number().optional(),
+      longitude: z.number().optional(),
     })
     .optional(),
   allowsAttendees: z.boolean(),
