@@ -64,7 +64,7 @@ const formatPrice = (price: number): string => {
       <div class="event-tags">
         {
           event.tags.map(t => (
-            <Badge color={event.tagColor} className="text-white">
+            <Badge color={event.tagColor} className="h-6 max-w-full text-white">
               {t.toUpperCase()}
             </Badge>
           ))
@@ -104,8 +104,16 @@ const formatPrice = (price: number): string => {
   .price-badge-text {
     @apply text-sm font-medium;
   }
+  /* Solo se muestran los tags de la primera fila: la altura reserva una fila justa
+     (alto del badge + gap), así los que desbordan caen a la segunda y quedan recortados
+     en lugar de empujar al título. Mantener sincronizado con el `h-6` de los badges. */
   .event-tags {
-    @apply mt-2 flex h-8 flex-wrap items-center gap-1;
+    --tag-height: 1.5rem; /* h-6 */
+    --tag-gap: 0.25rem; /* gap-1 */
+    @apply mt-2 flex flex-wrap items-center overflow-hidden;
+    align-content: flex-start;
+    gap: var(--tag-gap);
+    height: calc(var(--tag-height) + var(--tag-gap));
   }
   .event-date-location {
     @apply text-muted-foreground flex w-full items-center justify-between gap-1 font-light;
