@@ -23,6 +23,7 @@ import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
 import { GetPastMeetupsAttendedByUserQuery } from '../application/get-past-meetups-attended-by-user.query'
 import { GetUpcomingMeetupsAttendedByUserQuery } from '../application/get-upcoming-meetups-attended-by-user.query'
+import { SearchMeetupsQuery } from '../application/search-meetups.query'
 import { SyncMeetupsFromMeetupCommand } from '../application/sync-meetups-from-meetup.command'
 import { UnattendMeetupCommand } from '../application/unattend-meetup.command'
 import { UpdateMeetupCommand } from '../application/update-meetup.command'
@@ -44,6 +45,8 @@ builder.register(FindMeetupQuery).use(FindMeetupQuery).withDependencies([AstroDb
 builder.register(GetMeetupsQuery).use(GetMeetupsQuery).withDependencies([AstroDbMeetupsRepository])
 
 builder.register(FindMeetupsQuery).use(FindMeetupsQuery).withDependencies([AstroDbMeetupsRepository])
+
+builder.register(SearchMeetupsQuery).use(SearchMeetupsQuery).withDependencies([AstroDbMeetupsRepository])
 
 builder.register(FindMeetupAttendeesQuery).use(FindMeetupAttendeesQuery).withDependencies([AstroDbMeetupsRepository])
 

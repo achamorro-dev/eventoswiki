@@ -8,6 +8,7 @@ import {
   eq,
   inArray,
   isDbError,
+  like,
   Meetup,
   Organization,
   OrganizationFollower,
@@ -342,25 +343,19 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
   }
 
   private getOrganizationsQueryWithCriteria(criteria: OrganizationsCriteria) {
-    return (
-      db
-        .select({ Organization, Province })
-        .from(Organization)
-        .leftJoin(Province, eq(Province.slug, Organization.location))
-        //@ts-expect-error
-        .where(...this.getOrganizationsFiltersByCriteria(criteria))
-    )
+    return db
+      .select({ Organization, Province })
+      .from(Organization)
+      .leftJoin(Province, eq(Province.slug, Organization.location))
+      .where(and(...this.getOrganizationsFiltersByCriteria(criteria)))
   }
 
   private getCountOrganizationsQueryWithCriteria(criteria: OrganizationsCriteria) {
-    return (
-      db
-        .select({ count: count() })
-        .from(Organization)
-        .leftJoin(Province, eq(Province.slug, Organization.location))
-        //@ts-expect-error
-        .where(...this.getOrganizationsFiltersByCriteria(criteria))
-    )
+    return db
+      .select({ count: count() })
+      .from(Organization)
+      .leftJoin(Province, eq(Province.slug, Organization.location))
+      .where(and(...this.getOrganizationsFiltersByCriteria(criteria)))
   }
 
   private getOrganizationsFiltersByCriteria(criteria: OrganizationsCriteria) {

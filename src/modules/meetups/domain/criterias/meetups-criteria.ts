@@ -8,6 +8,14 @@ export class MeetupsCriteria extends Criteria<Partial<MeetupsFilters>, Partial<M
     return new MeetupsCriteria(order)
   }
 
+  withTitleLike(title?: string): MeetupsCriteria {
+    if (!title) return this
+
+    const searchPattern = `%${title.replace(/\s+/g, '%')}%`
+    this.and({ title: { operator: RelationalOperator.LIKE, value: searchPattern } })
+    return this
+  }
+
   withLocation(location?: string): MeetupsCriteria {
     if (!location) return this
 

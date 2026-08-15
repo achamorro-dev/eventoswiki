@@ -8,6 +8,7 @@ import {
   gt,
   gte,
   isDbError,
+  like,
   lt,
   lte,
   Meetup,
@@ -337,25 +338,19 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
   }
 
   private getMeetupsWithCriteria(criteria: MeetupsCriteria) {
-    return (
-      db
-        .select()
-        .from(Meetup)
-        .leftJoin(Province, eq(Province.slug, Meetup.location))
-        //@ts-expect-error
-        .where(...this.getMeetupsFiltersByCriteria(criteria))
-    )
+    return db
+      .select()
+      .from(Meetup)
+      .leftJoin(Province, eq(Province.slug, Meetup.location))
+      .where(and(...this.getMeetupsFiltersByCriteria(criteria)))
   }
 
   private getCountMeetupsWithCriteria(criteria: MeetupsCriteria) {
-    return (
-      db
-        .select({ count: count() })
-        .from(Meetup)
-        .leftJoin(Province, eq(Province.slug, Meetup.location))
-        //@ts-expect-error
-        .where(...this.getMeetupsFiltersByCriteria(criteria))
-    )
+    return db
+      .select({ count: count() })
+      .from(Meetup)
+      .leftJoin(Province, eq(Province.slug, Meetup.location))
+      .where(and(...this.getMeetupsFiltersByCriteria(criteria)))
   }
 
   private getMeetupsFiltersByCriteria(criteria: MeetupsCriteria) {

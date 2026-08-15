@@ -13,6 +13,7 @@ import { GetUserOrganizationsQuery } from '../application/get-user-organizations
 import { MatchOrganizationsQuery } from '../application/match-organizations.query'
 import { RemoveOrganizerCommand } from '../application/remove-organizer.command'
 import { SaveOrganizationCommand } from '../application/save-organization.command'
+import { SearchOrganizationsQuery } from '../application/search-organizations.query'
 import { UnfollowOrganizationCommand } from '../application/unfollow-organization.command'
 import { UserIsOrganizerEnsurer } from '../application/user-is-organizer-ensurer.service'
 import { AstroDbOrganizationsRepository } from '../infrastructure/astro-db-organizations.repository'
@@ -42,6 +43,11 @@ builder
 builder
   .register(MatchOrganizationsQuery)
   .use(MatchOrganizationsQuery)
+  .withDependencies([AstroDbOrganizationsRepository])
+
+builder
+  .register(SearchOrganizationsQuery)
+  .use(SearchOrganizationsQuery)
   .withDependencies([AstroDbOrganizationsRepository])
 
 builder

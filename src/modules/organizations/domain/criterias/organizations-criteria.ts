@@ -8,6 +8,14 @@ export class OrganizationsCriteria extends Criteria<Partial<OrganizationsFilters
     return new OrganizationsCriteria(order)
   }
 
+  withNameLike(name?: string): OrganizationsCriteria {
+    if (!name) return this
+
+    const searchPattern = `%${name.replace(/\s+/g, '%')}%`
+    this.and({ name: { operator: RelationalOperator.LIKE, value: searchPattern } })
+    return this
+  }
+
   withLocation(location?: string): OrganizationsCriteria {
     if (!location) return this
 

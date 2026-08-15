@@ -12,6 +12,7 @@ import { GetEventQuery } from '../application/get-event.query'
 import { GetEventsQuery } from '../application/get-events.query'
 import { GetNextEventsQuery } from '../application/get-next-events.query'
 import { GetPastEventsQuery } from '../application/get-past-events.query'
+import { SearchEventsQuery } from '../application/search-events.query'
 import { UpdateEventCommand } from '../application/update-event.command'
 import { AstroDbAgendaItemsRepository } from '../infrastructure/agenda/astro-db-agenda-items.repository'
 import { AstroDbAgendaSessionsRepository } from '../infrastructure/agenda/astro-db-agenda-sessions.repository'
@@ -59,6 +60,8 @@ builder.register(GetPastEventsQuery).use(GetPastEventsQuery).withDependencies([A
 builder.register(FindEventQuery).use(FindEventQuery).withDependencies([AstroDbEventsRepository])
 
 builder.register(FindEventsQuery).use(FindEventsQuery).withDependencies([AstroDbEventsRepository])
+
+builder.register(SearchEventsQuery).use(SearchEventsQuery).withDependencies([AstroDbEventsRepository])
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.get(UserIsOrganizerEnsurer))

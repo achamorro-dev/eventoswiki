@@ -8,6 +8,14 @@ export class EventsCriteria extends Criteria<Partial<EventsFilters>, Partial<Eve
     return new EventsCriteria(order)
   }
 
+  withTitleLike(title?: string): EventsCriteria {
+    if (!title) return this
+
+    const searchPattern = `%${title.replace(/\s+/g, '%')}%`
+    this.and({ title: { operator: RelationalOperator.LIKE, value: searchPattern } })
+    return this
+  }
+
   withLocation(location?: string): EventsCriteria {
     if (!location) return this
 

@@ -5,6 +5,7 @@ import { meetupsServerActions } from '@/meetups/presentation/server/actions'
 import { bugsServerActions } from '@/modules/bugs/presentation/server/actions'
 import { featureRequestsServerActions } from '@/modules/feature-requests/presentation/server/actions'
 import { placesServerActions } from '@/modules/places/presentation/server/actions'
+import { searchServerActions } from '@/modules/search/presentation/server/actions'
 import { organizationServerActions } from '@/organizations/presentation/server/actions'
 import { userSettingsServerActions } from '@/user-settings/presentation/server/actions'
 import { userServerActions } from '@/users/presentation/server/actions'
@@ -17,6 +18,7 @@ export const server = {
   events: eventsServerActions,
   meetups: meetupsServerActions,
   places: placesServerActions,
+  search: searchServerActions,
   userSettings: userSettingsServerActions,
   featureRequests: featureRequestsServerActions,
   bugs: bugsServerActions,

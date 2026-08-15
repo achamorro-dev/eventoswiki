@@ -309,25 +309,19 @@ export class AstroDbEventsRepository implements EventsRepository {
   }
 
   private getEventsQueryWithCriteria(criteria: EventsCriteria) {
-    return (
-      db
-        .select()
-        .from(Event)
-        .leftJoin(Province, eq(Province.slug, Event.location))
-        //@ts-expect-error
-        .where(...this.getEventsFiltersByCriteria(criteria))
-    )
+    return db
+      .select()
+      .from(Event)
+      .leftJoin(Province, eq(Province.slug, Event.location))
+      .where(and(...this.getEventsFiltersByCriteria(criteria)))
   }
 
   private getCountEventsQueryWithCriteria(criteria: EventsCriteria) {
-    return (
-      db
-        .select({ count: count() })
-        .from(Event)
-        .leftJoin(Province, eq(Province.slug, Event.location))
-        //@ts-expect-error
-        .where(...this.getEventsFiltersByCriteria(criteria))
-    )
+    return db
+      .select({ count: count() })
+      .from(Event)
+      .leftJoin(Province, eq(Province.slug, Event.location))
+      .where(and(...this.getEventsFiltersByCriteria(criteria)))
   }
 
   private getEventsFiltersByCriteria(criteria: EventsCriteria) {

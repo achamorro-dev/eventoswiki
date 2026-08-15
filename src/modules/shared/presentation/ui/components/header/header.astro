@@ -7,6 +7,7 @@ import MobileMenu from '../menu/mobile-menu.astro'
 import { UserMenu } from '@/modules/users/presentation/client/components/user-menu/user-menu'
 import { GetUserQuery } from '@/users/application/get-user.query'
 import { UsersContainer } from '@/users/di/users.container'
+import { CommandPalette } from '@/search/presentation/client/components/command-palette/command-palette'
 
 interface Props {
   currentPath?: string
@@ -29,6 +30,7 @@ const getNextParam = () => (isValidCurrentPath ? `?_next=${encodeURIComponent(cu
   <Logo />
   <DesktopMenu />
   <section class="actions">
+    <CommandPalette client:idle />
     {
       !hasActiveSession && (
         <Link href={`${Urls.LOGIN}${getNextParam()}`} variant="default">

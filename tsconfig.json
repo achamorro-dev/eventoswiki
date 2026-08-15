@@ -20,6 +20,7 @@
       "@/emails/*": ["./src/modules/emails/*"],
       "@/user-settings/*": ["./src/modules/user-settings/*"],
       "@/ote/*": ["./src/modules/ote/*"],
+      "@/search/*": ["./src/modules/search/*"],
       "@/*": ["./src/*"]
     }
   }
