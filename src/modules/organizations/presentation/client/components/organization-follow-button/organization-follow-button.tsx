@@ -39,7 +39,7 @@ export const OrganizationFollowButton = (props: Props) => {
       size={minimal ? 'sm' : 'default'}
       className={
         minimal
-          ? 'mt-1 -ml-1 h-6 gap-1 px-2 text-xs text-muted-foreground [&_svg]:size-3 hover:text-foreground'
+          ? '-ml-1 mt-1 h-6 gap-1 px-2 text-muted-foreground text-xs hover:text-foreground [&_svg]:size-3'
           : undefined
       }
       aria-label="Seguir organización"
