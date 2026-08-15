@@ -9,13 +9,14 @@ import type { ExternalMeetupEvent, ExternalMeetupsProvider } from '../domain/ext
 import { Meetup, type MeetupEditableData } from '../domain/meetup'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 
-const DEFAULT_MEETUP_IMAGE = 'https://eventos.wiki/og.jpg'
+const LEGACY_PLACEHOLDER_IMAGE = 'https://eventos.wiki/og.jpg'
 const DEFAULT_EVENT_DURATION_MS = 2 * 60 * 60 * 1000
 const SHORT_DESCRIPTION_MAX_LENGTH = 160
 
 interface Param {
   organizationId: string
   userId: string
+  externalIds?: string[]
 }
 
 export interface SyncMeetupsResult {
@@ -52,9 +53,10 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
     ])
     this.provinces = new ProvinceCollection(provinces)
 
+    const eventsToSync = this._filterEventsToSync(externalEvents, param.externalIds)
     const result: SyncMeetupsResult = { created: 0, updated: 0 }
 
-    for (const externalEvent of externalEvents) {
+    for (const externalEvent of eventsToSync) {
       const existingMeetup = meetupsByExternalId.get(externalEvent.externalId)
 
       if (existingMeetup) {
@@ -70,6 +72,16 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
     }
 
     return result
+  }
+
+  private _filterEventsToSync(externalEvents: ExternalMeetupEvent[], externalIds?: string[]): ExternalMeetupEvent[] {
+    if (!externalIds) {
+      return externalEvents
+    }
+
+    const externalIdsToSync = new Set(externalIds)
+
+    return externalEvents.filter(externalEvent => externalIdsToSync.has(externalEvent.externalId))
   }
 
   private async _getMeetupsByExternalId(organizationId: string): Promise<Map<string, Meetup>> {
@@ -88,7 +100,7 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
       content: this._toContent(externalEvent),
       startsAt: externalEvent.startsAt,
       endsAt: this._endsAt(externalEvent),
-      image: externalEvent.imageUrl ?? DEFAULT_MEETUP_IMAGE,
+      image: this._toImage(externalEvent, existingMeetup),
       type: externalEvent.type,
       location: this._toLocation(externalEvent, existingMeetup),
       web: externalEvent.eventUrl,
@@ -97,6 +109,19 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
       allowsAttendees: existingMeetup?.allowsAttendees ?? false,
       externalId: externalEvent.externalId,
     }
+  }
+
+  private _toImage(externalEvent: ExternalMeetupEvent, existingMeetup?: Meetup): string | null {
+    if (externalEvent.imageUrl) {
+      return externalEvent.imageUrl
+    }
+
+    const existingImage = existingMeetup?.image?.toString()
+    if (!existingImage || existingImage === LEGACY_PLACEHOLDER_IMAGE) {
+      return null
+    }
+
+    return existingImage
   }
 
   private _toLocation(externalEvent: ExternalMeetupEvent, existingMeetup?: Meetup): string | null {

@@ -57,9 +57,11 @@ export function OrganizationMeetupUpdatedEmail({
       <Tailwind>
         <Body className="bg-gray-50 font-sans">
           <Container className="mx-auto max-w-2xl">
-            <Section className="px-5">
-              <Img src={meetup.image.toString()} alt={meetup.title} className="mb-6 w-full rounded-lg" />
-            </Section>
+            {meetup.image && (
+              <Section className="px-5">
+                <Img src={meetup.image.toString()} alt={meetup.title} className="mb-6 w-full rounded-lg" />
+              </Section>
+            )}
 
             <Section className="px-5">
               <Text className="mb-3 font-bold text-2xl text-gray-900">¡Hola {userName}!</Text>

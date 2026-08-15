@@ -67,7 +67,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
 <BaseLayout
   title={`${title} - eventos.wiki`}
   description={shortDescription}
-  image={image.toString()}
+  image={image?.toString()}
   url={`https://eventos.wiki${url}`}
   ogType="event"
   jsonLd={jsonLd}
@@ -80,7 +80,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
     <div class="flex flex-col items-center gap-4">
       <img
         id="event-image"
-        src={image.toString()}
+        src={image?.toString() ?? '/not-found.jpg'}
         alt={`Foto de portada del evento ${title}`}
         class="w-full md:max-w-[800px] md:max-h-[400px] min-h-[200px] min-w-[300px] object-cover rounded-xl shadow-md bg-white"
         loading="lazy"

@@ -16,6 +16,7 @@ import { FindMeetupQuery } from '../application/find-meetup.query'
 import { FindMeetupAttendeesQuery } from '../application/find-meetup-attendees.query'
 import { FindMeetupBySlugQuery } from '../application/find-meetup-by-slug.query'
 import { FindMeetupsQuery } from '../application/find-meetups.query'
+import { GetExternalMeetupsQuery } from '../application/get-external-meetups.query'
 import { GetMeetupsQuery } from '../application/get-meetups.query'
 import { GetMeetupsAttendedByUserQuery } from '../application/get-meetups-attended-by-user/get-meetups-attended-by-user.query'
 import { GetNextMeetupsQuery } from '../application/get-next-meetups.query'
@@ -71,6 +72,16 @@ builder.register(GetOrganizationByIdQuery).useFactory(_ => OrganizationsContaine
 builder.register(GetProvincesQuery).useFactory(_ => ProvincesContainer.get(GetProvincesQuery))
 
 builder.register(MeetupComEventsProvider).use(MeetupComEventsProvider)
+
+builder
+  .register(GetExternalMeetupsQuery)
+  .use(GetExternalMeetupsQuery)
+  .withDependencies([
+    AstroDbMeetupsRepository,
+    UserIsOrganizerEnsurer,
+    GetOrganizationByIdQuery,
+    MeetupComEventsProvider,
+  ])
 
 builder
   .register(SyncMeetupsFromMeetupCommand)

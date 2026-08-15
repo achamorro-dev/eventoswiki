@@ -17,7 +17,7 @@ export class Meetup implements MeetupProps {
   shortDescription: string
   startsAt: Date
   endsAt: Date
-  image: URL
+  image?: URL
   type: MeetupType
   location: string | null
   web?: string
@@ -84,6 +84,7 @@ export class Meetup implements MeetupProps {
 
     const meetup = Meetup.fromPrimitives({
       ...data,
+      image: data.image ?? undefined,
       organizationId,
       id: uuidv4(),
       location: data.location ?? null,
@@ -100,7 +101,7 @@ export class Meetup implements MeetupProps {
       shortDescription: primitives.shortDescription,
       startsAt: Datetime.toDate(primitives.startsAt),
       endsAt: Datetime.toDate(primitives.endsAt),
-      image: new URL(primitives.image),
+      image: primitives.image ? new URL(primitives.image) : undefined,
       type: MeetupType.of(primitives.type),
       location: primitives.location || null,
       web: primitives.web,
@@ -133,7 +134,7 @@ export class Meetup implements MeetupProps {
     return {
       ...this,
       id: this.id.value,
-      image: this.image.toString(),
+      image: this.image?.toString(),
       startsAt: Datetime.toDateTimeIsoString(this.startsAt),
       endsAt: Datetime.toDateTimeIsoString(this.endsAt),
       type: this.type.value,
@@ -182,7 +183,7 @@ export class Meetup implements MeetupProps {
     this.shortDescription = data.shortDescription ?? this.shortDescription
     this.startsAt = Datetime.toDate(data.startsAt) ?? this.startsAt
     this.endsAt = Datetime.toDate(data.endsAt) ?? this.endsAt
-    this.image = data.image ? new URL(data.image) : this.image
+    this.image = data.image ? new URL(data.image) : data.image === null ? undefined : this.image
     this.location = data.location ?? this.location
     this.web = data.web ?? this.web
     this.twitter = data.twitter ?? this.twitter
@@ -314,7 +315,7 @@ export interface MeetupProps {
   shortDescription: string
   startsAt: Date
   endsAt: Date
-  image: URL
+  image?: URL
   location: string | null
   type: MeetupType
   web?: string
@@ -342,4 +343,10 @@ export interface MeetupProps {
   externalId?: string
 }
 
-export type MeetupEditableData = Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>
+export type MeetupEditableData = Omit<
+  Primitives<Omit<MeetupProps, 'id' | 'createdAt' | 'updatedAt' | 'organizationId'>>,
+  'image'
+> & {
+  /** undefined mantiene la imagen actual, null la elimina */
+  image?: string | null
+}

@@ -19,7 +19,7 @@ const { meetup, classes } = Astro.props
   <Card className="relative transition-shadow duration-300 lg:hover:shadow-md">
     <img
       class="object-cover w-full h-56"
-      src={meetup.image.toString()}
+      src={meetup.image?.toString() ?? '/not-found.jpg'}
       alt={`Foto de portada del meetup ${meetup.title}`}
       loading="lazy"
       onerror="this.src='/not-found.jpg'"

@@ -9,7 +9,7 @@ import Location from '@/ui/components/location/location.astro'
 interface CardEvent {
   slug: string
   title: string
-  image: string
+  image?: string
   tags: string[]
   tagColor: string
   startsAt: Date
@@ -44,18 +44,20 @@ const formatPrice = (price: number): string => {
       <div class="event-cover-container">
         <img
           class="event-cover"
-          src={event.image.toString()}
+          src={event.image ?? '/not-found.jpg'}
           alt={`Foto de portada del evento ${event.title}`}
           loading="lazy"
           onerror="this.src='/not-found.jpg'"
           transition:name={`media-image-${event.slug}`}
         />
-        {event.minPrice !== null && event.minPrice !== undefined && (
-          <div class="price-badge">
-            <Ticket size={16} />
-            <span class="price-badge-text">Desde {formatPrice(event.minPrice)}</span>
-          </div>
-        )}
+        {
+          event.minPrice !== null && event.minPrice !== undefined && (
+            <div class="price-badge">
+              <Ticket size={16} />
+              <span class="price-badge-text">Desde {formatPrice(event.minPrice)}</span>
+            </div>
+          )
+        }
       </div>
     </CardHeader>
     <CardContent className="px-4 pt-0 pb-3">

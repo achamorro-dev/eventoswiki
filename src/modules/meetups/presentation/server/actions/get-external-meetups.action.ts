@@ -1,15 +1,14 @@
 import { ActionError, defineAction } from 'astro:actions'
-import { z } from 'astro:content'
-import { SyncMeetupsFromMeetupCommand } from '@/meetups/application/sync-meetups-from-meetup.command'
+import { z } from 'astro/zod'
+import { GetExternalMeetupsQuery } from '@/meetups/application/get-external-meetups.query'
 import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupGroupNotFound } from '@/meetups/domain/errors/meetup-group-not-found.error'
 import { OrganizationMeetupUrlMissing } from '@/meetups/domain/errors/organization-meetup-url-missing.error'
 
-export const syncMeetupsFromMeetupAction = defineAction({
+export const getExternalMeetupsAction = defineAction({
   accept: 'json',
   input: z.object({
     organizationId: z.string(),
-    externalIds: z.array(z.string()).optional(),
   }),
   handler: async (input, context) => {
     const userId = context.locals.user?.id
@@ -17,15 +16,14 @@ export const syncMeetupsFromMeetupAction = defineAction({
     if (!userId) {
       throw new ActionError({
         code: 'UNAUTHORIZED',
-        message: 'No estás autorizado para sincronizar los meetups de esta organización',
+        message: 'No estás autorizado a ver los meetups de Meetup.com de esta organización',
       })
     }
 
     try {
-      return await MeetupsContainer.get(SyncMeetupsFromMeetupCommand).execute({
+      return await MeetupsContainer.get(GetExternalMeetupsQuery).execute({
         organizationId: input.organizationId,
         userId,
-        externalIds: input.externalIds,
       })
     } catch (error) {
       switch (true) {
@@ -42,7 +40,7 @@ export const syncMeetupsFromMeetupAction = defineAction({
         default:
           throw new ActionError({
             code: 'INTERNAL_SERVER_ERROR',
-            message: 'Se ha producido un error al sincronizar los meetups',
+            message: 'Se ha producido un error al obtener los meetups de Meetup.com',
           })
       }
     }

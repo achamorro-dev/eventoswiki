@@ -16,7 +16,7 @@ import type {
 import { OteUrls } from './ote-urls'
 import { timezoneForProvince } from './province-timezone'
 
-/** Imagen de relleno que el sync de Meetup.com pone cuando el evento no trae ninguna */
+/** Placeholder legacy que syncs antiguos de Meetup.com guardaban cuando el evento no traía imagen */
 const PLACEHOLDER_IMAGE = 'https://eventos.wiki/og.jpg'
 const MAX_ALT_LENGTH = 250
 const CURRENCY = 'EUR'
@@ -50,7 +50,7 @@ export function toOteEvent(event: Event | Meetup, organization?: Organization): 
     status: 'scheduled',
   }
 
-  const image = toImage(event.image.toString(), event.title)
+  const image = toImage(event.image?.toString(), event.title)
   if (image) oteEvent.image = [image]
 
   const tags = toTags(event.tags)
@@ -87,7 +87,7 @@ function toAttendanceMode(type: string): OteAttendanceMode {
   }
 }
 
-function toImage(imageUrl: string, title: string): OteImage | undefined {
+function toImage(imageUrl: string | undefined, title: string): OteImage | undefined {
   if (!imageUrl || imageUrl === PLACEHOLDER_IMAGE) return undefined
 
   return {
@@ -120,6 +120,7 @@ function toLocation(event: Event | Meetup): OteLocation | undefined {
   const location: OteLocation = {}
   if (venue) location.venue = venue
   if (onlineUrl) location.onlineUrl = onlineUrl
+  if (place?.hasCoordinates()) location.geo = { lat: place.latitude, lon: place.longitude }
 
   if (venue) {
     location.address = {

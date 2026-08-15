@@ -131,7 +131,7 @@ export const Meetup = defineTable({
     shortDescription: column.text(),
     startsAt: column.date(),
     endsAt: column.date(),
-    image: column.text(),
+    image: column.text({ optional: true }),
     type: column.text({
       default: MeetupTypes.InPerson,
     }),

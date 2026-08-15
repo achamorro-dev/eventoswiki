@@ -26,7 +26,7 @@ export class AstroDbMeetupMapper {
       shortDescription: meetupDto.shortDescription,
       startsAt: Datetime.toIsoString(meetupDto.startsAt),
       endsAt: Datetime.toIsoString(meetupDto.endsAt),
-      image: meetupDto.image,
+      image: meetupDto.image || undefined,
       location: provinceDto?.name || null,
       web: meetupDto.web || undefined,
       twitter: meetupDto.twitter || undefined,

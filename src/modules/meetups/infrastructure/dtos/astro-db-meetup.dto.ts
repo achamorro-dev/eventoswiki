@@ -8,7 +8,7 @@ export interface AstroDbMeetupDto {
   shortDescription: string
   startsAt: Date
   endsAt: Date
-  image: string
+  image: string | null
   type: string
   location: string | null
   web: string | null

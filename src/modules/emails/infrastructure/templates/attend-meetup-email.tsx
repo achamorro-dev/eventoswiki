@@ -53,9 +53,11 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
         <Body className="bg-gray-50 font-sans">
           <Container className="mx-auto max-w-2xl">
             {/* Event Image */}
-            <Section className="px-5">
-              <Img src={meetup.image.toString()} alt={meetup.title} className="mb-6 w-full rounded-lg" />
-            </Section>
+            {meetup.image && (
+              <Section className="px-5">
+                <Img src={meetup.image.toString()} alt={meetup.title} className="mb-6 w-full rounded-lg" />
+              </Section>
+            )}
 
             {/* Greeting */}
             <Section className="px-5">

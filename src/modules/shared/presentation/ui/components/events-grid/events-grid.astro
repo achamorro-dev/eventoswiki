@@ -23,20 +23,20 @@ const { events = [], page, totalPages, goToEvent } = Astro.props as Props
         const minPrice = 'getMinTicketPrice' in event ? (event as any).getMinTicketPrice() : null
         return (
           <li>
-             <EventCard
-               event={{
-                 slug: event.slug,
-                 title: event.title,
-                 image: event.image.toString(),
-                 tags: event.tags,
-                 tagColor: event.tagColor,
-                 startsAt: event.startsAt,
-                 endsAt: event.endsAt,
-                 location: event.location,
-                 minPrice,
-               }}
-               goToEvent={goToEvent}
-             />
+            <EventCard
+              event={{
+                slug: event.slug,
+                title: event.title,
+                image: event.image?.toString(),
+                tags: event.tags,
+                tagColor: event.tagColor,
+                startsAt: event.startsAt,
+                endsAt: event.endsAt,
+                location: event.location,
+                minPrice,
+              }}
+              goToEvent={goToEvent}
+            />
           </li>
         )
       })
