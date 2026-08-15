@@ -1,6 +1,7 @@
 ---
 import { EventsContainer } from '@/events/di/events.container'
 import { GetNextEventsQuery } from '@/events/application/get-next-events.query'
+import { LIST_PAGE_SIZE } from '@/shared/presentation/list-page-size'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
 import { Urls } from '@/ui/urls/urls'
 
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const { location, page } = Astro.props
-const { data: nextEvents, totalPages } = await EventsContainer.get(GetNextEventsQuery).execute({ count: 12, page, location })
+const { data: nextEvents, totalPages } = await EventsContainer.get(GetNextEventsQuery).execute({ count: LIST_PAGE_SIZE, page, location })
 ---
 
 <EventsGrid events={nextEvents} page={page} totalPages={totalPages} goToEvent={Urls.EVENT}>

@@ -2,6 +2,7 @@
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { MatchOrganizationsQuery } from '@/organizations/application/match-organizations.query'
 import PaginatedOrganizationsGrid from '@/organizations/presentation/client/components/organizations-grid/paginated-organizations-grid.astro'
+import { LIST_PAGE_SIZE } from '@/shared/presentation/list-page-size'
 
 interface Props {
   location?: string
@@ -10,7 +11,7 @@ interface Props {
 
 const { location, page } = Astro.props
 const { data: organizations, totalPages } = await OrganizationsContainer.get(MatchOrganizationsQuery).execute({
-  count: 12,
+  count: LIST_PAGE_SIZE,
   page,
   location,
 })
