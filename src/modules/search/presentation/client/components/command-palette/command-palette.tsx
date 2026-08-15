@@ -271,11 +271,11 @@ const ResultsGroups = ({
 }) => (
   <>
     <ResultGroup heading="Eventos próximos" items={results.events.upcoming} icon={Calendar} onSelect={onSelect} />
-    <ResultGroup heading="Eventos pasados" items={results.events.past} icon={Calendar} onSelect={onSelect} />
     <ResultGroup heading="Meetups próximos" items={results.meetups.upcoming} icon={Users} onSelect={onSelect} />
-    <ResultGroup heading="Meetups pasados" items={results.meetups.past} icon={Users} onSelect={onSelect} />
     <ResultGroup heading="Organizaciones" items={results.organizations} icon={PiBuildings} onSelect={onSelect} />
     <ResultGroup heading="Provincias" items={results.provinces} icon={MapPin} onSelect={onSelect} />
+    <ResultGroup heading="Eventos pasados" items={results.events.past} icon={Calendar} onSelect={onSelect} />
+    <ResultGroup heading="Meetups pasados" items={results.meetups.past} icon={Users} onSelect={onSelect} />
   </>
 )
 
