@@ -21,11 +21,11 @@ import {
   Loader,
   Palette,
   Quotes,
+  TextAa,
   TextAlignCenter,
   TextAlignJustify,
   TextAlignLeft,
   TextAlignRight,
-  TextAa,
   TextBold,
   TextHFour,
   TextHThree,
@@ -204,7 +204,7 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         // handleUploadImage already handles inserting placeholder and updating it
         // Errors are shown via toast.error in the uploadImage function
         await onUploadImage(file)
-      } catch (error) {
+      } catch (_error) {
         // Error already handled and shown via toast.error in handleUploadImage/uploadImage
         // This catch ensures the error doesn't propagate further
       }
@@ -217,11 +217,10 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
   }
 
   const currentColor = (editor.getAttributes('textStyle').color as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
-  const currentFontSize =
-    (editor.getAttributes('textStyle').fontSize as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
+  const currentFontSize = (editor.getAttributes('textStyle').fontSize as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
 
   return (
-    <div className="bg-background rounded-xs z-10 flex w-full flex-wrap justify-start gap-2 border-b-[1px] py-2 md:sticky md:top-0 md:justify-center">
+    <div className="z-10 flex w-full flex-wrap justify-start gap-2 rounded-xs border-b-[1px] bg-background py-2 md:sticky md:top-0 md:justify-center">
       <div className="flex flex-wrap">
         <Button
           type="button"
