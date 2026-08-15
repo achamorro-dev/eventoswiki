@@ -6,6 +6,7 @@ import OrganizationGridSkeleton from '@/organizations/presentation/server/compon
 import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
 import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
 import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { canonicalUrl } from '@/ui/urls/canonical-url'
 
 const searchParams = new URL(Astro.request.url).searchParams
 const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
@@ -16,7 +17,11 @@ const isAuthenticated = Astro.locals.user !== null
 const needsAuthOverlay = !isAuthenticated && page > 1
 ---
 
-<Layout title="eventos.wiki - Organizaciones">
+<Layout
+  title="Organizaciones"
+  description="Comunidades y organizaciones que publican sus eventos y meetups en eventos.wiki."
+  url={canonicalUrl(Astro.url)}
+>
   <header class="mb-4">
     <SectionTitle>Organizaciones</SectionTitle>
   </header>

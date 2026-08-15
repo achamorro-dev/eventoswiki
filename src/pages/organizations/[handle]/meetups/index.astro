@@ -55,7 +55,13 @@ try {
 
 {
   organization ? (
-    <Layout title={organization.name} feedUrl={OteUrls.ORGANIZATION_FEED(handle)}>
+    <Layout
+      title={organization.name}
+      description={organization.bio}
+      image={organization.image?.toString()}
+      url={`https://eventos.wiki/organizations/${handle}/meetups`}
+      feedUrl={OteUrls.ORGANIZATION_FEED(handle)}
+    >
       <OrganizationPage organization={organization} userId={userId} isAdmin={isAdmin} activeTab="meetups">
         <OrganizationPageSkeleton slot="fallback" />
       </OrganizationPage>

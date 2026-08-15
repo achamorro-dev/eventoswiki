@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Áreas privadas y de edición: no aportan nada al índice
+Disallow: /me/
+Disallow: /login
+Disallow: /logout
+Disallow: /*/edit
+Disallow: /*/create
+
+Sitemap: https://eventos.wiki/sitemap.xml

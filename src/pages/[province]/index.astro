@@ -6,6 +6,7 @@ import PastMeetupsSlider from '@/meetups/presentation/server/components/past-mee
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import EventsSliderSkeleton from '@/ui/components/events-slider/events-slider-skeleton.astro'
 import { Link } from '@/ui/components/link'
+import { canonicalUrl } from '@/ui/urls/canonical-url'
 import { Urls } from '@/ui/urls/urls'
 import Layout from '../../layouts/layout.astro'
 import { GetProvinceQuery } from '@/provinces/application/get-province.query'
@@ -20,7 +21,12 @@ if (!location) {
 }
 ---
 
-<Layout title={`eventos.wiki - Eventos en ${location.name}`} classes="flex flex-col w-full gap-4 pb-12 !px-0">
+<Layout
+  title={`Eventos en ${location.name}`}
+  description={`Eventos y meetups tecnológicos en ${location.name}: próximos, pasados y las comunidades que los organizan.`}
+  url={canonicalUrl(Astro.url)}
+  classes="flex flex-col w-full gap-4 pb-12 !px-0"
+>
   <NextEventsSlider locationId={location.slug} locationName={location.name} server:defer>
     <Link variant="link" slot="actions" href={Urls.EVENTS_WITH_PROVINCE(province)} className="text-right shrink-0"
       >Ver todos</Link

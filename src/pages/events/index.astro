@@ -6,6 +6,7 @@ import ProvinceComboboxFilter from '@/provinces/presentation/server/components/p
 import EventsGridSkeleton from '@/ui/components/events-grid/events-grid-skeleton.astro'
 import EventsHeader from '@/ui/components/events-header/events-header.astro'
 import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
+import { canonicalUrl } from '@/ui/urls/canonical-url'
 import { Urls } from '@/ui/urls/urls'
 
 const searchParams = new URL(Astro.request.url).searchParams
@@ -17,7 +18,11 @@ const isAuthenticated = Astro.locals.user !== null
 const needsAuthOverlay = !isAuthenticated && page > 1
 ---
 
-<Layout title="eventos.wiki - Eventos">
+<Layout
+  title="Eventos"
+  description="Todos los eventos tecnológicos de España: conferencias, congresos y workshops organizados por la comunidad."
+  url={canonicalUrl(Astro.url)}
+>
   <EventsHeader title="Eventos" actionLink={Urls.PAST_EVENTS} actionText="Ver pasados" transition:persist>
     <SearchFiltersBar>
       <ProvinceComboboxFilter value={province} />
