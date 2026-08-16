@@ -126,7 +126,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
   @reference "../styles/global.css";
 
   body {
-    @apply bg-background text-foreground dark:bg-background dark:text-foreground m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto] scroll-smooth;
+    @apply bg-background text-foreground dark:bg-background dark:text-foreground m-0 grid min-h-full grid-cols-[minmax(0,1fr)] grid-rows-[auto_auto_1fr_auto] scroll-smooth;
   }
 
   .event-container a {

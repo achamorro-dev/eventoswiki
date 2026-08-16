@@ -31,7 +31,7 @@ const { title, description, image, url, classes, ogType, jsonLd, feedUrl, ...res
     @reference "../styles/global.css";
 
     body {
-      @apply bg-background text-foreground dark:bg-background dark:text-foreground m-0 grid min-h-full grid-rows-[auto_auto_1fr_auto];
+      @apply bg-background text-foreground dark:bg-background dark:text-foreground m-0 grid min-h-full grid-cols-[minmax(0,1fr)] grid-rows-[auto_auto_1fr_auto];
     }
   </style>
 </BaseLayout>
