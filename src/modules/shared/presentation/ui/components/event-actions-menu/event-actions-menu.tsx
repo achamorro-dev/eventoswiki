@@ -3,15 +3,10 @@ import { useState } from 'react'
 import { DeleteEventModal } from '@/events/presentation/client/components/delete-event-modal/delete-event-modal'
 import { DeleteMeetupModal } from '@/meetups/presentation/client/components/delete-meetup-modal/delete-meetup-modal'
 import { Button } from '@/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/ui/dropdown-menu'
-import { Copy, DotsThreeVerticalBold, Pencil, Trash } from '@/ui/icons'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/ui/dropdown-menu'
+import { Copy, Pencil, Trash } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
+import { Gear } from '../../icons'
 
 interface Props {
   type: 'event' | 'meetup'
@@ -33,8 +28,8 @@ export const EventActionsMenu = ({ type, slug, entityId, organizationHandle }: P
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="icon" className="size-8 text-muted-foreground hover:text-foreground" aria-label="Administrar">
-            <DotsThreeVerticalBold />
+          <Button size="icon" aria-label="Administrar" variant="secondary">
+            <Gear />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -48,7 +43,6 @@ export const EventActionsMenu = ({ type, slug, entityId, organizationHandle }: P
               Duplicar
             </DropdownMenuItem>
           )}
-          <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-destructive focus:text-destructive"
             onSelect={event => {

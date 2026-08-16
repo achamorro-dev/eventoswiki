@@ -23,6 +23,7 @@ export {
   PiDotsThreeVerticalBold as DotsThreeVerticalBold,
   PiEnvelopeSimpleBold as Envelope,
   PiFacebookLogo as Facebook,
+  PiGear as Gear,
   PiGithubLogo as Github,
   PiGlobe as Globe,
   PiHeart as Heart,
