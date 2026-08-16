@@ -10,7 +10,7 @@ interface Props {
 const { tabs } = Astro.props as Props
 ---
 
-<nav>
+<nav class="w-full overflow-x-auto">
   <ul class="bg-background text-foreground inline-flex h-9 w-fit items-center justify-center gap-4 rounded-lg p-[3px]">
     {
       tabs.map(tab => (
