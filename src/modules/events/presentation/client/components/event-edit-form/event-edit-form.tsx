@@ -227,7 +227,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
                           'flex w-full items-center justify-center rounded-md border-2 border-input bg-background bg-input aria-invalid:border-destructive'
                         }
                       >
-                        <CameraSlash className="h-72 w-48 text-gray-400" />
+                        <CameraSlash className="h-72 w-48 text-muted-foreground" />
                       </div>
                     )}
                     <Button
@@ -488,7 +488,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
               {tab === 'sponsors' && (
                 <div className="border-t pt-6">
                   <h2 className="mb-4 font-semibold text-xl">Call for Sponsors</h2>
-                  <p className="mb-4 text-gray-500 text-sm">
+                  <p className="mb-4 text-muted-foreground text-sm">
                     Opcional - Activa y configura el período para conseguir sponsors
                   </p>
 
@@ -534,7 +534,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
               {tab === 'speakers' && (
                 <div className="border-t pt-6">
                   <h2 className="mb-4 font-semibold text-xl">Call for Speakers</h2>
-                  <p className="mb-4 text-gray-500 text-sm">
+                  <p className="mb-4 text-muted-foreground text-sm">
                     Opcional - Activa y configura el período para conseguir speakers
                   </p>
 
@@ -622,7 +622,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
               {tab === 'agenda' && (
                 <div className="border-t pt-6">
                   <h2 className="mb-4 font-semibold text-xl">Agenda del evento</h2>
-                  <p className="mb-4 text-gray-500 text-sm">
+                  <p className="mb-4 text-muted-foreground text-sm">
                     Opcional - Configura la agenda con tracks, sesiones y speakers
                   </p>
 

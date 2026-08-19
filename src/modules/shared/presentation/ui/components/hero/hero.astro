@@ -5,44 +5,71 @@ import { Link } from '../link'
 import { AnimatedAvatarStack } from './animated-avatar-stack'
 import { Urls } from '@/ui/urls/urls'
 
-// Get organizations for avatar stack
+const HIGHLIGHTED_ORGANIZATIONS = 8
+
 const { data: organizations } = await OrganizationsContainer.get(MatchOrganizationsQuery).execute({
-  count: 8,
-  page: 1
+  count: HIGHLIGHTED_ORGANIZATIONS,
+  page: 1,
 })
 
 const organizationData = organizations.map(org => org.toPrimitives())
 
-// Preload organization images
 const preloadLinks = organizationData
   .filter(org => org.image)
   .map(org => `<link rel="preload" as="image" href="${org.image}" />`)
-  .join("\n")
+  .join('\n')
 ---
 
 <Fragment>
   <head set:html={preloadLinks} />
-  <section class="w-full py-12 px-4 lg:px-8 bg-gradient-to-b from-background to-muted/20">
-  <div class="mx-auto max-w-4xl flex flex-col items-center gap-4 text-center">
-    <div class="mb-4">
-      <AnimatedAvatarStack organizations={organizationData} client:load />
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-copy">
+        <h1 class="hero-title">
+          Descubre todos los eventos <span class="hero-title-accent">tecnológicos</span>.
+        </h1>
+        <p class="hero-subtitle">
+          Sigue a tus organizaciones favoritas y mantente al día de todo lo que ocurre en tu ciudad.
+        </p>
+        <div class="hero-actions">
+          <Link href={Urls.LOGIN} variant="default" size="lg">Iniciar sesión</Link>
+          <Link href={Urls.EVENTS} variant="outline" size="lg">Explorar eventos</Link>
+        </div>
+      </div>
+      <div class="hero-community">
+        <AnimatedAvatarStack organizations={organizationData} client:load />
+        <span class="hero-community-label">Publicado por la comunidad</span>
+      </div>
     </div>
-    
-    <h1 class="text-4xl lg:text-7xl font-bold text-black dark:text-white leading-[1] max-w-prose">
-      Descubre todos los eventos tecnológicos.
-    </h1>
-    
-    <p class="text-md lg:text-xl text-muted-foreground max-w-prose text-balance">
-      Sigue a tus organizaciones favoritas y mantente al día.
-      <br />
-      Explora todos los eventos y meetups que están ocurriendo en tu ciudad.
-    </p>
-    
-    <div class="mt-4">
-      <Link href={Urls.LOGIN} variant="default">
-        Iniciar sesión
-      </Link>
-    </div>
-  </div>
   </section>
 </Fragment>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .hero {
+    @apply border-border w-full border-b px-4 py-16 lg:px-8 lg:py-24;
+  }
+  .hero-content {
+    @apply mx-auto flex max-w-7xl flex-col items-start justify-between gap-12 md:flex-row md:items-end;
+  }
+  .hero-title {
+    @apply max-w-[15ch] text-4xl font-semibold tracking-[-0.035em] lg:text-7xl;
+    line-height: 0.98;
+  }
+  .hero-title-accent {
+    @apply text-primary;
+  }
+  .hero-subtitle {
+    @apply text-muted-foreground mt-6 max-w-[46ch] text-lg leading-relaxed;
+  }
+  .hero-actions {
+    @apply mt-8 flex flex-wrap items-center gap-3;
+  }
+  .hero-community {
+    @apply flex shrink-0 items-center gap-4 md:flex-col md:items-end md:gap-2;
+  }
+  .hero-community-label {
+    @apply text-muted-foreground text-sm;
+  }
+</style>

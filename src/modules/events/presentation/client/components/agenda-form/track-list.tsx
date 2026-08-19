@@ -31,7 +31,7 @@ export const TrackList = () => {
             </div>
           </CardHeader>
           {field.description && (
-            <CardContent className="p-4 pt-0 text-gray-500 text-sm">{field.description}</CardContent>
+            <CardContent className="p-4 pt-0 text-muted-foreground text-sm">{field.description}</CardContent>
           )}
           <CardContent className="p-4 pt-0">
             <SessionList trackIndex={index} />
@@ -40,7 +40,9 @@ export const TrackList = () => {
       ))}
 
       {fields.length === 0 && (
-        <div className="py-8 text-center text-gray-500 text-sm">No hay tracks definidos. Añade uno para empezar.</div>
+        <div className="py-8 text-center text-muted-foreground text-sm">
+          No hay tracks definidos. Añade uno para empezar.
+        </div>
       )}
 
       {editingIndex !== null && (

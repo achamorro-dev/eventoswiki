@@ -10,15 +10,12 @@ interface Props {
 const { tabs } = Astro.props as Props
 ---
 
-<nav class="w-full overflow-x-auto">
-  <ul class="bg-background text-foreground inline-flex h-9 w-max items-center justify-center gap-4 rounded-lg p-[3px]">
+<nav class="tabs">
+  <ul class="tabs-list">
     {
       tabs.map(tab => (
-        <li
-          data-state={tab.isActive ? 'active' : 'inactive'}
-          class="data-[state=active]:text-foreground text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring data-[state=active]:border-b-primary rounded-xs inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 whitespace-nowrap border border-b-2 border-transparent border-b-transparent py-4 font-medium transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0"
-        >
-          <a href={tab.href} class="!no-underline">
+        <li data-state={tab.isActive ? 'active' : 'inactive'} class="tab">
+          <a href={tab.href} class="tab-link">
             {tab.label}
           </a>
         </li>
@@ -26,3 +23,26 @@ const { tabs } = Astro.props as Props
     }
   </ul>
 </nav>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .tabs {
+    @apply border-border w-full overflow-x-auto border-b;
+  }
+  .tabs-list {
+    @apply m-0 flex w-max list-none items-center gap-7 p-0;
+  }
+  .tab {
+    @apply mb-0 border-b-2 border-transparent pb-3.5;
+  }
+  .tab[data-state='active'] {
+    @apply border-b-primary;
+  }
+  .tab-link {
+    @apply text-muted-foreground whitespace-nowrap text-[0.9375rem] no-underline;
+  }
+  .tab[data-state='active'] .tab-link {
+    @apply text-foreground font-medium;
+  }
+</style>

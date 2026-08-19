@@ -34,7 +34,7 @@ export const SessionList = ({ trackIndex }: Props) => {
           <div key={field.id} className="flex items-center justify-between rounded-md border p-3">
             <div className="flex flex-col gap-1">
               <span className="font-medium text-sm">{field.title}</span>
-              <div className="text-gray-500 text-xs">
+              <div className="text-muted-foreground text-xs">
                 {Datetime.toDateTimeHuman(field.startsAt)} - {Datetime.toDateTimeHuman(field.endsAt)}
               </div>
               {field.speakers && field.speakers.length > 0 && (
@@ -60,7 +60,7 @@ export const SessionList = ({ trackIndex }: Props) => {
       </div>
 
       {fields.length === 0 && (
-        <div className="rounded-md border border-dashed py-4 text-center text-gray-500 text-xs">
+        <div className="rounded-md border border-dashed py-4 text-center text-muted-foreground text-xs">
           No hay sesiones en este track.
         </div>
       )}

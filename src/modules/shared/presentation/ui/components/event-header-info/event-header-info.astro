@@ -79,7 +79,7 @@ if (event instanceof Meetup && event.allowsAttendees && event.hasAttendees()) {
       )
     }
   </div>
-  <h1 class="text-4xl font-medium text-black dark:text-white" tabindex={0} transition:animate="fade">
+  <h1 class="text-foreground text-4xl font-semibold tracking-tight lg:text-5xl" tabindex={0} transition:animate="fade">
     {title}
   </h1>
   <EventDatePeriod startDate={startsAt} endDate={endsAt} client:load transition:animate="fade" />

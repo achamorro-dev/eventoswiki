@@ -31,7 +31,7 @@ const canManageEvents = isOrganizer || isAdmin
 <article class="organization">
   <header class="header">
     <OrganizationAvatar client:load organization={organization.toPrimitives()} />
-    <h1 class="text-4xl font-semibold text-foreground">
+    <h1 class="text-foreground text-4xl font-semibold tracking-tight lg:text-5xl">
       {organization.name}
     </h1>
     <div class="summary">
@@ -120,7 +120,7 @@ const canManageEvents = isOrganizer || isAdmin
   @reference "../../../../../../styles/global.css";
 
   .organization {
-    @apply flex flex-col items-stretch gap-y-16 py-24;
+    @apply flex flex-col items-stretch gap-y-12 py-16;
   }
 
   .header {
@@ -128,11 +128,11 @@ const canManageEvents = isOrganizer || isAdmin
   }
 
   .summary {
-    @apply flex items-center gap-4 font-medium;
+    @apply text-muted-foreground flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm;
   }
 
   .bio {
-    @apply max-w-prose whitespace-break-spaces text-balance;
+    @apply text-muted-foreground max-w-prose whitespace-break-spaces text-center text-balance;
   }
 
   .actions {

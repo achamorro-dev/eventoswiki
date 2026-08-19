@@ -51,8 +51,7 @@ export const EventCard = ({ event, displayDate, className }: EventCardProps) => 
     <a href={event.url} target="_blank">
       <Card
         className={cn(
-          'event-card cursor-pointer border border-gray-200 py-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg',
-          'dark:border-gray-700',
+          'event-card cursor-pointer border border-border py-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg',
           className,
         )}
         style={
@@ -63,9 +62,9 @@ export const EventCard = ({ event, displayDate, className }: EventCardProps) => 
         }
       >
         <CardContent className="px-4">
-          <h3 className="text-lg font-medium">{event.title}</h3>
+          <h3 className="font-medium text-lg">{event.title}</h3>
 
-          <div className="flex items-center gap-2 text-sm font-light">
+          <div className="flex items-center gap-2 font-light text-sm">
             <span>{getTimeDisplay()}</span>
           </div>
         </CardContent>

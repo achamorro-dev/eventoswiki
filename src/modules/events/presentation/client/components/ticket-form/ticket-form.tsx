@@ -22,12 +22,14 @@ export const TicketForm = () => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-lg">Tipos de Entrada</h3>
-        <p className="text-gray-500 text-sm">Opcional - Configura diferentes tipos de entradas con sus precios</p>
+        <p className="text-muted-foreground text-sm">
+          Opcional - Configura diferentes tipos de entradas con sus precios
+        </p>
       </div>
 
       <div className="space-y-3">
         {fields.map((field, index) => (
-          <div key={field.id} className="flex items-end gap-3 rounded-lg border border-gray-200 p-4">
+          <div key={field.id} className="flex items-end gap-3 rounded-lg border border-border p-4">
             <FormField
               control={control}
               name={`tickets.${index}.name`}

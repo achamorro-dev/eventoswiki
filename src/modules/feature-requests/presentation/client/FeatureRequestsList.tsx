@@ -51,7 +51,7 @@ export default function FeatureRequestsList({ initialRequests, currentUserId }: 
   return (
     <div className="space-y-4">
       {requests.length === 0 ? (
-        <p className="text-gray-500">No hay solicitudes todavía.</p>
+        <p className="text-muted-foreground">No hay solicitudes todavía.</p>
       ) : (
         requests.map(request => (
           <motion.a

@@ -283,7 +283,7 @@ export const SessionFormDialog = ({ open, onOpenChange, trackIndex, sessionIndex
                   </div>
                 ))}
                 {speakerFields.length === 0 && (
-                  <div className="text-center text-gray-400 text-sm italic">No hay speakers añadidos.</div>
+                  <div className="text-center text-muted-foreground text-sm italic">No hay speakers añadidos.</div>
                 )}
               </div>
             </div>

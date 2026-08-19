@@ -1,10 +1,9 @@
 ---
-import { DateFormat } from '@/shared/domain/datetime/datetime'
-import { Ticket } from '@/ui/icons'
-import { Badge } from '@/ui/badge'
-import { Card, CardContent, CardHeader } from '@/ui/card'
-import DatePeriod from '@/ui/components/date-period/date-period.astro'
-import Location from '@/ui/components/location/location.astro'
+import { DateFormat, Datetime } from '@/shared/domain/datetime/datetime'
+import { MapPin, Ticket } from '@/ui/icons'
+
+const DAY_FORMAT = 'DD'
+const SHORT_MONTH_FORMAT = 'MMM'
 
 interface CardEvent {
   slug: string
@@ -31,94 +30,115 @@ const formatPrice = (price: number): string => {
     currency: 'EUR',
   }).format(price)
 }
+
+const startDay = Datetime.toDateString(event.startsAt, DAY_FORMAT)
+const startMonth = Datetime.toDateString(event.startsAt, SHORT_MONTH_FORMAT)
+const lastDay = Datetime.isSameDay(event.startsAt, event.endsAt)
+  ? null
+  : Datetime.toDateString(event.endsAt, DateFormat.DD_MMM_YYYY)
+const hasPrice = event.minPrice !== null && event.minPrice !== undefined
 ---
 
 <a
   href={goToEvent(event.slug)}
-  class:list={['event-card-link', classes]}
+  class:list={['event-card', classes]}
   title={event.title}
   aria-label={`Ver evento ${event.title}`}
 >
-  <Card className="p-0 gap-0 border-border border">
-    <CardHeader className="p-0">
-      <div class="event-cover-container">
-        <img
-          class="event-cover"
-          src={event.image ?? '/not-found.jpg'}
-          alt={`Foto de portada del evento ${event.title}`}
-          loading="lazy"
-          onerror="this.src='/not-found.jpg'"
-          transition:name={`media-image-${event.slug}`}
-        />
-        {
-          event.minPrice !== null && event.minPrice !== undefined && (
-            <div class="price-badge">
-              <Ticket size={16} />
-              <span class="price-badge-text">Desde {formatPrice(event.minPrice)}</span>
-            </div>
-          )
-        }
+  <img
+    class="event-cover"
+    src={event.image ?? '/not-found.jpg'}
+    alt={`Foto de portada del evento ${event.title}`}
+    loading="lazy"
+    onerror="this.src='/not-found.jpg'"
+    transition:name={`media-image-${event.slug}`}
+  />
+  <div class="event-scrim"></div>
+
+  <time class="event-date" datetime={Datetime.toDateIsoString(event.startsAt)}>
+    <span class="event-date-day">{startDay}</span>
+    <span class="event-date-month">{startMonth}</span>
+  </time>
+
+  {
+    hasPrice && (
+      <div class="event-price">
+        <Ticket size={14} />
+        <span>Desde {formatPrice(event.minPrice as number)}</span>
       </div>
-    </CardHeader>
-    <CardContent className="px-4 pt-0 pb-3">
-      <div class="event-tags">
-        {
-          event.tags.map(t => (
-            <Badge color={event.tagColor} className="h-6 max-w-full text-white">
-              {t.toUpperCase()}
-            </Badge>
-          ))
-        }
-      </div>
-      <h3 class="event-title">{event.title}</h3>
-      <section class="event-date-location">
-        <Location location={event.location} />
-        <DatePeriod startsAt={event.startsAt} endsAt={event.endsAt} format={DateFormat.DD_MMM_YYYY} />
-      </section>
-    </CardContent>
-  </Card>
+    )
+  }
+
+  <div class="event-body">
+    <div class="event-tags">
+      {event.tags.map(tag => <span class="event-tag">{tag}</span>)}
+    </div>
+    <h3 class="event-title">{event.title}</h3>
+    <div class="event-meta">
+      {
+        event.location && (
+          <span class="event-place">
+            <MapPin />
+            {event.location}
+          </span>
+        )
+      }
+      {lastDay && <span class="event-until">Hasta el {lastDay}</span>}
+    </div>
+  </div>
 </a>
 
 <style>
   @reference "../../../../../../styles/global.css";
 
-  .event-card-link {
-    @apply block;
+  .event-card {
+    @apply relative flex min-h-[22rem] flex-col justify-end overflow-hidden rounded-xl bg-neutral-800 no-underline;
 
     @media (prefers-reduced-motion: no-preference) {
-      :hover .event-cover {
-        transform: scale(1.1);
+      &:hover .event-cover {
+        transform: scale(1.06);
       }
     }
   }
-  .event-cover-container {
-    @apply relative w-full overflow-hidden rounded-t-xl;
-  }
   .event-cover {
-    @apply h-56 w-full object-cover;
-    transition: 0.4s ease;
+    @apply absolute inset-0 h-full w-full object-cover;
+    transition: transform 0.5s ease;
   }
-  .price-badge {
-    @apply absolute right-2 top-2 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1.5 text-white backdrop-blur-sm;
+  .event-scrim {
+    @apply absolute inset-0;
+    background: var(--scrim);
   }
-  .price-badge-text {
-    @apply text-sm font-medium;
+  .event-date {
+    @apply bg-overlay text-overlay-foreground absolute left-4 top-4 flex items-baseline gap-1.5 rounded-lg px-3 py-1.5;
   }
-  /* Solo se muestran los tags de la primera fila: la altura reserva una fila justa
-     (alto del badge + gap), así los que desbordan caen a la segunda y quedan recortados
-     en lugar de empujar al título. Mantener sincronizado con el `h-6` de los badges. */
+  .event-date-day {
+    @apply text-xl font-semibold leading-none;
+  }
+  .event-date-month {
+    @apply text-overlay-muted text-[0.6875rem] uppercase tracking-[0.12em];
+  }
+  .event-price {
+    @apply absolute right-4 top-4 flex items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm;
+  }
+  .event-body {
+    @apply relative flex flex-col gap-2.5 p-[1.125rem];
+  }
   .event-tags {
-    --tag-height: 1.5rem; /* h-6 */
-    --tag-gap: 0.25rem; /* gap-1 */
-    @apply mt-2 flex flex-wrap items-center overflow-hidden;
-    align-content: flex-start;
-    gap: var(--tag-gap);
-    height: calc(var(--tag-height) + var(--tag-gap));
+    @apply flex h-6 flex-wrap items-center gap-2 overflow-hidden;
   }
-  .event-date-location {
-    @apply text-muted-foreground mt-1 flex w-full flex-col items-start gap-1 font-light sm:flex-row sm:items-center sm:justify-between;
+  .event-tag {
+    @apply flex h-6 items-center rounded-sm bg-white/16 px-2.5 text-[0.6875rem] uppercase tracking-[0.08em] text-white;
   }
   .event-title {
-    @apply text-foreground mt-2 line-clamp-1 p-0 text-xl font-semibold dark:text-gray-100;
+    @apply m-0 line-clamp-2 text-[1.375rem] font-semibold leading-[1.16] tracking-tight text-white;
+  }
+  .event-meta {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.84rem] text-white/75;
+  }
+  .event-place {
+    @apply flex shrink-0 items-center gap-1.5;
+  }
+  .event-until {
+    @apply shrink-0;
   }
 </style>

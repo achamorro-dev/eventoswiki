@@ -1,7 +1,7 @@
 @reference "../../../../../../../styles/global.css";
 
 input.input {
-  @apply bg-input text-input ring-border placeholder:text-foreground focus:ring-primary w-full rounded-lg px-4 py-2 text-sm font-medium ring-1 placeholder:opacity-50 focus:border-transparent focus:outline-none focus:ring-2;
+  @apply border-input bg-card text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 w-full rounded-md border px-4 py-2 text-sm font-medium outline-none transition-[color,box-shadow] focus-visible:ring-[3px];
 }
 
 input.input.input-chip {
@@ -9,5 +9,5 @@ input.input.input-chip {
 }
 
 input.input-with-error {
-  @apply text-destructive ring-destructive;
+  @apply text-destructive border-destructive focus-visible:ring-destructive/20;
 }

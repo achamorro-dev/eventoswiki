@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, ChevronDown } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { Button } from '@/modules/shared/presentation/ui/button'
 import { Input } from '@/modules/shared/presentation/ui/input'
@@ -8,7 +8,7 @@ import { Label } from '@/modules/shared/presentation/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/modules/shared/presentation/ui/popover'
 
 // Helper functions for color conversion
-const hslToHex = (h: number, s: number, l: number) => {
+const _hslToHex = (h: number, s: number, l: number) => {
   l /= 100
   const a = (s * Math.min(l, 1 - l)) / 100
   const f = (n: number) => {
@@ -75,24 +75,29 @@ export function ColorPicker({ color, onChange }: { color: string; onChange: (col
   const [colorInput, setColorInput] = useState(color)
   const [isOpen, setIsOpen] = useState(false)
 
+  const handleColorChange = useCallback(
+    (newColor: string) => {
+      const normalizedColor = normalizeColor(newColor)
+      setColorInput(normalizedColor)
+
+      let h: number
+      let s: number
+      let l: number
+      if (normalizedColor.startsWith('#')) {
+        ;[h, s, l] = hexToHsl(normalizedColor)
+      } else {
+        ;[h, s, l] = normalizedColor.match(/\d+(\.\d+)?/g)?.map(Number) || [0, 0, 0]
+      }
+
+      setHsl([h, s, l])
+      onChange(`hsl(${h.toFixed(1)}, ${s.toFixed(1)}%, ${l.toFixed(1)}%)`)
+    },
+    [onChange],
+  )
+
   useEffect(() => {
     handleColorChange(color)
-  }, [color])
-
-  const handleColorChange = (newColor: string) => {
-    const normalizedColor = normalizeColor(newColor)
-    setColorInput(normalizedColor)
-
-    let h, s, l
-    if (normalizedColor.startsWith('#')) {
-      ;[h, s, l] = hexToHsl(normalizedColor)
-    } else {
-      ;[h, s, l] = normalizedColor.match(/\d+(\.\d+)?/g)?.map(Number) || [0, 0, 0]
-    }
-
-    setHsl([h, s, l])
-    onChange(`hsl(${h.toFixed(1)}, ${s.toFixed(1)}%, ${l.toFixed(1)}%)`)
-  }
+  }, [color, handleColorChange])
 
   const handleHueChange = (hue: number) => {
     const newHsl: [number, number, number] = [hue, hsl[1], hsl[2]]
@@ -198,7 +203,7 @@ export function ColorPicker({ color, onChange }: { color: string; onChange: (col
               type="text"
               value={colorInput}
               onChange={handleColorInputChange}
-              className="h-8 flex-grow rounded-md border border-gray-300 bg-white px-2 text-sm"
+              className="h-8 flex-grow rounded-md border border-border bg-white px-2 text-sm"
               placeholder="#RRGGBB or hsl(h, s%, l%)"
             />
             <motion.div

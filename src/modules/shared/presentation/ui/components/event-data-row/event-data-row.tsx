@@ -1,5 +1,4 @@
 import type { FC } from 'react'
-import { Button } from '@/ui/button'
 
 interface Props {
   title: string
@@ -10,14 +9,19 @@ interface Props {
 
 export const EventDataRow: FC<Props> = ({ title, icon, value, ariaLabel }) => {
   return (
-    <div className="my-4 flex flex-row items-center gap-4" aria-label={ariaLabel}>
-      <Button variant="outline" size="icon" className="pointer-events-none">
-        {icon}
-      </Button>
-      <div className="flex flex-col gap-1">
-        <span className="text-muted-foreground text-xs font-medium">{title}</span>
-        {typeof value === 'string' ? <span className="text-foreground text-sm font-medium">{value}</span> : value}
+    <dl className="my-4" aria-label={ariaLabel}>
+      <div className="flex flex-row items-center gap-4">
+        <span
+          aria-hidden="true"
+          className="flex size-10 shrink-0 items-center justify-center rounded-md border border-border text-foreground"
+        >
+          {icon}
+        </span>
+        <div className="flex flex-col gap-1">
+          <dt className="font-medium text-[0.6875rem] text-muted-foreground uppercase tracking-[0.12em]">{title}</dt>
+          <dd className="font-medium text-foreground text-sm">{value}</dd>
+        </div>
       </div>
-    </div>
+    </dl>
   )
 }

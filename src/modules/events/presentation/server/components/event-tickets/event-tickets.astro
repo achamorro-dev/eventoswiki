@@ -13,8 +13,8 @@ const { tickets = [] } = Astro.props
     <div class="space-y-2">
       {tickets.map((ticket) => (
         <div class="flex items-center justify-between text-sm">
-          <span class="text-gray-700">{ticket.name}</span>
-          <span class="font-medium text-gray-900">
+          <span class="text-foreground">{ticket.name}</span>
+          <span class="font-medium text-foreground">
             {ticket.price === 0 ? 'Gratuito' : `${ticket.price.toFixed(2)}€`}
           </span>
         </div>

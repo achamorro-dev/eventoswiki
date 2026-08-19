@@ -26,7 +26,7 @@ export const CommonElementList = () => {
                 <CardTitle className="font-medium text-base">{field.title}</CardTitle>
                 <Badge variant="outline">{field.type}</Badge>
               </div>
-              <div className="text-gray-500 text-sm">
+              <div className="text-muted-foreground text-sm">
                 {Datetime.toDateTimeHuman(field.startsAt)} - {Datetime.toDateTimeHuman(field.endsAt)}
               </div>
             </div>
@@ -40,13 +40,13 @@ export const CommonElementList = () => {
             </div>
           </CardHeader>
           {field.description && (
-            <CardContent className="p-4 pt-0 text-gray-500 text-sm">{field.description}</CardContent>
+            <CardContent className="p-4 pt-0 text-muted-foreground text-sm">{field.description}</CardContent>
           )}
         </Card>
       ))}
 
       {fields.length === 0 && (
-        <div className="py-8 text-center text-gray-500 text-sm">No hay elementos comunes definidos.</div>
+        <div className="py-8 text-center text-muted-foreground text-sm">No hay elementos comunes definidos.</div>
       )}
 
       {editingIndex !== null && (

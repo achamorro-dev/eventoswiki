@@ -4,7 +4,6 @@ import Footer from '@/ui/components/footer/footer.astro'
 import Header from '@/ui/components/header/header.astro'
 import SkipToContent from '@/ui/components/skip-to-content/skip-to-content.astro'
 import { Toaster } from '@/ui/sonner'
-import '@fontsource-variable/inter'
 import '../styles/global.css'
 import BaseHead from './components/base-head.astro'
 
@@ -50,7 +49,7 @@ const currentPath = Astro.url.pathname
       }
 
       .skeleton {
-        @apply animate-pulse bg-gray-200 dark:bg-gray-700;
+        @apply animate-pulse bg-muted;
       }
     </style>
   </body>

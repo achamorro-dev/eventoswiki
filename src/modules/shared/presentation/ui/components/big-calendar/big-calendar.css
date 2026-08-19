@@ -7,7 +7,7 @@
 .rbc-calendar *,
 .rbc-overlay,
 .rbc-overlay-header {
-  @apply !border-gray-200 dark:!border-gray-700;
+  @apply !border-border dark:!border-gray-700;
 }
 
 .rbc-overlay {
@@ -55,7 +55,7 @@ div.rbc-overlay-header {
 .rbc-calendar button,
 .rbc-calendar th,
 .rbc-calendar td {
-  @apply dark:text-white;
+  @apply text-foreground;
 }
 
 .rbc-agenda-table {
@@ -74,7 +74,7 @@ div.rbc-agenda-time-cell span {
 }
 
 .rbc-toolbar-label {
-  @apply absolute text-primary text-xl font-medium;
+  @apply text-foreground absolute text-xl font-medium;
 }
 
 div.rbc-toolbar {
@@ -82,7 +82,7 @@ div.rbc-toolbar {
 }
 
 div.rbc-toolbar button {
-  @apply focus:bg-gray-100 dark:focus:bg-gray-400;
+  @apply focus:bg-muted;
 }
 
 div.rbc-off-range-bg {
@@ -102,23 +102,23 @@ div.rbc-toolbar .rbc-btn-group {
 }
 
 .rbc-active {
-  @apply !bg-primary !text-primary-foreground !shadow-none;
+  @apply !bg-primary-strong !text-primary-foreground !shadow-none;
 }
 
 button.rbc-button-link {
-  @apply m-1 mr-0 rounded-full p-2 text-sm leading-none text-black/75 dark:text-white;
+  @apply text-foreground m-1 mr-0 rounded-full p-2 text-sm leading-none;
 }
 
 .rbc-show-more {
-  @apply dark:bg-background px-2 text-sm font-medium hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800;
+  @apply text-foreground bg-background hover:bg-muted px-2 text-sm font-medium;
 }
 
 .rbc-date-cell.rbc-now button {
-  @apply bg-primary text-primary-foreground;
+  @apply bg-primary-strong text-primary-foreground;
 }
 
 .rbc-agenda-empty {
-  @apply rounded-b-md border border-gray-200 px-2 py-4 text-sm font-normal dark:border-gray-700;
+  @apply border-border rounded-b-md border px-2 py-4 text-sm font-normal;
 }
 
 /* Event Card Styles */

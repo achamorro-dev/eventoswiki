@@ -1,43 +1,36 @@
 ---
-import { Card, CardContent, CardHeader } from '@/ui/card'
 import VisuallyHidden from '../visually-hidden/visually-hidden.astro'
 ---
 
-<Card className="event-card">
-  <CardHeader className="p-0">
-    <div class="event-cover"></div>
-  </CardHeader>
-  <CardContent className="px-4 pt-0 pb-3">
-    <VisuallyHidden>Cargando evento</VisuallyHidden>
+<div class="event-card-skeleton">
+  <VisuallyHidden>Cargando evento</VisuallyHidden>
+  <div class="event-date"></div>
+  <div class="event-body">
     <div class="event-tags"></div>
     <div class="event-title"></div>
-    <div class="event-date-location">
-      <div class="date"></div>
-      <div class="location"></div>
-    </div></CardContent
-  >
-</Card>
+    <div class="event-meta"></div>
+  </div>
+</div>
 
 <style>
   @reference "../../../../../../styles/global.css";
 
-  .event-card {
-    @apply border-border animate-pulse gap-0 border p-0;
+  .event-card-skeleton {
+    @apply relative flex min-h-[22rem] animate-pulse flex-col justify-end overflow-hidden rounded-xl bg-muted;
   }
-  .event-cover {
-    @apply h-56 w-full rounded-t-xl bg-gray-200 dark:bg-gray-700;
+  .event-date {
+    @apply bg-overlay absolute left-4 top-4 h-11 w-16 rounded-lg opacity-80;
+  }
+  .event-body {
+    @apply flex flex-col gap-2.5 p-[1.125rem];
   }
   .event-tags {
-    @apply mt-2 h-6 w-28 rounded-xl bg-gray-200 dark:bg-gray-700;
+    @apply h-6 w-28 rounded-sm bg-white/25;
   }
   .event-title {
-    @apply mt-2 h-4 w-56 rounded-xl bg-gray-200 dark:bg-gray-700;
+    @apply h-5 w-56 max-w-full rounded-sm bg-white/25;
   }
-  .event-date-location {
-    @apply mt-2 flex w-full items-center justify-between;
-  }
-  .date,
-  .location {
-    @apply h-3 w-20 rounded-xl bg-gray-200 dark:bg-gray-700;
+  .event-meta {
+    @apply h-4 w-24 rounded-sm bg-white/20;
   }
 </style>

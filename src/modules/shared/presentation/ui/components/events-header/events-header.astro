@@ -1,6 +1,6 @@
 ---
 import { Link } from '../link'
-import { SectionTitle } from '../section-title/section-title'
+import { PageTitle } from '../page-title/page-title'
 
 interface Props {
   title: string
@@ -12,8 +12,8 @@ const { title, actionLink, actionText } = Astro.props
 ---
 
 <header class="header">
-  <SectionTitle>{title}</SectionTitle>
-  <Link href={actionLink} className="action-link" variant="link">{actionText}</Link>
+  <PageTitle>{title}</PageTitle>
+  <Link href={actionLink} className="action-link" variant="outline" size="sm">{actionText}</Link>
 </header>
 <slot />
 
@@ -21,9 +21,9 @@ const { title, actionLink, actionText } = Astro.props
   @reference "../../../../../../styles/global.css";
 
   .header {
-    @apply flex w-full items-center justify-between;
+    @apply flex w-full items-end justify-between gap-4;
   }
   .action-link {
-    @apply shrink-0 text-right;
+    @apply mb-6 shrink-0;
   }
 </style>

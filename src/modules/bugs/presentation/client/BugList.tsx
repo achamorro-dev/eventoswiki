@@ -15,7 +15,7 @@ export default function BugList({ initialBugs }: Props) {
   return (
     <div className="space-y-4">
       {initialBugs.length === 0 ? (
-        <p className="text-gray-500">No hay bugs reportados todavía.</p>
+        <p className="text-muted-foreground">No hay bugs reportados todavía.</p>
       ) : (
         initialBugs.map(bug => (
           <a key={bug.id} href={Urls.BUG_REPORT_DETAILS(bug.id)} className="block">

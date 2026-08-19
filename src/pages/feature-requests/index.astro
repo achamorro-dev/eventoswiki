@@ -4,7 +4,7 @@ import { FeatureRequestsContainer } from '@/modules/feature-requests/di/feature-
 import { ListFeatureRequestsQuery } from '@/modules/feature-requests/application/list-feature-requests.query'
 import FeatureRequestsList from '@/modules/feature-requests/presentation/client/FeatureRequestsList'
 import CreateFeatureRequestForm from '@/modules/feature-requests/presentation/client/CreateFeatureRequestForm'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { Card, CardHeader, CardTitle, CardContent } from '@/ui/card'
 
 const user = Astro.locals.user
@@ -13,7 +13,7 @@ const requests = await FeatureRequestsContainer.get(ListFeatureRequestsQuery).ex
 
 <Layout title="Feature Requests">
   <div class="mx-auto pb-10">
-    <SectionTitle>Nuevas funcionalidades</SectionTitle>
+    <PageTitle>Nuevas funcionalidades</PageTitle>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="md:col-span-2">
@@ -34,7 +34,7 @@ const requests = await FeatureRequestsContainer.get(ListFeatureRequestsQuery).ex
                   <CardTitle>Solicitar Funcionalidad</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p class="text-gray-600 dark:text-gray-400">
+                  <p class="text-muted-foreground">
                     Debes{' '}
                     <a href="/login" class="text-primary hover:underline">
                       iniciar sesión

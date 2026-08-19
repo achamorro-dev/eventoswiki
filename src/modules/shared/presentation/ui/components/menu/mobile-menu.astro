@@ -66,10 +66,15 @@ const urlSections = {
   }
 
   .mobile-link {
-    @apply text-muted-foreground hover:text-primary px-2 text-base font-medium no-underline;
+    @apply text-muted-foreground hover:text-foreground px-2 text-base font-medium no-underline;
   }
 
   .mobile-link-active {
-    @apply text-primary;
+    @apply text-foreground;
+  }
+
+  .mobile-link-active::before {
+    @apply bg-brand size-[5px] shrink-0 rounded-full;
+    content: '';
   }
 </style>

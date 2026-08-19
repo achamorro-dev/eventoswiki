@@ -101,7 +101,7 @@ export default function BugComments({ bugId, initialComments, currentUserId }: P
           </Button>
         </form>
       ) : (
-        <p className="text-gray-500">Inicia sesión para comentar.</p>
+        <p className="text-muted-foreground">Inicia sesión para comentar.</p>
       )}
     </div>
   )

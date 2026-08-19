@@ -1,7 +1,6 @@
 ---
 import Caption from '@/ui/components/caption/caption.astro'
 import { Link } from '@/ui/components/link'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
 import GitHub from '@/ui/social-icons/github.astro'
 import Google from '@/ui/social-icons/google.astro'
 import X from '@/ui/social-icons/x.astro'
@@ -19,7 +18,7 @@ const getNextParam = () => (nextUrl ? `?_next=${encodeURIComponent(nextUrl)}` : 
 <article class="login">
   <section class="login-access">
     <img src="/icon.png" alt="Logo" width="180" height="180" class="icon" />
-    <SectionTitle>Iniciar sesión</SectionTitle>
+    <h1 class="title">Iniciar sesión</h1>
     <nav class="social-links">
       <Link
         href={`${Urls.LOGIN_GOOGLE}${getNextParam()}`}
@@ -53,15 +52,19 @@ const getNextParam = () => (nextUrl ? `?_next=${encodeURIComponent(nextUrl)}` : 
   @reference "../../../../../styles/global.css";
 
   .login {
-    @apply grid place-content-center;
+    @apply grid place-content-center py-12;
   }
 
   .login-access {
-    @apply flex flex-col items-center justify-center gap-8;
+    @apply border-border bg-card flex w-full max-w-sm flex-col items-center justify-center gap-6 rounded-xl border p-8;
   }
 
   .icon {
-    @apply h-16 w-16;
+    @apply h-14 w-14;
+  }
+
+  .title {
+    @apply text-foreground text-2xl font-semibold tracking-tight;
   }
 
   .social-links {
@@ -69,7 +72,7 @@ const getNextParam = () => (nextUrl ? `?_next=${encodeURIComponent(nextUrl)}` : 
   }
 
   .social-link {
-    @apply flex flex-1 items-center justify-center gap-2;
+    @apply flex h-11 flex-1 items-center justify-center gap-2;
   }
 
   .social-link-icon {

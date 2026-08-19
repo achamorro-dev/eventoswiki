@@ -6,7 +6,7 @@ import { EventType } from '@/shared/domain/types/event-type'
 import { EventTypeFilter } from '@/ui/components/event-type-filter/event-type-filter'
 import AuthOverlay from '@/shared/presentation/ui/components/auth-overlay/auth-overlay.astro'
 import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { Loader } from '@/ui/icons'
 import Layout from '../layouts/layout.astro'
 
@@ -45,14 +45,12 @@ const previousMonthParams = createCalendarSearchParams(previousMonth)
   <a href={`/calendar?${nextMonthParams}`} rel="prefetch" class="hidden"></a>
   <a href={`/calendar?${previousMonthParams}`} rel="prefetch" class="hidden"></a>
 
-  <SectionTitle>Calendario</SectionTitle>
+  <PageTitle>Calendario</PageTitle>
   <SearchFiltersBar>
     <EventTypeFilter client:only value={eventType} />
-  </SearchFiltersBar>
-  <div class="flex justify-start gap-2 mb-4">
     <ProvinceComboboxFilter server:defer value={province} />
-  </div>
-  <article class="mt-4">
+  </SearchFiltersBar>
+  <article>
     {
       needsAuthOverlay ? (
         <AuthOverlay 

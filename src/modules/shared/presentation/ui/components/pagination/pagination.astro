@@ -110,9 +110,13 @@ const getRewritedSearchParams = (page: number) => {
     grid-area: pages;
   }
   .link {
-    @apply p-2 hover:underline;
+    @apply text-muted-foreground hover:text-foreground flex h-9 min-w-9 items-center justify-center rounded-full px-2 no-underline;
+  }
+  .page-left,
+  .page-right {
+    @apply border-border text-foreground hover:bg-accent border;
   }
   .actual {
-    @apply text-primary font-bold;
+    @apply bg-primary-strong text-primary-foreground hover:text-primary-foreground font-medium;
   }
 </style>

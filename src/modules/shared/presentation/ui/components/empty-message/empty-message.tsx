@@ -12,11 +12,11 @@ export const EmptyMessage = (props: PropsWithChildren<Props>) => {
   return (
     <div className="flex flex-col items-center justify-center p-8 text-center">
       {Comp && (
-        <div className="mb-4 rounded-full bg-gray-100 p-4">
-          <Comp className="h-12 w-12 text-gray-400" />
+        <div className="mb-4 rounded-full bg-muted p-4">
+          <Comp className="h-12 w-12 text-muted-foreground" />
         </div>
       )}
-      <h3 className="mb-2 text-xl font-medium">{title}</h3>
+      <h3 className="mb-2 font-medium text-xl">{title}</h3>
       <p className="text-muted-foreground text-sm">{description}</p>
       {children}
     </div>

@@ -199,7 +199,7 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
                           'flex w-full items-center justify-center rounded-md border-2 border-input bg-input aria-invalid:border-destructive'
                         }
                       >
-                        <CameraSlash className="h-72 w-48 text-gray-400" />
+                        <CameraSlash className="h-72 w-48 text-muted-foreground" />
                       </div>
                     )}
                     <Button

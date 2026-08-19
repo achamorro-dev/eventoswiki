@@ -63,10 +63,15 @@ const urlSections = {
   }
 
   .menu-link {
-    @apply text-muted-foreground hover:text-primary no-underline;
+    @apply text-muted-foreground hover:text-foreground no-underline;
   }
 
   .menu-link-active {
-    @apply text-primary;
+    @apply text-foreground font-medium;
+  }
+
+  .menu-link-active::before {
+    @apply bg-brand size-[5px] shrink-0 rounded-full;
+    content: '';
   }
 </style>
