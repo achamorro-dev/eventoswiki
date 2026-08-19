@@ -23,6 +23,7 @@ interface Props {
 }
 
 const { organization, userId, isAdmin = false, activeTab } = Astro.props as Props
+const pastPage = Number(Astro.url.searchParams.get('page')) || 1
 const isOrganizer = userId ? organization.isOrganizer(userId) : false
 const isFollowing = userId ? organization.isFollower(userId) : false
 const canManageEvents = isOrganizer || isAdmin
@@ -87,14 +88,14 @@ const canManageEvents = isOrganizer || isAdmin
     />
     {
       activeTab === 'events' && (
-        <OrganizationEvents organization={organization} isOrganizer={canManageEvents} server:defer>
+        <OrganizationEvents organization={organization} isOrganizer={canManageEvents} page={pastPage} server:defer>
           <EventsGridSkeleton slot="fallback" />
         </OrganizationEvents>
       )
     }
     {
       activeTab === 'meetups' && (
-        <OrganizationMeetups organization={organization} isOrganizer={canManageEvents} server:defer>
+        <OrganizationMeetups organization={organization} isOrganizer={canManageEvents} page={pastPage} server:defer>
           <EventsGridSkeleton slot="fallback" />
         </OrganizationMeetups>
       )

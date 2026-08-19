@@ -6,7 +6,7 @@ import { MeetupsCriteria } from './meetups-criteria'
 import type { MeetupsFilters } from './meetups-filters'
 
 export class NextMeetupsCriteria extends MeetupsCriteria {
-  static createWith(filters: { location?: string }): NextMeetupsCriteria {
+  static createWith(filters: { location?: string; organizationId?: string }): NextMeetupsCriteria {
     const now = Datetime.now()
 
     return MeetupsCriteria.create()
@@ -23,6 +23,9 @@ export class NextMeetupsCriteria extends MeetupsCriteria {
         ]),
         Filter.and<Partial<MeetupsFilters>>({
           location: filters.location ? { operator: RelationalOperator.EQUALS, value: filters.location } : undefined,
+          organizationId: filters.organizationId
+            ? { operator: RelationalOperator.EQUALS, value: filters.organizationId }
+            : undefined,
         }),
       ])
   }

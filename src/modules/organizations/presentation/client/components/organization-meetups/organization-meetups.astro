@@ -1,10 +1,13 @@
 ---
-import { FindMeetupsQuery } from '@/meetups/application/find-meetups.query'
+import { GetNextMeetupsQuery } from '@/meetups/application/get-next-meetups.query'
+import { GetPastMeetupsQuery } from '@/meetups/application/get-past-meetups.query'
 import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import type { Organization } from '@/organizations/domain/organization'
+import { LIST_PAGE_SIZE } from '@/shared/presentation/list-page-size'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
 import { Link } from '@/ui/components/link'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { ChalkboardTeacher } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 import { SyncMeetupsButton } from '../sync-meetups-button/sync-meetups-button'
@@ -12,57 +15,94 @@ import { SyncMeetupsButton } from '../sync-meetups-button/sync-meetups-button'
 interface Props {
   organization: Organization
   isOrganizer: boolean
+  page?: number
 }
 
-const { organization, isOrganizer } = Astro.props as Props
-const paginatedMeetups = await MeetupsContainer.get(FindMeetupsQuery).execute({ organizationId: organization.id.value })
-const hasMeetups = paginatedMeetups.data.length > 0
+const { organization, isOrganizer, page = 1 } = Astro.props as Props
+const organizationId = organization.id.value
+
+const [upcomingMeetups, pastMeetups] = await Promise.all([
+  MeetupsContainer.get(GetNextMeetupsQuery).execute({ count: LIST_PAGE_SIZE, organizationId }),
+  MeetupsContainer.get(GetPastMeetupsQuery).execute({ count: LIST_PAGE_SIZE, page, organizationId }),
+])
+
+const hasUpcomingMeetups = upcomingMeetups.data.length > 0
+const hasPastMeetups = pastMeetups.data.length > 0
+const hasMeetups = hasUpcomingMeetups || hasPastMeetups
 const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
 ---
 
-{
-  isOrganizer && hasMeetups && (
-    <div class="flex flex-wrap items-center gap-2">
-      <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
-        Crear meetup
-      </Link>
-      {canSyncMeetups && (
-        <SyncMeetupsButton
-          client:load
-          organizationId={organization.id.value}
-          organizationHandle={organization.handle}
+<div class="groups">
+  {
+    isOrganizer && hasMeetups && (
+      <div class="flex flex-wrap items-center gap-2">
+        <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
+          Crear meetup
+        </Link>
+        {canSyncMeetups && (
+          <SyncMeetupsButton
+            client:load
+            organizationId={organization.id.value}
+            organizationHandle={organization.handle}
+          />
+        )}
+      </div>
+    )
+  }
+
+  {
+    hasUpcomingMeetups && (
+      <section>
+        <SectionTitle>Próximos</SectionTitle>
+        <EventsGrid events={upcomingMeetups.data} page={1} totalPages={1} goToEvent={Urls.MEETUP} />
+      </section>
+    )
+  }
+
+  {
+    hasPastMeetups && (
+      <section>
+        <SectionTitle>Pasados</SectionTitle>
+        <EventsGrid
+          events={pastMeetups.data}
+          page={pastMeetups.page}
+          totalPages={pastMeetups.totalPages}
+          goToEvent={Urls.MEETUP}
         />
-      )}
-    </div>
-  )
-}
-<EventsGrid
-  events={paginatedMeetups.data}
-  page={paginatedMeetups.page}
-  totalPages={paginatedMeetups.totalPages}
-  goToEvent={Urls.MEETUP}
->
-  <EmptyMessage
-    slot="empty"
-    icon={ChalkboardTeacher}
-    title="No hay meetups"
-    description="Cuando haya algún meetup dado de alto podrás verlo aquí."
-  >
-    {
-      isOrganizer && (
-        <div class="mt-4 flex flex-col items-center gap-2 sm:flex-row">
-          <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
-            Crear meetup
-          </Link>
-          {canSyncMeetups && (
-            <SyncMeetupsButton
-              client:load
-              organizationId={organization.id.value}
-              organizationHandle={organization.handle}
-            />
-          )}
-        </div>
-      )
-    }
-  </EmptyMessage>
-</EventsGrid>
+      </section>
+    )
+  }
+
+  {
+    !hasMeetups && (
+      <EmptyMessage
+        icon={ChalkboardTeacher}
+        title="No hay meetups"
+        description="Cuando haya algún meetup dado de alto podrás verlo aquí."
+      >
+        {isOrganizer && (
+          <div class="mt-4 flex flex-col items-center gap-2 sm:flex-row">
+            <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
+              Crear meetup
+            </Link>
+            {canSyncMeetups && (
+              <SyncMeetupsButton
+                client:load
+                organizationId={organization.id.value}
+                organizationHandle={organization.handle}
+              />
+            )}
+          </div>
+        )}
+      </EmptyMessage>
+    )
+  }
+</div>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .groups {
+    @apply flex flex-col gap-12;
+  }
+</style>

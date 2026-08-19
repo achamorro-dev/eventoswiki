@@ -8,6 +8,7 @@ interface GetNextEventsRequest {
   count: number
   page?: number
   location?: string
+  organizationId?: string
 }
 
 export class GetNextEventsQuery extends Query<PaginatedResult<Event>, GetNextEventsRequest> {
@@ -16,8 +17,8 @@ export class GetNextEventsQuery extends Query<PaginatedResult<Event>, GetNextEve
   }
 
   execute(request: GetNextEventsRequest): Promise<PaginatedResult<Event>> {
-    const { count, page = 1, location } = request
-    const criteria = NextEventsCriteria.createWith({ location }).withLimit(count).withPage(page)
+    const { count, page = 1, location, organizationId } = request
+    const criteria = NextEventsCriteria.createWith({ location, organizationId }).withLimit(count).withPage(page)
 
     return this.eventRepository.match(criteria)
   }

@@ -6,7 +6,7 @@ import { EventsCriteria } from './events-criteria'
 import type { EventsFilters } from './events-filters'
 
 export class NextEventsCriteria extends EventsCriteria {
-  static createWith(filters: { location?: string }): NextEventsCriteria {
+  static createWith(filters: { location?: string; organizationId?: string }): NextEventsCriteria {
     const now = Datetime.now()
 
     return EventsCriteria.create()
@@ -23,6 +23,9 @@ export class NextEventsCriteria extends EventsCriteria {
         ]),
         Filter.and<Partial<EventsFilters>>({
           location: filters.location ? { operator: RelationalOperator.EQUALS, value: filters.location } : undefined,
+          organizationId: filters.organizationId
+            ? { operator: RelationalOperator.EQUALS, value: filters.organizationId }
+            : undefined,
         }),
       ])
   }

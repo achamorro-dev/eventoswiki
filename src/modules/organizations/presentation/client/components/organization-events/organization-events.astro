@@ -1,48 +1,88 @@
 ---
 import { EventsContainer } from '@/events/di/events.container'
-import { FindEventsQuery } from '@/events/application/find-events.query'
+import { GetNextEventsQuery } from '@/events/application/get-next-events.query'
+import { GetPastEventsQuery } from '@/events/application/get-past-events.query'
 import type { Organization } from '@/organizations/domain/organization'
+import { LIST_PAGE_SIZE } from '@/shared/presentation/list-page-size'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
 import { Link } from '@/ui/components/link'
+import { SectionTitle } from '@/ui/components/section-title/section-title'
 import { ChalkboardTeacher } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
   organization: Organization
   isOrganizer: boolean
+  page?: number
 }
 
-const { organization, isOrganizer } = Astro.props as Props
-const paginatedEvents = await EventsContainer.get(FindEventsQuery).execute({ organizationId: organization.id.value })
-const hasEvents = paginatedEvents.data.length > 0
+const { organization, isOrganizer, page = 1 } = Astro.props as Props
+const organizationId = organization.id.value
+
+const [upcomingEvents, pastEvents] = await Promise.all([
+  EventsContainer.get(GetNextEventsQuery).execute({ count: LIST_PAGE_SIZE, organizationId }),
+  EventsContainer.get(GetPastEventsQuery).execute({ count: LIST_PAGE_SIZE, page, organizationId }),
+])
+
+const hasUpcomingEvents = upcomingEvents.data.length > 0
+const hasPastEvents = pastEvents.data.length > 0
+const hasEvents = hasUpcomingEvents || hasPastEvents
 ---
 
-{
-  isOrganizer && hasEvents && (
-    <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min">
-      Crear evento
-    </Link>
-  )
-}
-<EventsGrid
-  events={paginatedEvents.data}
-  page={paginatedEvents.page}
-  totalPages={paginatedEvents.totalPages}
-  goToEvent={Urls.EVENT}
->
-  <EmptyMessage
-    slot="empty"
-    icon={ChalkboardTeacher}
-    title="No hay eventos"
-    description="Cuando haya algún evento dado de alta podrás verlo aquí."
-  >
-    {
-      isOrganizer && (
-        <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="mt-4">
-          Crear evento
-        </Link>
-      )
-    }
-  </EmptyMessage>
-</EventsGrid>
+<div class="groups">
+  {
+    isOrganizer && hasEvents && (
+      <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="block w-min">
+        Crear evento
+      </Link>
+    )
+  }
+
+  {
+    hasUpcomingEvents && (
+      <section>
+        <SectionTitle>Próximos</SectionTitle>
+        <EventsGrid events={upcomingEvents.data} page={1} totalPages={1} goToEvent={Urls.EVENT} />
+      </section>
+    )
+  }
+
+  {
+    hasPastEvents && (
+      <section>
+        <SectionTitle>Pasados</SectionTitle>
+        <EventsGrid
+          events={pastEvents.data}
+          page={pastEvents.page}
+          totalPages={pastEvents.totalPages}
+          goToEvent={Urls.EVENT}
+        />
+      </section>
+    )
+  }
+
+  {
+    !hasEvents && (
+      <EmptyMessage
+        icon={ChalkboardTeacher}
+        title="No hay eventos"
+        description="Cuando haya algún evento dado de alta podrás verlo aquí."
+      >
+        {isOrganizer && (
+          <Link href={Urls.CREATE_EVENT(organization.handle)} variant="outline" className="mt-4">
+            Crear evento
+          </Link>
+        )}
+      </EmptyMessage>
+    )
+  }
+</div>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .groups {
+    @apply flex flex-col gap-12;
+  }
+</style>

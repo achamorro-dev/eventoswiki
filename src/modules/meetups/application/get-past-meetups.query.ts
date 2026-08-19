@@ -8,6 +8,7 @@ interface GetPastMeetupsRequest {
   count: number
   page?: number
   location?: string
+  organizationId?: string
 }
 
 export class GetPastMeetupsQuery extends Query<PaginatedResult<Meetup>, GetPastMeetupsRequest> {
@@ -15,8 +16,8 @@ export class GetPastMeetupsQuery extends Query<PaginatedResult<Meetup>, GetPastM
     super()
   }
 
-  execute({ count, page = 1, location }: GetPastMeetupsRequest): Promise<PaginatedResult<Meetup>> {
-    const criteria = PastMeetupsCriteria.createWith({ location }).withLimit(count).withPage(page)
+  execute({ count, page = 1, location, organizationId }: GetPastMeetupsRequest): Promise<PaginatedResult<Meetup>> {
+    const criteria = PastMeetupsCriteria.createWith({ location, organizationId }).withLimit(count).withPage(page)
     return this.meetupsRepository.match(criteria)
   }
 }
