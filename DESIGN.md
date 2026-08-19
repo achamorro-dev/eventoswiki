@@ -119,7 +119,9 @@ todo el texto en blanco sobre ella.
 Anatomía, de arriba abajo:
 
 1. **Chip de fecha** arriba a la izquierda, en `--overlay`. Día en 20/600 y mes en versalitas. Es el único elemento
-   claro sobre la foto y funciona como ancla de lectura.
+   claro sobre la foto y funciona como ancla de lectura. El año solo aparece cuando el evento no es del año en curso
+   —«12 mar» frente a «14 nov 2025»—, para que los listados de pasados no pierdan la referencia sin cargar de ruido
+   la tarjeta del caso habitual.
 2. **Precio** arriba a la derecha, solo si el evento tiene entradas. Si es gratuito **se omite el elemento entero**, no
    se escribe «Gratis».
 3. **Etiquetas** en blanco al 16%, sin el color por evento. El color de la portada ya diferencia una tarjeta de otra;
@@ -161,6 +163,16 @@ flechas de anterior y siguiente llevan borde.
 ### Filas de datos (`EventDataRow`)
 
 Semánticamente son `<dl>` con `<dt>` y `<dd>`: icono enmarcado de 40 px, etiqueta en versalitas y valor en 14/500.
+
+### Barra de filtros
+
+`SearchFiltersBar` agrupa los filtros de una página con separación de 24 px y salto de línea en pantallas estrechas.
+Dibuja un separador inferior por defecto; las páginas cuyo contenido ya trae su propio borde —el calendario— lo
+desactivan con `divider={false}` para no doblar la línea.
+
+Cuando conviven un conmutador de ámbito y un filtro, el conmutador va a la izquierda y el filtro al extremo opuesto con
+`md:ml-auto`. Las pestañas usadas como filtro se declaran `w-fit border-b-0`: son un control, no la barra de pestañas
+de la página, así que ni ocupan el ancho ni aportan línea propia.
 
 ### Formularios
 
