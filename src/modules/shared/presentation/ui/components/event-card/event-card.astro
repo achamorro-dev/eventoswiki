@@ -4,6 +4,7 @@ import { MapPin, Ticket } from '@/ui/icons'
 
 const DAY_FORMAT = 'DD'
 const SHORT_MONTH_FORMAT = 'MMM'
+const YEAR_FORMAT = 'YYYY'
 
 interface CardEvent {
   slug: string
@@ -33,6 +34,9 @@ const formatPrice = (price: number): string => {
 
 const startDay = Datetime.toDateString(event.startsAt, DAY_FORMAT)
 const startMonth = Datetime.toDateString(event.startsAt, SHORT_MONTH_FORMAT)
+const startYear = Datetime.toDateString(event.startsAt, YEAR_FORMAT)
+const isCurrentYear = startYear === Datetime.toDateString(Datetime.now(), YEAR_FORMAT)
+const startMonthLabel = isCurrentYear ? startMonth : `${startMonth} ${startYear}`
 const lastDay = Datetime.isSameDay(event.startsAt, event.endsAt)
   ? null
   : Datetime.toDateString(event.endsAt, DateFormat.DD_MMM_YYYY)
@@ -57,7 +61,7 @@ const hasPrice = event.minPrice !== null && event.minPrice !== undefined
 
   <time class="event-date" datetime={Datetime.toDateIsoString(event.startsAt)}>
     <span class="event-date-day">{startDay}</span>
-    <span class="event-date-month">{startMonth}</span>
+    <span class="event-date-month">{startMonthLabel}</span>
   </time>
 
   {
@@ -115,7 +119,7 @@ const hasPrice = event.minPrice !== null && event.minPrice !== undefined
     @apply text-xl font-semibold leading-none;
   }
   .event-date-month {
-    @apply text-overlay-muted text-[0.6875rem] uppercase tracking-[0.12em];
+    @apply text-overlay-muted whitespace-nowrap text-[0.6875rem] uppercase tracking-[0.12em];
   }
   .event-price {
     @apply absolute right-4 top-4 flex items-center gap-1.5 rounded-full border border-white/20 bg-white/15 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm;

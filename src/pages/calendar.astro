@@ -46,9 +46,11 @@ const previousMonthParams = createCalendarSearchParams(previousMonth)
   <a href={`/calendar?${previousMonthParams}`} rel="prefetch" class="hidden"></a>
 
   <PageTitle>Calendario</PageTitle>
-  <SearchFiltersBar>
+  <SearchFiltersBar divider={false}>
     <EventTypeFilter client:only value={eventType} />
-    <ProvinceComboboxFilter server:defer value={province} />
+    <div class="md:ml-auto">
+      <ProvinceComboboxFilter server:defer value={province} />
+    </div>
   </SearchFiltersBar>
   <article>
     {

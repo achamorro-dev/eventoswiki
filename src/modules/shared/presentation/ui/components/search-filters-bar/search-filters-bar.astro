@@ -1,3 +1,23 @@
-<section class="border-border mb-6 flex items-center justify-start gap-2 border-b pb-6">
+---
+interface Props {
+  divider?: boolean
+}
+
+const { divider = true } = Astro.props
+---
+
+<section class:list={['filters', { 'filters-divided': divider }]}>
   <slot />
 </section>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .filters {
+    @apply mb-6 flex flex-wrap items-center justify-start gap-x-6 gap-y-3;
+  }
+
+  .filters-divided {
+    @apply border-border border-b pb-6;
+  }
+</style>

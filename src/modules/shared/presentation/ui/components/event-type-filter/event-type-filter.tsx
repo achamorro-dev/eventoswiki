@@ -33,7 +33,7 @@ export function EventTypeFilter({ value = EventType.EVENTS, className }: EventTy
 
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange} className={className}>
-      <TabsList>
+      <TabsList className="w-fit border-b-0">
         <TabsTrigger value={EventType.EVENTS}>Eventos</TabsTrigger>
         <TabsTrigger value={EventType.MEETUPS}>Meetups</TabsTrigger>
       </TabsList>
