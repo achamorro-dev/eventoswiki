@@ -15,7 +15,7 @@ import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { Urls } from '@/ui/urls/urls'
 import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
@@ -72,7 +72,7 @@ try {
     <>
       <Layout title={'Editar meetup'}>
         <article>
-          <SectionTitle>Editar meetup</SectionTitle>
+          <PageTitle>Editar meetup</PageTitle>
           <MeetupEditTabs
             client:only="react"
             meetup={meetup.toPrimitives()}

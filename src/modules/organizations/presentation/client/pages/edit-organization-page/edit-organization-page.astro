@@ -1,7 +1,7 @@
 ---
 import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { OrganizationEditForm } from '../../components/organization-edit-form/organization-edit-form'
 import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
@@ -15,6 +15,6 @@ const provinces = await getProvincesQuery.execute()
 ---
 
 <article>
-  <SectionTitle>Editar Organización</SectionTitle>
+  <PageTitle>Editar Organización</PageTitle>
   <OrganizationEditForm client:only="react" organization={organization.toPrimitives()} provinces={provinces} />
 </article>

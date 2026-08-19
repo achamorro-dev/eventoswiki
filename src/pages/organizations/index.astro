@@ -5,7 +5,7 @@ import AuthOverlay from '@/shared/presentation/ui/components/auth-overlay/auth-o
 import OrganizationGridSkeleton from '@/organizations/presentation/server/components/organization-grid-skeleton/organization-grid-skeleton.astro'
 import ProvinceComboboxFilter from '@/provinces/presentation/server/components/province-combobox/province-combobox-filter.astro'
 import SearchFiltersBar from '@/ui/components/search-filters-bar/search-filters-bar.astro'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { canonicalUrl } from '@/ui/urls/canonical-url'
 
 const searchParams = new URL(Astro.request.url).searchParams
@@ -23,7 +23,7 @@ const needsAuthOverlay = !isAuthenticated && page > 1
   url={canonicalUrl(Astro.url)}
 >
   <header class="mb-4">
-    <SectionTitle>Organizaciones</SectionTitle>
+    <PageTitle>Organizaciones</PageTitle>
   </header>
   <SearchFiltersBar>
     <ProvinceComboboxFilter value={province} />

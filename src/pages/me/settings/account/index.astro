@@ -1,6 +1,6 @@
 ---
 import Layout from '@/layouts/layout.astro'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { GetUserQuery } from '@/users/application/get-user.query'
 import { UsersContainer } from '@/users/di/users.container'
 import { Urls } from '@/ui/urls/urls'
@@ -19,7 +19,7 @@ const user = await UsersContainer.get(GetUserQuery).execute({ id: userId })
 
 <Layout title="Ajustes - Cuenta">
   <div class="mx-auto max-w-7xl">
-    <SectionTitle>Ajustes</SectionTitle>
+    <PageTitle>Ajustes</PageTitle>
 
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] gap-6">
       <div class="hidden lg:flex flex-col gap-2">

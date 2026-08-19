@@ -11,7 +11,7 @@ import type { Organization } from '@/organizations/domain/organization'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 const { handle } = Astro.params
@@ -55,7 +55,7 @@ try {
   organization ? (
     <Layout title={'Crear evento'}>
       <article>
-        <SectionTitle>Crear meetup</SectionTitle>
+        <PageTitle>Crear meetup</PageTitle>
         <MeetupEditTabs client:only="react" provinces={provinces} organization={organization.toPrimitives()} />
       </article>
     </Layout>

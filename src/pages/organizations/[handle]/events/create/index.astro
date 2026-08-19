@@ -14,7 +14,7 @@ import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-orga
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
 import NotFound from '@/ui/components/not-found/not-found.astro'
-import { SectionTitle } from '@/ui/components/section-title/section-title'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { Urls } from '@/ui/urls/urls'
 import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
@@ -84,7 +84,7 @@ const duplicatedEventValues = (() => {
   organization ? (
     <Layout title={'Crear evento'}>
       <article>
-        <SectionTitle>{duplicatedEventValues ? 'Duplicar evento' : 'Crear evento'}</SectionTitle>
+        <PageTitle>{duplicatedEventValues ? 'Duplicar evento' : 'Crear evento'}</PageTitle>
         <EventEditForm
           client:only="react"
           organizationId={organization.id.value}
