@@ -12,7 +12,6 @@
     "web": "https://agileopenspain.com",
     "twitter": "https://twitter.com/agileopenspain",
     "tags": "agile,scrum,kanban",
-    "tagColor": "#2563eb",
     "content": "## Agile Open Spain\n\nLa conferencia de referencia sobre metodologías ágiles en España reuniendo a profesionales de toda Europa.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -30,7 +29,6 @@
     "web": "https://bilbostack.com",
     "twitter": "https://twitter.com/bilbostack",
     "tags": "development,cloud,architecture",
-    "tagColor": "#059669",
     "content": "## Bilbostack\n\nLa conferencia tecnológica de Bilbao que reúne a desarrolladores de toda España.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -49,7 +47,6 @@
     "twitter": "https://twitter.com/commitconf",
     "youtube": "https://youtube.com/commitconf",
     "tags": "development,community,software",
-    "tagColor": "#dc2626",
     "content": "## Commit Conf\n\nLa conferencia de desarrollo software más grande de España.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -67,7 +64,6 @@
     "web": "https://leandesign.es",
     "twitter": "https://twitter.com/leandesign",
     "tags": "lean,design,product",
-    "tagColor": "#7c3aed",
     "content": "## Congreso Lean Design\n\nLa conferencia sobre metodologías de diseño y desarrollo de productos.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -85,7 +81,6 @@
     "web": "https://globalazuremadrid.es",
     "twitter": "https://twitter.com/azuremadrid",
     "tags": "azure,microsoft,cloud",
-    "tagColor": "#0891b2",
     "content": "## Global Azure Madrid\n\nEl evento de referencia sobre Microsoft Azure en Madrid.",
     "place": null,
     "organizationId": "org-netcoreconf"
@@ -103,7 +98,6 @@
     "web": "https://granadagaming.es",
     "twitter": "https://twitter.com/granadagaming",
     "tags": "gaming,game-dev,unity",
-    "tagColor": "#ea580c",
     "content": "## Granada Gaming\n\nLa conferencia sobre desarrollo de videojuegos en Granada.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -121,7 +115,6 @@
     "web": "https://guadalindie.es",
     "twitter": "https://twitter.com/guadalindie",
     "tags": "outdoor,community,tech",
-    "tagColor": "#16a34a",
     "content": "## Guadalindie\n\nEl meetup tecnológico en plena naturaleza.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -139,7 +132,6 @@
     "web": "https://hacken.es",
     "twitter": "https://twitter.com/hack_en",
     "tags": "hackathon,innovation,startups",
-    "tagColor": "#4f46e5",
     "content": "## Hack EN\n\nEl hackathon empresarial del sur de España.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -157,7 +149,6 @@
     "web": "https://holamundoday.es",
     "twitter": "https://twitter.com/holamundoday",
     "tags": "beginners,coding,education",
-    "tagColor": "#0891b2",
     "content": "## Hola Mundo Day\n\nEl día para aprender a programar.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -175,7 +166,6 @@
     "web": "https://jonthebeach.com",
     "twitter": "https://twitter.com/jonthebeach",
     "tags": "javascript,web,frontend",
-    "tagColor": "#f59e0b",
     "content": "## J on the Beach\n\nLa conferencia de JavaScript en la playa.",
     "place": null,
     "organizationId": "org-jsconf-espana"
@@ -193,7 +183,6 @@
     "web": "https://jsconf.es",
     "twitter": "https://twitter.com/jsconfes",
     "tags": "javascript,community,node",
-    "tagColor": "#ea580c",
     "content": "## JSConf España\n\nLa conferencia oficial de JavaScript en España.",
     "place": null,
     "organizationId": "org-jsconf-espana"
@@ -211,7 +200,6 @@
     "web": "https://laproductconf.com",
     "twitter": "https://twitter.com/laproductconf",
     "tags": "product,ux,design",
-    "tagColor": "#db2777",
     "content": "## La Product Conf\n\nLa conferencia de producto digital.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -229,7 +217,6 @@
     "web": "https://metaworldcongress.com",
     "twitter": "https://twitter.com/metaworldcongress",
     "tags": "metaverse,ai,emerging-tech",
-    "tagColor": "#7c3aed",
     "content": "## Meta World Congress\n\nLa conferencia sobre tecnologías del futuro.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -247,7 +234,6 @@
     "web": "https://netcoreconf.com/barcelona",
     "twitter": "https://twitter.com/netcoreconf",
     "tags": ".net,c#,microsoft",
-    "tagColor": "#512bd4",
     "content": "## NetCoreConf Barcelona\n\nLa conferencia de .NET en Barcelona.",
     "place": null,
     "organizationId": "org-netcoreconf"
@@ -267,7 +253,6 @@
     "youtube": "https://youtube.com/user/t3chFest",
     "instagram": "https://instagram.com/t3chfest",
     "tags": "general,technology,festival",
-    "tagColor": "#7b5bc6",
     "content": "## T3chFest 2025\n\nEdición 2025 del festival de tecnología gratuito en Madrid.",
     "place": null,
     "organizationId": "org-t3chfest"
@@ -285,7 +270,6 @@
     "web": "https://techquake.dev",
     "twitter": "https://twitter.com/techquake_dev",
     "tags": "reliability,distributed-systems,devops",
-    "tagColor": "#dc2626",
     "content": "## Tech Quake\n\nLa conferencia sobre sistemas resilientes.",
     "place": null,
     "organizationId": "org-commit-conf"
@@ -303,7 +287,6 @@
     "web": "https://t3chfest.es/2026/",
     "twitter": "https://twitter.com/t3chfest",
     "tags": "general,technology,festival",
-    "tagColor": "#7b5bc6",
     "content": "## T3chFest 2026\n\nVuelve el festival de tecnología gratuito más grande de Madrid.",
     "place": null,
     "organizationId": "org-t3chfest"

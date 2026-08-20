@@ -36,7 +36,6 @@ export type EventPrimitives = {
   tiktok?: string
   streamingUrl?: string
   tags: string[]
-  tagColor: string
   content: string
   organizationId?: string
   place?: {
@@ -81,7 +80,6 @@ export class Event implements EventProps {
   tiktok?: string
   streamingUrl?: string
   tags: string[]
-  tagColor: string
   content: string
   organizationId?: string
   place?: EventPlace
@@ -118,7 +116,6 @@ export class Event implements EventProps {
     this.tiktok = props.tiktok
     this.streamingUrl = props.streamingUrl
     this.tags = props.tags
-    this.tagColor = props.tagColor
     this.content = props.content
     this.organizationId = props.organizationId || undefined
     this.place = props.place
@@ -157,7 +154,6 @@ export class Event implements EventProps {
       tiktok: primitives.tiktok,
       streamingUrl: primitives.streamingUrl,
       tags: primitives.tags,
-      tagColor: primitives.tagColor,
       content: primitives.content,
       organizationId: primitives.organizationId,
       place: primitives.place ? EventPlace.fromPrimitives(primitives.place) : undefined,
@@ -199,7 +195,6 @@ export class Event implements EventProps {
       tiktok: this.tiktok,
       streamingUrl: this.streamingUrl,
       tags: this.tags,
-      tagColor: this.tagColor,
       content: this.content,
       organizationId: this.organizationId,
       place: this.place?.toPrimitives(),
@@ -251,7 +246,6 @@ export class Event implements EventProps {
       tiktok: data.tiktok,
       streamingUrl: data.streamingUrl,
       tags: data.tags ?? [],
-      tagColor: data.tagColor ?? '#000000',
       content: data.content ?? '',
       organizationId,
       id: uuidv4(),
@@ -316,7 +310,6 @@ export class Event implements EventProps {
     this.tiktok = data.tiktok ?? this.tiktok
     this.streamingUrl = data.streamingUrl ?? this.streamingUrl
     this.tags = data.tags ?? this.tags
-    this.tagColor = data.tagColor ?? this.tagColor
     this.content = data.content ?? this.content
     this.slug = data.slug ?? this.slug
     this.place = data.place ? EventPlace.fromPrimitives(data.place) : this.place
@@ -404,7 +397,6 @@ export interface EventProps {
   tiktok?: string
   streamingUrl?: string
   tags: string[]
-  tagColor: string
   content: string
   organizationId?: string | null
   place?: EventPlace
@@ -441,7 +433,6 @@ export type EventEditableData = {
   tiktok?: string
   streamingUrl?: string
   tags?: string[]
-  tagColor?: string
   content?: string
   place?: Primitives<Place>
   tickets?: TicketPrimitives[]

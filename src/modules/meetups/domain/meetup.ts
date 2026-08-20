@@ -34,7 +34,6 @@ export class Meetup implements MeetupProps {
   tiktok?: string
   streamingUrl?: string
   tags: string[]
-  tagColor: string
   content: string
   organizationId?: string
   attendees?: MeetupAttendeeId[]
@@ -68,7 +67,6 @@ export class Meetup implements MeetupProps {
     this.tiktok = props.tiktok
     this.streamingUrl = props.streamingUrl
     this.tags = props.tags
-    this.tagColor = props.tagColor
     this.content = props.content
     this.organizationId = props.organizationId || undefined
     this.attendees = props.attendees || undefined
@@ -118,7 +116,6 @@ export class Meetup implements MeetupProps {
       tiktok: primitives.tiktok,
       streamingUrl: primitives.streamingUrl,
       tags: primitives.tags,
-      tagColor: primitives.tagColor,
       content: primitives.content,
       organizationId: primitives.organizationId,
       attendees: primitives.attendees?.map(MeetupAttendeeId.of),
@@ -199,7 +196,6 @@ export class Meetup implements MeetupProps {
     this.tiktok = data.tiktok ?? this.tiktok
     this.streamingUrl = data.streamingUrl ?? this.streamingUrl
     this.tags = data.tags ?? this.tags
-    this.tagColor = data.tagColor ?? this.tagColor
     this.content = data.content ?? this.content
     this.type = data.type ? MeetupType.of(data.type) : this.type
     this.slug = data.slug ?? this.slug
@@ -332,7 +328,6 @@ export interface MeetupProps {
   tiktok?: string
   streamingUrl?: string
   tags: string[]
-  tagColor: string
   content: string
   organizationId?: string | null
   attendees?: MeetupAttendeeId[]

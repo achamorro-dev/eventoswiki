@@ -99,7 +99,6 @@ function _parseEventDataPayload(input: z.infer<typeof saveEventActionSchema>): E
       : undefined,
     tickets: input.tickets || [],
     tags: input.tags,
-    tagColor: input.tagColor,
     callForSponsorsEnabled: input.callForSponsorsEnabled ?? false,
     callForSponsorsContent: input.callForSponsorsContent ?? undefined,
     callForSpeakersEnabled: input.callForSpeakersEnabled ?? false,

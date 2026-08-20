@@ -10,7 +10,6 @@ interface SliderEvent {
   title: string
   image?: URL
   tags: string[]
-  tagColor: string
   altImage?: string
   startsAt: Date
   endsAt: Date
@@ -46,7 +45,6 @@ const { events = [], title, seeMoreLink, goToEvent } = Astro.props
                   title: event.title,
                   image: event.image?.toString(),
                   tags: event.tags,
-                  tagColor: event.tagColor,
                   startsAt: event.startsAt,
                   endsAt: event.endsAt,
                   location: event.location,

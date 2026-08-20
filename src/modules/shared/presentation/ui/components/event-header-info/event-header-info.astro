@@ -46,7 +46,7 @@ if (!event) {
   return null
 }
 
-const { title, tags, tagColor, slug, startsAt, endsAt, location, type } = event
+const { title, tags, slug, startsAt, endsAt, location, type } = event
 const streamingUrl = event.streamingUrl
 const shouldShowStreamingLink = isOrganizer || isAttending
 const place = event.place?.toPrimitives()
@@ -66,7 +66,7 @@ if (event instanceof Meetup && event.allowsAttendees && event.hasAttendees()) {
 
 <div class="w-full lg:px-6 max-w-5xl xl:px-0">
   <div class="flex items-start justify-between gap-2">
-    <EventTags tags={tags} tagColor={tagColor} />
+    <EventTags tags={tags} />
     {
       isOrganizer && (
         <EventActionsMenu

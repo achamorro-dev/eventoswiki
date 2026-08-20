@@ -44,7 +44,6 @@ export const saveEventActionSchema = z.object({
   organizationId: z.string(),
   eventId: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  tagColor: z.string().default(''),
   callForSponsorsEnabled: z.boolean().optional().default(false),
   callForSponsorsContent: z.string().optional(),
   callForSpeakersEnabled: z.boolean().optional().default(false),

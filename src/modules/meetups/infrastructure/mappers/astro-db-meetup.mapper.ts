@@ -42,7 +42,6 @@ export class AstroDbMeetupMapper {
       tiktok: meetupDto.tiktok || undefined,
       streamingUrl: meetupDto.streamingUrl || undefined,
       tags: meetupDto.tags.length > 0 ? meetupDto.tags.split(',') : [],
-      tagColor: meetupDto.tagColor,
       content: meetupDto.content,
       organizationId: meetupDto.organizationId || undefined,
       type: MeetupType.of(meetupDto.type).value,

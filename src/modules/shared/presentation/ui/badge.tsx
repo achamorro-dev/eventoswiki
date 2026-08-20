@@ -28,17 +28,14 @@ function Badge({
   className,
   variant,
   asChild = false,
-  color,
   ...props
-}: React.ComponentPropsWithoutRef<'span'> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean; color?: string }) {
+}: React.ComponentPropsWithoutRef<'span'> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot : 'span'
 
   return (
     <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
-      style={{ backgroundColor: color }}
+      className={cn(badgeVariants({ variant, className }))}
       {...props}
     />
   )

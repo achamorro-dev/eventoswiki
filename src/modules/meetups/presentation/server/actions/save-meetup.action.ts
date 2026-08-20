@@ -98,7 +98,6 @@ function _parseMeetupDataPayload(input: z.infer<typeof saveMeetupActionSchema>):
     tiktok: input.tiktok,
     streamingUrl: input.streamingUrl,
     tags: input.tags,
-    tagColor: input.tagColor,
     place: input.place
       ? {
           id: input.place.id,

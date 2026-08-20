@@ -78,7 +78,7 @@ export function OrganizationEventCreatedEmail({
                 <Section className="mb-3">
                   <Text
                     className="m-0 inline-block rounded px-3 py-1.5 font-bold text-white text-xs"
-                    style={{ backgroundColor: event.tagColor || '#3b82f6' }}
+                    style={{ backgroundColor: '#3b82f6' }}
                   >
                     {EventTypeLabels[event.type.value] ?? event.type.value}
                   </Text>

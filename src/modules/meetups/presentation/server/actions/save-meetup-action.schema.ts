@@ -27,7 +27,6 @@ export const saveMeetupActionSchema = z.object({
   organizationId: z.string(),
   meetupId: z.string().optional(),
   tags: z.array(z.string()).default([]),
-  tagColor: z.string().default(''),
   place: z
     .object({
       id: z.string(),

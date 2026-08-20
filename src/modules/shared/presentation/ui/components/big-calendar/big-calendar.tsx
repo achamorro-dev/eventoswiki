@@ -1,6 +1,6 @@
 import { navigate } from 'astro:transitions/client'
 import moment from 'moment'
-import type { CSSProperties, FC } from 'react'
+import type { FC } from 'react'
 import { useMemo, useRef } from 'react'
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
 import { cn } from '@/ui/lib/utils'
@@ -21,12 +21,6 @@ type BigCalendarProps = {
   events: CalendarEvent[]
   selectedDate?: Date
   className?: string
-}
-
-interface CustomCSS extends CSSProperties {
-  '--event-background-color': string
-  '--event-border-color': string
-  '--event-color': string
 }
 
 const allViews = [Views.MONTH]
@@ -88,12 +82,7 @@ export const BigCalendar: FC<BigCalendarProps> = ({ events, selectedDate, classN
           showMore: e => `+${e} más`,
         }}
         eventPropGetter={event => ({
-          className: 'event',
-          style: {
-            '--event-background-color': event.color,
-            '--event-border-color': event.color,
-            '--event-color': event.color,
-          } as CustomCSS,
+          className: cn('event', event.isMeetup && 'meetup-event'),
         })}
         onSelectEvent={onSelectEvent}
         onNavigate={onDateChange}

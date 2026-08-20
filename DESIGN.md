@@ -143,7 +143,7 @@ Anatomía, de arriba abajo:
 2. **Precio** arriba a la derecha, solo si el evento tiene entradas. Si es gratuito **se omite el elemento entero**, no
    se escribe «Gratis».
 3. **Etiquetas** en blanco al 16%, sin el color por evento. El color de la portada ya diferencia una tarjeta de otra;
-   las etiquetas de color competían con ella. `tagColor` sigue en la interfaz por compatibilidad, pero no se pinta.
+   las etiquetas de color competían con ella. El campo `tagColor` se eliminó: las etiquetas ya no llevan color propio.
 4. **Título** a dos líneas como máximo.
 5. **Meta**: ubicación y, solo en eventos de varios días, hasta cuándo dura.
 

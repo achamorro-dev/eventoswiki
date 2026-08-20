@@ -26,26 +26,38 @@ let filteredEvents: Event[] = []
 let filteredMeetups: Meetup[] = []
 
 if (eventType === EventType.EVENTS) {
-  const paginatedEvents = await EventsContainer.get(FindEventsQuery).execute({ startsAt, endsAt, province, limit: 1000 })
+  const paginatedEvents = await EventsContainer.get(FindEventsQuery).execute({
+    startsAt,
+    endsAt,
+    province,
+    limit: 1000,
+  })
   filteredEvents = paginatedEvents.data
 }
 
 if (eventType === EventType.MEETUPS) {
-  const paginatedMeetups = await MeetupsContainer.get(FindMeetupsQuery).execute({ startsAt, endsAt, province, limit: 1000 })
+  const paginatedMeetups = await MeetupsContainer.get(FindMeetupsQuery).execute({
+    startsAt,
+    endsAt,
+    province,
+    limit: 1000,
+  })
   filteredMeetups = paginatedMeetups.data
 }
 
-const calendarEvents = (filteredEvents as Array<Meetup | Event>).concat(filteredMeetups).map<CalendarEvent>((event: Meetup | Event, index) => {
-  const isMeetup = event instanceof Meetup
-  return {
-    id: index,
-    title: event.title,
-    start: event.startsAt,
-    end: event.endsAt,
-    url: isMeetup ? Urls.MEETUP(event.slug) : Urls.EVENT(event.slug),
-    color: event.tagColor,
-  } as CalendarEvent
-})
+const calendarEvents = (filteredEvents as Array<Meetup | Event>)
+  .concat(filteredMeetups)
+  .map<CalendarEvent>((event: Meetup | Event, index) => {
+    const isMeetup = event instanceof Meetup
+    return {
+      id: index,
+      title: event.title,
+      start: event.startsAt,
+      end: event.endsAt,
+      url: isMeetup ? Urls.MEETUP(event.slug) : Urls.EVENT(event.slug),
+      isMeetup,
+    } as CalendarEvent
+  })
 ---
 
 <Agenda client:load events={calendarEvents} selectedDate={selectedDate} className="block md:hidden" />

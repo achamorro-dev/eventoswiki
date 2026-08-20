@@ -72,7 +72,7 @@ export function AttendMeetupEmail({ userName, meetup, organization, meetupUrl }:
                 <Section className="mb-3">
                   <Text
                     className="m-0 inline-block rounded px-3 py-1.5 font-bold text-white text-xs"
-                    style={{ backgroundColor: meetup.tagColor || '#3b82f6' }}
+                    style={{ backgroundColor: '#3b82f6' }}
                   >
                     {MeetupTypeLabels[meetup.type.value] ?? meetup.type.value}
                   </Text>

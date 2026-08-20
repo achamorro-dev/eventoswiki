@@ -25,7 +25,6 @@ export interface AstroDbEventDto {
   tiktok: string | null
   streamingUrl: string | null
   tags: string
-  tagColor: string
   createdAt: Date
   updatedAt: Date
   content: string

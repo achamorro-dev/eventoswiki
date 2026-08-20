@@ -52,14 +52,9 @@ export const EventCard = ({ event, displayDate, className }: EventCardProps) => 
       <Card
         className={cn(
           'event-card cursor-pointer border border-border py-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg',
+          event.isMeetup && 'meetup-event',
           className,
         )}
-        style={
-          {
-            '--event-color': event.color,
-            '--event-background-color': event.color,
-          } as React.CSSProperties
-        }
       >
         <CardContent className="px-4">
           <h3 className="font-medium text-lg">{event.title}</h3>

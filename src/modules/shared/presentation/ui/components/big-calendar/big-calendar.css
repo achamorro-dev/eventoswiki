@@ -18,22 +18,33 @@
   @apply rounded-b-md;
 }
 
+.event,
+.event-card {
+  --event-color: var(--primary);
+  --event-background-color: var(--primary);
+}
+
+.meetup-event {
+  --event-color: var(--success);
+  --event-background-color: var(--success);
+}
+
 div.rbc-month-view .event,
 div.rbc-time-view .event,
 div.rbc-overlay .rbc-event.event {
   @apply rounded-md text-sm font-medium;
-  color: var(--event-color, var(--primary));
-  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, white);
-  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 10%, white);
+  color: var(--event-color);
+  border: 1px solid color-mix(in srgb, var(--event-background-color) 25%, white);
+  background-color: color-mix(in srgb, var(--event-background-color) 10%, white);
 }
 
 html.dark .rbc-month-view .event,
 html.dark .rbc-time-view .event,
 html.dark .rbc-overlay .rbc-event.event {
   @apply rounded-md text-sm font-medium;
-  color: color-mix(in srgb, var(--event-color, var(--primary)) 25%, white);
-  border: 1px solid color-mix(in srgb, var(--event-background-color, var(--primary)) 75%, white);
-  background-color: color-mix(in srgb, var(--event-background-color, var(--primary)) 25%, transparent);
+  color: color-mix(in srgb, var(--event-color) 25%, white);
+  border: 1px solid color-mix(in srgb, var(--event-background-color) 75%, white);
+  background-color: color-mix(in srgb, var(--event-background-color) 25%, transparent);
 }
 
 div.rbc-row-segment {
@@ -78,7 +89,7 @@ div.rbc-agenda-time-cell span {
 }
 
 div.rbc-toolbar {
-  @apply relative h-16 mb-0 gap-4 rounded-t-md border border-b-0 p-4;
+  @apply relative mb-0 h-16 gap-4 rounded-t-md border border-b-0 p-4;
 }
 
 div.rbc-toolbar button {

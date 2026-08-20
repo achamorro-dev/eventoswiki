@@ -41,7 +41,6 @@ export class AstroEventMapper {
       tiktok: eventDto.tiktok || undefined,
       streamingUrl: eventDto.streamingUrl || undefined,
       tags: eventDto.tags.length > 0 ? eventDto.tags.split(',') : [],
-      tagColor: eventDto.tagColor,
       content: eventDto.content,
       organizationId: eventDto.organizationId || undefined,
       place: eventDto.place || undefined,

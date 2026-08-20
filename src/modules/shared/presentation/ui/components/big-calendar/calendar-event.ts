@@ -4,5 +4,5 @@ export type CalendarEvent = {
   start: Date
   end: Date
   url: string
-  color?: string
+  isMeetup?: boolean
 }
