@@ -82,7 +82,15 @@ div.rbc-toolbar {
 }
 
 div.rbc-toolbar button {
-  @apply focus:bg-muted;
+  @apply text-foreground text-sm font-medium;
+}
+
+div.rbc-toolbar button:hover,
+div.rbc-toolbar button:focus,
+div.rbc-toolbar button:active,
+div.rbc-toolbar button:active:hover,
+div.rbc-toolbar button:active:focus {
+  @apply bg-muted text-foreground;
 }
 
 div.rbc-off-range-bg {
@@ -97,10 +105,6 @@ div.rbc-toolbar .rbc-btn-group {
   @apply absolute right-4;
 }
 
-.rbc-btn-group button {
-  @apply hover:bg-muted rounded-md text-sm font-medium;
-}
-
 .rbc-active {
   @apply !bg-primary-strong !text-primary-foreground !shadow-none;
 }
@@ -109,8 +113,13 @@ button.rbc-button-link {
   @apply text-foreground m-1 mr-0 rounded-full p-2 text-sm leading-none;
 }
 
-.rbc-show-more {
-  @apply text-foreground bg-background hover:bg-muted px-2 text-sm font-medium;
+button.rbc-show-more {
+  @apply text-foreground bg-background px-2 text-sm font-medium;
+}
+
+button.rbc-show-more:hover,
+button.rbc-show-more:focus {
+  @apply bg-muted text-foreground;
 }
 
 .rbc-date-cell.rbc-now button {
