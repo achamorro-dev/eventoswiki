@@ -3,7 +3,7 @@
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Button } from '@/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
-import { XBold } from '@/ui/icons'
+import { X } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import type { EventFormSchema } from '../event-edit-form/event-form-schema'
 
@@ -71,7 +71,7 @@ export const TicketForm = () => {
               onClick={() => remove(index)}
               className="text-red-600 hover:bg-red-50 hover:text-red-700"
             >
-              <XBold className="h-4 w-4" />
+              <X className="h-4 w-4" />
             </Button>
           </div>
         ))}

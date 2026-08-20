@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { DateTimeFormat, Datetime } from '@/shared/domain/datetime/datetime'
-import { CalendarBlank } from '@/ui/icons'
+import { Calendar } from '@/ui/icons'
 import { EventDataRow } from '../event-data-row/event-data-row'
 
 export const EventDatePeriod: FC<{ startDate: Date; endDate?: Date }> = ({ startDate, endDate }) => {
@@ -11,14 +11,14 @@ export const EventDatePeriod: FC<{ startDate: Date; endDate?: Date }> = ({ start
     <>
       <EventDataRow
         title="Empieza"
-        icon={<CalendarBlank />}
+        icon={<Calendar />}
         value={startDateHumanized}
         ariaLabel={`Fecha de inicio ${startDateHumanized}`}
       />
       {endDateHumanized && (
         <EventDataRow
           title="Termina"
-          icon={<CalendarBlank />}
+          icon={<Calendar />}
           value={endDateHumanized}
           ariaLabel={`Fecha de fin ${endDateHumanized}`}
         />

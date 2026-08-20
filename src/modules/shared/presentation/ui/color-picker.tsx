@@ -1,11 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Check, ChevronDown } from 'lucide-react'
 import React, { useCallback, useEffect, useState } from 'react'
-
 import { Button } from '@/modules/shared/presentation/ui/button'
 import { Input } from '@/modules/shared/presentation/ui/input'
 import { Label } from '@/modules/shared/presentation/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/modules/shared/presentation/ui/popover'
+import { Check, ChevronDown } from '@/ui/icons'
 
 // Helper functions for color conversion
 const _hslToHex = (h: number, s: number, l: number) => {

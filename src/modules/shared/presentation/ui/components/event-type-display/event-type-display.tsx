@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { EventType, EventTypes } from '@/modules/events/domain/event-type'
 import { MeetupType, MeetupTypes } from '@/modules/meetups/domain/meetup-type'
-import { LaptopBold, MapPin, Users } from '@/ui/icons'
+import { Laptop, MapPin, Users } from '@/ui/icons'
 import { EventDataRow } from '../event-data-row/event-data-row'
 
 interface Props {
@@ -24,7 +24,7 @@ export const EventTypeDisplay: FC<Props> = ({ type }) => {
       case MeetupTypes.Online:
         return {
           title: 'Tipo',
-          icon: <LaptopBold />,
+          icon: <Laptop />,
           value: 'Online',
         }
       case EventTypes.Hybrid:

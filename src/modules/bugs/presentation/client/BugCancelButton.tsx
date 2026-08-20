@@ -2,11 +2,11 @@
 
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { Loader2, XCircle } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { BugStatus } from '@/modules/bugs/domain/bug'
 import { Button } from '@/ui/button'
+import { Loader, XCircle } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
@@ -49,7 +49,7 @@ export default function BugCancelButton({ bugId, currentStatus }: Props) {
       onClick={handleCancel}
       disabled={loading || currentStatus === BugStatus.CANCELED}
     >
-      {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <XCircle className="mr-2 h-4 w-4" />}
+      {loading ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <XCircle className="mr-2 h-4 w-4" />}
       Cancelar
     </Button>
   )

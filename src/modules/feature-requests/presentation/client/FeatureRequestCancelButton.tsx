@@ -1,11 +1,11 @@
 'use client'
 
 import { actions } from 'astro:actions'
-import { Loader2, XCircle } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { FeatureRequestStatus } from '@/modules/feature-requests/domain/feature-request'
 import { Button } from '@/ui/button'
+import { Loader, XCircle } from '@/ui/icons'
 
 interface Props {
   featureRequestId: string
@@ -47,7 +47,7 @@ export default function FeatureRequestCancelButton({ featureRequestId, currentSt
       onClick={handleCancel}
       disabled={loading || currentStatus === FeatureRequestStatus.REJECTED}
     >
-      {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <XCircle className="mr-2 h-4 w-4" />}
+      {loading ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <XCircle className="mr-2 h-4 w-4" />}
       Cancelar
     </Button>
   )

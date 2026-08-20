@@ -1,7 +1,7 @@
 import { actions } from 'astro:actions'
 import { useState } from 'react'
 import { Button } from '@/ui/button'
-import { HeartBold, HeartBreakBold, Loader } from '@/ui/icons'
+import { Heart, HeartSolid, Loader } from '@/ui/icons'
 
 interface Props {
   organizationId: string
@@ -51,7 +51,7 @@ export const OrganizationFollowButton = (props: Props) => {
           <Loader className="animate-spin" /> Guardando
         </>
       )}
-      {!isLoading && (isFollowing ? <HeartBreakBold /> : <HeartBold />)}
+      {!isLoading && (isFollowing ? <HeartSolid /> : <Heart />)}
       {!isLoading && (isFollowing ? 'Dejar de seguir' : 'Seguir')}
     </Button>
   )

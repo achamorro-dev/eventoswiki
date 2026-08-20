@@ -1,6 +1,5 @@
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { LogOut } from 'lucide-react'
 import type { FC } from 'react'
 import { toast } from 'sonner'
 import {
@@ -15,6 +14,7 @@ import {
   AlertDialogTrigger,
 } from '@/modules/shared/presentation/ui/alert-dialog'
 import { Button } from '@/modules/shared/presentation/ui/button'
+import { LogOut } from '@/ui/icons'
 
 interface LeaveOrganizationModalProps {
   organizationId: string

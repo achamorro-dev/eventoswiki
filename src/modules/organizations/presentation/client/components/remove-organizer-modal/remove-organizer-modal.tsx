@@ -1,6 +1,5 @@
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { Trash2 } from 'lucide-react'
 import type { FC } from 'react'
 import { toast } from 'sonner'
 import {
@@ -15,6 +14,7 @@ import {
   AlertDialogTrigger,
 } from '@/modules/shared/presentation/ui/alert-dialog'
 import { Button } from '@/modules/shared/presentation/ui/button'
+import { Trash } from '@/ui/icons'
 
 interface RemoveOrganizerModalProps {
   organizationId: string
@@ -47,7 +47,7 @@ export const RemoveOrganizerModal: FC<RemoveOrganizerModalProps> = ({ organizati
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive">
-          <Trash2 className="h-4 w-4" />
+          <Trash className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

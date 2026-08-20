@@ -1,5 +1,5 @@
 ---
-import { XBold } from '@/ui/icons'
+import { X } from '@/ui/icons'
 import IconButton from '../buttons/icon-button.astro'
 import { Button } from '../button'
 
@@ -21,7 +21,7 @@ const { id = 'modal', title, closeLabel = 'Cancelar', acceptLabel = 'Aceptar', d
       {
         dismissible && (
           <IconButton classes="icon-close-button" id={`${id}-icon-close-button`} aria-label={closeLabel}>
-            <XBold />
+            <X />
           </IconButton>
         )
       }

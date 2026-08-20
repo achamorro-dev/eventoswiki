@@ -2,7 +2,6 @@
 
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { Plus } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/modules/shared/presentation/ui/avatar'
@@ -17,6 +16,7 @@ import {
   CommandList,
 } from '@/modules/shared/presentation/ui/command'
 import { DialogTitle } from '@/modules/shared/presentation/ui/dialog'
+import { Plus } from '@/ui/icons'
 
 interface AddOrganizerModalProps {
   organizationId: string

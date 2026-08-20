@@ -3,12 +3,11 @@
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
 import { type ComponentType, useEffect, useState } from 'react'
-import { PiBuildings, PiClockCounterClockwise } from 'react-icons/pi'
 import type { GlobalSearchResultsDto, SearchItemDto } from '@/search/presentation/types/search-results.dto'
 import { isEmptyGlobalSearchResults } from '@/search/presentation/types/search-results.dto'
 import { Button } from '@/ui/button'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/ui/command'
-import { Calendar, CalendarBlank, Loader, MapPin, Plus, Search, Users } from '@/ui/icons'
+import { Buildings, Calendar, ClockCounterClockwise, Loader, MapPin, Plus, Search, Users } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 
 const DEBOUNCE_MILLISECONDS = 300
@@ -44,14 +43,14 @@ const navigationCommands: NavigationCommand[] = [
     title: 'Organizaciones',
     url: Urls.ORGANIZATIONS,
     keywords: 'organizaciones comunidades grupos',
-    icon: PiBuildings,
+    icon: Buildings,
   },
   {
     id: 'navigate-calendar',
     title: 'Calendario',
     url: Urls.CALENDAR,
     keywords: 'calendario agenda fechas',
-    icon: CalendarBlank,
+    icon: Calendar,
   },
   {
     id: 'navigate-create-event',
@@ -220,7 +219,7 @@ export const CommandPalette = () => {
                 <CommandGroup heading="Búsquedas recientes">
                   {recents.map(recent => (
                     <CommandItem key={`recent-${recent.url}`} onSelect={() => handleSelect(recent)}>
-                      <PiClockCounterClockwise />
+                      <ClockCounterClockwise />
                       <ResultItemContent item={recent} />
                     </CommandItem>
                   ))}
@@ -272,7 +271,7 @@ const ResultsGroups = ({
   <>
     <ResultGroup heading="Eventos próximos" items={results.events.upcoming} icon={Calendar} onSelect={onSelect} />
     <ResultGroup heading="Meetups próximos" items={results.meetups.upcoming} icon={Users} onSelect={onSelect} />
-    <ResultGroup heading="Organizaciones" items={results.organizations} icon={PiBuildings} onSelect={onSelect} />
+    <ResultGroup heading="Organizaciones" items={results.organizations} icon={Buildings} onSelect={onSelect} />
     <ResultGroup heading="Provincias" items={results.provinces} icon={MapPin} onSelect={onSelect} />
     <ResultGroup heading="Eventos pasados" items={results.events.past} icon={Calendar} onSelect={onSelect} />
     <ResultGroup heading="Meetups pasados" items={results.meetups.past} icon={Users} onSelect={onSelect} />

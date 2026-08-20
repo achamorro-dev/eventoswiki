@@ -5,7 +5,7 @@ import { GetPastMeetupsAttendedByUserQuery } from '@/meetups/application/get-pas
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
 import EventsGrid from '@/ui/components/events-grid/events-grid.astro'
 import LinkTabs from '@/ui/components/link-tabs/link-tabs.astro'
-import { Calendar, CalendarBlank } from '@/ui/icons'
+import { Calendar, ClockCounterClockwise } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
@@ -49,7 +49,7 @@ const meetups = activeTab === 'upcoming' ? await getUpcomingMeetups() : await ge
 
 {meetups.length === 0 && activeTab === 'past' && (
   <EmptyMessage
-    icon={CalendarBlank}
+    icon={ClockCounterClockwise}
     title="Aún no has asistido a ningún meetup"
     description="Cuando te apuntes a un meetup, aparecerá aquí después de que termine."
   />

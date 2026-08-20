@@ -1,6 +1,6 @@
 ---
 import { knownSearchParams } from '@/shared/presentation/search-params/known-search-params'
-import { CaretLeft, CaretRight } from '@/ui/icons'
+import { ChevronLeft, ChevronRight } from '@/ui/icons'
 
 interface Props {
   page: number
@@ -34,7 +34,7 @@ const getRewritedSearchParams = (page: number) => {
     <nav class="pagination-bar">
       {!isFirstPage && (
         <a href={getRewritedSearchParams(prevPage)} aria-label="Página anterior" class:list={['link', 'page-left']}>
-          <CaretLeft className="text-2xl" />
+          <ChevronLeft className="text-2xl" />
         </a>
       )}
       <ul class="pages">
@@ -82,7 +82,7 @@ const getRewritedSearchParams = (page: number) => {
       </ul>
       {!isLastPage && (
         <a href={getRewritedSearchParams(nextPage)} aria-label="Siguiente página" class:list={['link', 'page-right']}>
-          <CaretRight className="text-2xl" />
+          <ChevronRight className="text-2xl" />
         </a>
       )}
     </nav>

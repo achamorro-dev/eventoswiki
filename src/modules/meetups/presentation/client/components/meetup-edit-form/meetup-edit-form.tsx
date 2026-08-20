@@ -28,7 +28,7 @@ import { DateTimePicker } from '@/ui/components/date-time-picker'
 import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
-import { Camera, CameraSlash, Loader, X } from '@/ui/icons'
+import { Camera, Loader, NoImage, X } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Switch } from '@/ui/switch'
 import { Textarea } from '@/ui/textarea'
@@ -199,7 +199,7 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
                           'flex w-full items-center justify-center rounded-md border-2 border-input bg-input aria-invalid:border-destructive'
                         }
                       >
-                        <CameraSlash className="h-72 w-48 text-muted-foreground" />
+                        <NoImage className="h-72 w-48 text-muted-foreground" />
                       </div>
                     )}
                     <Button

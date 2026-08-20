@@ -1,12 +1,12 @@
 'use client'
 
 import { actions } from 'astro:actions'
-import { Loader2, MapPin } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import type { Place } from '@/modules/places/domain/place'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from '@/ui/command'
 import { InputError } from '@/ui/components/form/input-error/input-error'
+import { Loader, MapPin } from '@/ui/icons'
 import { cn } from '@/ui/lib/utils'
 
 interface PlaceSearchProps {
@@ -127,7 +127,7 @@ export const PlaceSearch = ({
         {showResults && isLoading && (
           <CommandEmpty>
             <div className="flex items-center justify-center gap-2 py-6">
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader className="h-4 w-4 animate-spin" />
               <span>Buscando...</span>
             </div>
           </CommandEmpty>

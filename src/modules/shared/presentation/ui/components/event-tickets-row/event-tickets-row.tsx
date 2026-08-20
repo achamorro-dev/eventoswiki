@@ -1,6 +1,6 @@
 import type { FC } from 'react'
-import { PiTicket } from 'react-icons/pi'
 import type { TicketPrimitives } from '@/events/domain/ticket'
+import { Ticket } from '@/ui/icons'
 import { EventDataRow } from '../event-data-row/event-data-row'
 
 interface Props {
@@ -26,7 +26,7 @@ export const EventTicketsRow: FC<Props> = ({ tickets }) => {
   return (
     <EventDataRow
       title="Entradas"
-      icon={<PiTicket />}
+      icon={<Ticket />}
       value={
         <div className="flex flex-col gap-1">
           {tickets.map(ticket => (

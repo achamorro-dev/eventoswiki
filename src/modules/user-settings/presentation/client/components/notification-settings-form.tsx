@@ -2,12 +2,12 @@
 
 import { actions } from 'astro:actions'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Bell, CheckCircle2, Mail } from 'lucide-react'
 import { type FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { Button } from '@/ui/components/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/ui/form'
+import { Bell, CheckCircle, Envelope } from '@/ui/icons'
 import { Switch } from '@/ui/switch'
 import type { UserSettingsFormSchema } from './user-settings-form-schema'
 import { userSettingsFormSchema } from './user-settings-form-schema'
@@ -44,11 +44,11 @@ export const NotificationSettingsForm: FC<Props> = ({ initialValues }) => {
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 size={18} />
+                  <CheckCircle size={18} />
                   <FormLabel className="text-base">Confirmación de asistencia</FormLabel>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                  <Mail size={14} />
+                  <Envelope size={14} />
                   Recibir email de confirmación al registrarte en un meetup
                 </div>
               </div>
@@ -69,7 +69,7 @@ export const NotificationSettingsForm: FC<Props> = ({ initialValues }) => {
                   <FormLabel className="text-base">Actualizaciones de organizaciones</FormLabel>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                  <Mail size={14} />
+                  <Envelope size={14} />
                   Recibir notificaciones de nuevos eventos y meetups de tus organizaciones favoritas
                 </div>
               </div>

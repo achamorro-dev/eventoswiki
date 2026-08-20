@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { LaptopBold, MoonBold, SunBold } from '@/ui/icons'
+import { Laptop, Moon, Sun } from '@/ui/icons'
 import { cn } from '@/ui/lib/utils'
 import { Button } from '../button'
 import styles from './theme-mode-toggle.module.css'
@@ -28,7 +28,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({ className }) => {
           className={cn({ [styles.selected]: isLightSelected })}
           onClick={() => toggleTheme(ThemeMode.light)}
         >
-          <SunBold />
+          <Sun />
         </Button>
         <Button
           variant="ghost"
@@ -38,7 +38,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({ className }) => {
           className={cn({ [styles.selected]: isDarkSelected })}
           onClick={() => toggleTheme(ThemeMode.dark)}
         >
-          <MoonBold />
+          <Moon />
         </Button>
         <Button
           variant="ghost"
@@ -48,7 +48,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({ className }) => {
           className={cn({ [styles.selected]: isSystemSelected })}
           onClick={() => toggleTheme(ThemeMode.system)}
         >
-          <LaptopBold />
+          <Laptop />
         </Button>
       </div>
     </section>

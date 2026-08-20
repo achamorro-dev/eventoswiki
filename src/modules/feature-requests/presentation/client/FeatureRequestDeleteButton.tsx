@@ -2,7 +2,6 @@
 
 import { actions } from 'astro:actions'
 import { navigate } from 'astro:transitions/client'
-import { Loader2, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import {
@@ -17,6 +16,7 @@ import {
   AlertDialogTrigger,
 } from '@/ui/alert-dialog'
 import { Button } from '@/ui/button'
+import { Loader, Trash } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
@@ -53,7 +53,7 @@ export default function FeatureRequestDeleteButton({ featureRequestId }: Props) 
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="destructive" size="sm" disabled={loading}>
-          {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}
+          {loading ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Trash className="mr-2 h-4 w-4" />}
           Eliminar
         </Button>
       </AlertDialogTrigger>
@@ -71,7 +71,7 @@ export default function FeatureRequestDeleteButton({ featureRequestId }: Props) 
             disabled={loading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+            {loading ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : null}
             Eliminar
           </AlertDialogAction>
         </AlertDialogFooter>
