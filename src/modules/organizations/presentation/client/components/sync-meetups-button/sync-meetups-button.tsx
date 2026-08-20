@@ -27,7 +27,7 @@ interface Props {
 const dateFormatter = new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeStyle: 'short' })
 
 const toFallbackImage = (event: React.SyntheticEvent<HTMLImageElement>) => {
-  event.currentTarget.src = '/not-found.jpg'
+  event.currentTarget.src = '/not-found.webp'
 }
 
 const isUpcoming = (meetup: ExternalMeetupPreview) => new Date(meetup.startsAt).getTime() >= Date.now()
@@ -237,7 +237,7 @@ const MeetupPreviewGroup = ({ title, meetups, selectedIds, disabled, onToggle }:
               />
               <img
                 className="h-10 w-16 shrink-0 rounded object-cover"
-                src={meetup.imageUrl ?? '/not-found.jpg'}
+                src={meetup.imageUrl ?? '/not-found.webp'}
                 alt=""
                 loading="lazy"
                 onError={toFallbackImage}

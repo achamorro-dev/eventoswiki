@@ -51,10 +51,10 @@ const hasPrice = event.minPrice !== null && event.minPrice !== undefined
 >
   <img
     class="event-cover"
-    src={event.image ?? '/not-found.jpg'}
+    src={event.image ?? '/not-found.webp'}
     alt={`Foto de portada del evento ${event.title}`}
     loading="lazy"
-    onerror="this.src='/not-found.jpg'"
+    onerror="this.src='/not-found.webp'"
     transition:name={`media-image-${event.slug}`}
   />
   <div class="event-scrim"></div>

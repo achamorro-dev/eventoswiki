@@ -76,11 +76,11 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
     <div class="flex flex-col items-center gap-4">
       <img
         id="event-image"
-        src={image?.toString() ?? '/not-found.jpg'}
+        src={image?.toString() ?? '/not-found.webp'}
         alt={`Foto de portada del evento ${title}`}
         class="w-full md:max-w-[800px] md:max-h-[400px] min-h-[200px] md:min-w-[300px] object-cover rounded-xl"
         loading="lazy"
-        onerror="this.src='/not-found.jpg'"
+        onerror="this.src='/not-found.webp'"
         transition:name={`media-image-${url}`}
       />
       <OrganizedBy organizationId={organizationId} />
