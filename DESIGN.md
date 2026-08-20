@@ -38,12 +38,30 @@ para texto normal. Por eso el rojo se reparte en tres tokens con responsabilidad
 
 | Token              | Valor                                                        | Cuándo se usa                                                                                                 |
 | ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `--brand`          | `0.6579 0.2309 17.07` en ambos modos                         | Identidad pura: logo y el punto del menú activo. Nunca lleva texto encima.                                    |
+| `--brand`          | `0.6579 0.2309 17.07` en ambos modos                         | El punto de 5 px del menú activo. Nunca lleva texto encima.                                                   |
 | `--primary`        | `0.55 0.21 17.07` en claro · `0.6579 0.2309 17.07` en oscuro | Texto y acentos en rojo. Cada modo usa el tono que contrasta con su fondo.                                    |
 | `--primary-strong` | `0.55 0.21 17.07` en ambos modos                             | Rellenos sólidos que llevan texto blanco: botón primario, badge por defecto, página activa, día seleccionado. |
 
 Regla práctica: **si hay texto blanco encima, es `primary-strong`**. Si el rojo es el texto, es `primary`. Si es la
 marca y no hay texto de por medio, es `brand`.
+
+El logotipo de la cabecera y el pie (`logo.tsx`) va en `primary`, no en `brand`: en claro se lee en el rojo apagado y
+en oscuro en el vivo, igual que el resto de acentos rojos de la página.
+
+#### Los assets de marca
+
+Los ficheros de `public/` no pueden leer tokens, así que llevan el hex escrito. El rojo es el mismo
+`primary-strong`, **`#CF1743`**, en todo lo que se ve sobre fondo claro o lleva la «e» blanca encima:
+
+| Fichero                                                                                      | Rojo      | Nota                                                    |
+| -------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------- |
+| `logo.svg`, `logo.png`                                                                       | `#CF1743` | `logo.png` es el que viaja en los correos               |
+| `logo-dark.svg`                                                                              | `#FF385C` | Para fondo oscuro, igual que la página en modo oscuro   |
+| `icon.png`, `apple-touch-icon.png`, `android-chrome-*.png`, `favicon-96x96.png`, `favicon.*` | `#CF1743` | Tile rojo con la «e» en blanco                          |
+| `site.webmanifest`                                                                           | `#CF1743` | `theme_color`, que es la barra del navegador en Android |
+
+`logo.png` se regenera desde `logo.svg`; los iconos se recolorean desde el original para no perder el antialiasing
+de la esquina redondeada. Si el rojo vuelve a cambiar, hay que rehacerlos todos: no hay build que los derive.
 
 #### Tokens que no cambian con el tema
 
