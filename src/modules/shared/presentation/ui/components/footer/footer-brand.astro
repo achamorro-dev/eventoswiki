@@ -1,0 +1,71 @@
+---
+import Logo from '@/ui/components/logo/logo.astro'
+import { ThemeModeToggle } from '@/ui/components/theme-mode-toggle/theme-mode-toggle'
+import { Github, XLogo } from '@/ui/icons'
+import SponsorsFooter from './sponsors-footer.astro'
+
+const SOCIAL_LINKS = {
+  X: 'https://twitter.com/eventos_wiki',
+  GITHUB: 'https://github.com/achamorro-dev/eventoswiki',
+}
+---
+
+<div class="brand">
+  <Logo />
+  <p class="brand-tagline">
+    Todos los eventos y meetups tecnológicos de España, publicados por la comunidad.
+  </p>
+  <div class="brand-actions">
+    <ul class="brand-social">
+      <li>
+        <a href={SOCIAL_LINKS.X} class="brand-social-link" aria-label="eventos.wiki en X" target="_blank" rel="nofollow">
+          <XLogo size={20} aria-hidden="true" />
+        </a>
+      </li>
+      <li>
+        <a
+          href={SOCIAL_LINKS.GITHUB}
+          class="brand-social-link"
+          aria-label="eventos.wiki en GitHub"
+          target="_blank"
+          rel="nofollow"
+        >
+          <Github size={22} aria-hidden="true" />
+        </a>
+      </li>
+    </ul>
+    <div class="brand-theme">
+      <ThemeModeToggle client:idle className="border-border w-fit rounded-full border" />
+    </div>
+  </div>
+  <SponsorsFooter />
+</div>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .brand {
+    @apply flex flex-col items-start gap-5;
+  }
+
+  .brand-tagline {
+    @apply text-muted-foreground max-w-[34ch] text-sm leading-relaxed;
+  }
+
+  .brand-actions {
+    @apply flex w-full flex-wrap items-center justify-between gap-4 md:justify-start;
+  }
+
+  .brand-social {
+    @apply flex list-none items-center gap-1 p-0;
+  }
+
+  .brand-social-link {
+    @apply text-muted-foreground hover:text-foreground flex size-11 items-center justify-center rounded-full transition-colors md:size-9;
+  }
+
+  /* El conmutador se dibuja sobre --background: el borde va como className y aquí solo la zona táctil. */
+  .brand-theme :global(button) {
+    @apply size-11 md:size-9;
+  }
+</style>

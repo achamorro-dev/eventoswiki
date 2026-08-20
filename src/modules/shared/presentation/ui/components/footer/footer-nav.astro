@@ -1,0 +1,95 @@
+---
+import { ArrowUpRight } from '@/ui/icons'
+import { Urls } from '@/ui/urls/urls'
+
+const EXTERNAL_LINKS = {
+  GITHUB: 'https://github.com/achamorro-dev/eventoswiki',
+  OPEN_TECH_EVENTS: 'https://opentechevents.org',
+}
+
+const sections = [
+  {
+    title: 'Explorar',
+    links: [
+      { label: 'Eventos', href: Urls.EVENTS },
+      { label: 'Meetups', href: Urls.MEETUPS },
+      { label: 'Organizaciones', href: Urls.ORGANIZATIONS },
+      { label: 'Calendario', href: Urls.CALENDAR },
+      { label: 'Eventos pasados', href: Urls.PAST_EVENTS },
+      { label: 'Meetups pasados', href: Urls.PAST_MEETUPS },
+    ],
+  },
+  {
+    title: 'Participa',
+    links: [
+      { label: 'Publicar un evento', href: Urls.EVENTS_CREATE },
+      { label: 'Crear una organización', href: Urls.CREATE_ORGANIZATION },
+      { label: 'Sugerir una mejora', href: Urls.FEATURE_REQUEST },
+      { label: 'Reportar un error', href: Urls.BUG_REPORT },
+      { label: 'Contribuir en GitHub', href: EXTERNAL_LINKS.GITHUB, external: true },
+    ],
+  },
+  {
+    title: 'Recursos',
+    links: [
+      { label: 'Changelog', href: Urls.CHANGELOG },
+      { label: 'Suscríbete al calendario', href: Urls.EVENTS_ICS },
+      { label: 'Feed de eventos (JSON)', href: Urls.EVENTS_FEED },
+      { label: 'Qué es OpenTechEvents', href: EXTERNAL_LINKS.OPEN_TECH_EVENTS, external: true },
+      { label: 'Privacidad', href: Urls.PRIVACY },
+      { label: 'Condiciones de uso', href: Urls.TERMS },
+    ],
+  },
+]
+---
+
+<nav class="nav" aria-label="Secciones de eventos.wiki">
+  <ul class="nav-sections">
+    {
+      sections.map(section => (
+        <li class="nav-section">
+          <h2 class="nav-title">{section.title}</h2>
+          <ul class="nav-links">
+            {section.links.map(link => (
+              <li>
+                <a
+                  href={link.href}
+                  class="nav-link"
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'nofollow' : undefined}
+                >
+                  {link.label}
+                  {link.external && <ArrowUpRight size={12} aria-hidden="true" />}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .nav-sections {
+    @apply grid list-none grid-cols-2 gap-8 p-0 md:grid-cols-3 md:gap-8;
+  }
+
+  .nav-section {
+    @apply flex flex-col gap-4;
+  }
+
+  .nav-title {
+    @apply text-foreground text-[0.6875rem] font-medium tracking-[0.12em] uppercase;
+  }
+
+  .nav-links {
+    @apply flex list-none flex-col gap-1 p-0 md:gap-3;
+  }
+
+  .nav-link {
+    @apply text-muted-foreground hover:text-primary inline-flex min-h-11 items-center gap-1 text-sm no-underline transition-colors md:min-h-0;
+  }
+</style>

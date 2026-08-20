@@ -5,6 +5,7 @@ export {
   PiArrowFatUpFill as ArrowFatUpFill,
   PiArrowsClockwise as ArrowsClockwise,
   PiArrowUp as ArrowUp,
+  PiArrowUpRight as ArrowUpRight,
   PiAtBold as At,
   PiBroadcast as Broadcast,
   PiCalendar as Calendar,

@@ -5,21 +5,27 @@ import { Button } from '../button'
 import styles from './theme-mode-toggle.module.css'
 import { ThemeMode, useTheme } from './use-theme'
 
-type ThemeModeToggleProps = {}
+type ThemeModeToggleProps = {
+  className?: string
+}
 
-export const ThemeModeToggle: FC<ThemeModeToggleProps> = () => {
+export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({ className }) => {
   const { isDarkSelected, isSystemSelected, toggleTheme, theme } = useTheme()
 
   if (!theme) return null
 
+  const isLightSelected = !isDarkSelected && !isSystemSelected
+
   return (
-    <section className={styles['theme-toggle']}>
+    <section className={cn(styles['theme-toggle'], className)}>
       {/* <h3 className={styles.title}>Tema</h3> */}
       <div className={styles.buttons}>
         <Button
           variant="ghost"
           size="icon"
-          className={cn({ [styles.selected]: !isDarkSelected && !isSystemSelected })}
+          aria-label="Tema claro"
+          aria-pressed={isLightSelected}
+          className={cn({ [styles.selected]: isLightSelected })}
           onClick={() => toggleTheme(ThemeMode.light)}
         >
           <SunBold />
@@ -27,6 +33,8 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = () => {
         <Button
           variant="ghost"
           size="icon"
+          aria-label="Tema oscuro"
+          aria-pressed={isDarkSelected}
           className={cn({ [styles.selected]: isDarkSelected })}
           onClick={() => toggleTheme(ThemeMode.dark)}
         >
@@ -35,6 +43,8 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = () => {
         <Button
           variant="ghost"
           size="icon"
+          aria-label="Tema del sistema"
+          aria-pressed={isSystemSelected}
           className={cn({ [styles.selected]: isSystemSelected })}
           onClick={() => toggleTheme(ThemeMode.system)}
         >

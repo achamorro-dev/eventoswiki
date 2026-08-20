@@ -1,27 +1,61 @@
 ---
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import { Urls } from '@/ui/urls/urls'
-import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 
 const getProvincesQuery = ProvincesContainer.get(GetProvincesQuery)
 const provinces = await getProvincesQuery.execute()
 ---
 
-<section class="container mx-auto max-w-7xl py-4 text-center">
-  <h2 class="py-2 font-bold text-3xl">Eventos por ciudad</h2>
-  <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-2 list-none p-0 mt-2">
+<section class="provinces">
+  <h2 class="provinces-title">Eventos por provincia</h2>
+  <ul class="provinces-list">
     {
-      provinces.map(province => (
-        <li class="m-0">
+      provinces.map((province, index) => (
+        <li class="provinces-item">
           <a
             href={Urls.PROVINCE(province.slug)}
-            class="text-sm hover:text-primary dark:hover:text-primary"
+            class="provinces-link"
             aria-label={`Ver eventos en ${province.name}`}
           >
             {province.name}
           </a>
+          {index < provinces.length - 1 && (
+            <span class="provinces-separator" aria-hidden="true">
+              ·
+            </span>
+          )}
         </li>
       ))
     }
   </ul>
 </section>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .provinces {
+    @apply flex flex-col gap-4;
+  }
+
+  .provinces-title {
+    @apply text-foreground text-[0.6875rem] font-medium tracking-[0.12em] uppercase;
+  }
+
+  /* Línea corrida: las 52 provincias caben en unas pocas líneas en vez de en una rejilla de nueve filas. */
+  .provinces-list {
+    @apply flex list-none flex-wrap items-baseline p-0;
+  }
+
+  .provinces-item {
+    @apply m-0 inline-flex items-center;
+  }
+
+  .provinces-link {
+    @apply text-muted-foreground hover:text-primary inline-flex min-h-11 items-center text-sm no-underline transition-colors md:min-h-0;
+  }
+
+  .provinces-separator {
+    @apply text-border mx-2 text-sm select-none;
+  }
+</style>

@@ -1,12 +1,45 @@
 ---
 import CopyrightFooter from './copyright-footer.astro'
-import SponsorsFooter from './sponsors-footer.astro'
+import FooterBrand from './footer-brand.astro'
+import FooterNav from './footer-nav.astro'
 ---
 
-<footer
-  class="border-border bg-background text-foreground dark:bg-background dark:text-foreground border-t dark:border-transparent"
->
-  <SponsorsFooter />
-  <slot />
-  <CopyrightFooter />
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <FooterBrand />
+      </div>
+      <div class="footer-directory">
+        <FooterNav />
+        <slot />
+      </div>
+    </div>
+    <CopyrightFooter />
+  </div>
 </footer>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .footer {
+    @apply border-border bg-background text-foreground border-t;
+  }
+
+  .footer-content {
+    @apply mx-auto max-w-7xl px-4 lg:px-8;
+  }
+
+  .footer-main {
+    @apply flex flex-col gap-10 py-10 lg:grid lg:grid-cols-[18.75rem_1fr] lg:gap-16 lg:py-14;
+  }
+
+  /* En móvil el índice va primero y la marca cierra; en escritorio la marca es la columna izquierda. */
+  .footer-brand {
+    @apply order-2 lg:order-1;
+  }
+
+  .footer-directory {
+    @apply order-1 flex flex-col gap-11 lg:order-2;
+  }
+</style>

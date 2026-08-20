@@ -3,10 +3,9 @@ import Codely from '@/ui/components/sponsors/codely.astro'
 import NextDigital from '@/ui/components/sponsors/next-digital.astro'
 ---
 
-<section class="container mx-auto py-4 text-center">
-  <h2 class="py-2 font-bold text-3xl">Sponsors</h2>
-  <p class="text-md font-light py-0 text-xl">¡Gracias por su apoyo!</p>
-  <ul class="list-none flex flex-col md:flex-row justify-center items-center gap-8 mt-8">
+<section class="sponsors">
+  <h2 class="sponsors-title">Con el apoyo de</h2>
+  <ul class="sponsors-list">
     <li>
       <Codely />
     </li>
@@ -15,3 +14,24 @@ import NextDigital from '@/ui/components/sponsors/next-digital.astro'
     </li>
   </ul>
 </section>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .sponsors {
+    @apply flex flex-col gap-4 pt-2;
+  }
+
+  .sponsors-title {
+    @apply text-muted-foreground text-[0.6875rem] font-medium tracking-[0.12em] uppercase;
+  }
+
+  .sponsors-list {
+    @apply flex list-none flex-col items-start gap-6 p-0;
+  }
+
+  /* La zona táctil vive en el contenedor: los logotipos son más bajos de 44 px. */
+  .sponsors-list li {
+    @apply m-0 flex min-h-11 items-center md:min-h-0;
+  }
+</style>

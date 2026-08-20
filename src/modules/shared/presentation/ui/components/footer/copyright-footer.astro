@@ -1,6 +1,7 @@
 ---
-import Logo from '@/ui/components/logo/logo.astro'
-import { Github, XLogo } from '@/ui/icons'
+import { Heart } from '@/ui/icons'
+
+const AUTHOR_URL = 'https://twitter.com/achamorro_dev'
 
 const collaborators = [
   {
@@ -23,83 +24,81 @@ const collaborators = [
     avatar: 'https://avatars.githubusercontent.com/u/38303370?s=64&v=4',
     github: 'https://github.com/felixicaza',
   },
-]
-const specialThanks = [
   {
     name: 'alcastrob',
     avatar: 'https://avatars.githubusercontent.com/u/24974320?s=64&v=4',
     github: 'https://github.com/alcastrob',
   },
 ]
+
+const currentYear = new Date().getFullYear()
 ---
 
-<section class="container flex flex-col items-center px-8 py-8 mx-auto max-w-7xl sm:flex-row mb-24 md:mb-0">
-  <Logo />
-  <div class="flex flex-col gap-2 justify-center items-end md:gap-0 md:flex-row md:justify-start">
-    <p class="text-sm sm:ml-4 sm:pl-4 sm:border-l sm:border-border">
-      Made with ❤️ by <a
-        href="https://twitter.com/achamorro_dev"
-        class="hover:text-primary dark:hover:text-primary"
-        target="_blank"
-        rel="nofollow">@achamorro_dev</a
-      >, collaborators:
+<section class="copyright">
+  <p class="copyright-legal">© {currentYear} eventos.wiki · Publicado bajo licencia MIT</p>
+  <div class="copyright-credits">
+    <p class="copyright-authorship">
+      <span class="copyright-heart"><Heart size={14} aria-hidden="true" /></span>
+      Hecho por <a href={AUTHOR_URL} class="copyright-author" target="_blank" rel="nofollow">@achamorro_dev</a> con
     </p>
-    <ul class="list-none flex gap-0 p-0 px-4 pr-2">
+    <ul class="copyright-avatars">
       {
-        collaborators.map(collaborator => {
-          return (
-            <li class="-ml-2">
-              <a href={collaborator.github} aria-label={collaborator.name} target="_blank" rel="nofollow">
-                <img
-                  src={collaborator.avatar}
-                  alt={collaborator.name}
-                  height="32"
-                  width="32"
-                  data-view-component="true"
-                  class="border border-transparent rounded-full"
-                />
-              </a>
-            </li>
-          )
-        })
-      }
-    </ul>
-    <p class="w-full md:w-auto text-sm">and special thanks 🎉:</p>
-    <ul class="list-none flex gap-0 px-4">
-      {
-        specialThanks.map(thanksTo => {
-          return (
-            <li class="-ml-2">
-              <a href={thanksTo.github} aria-label={thanksTo.name} target="_blank" rel="nofollow">
-                <img
-                  src={thanksTo.avatar}
-                  alt={thanksTo.name}
-                  height="32"
-                  width="32"
-                  data-view-component="true"
-                  class="border border-transparent rounded-full"
-                />
-              </a>
-            </li>
-          )
-        })
+        collaborators.map(collaborator => (
+          <li class="copyright-avatar">
+            <a href={collaborator.github} aria-label={collaborator.name} target="_blank" rel="nofollow">
+              <img
+                src={collaborator.avatar}
+                alt=""
+                height="32"
+                width="32"
+                loading="lazy"
+                decoding="async"
+                class="copyright-avatar-image"
+              />
+            </a>
+          </li>
+        ))
       }
     </ul>
   </div>
-  <span class="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">
-    <a href="https://twitter.com/eventos_wiki" target="_blank" class="text-muted-foreground hover:text-muted-foreground" rel="nofollow">
-      <span class="sr-only">Twitter</span>
-      <XLogo />
-    </a>
-
-    <a
-      href="https://github.com/achamorro-dev/eventoswiki"
-      rel="nofollow"
-      target="_blank"
-      class="text-muted-foreground hover:text-muted-foreground"
-    >
-      <span class="sr-only">GitHub</span>
-      <Github />
-    </a>
-  </span>
 </section>
+
+<style>
+  @reference "../../../../../../styles/global.css";
+
+  .copyright {
+    @apply border-border flex flex-col gap-4 border-t py-6 md:flex-row md:items-center md:justify-between md:gap-6;
+  }
+
+  .copyright-legal {
+    @apply text-muted-foreground text-sm;
+  }
+
+  .copyright-credits {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-2;
+  }
+
+  .copyright-authorship {
+    @apply text-muted-foreground flex items-center gap-1.5 text-sm;
+  }
+
+  .copyright-heart {
+    @apply text-primary inline-flex;
+  }
+
+  .copyright-author {
+    @apply text-foreground hover:text-primary no-underline transition-colors;
+  }
+
+  .copyright-avatars {
+    @apply flex list-none items-center p-0;
+  }
+
+  .copyright-avatar {
+    @apply m-0 -ml-2 first:ml-0;
+  }
+
+  .copyright-avatar-image {
+    @apply border-background block size-8 rounded-full border-2;
+  }
+</style>
