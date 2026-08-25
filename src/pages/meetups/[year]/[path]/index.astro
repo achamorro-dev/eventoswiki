@@ -11,7 +11,7 @@ import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-orga
 import NotFound from '@/ui/components/not-found/not-found.astro'
 import { Urls } from '@/ui/urls/urls'
 import { navigate } from 'astro:transitions/client'
-import { marked } from 'marked'
+import { RichContent } from '@/shared/domain/content/rich-content'
 
 const year = Astro.params.year
 const path = Astro.params.path
@@ -40,7 +40,7 @@ try {
     }
   }
 
-  content = await marked.parse(meetup.content)
+  content = RichContent.normalize(meetup.content)
 } catch (error) {
   switch (true) {
     case error instanceof MeetupNotFound:

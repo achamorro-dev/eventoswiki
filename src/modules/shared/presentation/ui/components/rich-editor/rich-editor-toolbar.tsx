@@ -1,12 +1,14 @@
-import { Editor } from '@tiptap/react'
+import { type ChainedCommands, Editor } from '@tiptap/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu'
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
@@ -21,6 +23,7 @@ import {
   Loader,
   Palette,
   Quotes,
+  Table,
   TextAa,
   TextAlignCenter,
   TextAlignJustify,
@@ -171,6 +174,14 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     editor.chain().focus().setFontSize(value).run()
   }
 
+  function onTableAction(action: (chain: ChainedCommands) => ChainedCommands) {
+    if (!editor) {
+      return
+    }
+
+    action(editor.chain().focus()).run()
+  }
+
   function onToggleImage() {
     if (!editor || !onUploadImage || isUploadingImage) {
       return
@@ -216,6 +227,7 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
     return null
   }
 
+  const isInTable = editor.isActive('table')
   const currentColor = (editor.getAttributes('textStyle').color as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
   const currentFontSize = (editor.getAttributes('textStyle').fontSize as string | undefined) ?? DEFAULT_TEXT_STYLE_VALUE
 
@@ -399,6 +411,51 @@ export const RichEditorToolbar = (props: RichEditorToolbarProps) => {
         >
           <Youtube />
         </Toggle>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="ghost" size="icon" aria-label="Tabla">
+              <Table />
+            </Button>
+          </DropdownMenuTrigger>
+          {/* Keeping focus in the editor lets several table actions be chained in a row */}
+          <DropdownMenuContent align="start" onCloseAutoFocus={event => event.preventDefault()}>
+            <DropdownMenuItem
+              onSelect={() => onTableAction(chain => chain.insertTable({ rows: 3, cols: 3, withHeaderRow: true }))}
+            >
+              Insertar tabla
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.addRowBefore())}>
+              Añadir fila encima
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.addRowAfter())}>
+              Añadir fila debajo
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.deleteRow())}>
+              Eliminar fila
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.addColumnBefore())}>
+              Añadir columna a la izquierda
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.addColumnAfter())}>
+              Añadir columna a la derecha
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.deleteColumn())}>
+              Eliminar columna
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.toggleHeaderRow())}>
+              Alternar fila de cabecera
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.mergeOrSplit())}>
+              Combinar o dividir celdas
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={!isInTable} onSelect={() => onTableAction(chain => chain.deleteTable())}>
+              Eliminar tabla
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         {!isMobile && <Separator orientation="vertical" />}
       </div>
       <Toggle

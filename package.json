@@ -46,6 +46,7 @@
     "@tiptap/extension-image": "^3.0.0",
     "@tiptap/extension-link": "^3.0.0",
     "@tiptap/extension-list-item": "^3.0.0",
+    "@tiptap/extension-table": "3.0.7",
     "@tiptap/extension-text-align": "^3.0.0",
     "@tiptap/extension-text-style": "^3.0.0",
     "@tiptap/extension-underline": "^3.0.0",
@@ -100,9 +101,9 @@
   },
   "engines": {
     "node": ">=24.16.0",
-    "pnpm": ">=11.5.2"
+    "pnpm": ">=11.23.0"
   },
-  "packageManager": "pnpm@11.11.0",
+  "packageManager": "pnpm@11.23.0",
   "devDependencies": {
     "@biomejs/biome": "^2.3.5",
     "@commitlint/config-conventional": "19.1.0",

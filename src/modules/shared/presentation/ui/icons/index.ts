@@ -59,6 +59,7 @@ import {
   Settings as IconoirSettings,
   Strikethrough as IconoirStrikethrough,
   SunLight as IconoirSunLight,
+  Table as IconoirTable,
   Telegram as IconoirTelegram,
   TextSize as IconoirTextSize,
   Tiktok as IconoirTiktok,
@@ -140,6 +141,7 @@ export const Plus = /*#__PURE__*/ createIcon(IconoirPlus)
 export const Quotes = /*#__PURE__*/ createIcon(IconoirQuote)
 export const Search = /*#__PURE__*/ createIcon(IconoirSearch)
 export const Sun = /*#__PURE__*/ createIcon(IconoirSunLight)
+export const Table = /*#__PURE__*/ createIcon(IconoirTable)
 export const Telegram = /*#__PURE__*/ createIcon(IconoirTelegram)
 export const TextAa = /*#__PURE__*/ createIcon(IconoirTextSize)
 export const TextAlignCenter = /*#__PURE__*/ createIcon(IconoirAlignCenter)

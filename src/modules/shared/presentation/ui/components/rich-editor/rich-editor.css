@@ -10,39 +10,71 @@
 
   /* Code and preformatted text styles */
   code {
-    background-color: var(--purple-light);
-    border-radius: 0.4rem;
-    color: var(--black);
-    font-size: 0.85rem;
-    padding: 0.25em 0.3em;
+    @apply bg-muted text-foreground rounded px-1.5 py-0.5 font-mono text-sm;
   }
 
   pre {
-    background: var(--black);
-    border-radius: 0.5rem;
-    color: var(--white);
-    font-family: "JetBrainsMono", monospace;
-    margin: 1.5rem 0;
-    padding: 0.75rem 1rem;
+    @apply bg-muted text-foreground my-6 overflow-x-auto rounded-lg p-4 font-mono;
 
     code {
-      background: none;
-      color: inherit;
-      font-size: 0.8rem;
-      padding: 0;
+      @apply bg-transparent p-0 text-sm;
     }
   }
 
   blockquote {
-    border-left: 3px solid var(--gray-3);
-    margin: 1.5rem 0;
-    padding-left: 1rem;
+    @apply border-border text-muted-foreground my-6 border-l-4 pl-4;
   }
 
   hr {
-    border: none;
-    border-top: 1px solid var(--gray-2);
-    margin: 2rem 0;
+    @apply border-border my-8 border-t;
+  }
+
+  /* Table styles */
+  .tableWrapper {
+    @apply my-6 overflow-x-auto;
+  }
+
+  table {
+    @apply w-full table-fixed border-collapse;
+
+    td,
+    th {
+      @apply border-border relative box-border border p-2 align-top;
+      min-width: 1em;
+
+      > * {
+        margin-bottom: 0;
+      }
+    }
+
+    th {
+      @apply bg-muted text-left font-bold;
+    }
+
+    /* Cells picked by a cell selection */
+    .selectedCell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: color-mix(in oklch, var(--primary) 15%, transparent);
+    }
+
+    .column-resize-handle {
+      position: absolute;
+      top: 0;
+      right: -2px;
+      bottom: -2px;
+      width: 4px;
+      background-color: var(--primary);
+      pointer-events: none;
+    }
+  }
+
+  /* prosemirror-tables sets this class on the editor while dragging a column edge */
+  &.resize-cursor {
+    cursor: col-resize;
   }
 
   img {
@@ -55,8 +87,7 @@
   }
 
   img[data-upload-id] {
-    border: 1px dashed var(--gray-3);
-    background-color: var(--gray-1);
+    @apply border-border bg-muted border border-dashed;
   }
 
   /* Highlight images when cursor is near them */

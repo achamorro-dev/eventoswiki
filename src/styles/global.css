@@ -181,12 +181,17 @@
       @apply text-muted-foreground text-sm;
     }
 
+    h1,
     h2,
     h3,
     h4,
     h5,
     h6 {
       @apply !font-bold;
+    }
+
+    h1 {
+      @apply text-foreground py-4 !text-4xl tracking-tight;
     }
 
     h2 {
@@ -202,7 +207,7 @@
     }
 
     table {
-      @apply mb-10;
+      @apply mb-10 block w-full overflow-x-auto;
     }
 
     table tr {
@@ -214,7 +219,7 @@
     }
 
     table th {
-      @apply !text-foreground p-4;
+      @apply bg-muted !text-foreground p-4 text-left font-bold;
     }
 
     ol,
@@ -247,6 +252,30 @@
 
     a {
       @apply underline;
+    }
+
+    blockquote {
+      @apply border-border text-muted-foreground my-4 border-l-4 pl-4;
+    }
+
+    code {
+      @apply bg-muted rounded px-1.5 py-0.5 font-mono text-base;
+    }
+
+    pre {
+      @apply bg-muted my-4 overflow-x-auto rounded-lg p-4;
+    }
+
+    pre code {
+      @apply bg-transparent p-0 text-sm;
+    }
+
+    hr {
+      @apply border-border my-8;
+    }
+
+    img {
+      @apply my-4 h-auto max-w-full rounded-md;
     }
   }
 }

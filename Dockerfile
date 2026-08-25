@@ -5,7 +5,7 @@ FROM node:24.16.0-alpine AS deps
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && \
-    corepack prepare pnpm@11.5.2 --activate && \
+    corepack prepare pnpm@11.23.0 --activate && \
     pnpm config set store-dir /pnpm/store
 
 WORKDIR /app
@@ -23,7 +23,7 @@ FROM node:24.16.0-alpine AS builder
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && \
-    corepack prepare pnpm@11.5.2 --activate
+    corepack prepare pnpm@11.23.0 --activate
 
 WORKDIR /app
 

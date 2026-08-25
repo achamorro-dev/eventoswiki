@@ -3,6 +3,7 @@ import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is
 import type { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { Command } from '@/shared/application/use-case/command'
+import { RichContent } from '@/shared/domain/content/rich-content'
 import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
 import { OrganizationMeetupUrlMissing } from '../domain/errors/organization-meetup-url-missing.error'
 import type { ExternalMeetupEvent, ExternalMeetupsProvider } from '../domain/external-meetups-provider'
@@ -135,8 +136,10 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
     const venue = [externalEvent.venueName, externalEvent.venueAddress, externalEvent.venueCity]
       .filter(Boolean)
       .join(', ')
+    const markdown = venue ? `${description}\n\n**Ubicación:** ${venue}` : description
 
-    return venue ? `${description}\n\n**Ubicación:** ${venue}` : description
+    // Meetup.com serves markdown, but content is stored as HTML so the editor can edit it as rich text
+    return RichContent.toHtml(markdown)
   }
 
   private _generateSlug(externalEvent: ExternalMeetupEvent): string {
@@ -147,7 +150,7 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
   }
 
   private _toShortDescription(externalEvent: ExternalMeetupEvent): string {
-    const description = externalEvent.description?.replace(/\s+/g, ' ').trim()
+    const description = RichContent.toPlainText(externalEvent.description ?? '')
 
     if (!description) {
       return externalEvent.title

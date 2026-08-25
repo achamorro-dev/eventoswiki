@@ -1,15 +1,18 @@
 import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 import ListItem from '@tiptap/extension-list-item'
+import { TableKit } from '@tiptap/extension-table'
 import { TextAlign } from '@tiptap/extension-text-align'
 import { TextStyleKit } from '@tiptap/extension-text-style'
 import { Underline } from '@tiptap/extension-underline'
 import Youtube from '@tiptap/extension-youtube'
 import type { Node as ProseMirrorNode } from '@tiptap/pm/model'
-import { EditorContent, useEditor } from '@tiptap/react'
+import type { EditorView } from '@tiptap/pm/view'
+import { type Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { RichContent } from '@/shared/domain/content/rich-content'
 import { useMediaQuery } from '@/ui/hooks/use-media-query'
 import { RichEditorToolbar } from './rich-editor-toolbar'
 import './rich-editor.css'
@@ -39,6 +42,45 @@ const createLoadingImagePlaceholder = (): string => {
     </svg>
   `.trim()
   return `data:image/svg+xml;base64,${btoa(svg)}`
+}
+
+// ProseMirror tracks the shift key so shift+paste keeps working as a plain text paste.
+const isPlainTextPaste = (view: EditorView): boolean => {
+  const input = (view as EditorView & { input?: { shiftKey?: boolean } }).input
+
+  return input?.shiftKey === true
+}
+
+// Tiptap only converts inline markdown on paste (**bold**, `code`, ~~strike~~). Headings, lists,
+// quotes, code blocks and links arrive as literal text, so we convert the whole block ourselves.
+const pasteMarkdown = (view: EditorView, event: ClipboardEvent, editor: Editor): boolean => {
+  const clipboardData = event.clipboardData
+  if (!clipboardData) {
+    return false
+  }
+
+  // Rich sources (Notion, Google Docs, any web page) also ship text/html: Tiptap handles those better.
+  if (clipboardData.getData('text/html').trim()) {
+    return false
+  }
+
+  if (isPlainTextPaste(view)) {
+    return false
+  }
+
+  const text = clipboardData.getData('text/plain')
+  if (!RichContent.isMarkdown(text)) {
+    return false
+  }
+
+  event.preventDefault()
+  editor
+    .chain()
+    .focus()
+    .insertContent(RichContent.toHtml(text), { parseOptions: { preserveWhitespace: false } })
+    .run()
+
+  return true
 }
 
 export const RichEditor = (props: RichEditorProps) => {
@@ -169,6 +211,10 @@ export const RichEditor = (props: RichEditorProps) => {
     Youtube.configure({
       nocookie: true,
     }),
+    // resizable renders the table inside a .tableWrapper, which is what lets wide tables scroll
+    TableKit.configure({
+      table: { resizable: true },
+    }),
     Image.extend({
       addAttributes() {
         return {
@@ -196,23 +242,23 @@ export const RichEditor = (props: RichEditorProps) => {
 
   const editor = useEditor({
     extensions,
-    content,
+    content: RichContent.normalize(content ?? ''),
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
       onContentChange(editor.getHTML())
     },
     editorProps: {
-      handlePaste: (_view, event, _slice) => {
+      handlePaste: (view, event, _slice) => {
         const currentEditor = editorRef.current
         const uploadHandler = handleUploadImageRef.current
-        if (!uploadHandler || !currentEditor) {
+        if (!currentEditor) {
           return false
         }
 
         const items = Array.from(event.clipboardData?.items || [])
         const imageItem = items.find(item => item.type.startsWith('image/'))
 
-        if (imageItem) {
+        if (imageItem && uploadHandler) {
           event.preventDefault()
           const file = imageItem.getAsFile()
 
@@ -225,7 +271,7 @@ export const RichEditor = (props: RichEditorProps) => {
           return true
         }
 
-        return false
+        return pasteMarkdown(view, event, currentEditor)
       },
       handleDrop: (view, event, _slice, _moved) => {
         const currentEditor = editorRef.current

@@ -1,4 +1,5 @@
 ---
+import { RichContent } from '@/shared/domain/content/rich-content'
 import { Datetime } from '@/shared/domain/datetime/datetime'
 import type { Event } from '@/events/domain/event'
 
@@ -44,5 +45,5 @@ if (isUpcoming) {
     </div>
   </div>
 
-  <article set:html={event.callForSpeakersContent ?? ''} class="prose prose-slate max-w-none" />
+  <article set:html={RichContent.normalize(event.callForSpeakersContent ?? '')} class="prose prose-slate max-w-none" />
 </div>
