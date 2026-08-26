@@ -21,7 +21,7 @@ export const AgendaForm = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-lg">Tracks</CardTitle>
-            <Button onClick={() => setIsTrackDialogOpen(true)} variant="outline" size="sm">
+            <Button type="button" onClick={() => setIsTrackDialogOpen(true)} variant="outline" size="sm">
               <Plus className="mr-2 h-4 w-4" /> Añadir Track
             </Button>
           </CardHeader>
@@ -33,7 +33,7 @@ export const AgendaForm = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-lg">Elementos Comunes</CardTitle>
-            <Button onClick={() => setIsCommonElementDialogOpen(true)} variant="outline" size="sm">
+            <Button type="button" onClick={() => setIsCommonElementDialogOpen(true)} variant="outline" size="sm">
               <Plus className="mr-2 h-4 w-4" /> Añadir Elemento Común
             </Button>
           </CardHeader>

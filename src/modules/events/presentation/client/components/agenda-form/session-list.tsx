@@ -24,7 +24,7 @@ export const SessionList = ({ trackIndex }: Props) => {
     <div className="mt-4 space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-sm">Sesiones</h3>
-        <Button variant="outline" size="sm" onClick={() => setIsDialogOpen(true)}>
+        <Button type="button" variant="outline" size="sm" onClick={() => setIsDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" /> Añadir Sesión
         </Button>
       </div>
@@ -48,10 +48,22 @@ export const SessionList = ({ trackIndex }: Props) => {
               )}
             </div>
             <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingIndex(index)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setEditingIndex(index)}
+              >
                 <Pencil className="h-3 w-3" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => remove(index)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-destructive"
+                onClick={() => remove(index)}
+              >
                 <Trash className="h-3 w-3" />
               </Button>
             </div>

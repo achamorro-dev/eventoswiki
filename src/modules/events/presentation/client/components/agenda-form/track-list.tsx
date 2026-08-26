@@ -22,10 +22,16 @@ export const TrackList = () => {
           <CardHeader className="flex flex-row items-center justify-between p-4">
             <CardTitle className="font-medium text-base">{field.name}</CardTitle>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" onClick={() => setEditingIndex(index)}>
+              <Button type="button" variant="ghost" size="icon" onClick={() => setEditingIndex(index)}>
                 <Pencil className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-destructive" onClick={() => remove(index)}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="text-destructive"
+                onClick={() => remove(index)}
+              >
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
