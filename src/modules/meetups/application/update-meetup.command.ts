@@ -10,6 +10,8 @@ interface Param {
   meetupId: string
   data: MeetupEditableData
   userId: string
+  /** undefined mantiene la organización actual, null la elimina */
+  organizationId?: string | null
 }
 
 interface MeetupLike {
@@ -75,21 +77,25 @@ export class UpdateMeetupCommand extends Command<Param, void> {
   }
 
   async execute(param: Param): Promise<void> {
-    const { meetupId, data, userId } = param
+    const { meetupId, data, userId, organizationId: newOrganizationId } = param
 
     const id = new MeetupId(meetupId)
     const meetup = await this.meetupsRepository.find(id)
 
     const organizationId = meetup.organizationId
-    if (organizationId) {
-      await this.userIsOrganizerEnsurer.ensure({ userId, organizationId: organizationId })
-    } else {
-      await this.userIsAdminEnsurer.ensure({ userId })
+    await this._ensureUserCanManageOrganization(userId, organizationId)
+
+    const organizationChanged = newOrganizationId !== undefined && (newOrganizationId ?? undefined) !== organizationId
+    if (organizationChanged) {
+      await this._ensureUserCanManageOrganization(userId, newOrganizationId ?? undefined)
     }
 
     const criticalFieldsChanged = hasCriticalFieldChanged(meetup, data)
 
     meetup.update(data)
+    if (organizationChanged) {
+      meetup.changeOrganization(newOrganizationId ?? undefined)
+    }
     await this.meetupsRepository.save(meetup)
 
     if (criticalFieldsChanged && organizationId) {
@@ -102,5 +108,14 @@ export class UpdateMeetupCommand extends Command<Param, void> {
           console.error('[UpdateMeetupCommand] Error sending email notification:', error)
         })
     }
+  }
+
+  private async _ensureUserCanManageOrganization(userId: string, organizationId?: string): Promise<void> {
+    if (organizationId) {
+      await this.userIsOrganizerEnsurer.ensure({ userId, organizationId })
+      return
+    }
+
+    await this.userIsAdminEnsurer.ensure({ userId })
   }
 }

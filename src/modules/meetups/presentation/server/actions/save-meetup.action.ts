@@ -29,7 +29,7 @@ export const saveMeetupAction = defineAction({
       const isNewMeetup = !meetupId
       isNewMeetup
         ? await _createMeetup(organizationId, meetupData, userId)
-        : await _saveMeetup(meetupId, meetupData, userId)
+        : await _saveMeetup(meetupId, meetupData, userId, organizationId ?? null)
 
       return
     } catch (error) {
@@ -42,12 +42,12 @@ export const saveMeetupAction = defineAction({
         case error instanceof OrganizerNotFound:
           throw new ActionError({
             code: 'FORBIDDEN',
-            message: 'No estás autorizado para crear meetups para esta organización',
+            message: 'No estás autorizado para guardar meetups de esta organización',
           })
         case error instanceof UserIsNotAdminError:
           throw new ActionError({
             code: 'FORBIDDEN',
-            message: 'Solo los administradores pueden crear meetups sin organización',
+            message: 'Solo los administradores pueden guardar meetups sin organización',
           })
         default:
           throw new ActionError({
@@ -72,10 +72,16 @@ async function _createMeetup(organizationId: string | undefined, newMeetup: Meet
   })
 }
 
-async function _saveMeetup(meetupId: string, newMeetup: MeetupEditableData, userId: string) {
+async function _saveMeetup(
+  meetupId: string,
+  newMeetup: MeetupEditableData,
+  userId: string,
+  organizationId: string | null,
+) {
   await MeetupsContainer.get(UpdateMeetupCommand).execute({
     meetupId,
     userId,
+    organizationId,
     data: {
       ...newMeetup,
       location: newMeetup.location ?? null,

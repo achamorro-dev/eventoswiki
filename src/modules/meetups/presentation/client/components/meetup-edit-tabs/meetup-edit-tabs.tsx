@@ -40,7 +40,13 @@ export const MeetupEditTabs = ({ meetup, provinces, organization, organizationOp
       </TabsList>
 
       <TabsContent value="info">
-        <MeetupEditForm meetup={meetup} organization={organization} provinces={provinces} />
+        <MeetupEditForm
+          meetup={meetup}
+          organization={organization}
+          organizationOptions={organizationOptions}
+          isAdmin={isAdmin}
+          provinces={provinces}
+        />
       </TabsContent>
 
       <TabsContent value="attendees">

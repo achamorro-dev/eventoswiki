@@ -343,6 +343,10 @@ export class Event implements EventProps {
     return this.organizationId !== undefined
   }
 
+  changeOrganization(organizationId?: string) {
+    this.organizationId = organizationId || undefined
+  }
+
   getMinTicketPrice(): number | null {
     return this.tickets.getMinPrice()
   }

@@ -173,6 +173,7 @@ export class AstroDbMeetupsRepository implements MeetupsRepository {
           streamingUrl: value.streamingUrl,
           tags: value.tags.length > 0 ? value.tags.join(',') : '',
           content: value.content,
+          organizationId: value.organizationId ?? null,
           place: value.place ? value.place.toPrimitives() : null,
           allowsAttendees: value.allowsAttendees,
           registrationEndsAt: value.registrationEndsAt ?? null,

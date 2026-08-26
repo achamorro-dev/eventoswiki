@@ -1,5 +1,6 @@
 import { ContainerBuilder } from 'diod'
 import { CheckUserIsAdminQuery } from '../application/check-user-is-admin.query'
+import { CheckUserIsAdminByIdQuery } from '../application/check-user-is-admin-by-id.query'
 import { FindUsersByIdsQuery } from '../application/find-users-by-ids.query'
 import { GetUserQuery } from '../application/get-user.query'
 import { GetUserByUsernameQuery } from '../application/get-user-by-username.query'
@@ -21,6 +22,11 @@ builder.register(FindUsersByIdsQuery).use(FindUsersByIdsQuery).withDependencies(
 builder.register(SearchUsersQuery).use(SearchUsersQuery).withDependencies([AstroDbUsersRepository])
 
 builder.register(CheckUserIsAdminQuery).use(CheckUserIsAdminQuery).withDependencies([AstroDbUsersRepository])
+
+builder
+  .register(CheckUserIsAdminByIdQuery)
+  .use(CheckUserIsAdminByIdQuery)
+  .withDependencies([GetUserQuery, CheckUserIsAdminQuery])
 
 builder.register(UserIsAdminEnsurer).use(UserIsAdminEnsurer).withDependencies([GetUserQuery, CheckUserIsAdminQuery])
 

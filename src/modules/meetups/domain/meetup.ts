@@ -216,6 +216,10 @@ export class Meetup implements MeetupProps {
     return this.organizationId !== undefined
   }
 
+  changeOrganization(organizationId?: string) {
+    this.organizationId = organizationId || undefined
+  }
+
   addAttendee(attendeeId: MeetupAttendeeId) {
     if (!this.attendees) {
       this.attendees = [attendeeId]

@@ -10,6 +10,8 @@ interface Param {
   eventId: string
   data: EventEditableData
   userId: string
+  /** undefined mantiene la organización actual, null la elimina */
+  organizationId?: string | null
 }
 
 function hasCriticalFieldChanged(event: EventLike, data: EventEditableData): boolean {
@@ -65,21 +67,25 @@ export class UpdateEventCommand extends Command<Param, void> {
   }
 
   async execute(param: Param): Promise<void> {
-    const { eventId, data, userId } = param
+    const { eventId, data, userId, organizationId: newOrganizationId } = param
 
     const id = new EventId(eventId)
     const event = await this.eventsRepository.find(id)
 
     const organizationId = event.organizationId
-    if (organizationId) {
-      await this.userIsOrganizerEnsurer.ensure({ userId, organizationId: organizationId })
-    } else {
-      await this.userIsAdminEnsurer.ensure({ userId })
+    await this._ensureUserCanManageOrganization(userId, organizationId)
+
+    const organizationChanged = newOrganizationId !== undefined && (newOrganizationId ?? undefined) !== organizationId
+    if (organizationChanged) {
+      await this._ensureUserCanManageOrganization(userId, newOrganizationId ?? undefined)
     }
 
     const criticalFieldsChanged = hasCriticalFieldChanged(event, data)
 
     event.update(data)
+    if (organizationChanged) {
+      event.changeOrganization(newOrganizationId ?? undefined)
+    }
     await this.eventsRepository.save(event)
 
     if (criticalFieldsChanged && organizationId) {
@@ -92,5 +98,14 @@ export class UpdateEventCommand extends Command<Param, void> {
           console.error('[UpdateEventCommand] Error sending email notification:', error)
         })
     }
+  }
+
+  private async _ensureUserCanManageOrganization(userId: string, organizationId?: string): Promise<void> {
+    if (organizationId) {
+      await this.userIsOrganizerEnsurer.ensure({ userId, organizationId })
+      return
+    }
+
+    await this.userIsAdminEnsurer.ensure({ userId })
   }
 }

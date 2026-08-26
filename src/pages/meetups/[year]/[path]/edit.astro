@@ -9,11 +9,14 @@ import type { Meetup } from '@/meetups/domain/meetup'
 import { MeetupEditTabs } from '@/meetups/presentation/client/components/meetup-edit-tabs/meetup-edit-tabs'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
+import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
 import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import type { Organization } from '@/organizations/domain/organization'
+import type { OrganizationComboboxOption } from '@/organizations/presentation/client/components/organization-combobox/organization-combobox'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
 import type { Province } from '@/provinces/domain/province'
+import { CheckUserIsAdminByIdQuery } from '@/users/application/check-user-is-admin-by-id.query'
 import { UserIsAdminEnsurer } from '@/users/application/user-is-admin-ensurer.service'
 import { UserIsNotAdminError } from '@/users/domain/errors/user-is-not-admin.error'
 import { UsersContainer } from '@/users/di/users.container'
@@ -36,7 +39,18 @@ const slug = `${year}/${path}`
 let meetup: Meetup | undefined
 let provinces: Province[] = []
 let organization: Organization | undefined
+let organizationOptions: OrganizationComboboxOption[] = []
+let isAdmin = false
 let canEdit = false
+
+function toOrganizationOption(organization: Organization): OrganizationComboboxOption {
+  return {
+    id: organization.id.value,
+    handle: organization.handle,
+    name: organization.name,
+    image: organization.image?.toString(),
+  }
+}
 
 try {
   meetup = await MeetupsContainer.get(FindMeetupBySlugQuery).execute({ slug: slug })
@@ -51,8 +65,18 @@ try {
         await UsersContainer.get(UserIsAdminEnsurer).ensure({ userId })
       }
       canEdit = true
+      isAdmin = await UsersContainer.get(CheckUserIsAdminByIdQuery).execute({ userId })
+
       if (meetup.organizationId) {
         organization = await OrganizationsContainer.get(GetOrganizationByIdQuery).execute({ id: meetup.organizationId })
+      }
+
+      const userOrganizations = await OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId })
+      organizationOptions = userOrganizations.map(toOrganizationOption)
+
+      // La organización actual puede no estar entre las del usuario cuando edita un administrador
+      if (organization && !organizationOptions.some(option => option.id === meetup?.organizationId)) {
+        organizationOptions.unshift(toOrganizationOption(organization))
       }
     } catch (error) {
       if (!(error instanceof OrganizerNotFound) && !(error instanceof UserIsNotAdminError)) throw error
@@ -83,6 +107,8 @@ try {
             meetup={meetup.toPrimitives()}
             provinces={provinces}
             organization={organization?.toPrimitives()}
+            organizationOptions={organizationOptions}
+            isAdmin={isAdmin}
           />
         </article>
       </Layout>

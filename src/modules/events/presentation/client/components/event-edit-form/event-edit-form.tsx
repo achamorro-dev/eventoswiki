@@ -114,7 +114,7 @@ export const EventEditForm = ({
         : undefined,
       tickets: (event?.tickets as any) || [],
       tags: event?.tags ?? [],
-      organizationId: organizationId ?? organization?.id,
+      organizationId: organizationId ?? event?.organizationId ?? organization?.id,
       callForSponsorsEnabled: event?.callForSponsorsEnabled ?? false,
       callForSponsorsContent: event?.callForSponsorsContent ?? '',
       callForSpeakersEnabled: event?.callForSpeakersEnabled ?? false,

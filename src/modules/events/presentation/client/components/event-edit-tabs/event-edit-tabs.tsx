@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { EventPrimitives } from '@/events/domain/event'
 import type { Organization } from '@/organizations/domain/organization'
+import type { OrganizationComboboxOption } from '@/organizations/presentation/client/components/organization-combobox/organization-combobox'
 import type { Province } from '@/provinces/domain/province'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs'
@@ -12,14 +13,24 @@ interface Props {
   event?: EventPrimitives
   provinces: Array<Province>
   organization?: Primitives<Organization>
+  organizationOptions?: OrganizationComboboxOption[]
+  isAdmin?: boolean
 }
 
 type TabValue = 'info' | 'sponsors' | 'speakers' | 'agenda'
-export const EventEditTabs = ({ event, provinces, organization }: Props) => {
+export const EventEditTabs = ({ event, provinces, organization, organizationOptions, isAdmin }: Props) => {
   const [activeTab, setActiveTab] = useState<TabValue>('info')
 
   if (!event) {
-    return <EventEditForm provinces={provinces} organizationId={organization?.id} organization={organization} />
+    return (
+      <EventEditForm
+        provinces={provinces}
+        organizationId={organization?.id}
+        organization={organization}
+        organizationOptions={organizationOptions}
+        isAdmin={isAdmin}
+      />
+    )
   }
 
   return (
@@ -37,6 +48,8 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
           provinces={provinces}
           organizationId={organization?.id}
           organization={organization}
+          organizationOptions={organizationOptions}
+          isAdmin={isAdmin}
           tab="info"
         />
       </TabsContent>
@@ -47,6 +60,8 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
           provinces={provinces}
           organizationId={organization?.id}
           organization={organization}
+          organizationOptions={organizationOptions}
+          isAdmin={isAdmin}
           tab="sponsors"
         />
       </TabsContent>
@@ -57,6 +72,8 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
           provinces={provinces}
           organizationId={organization?.id}
           organization={organization}
+          organizationOptions={organizationOptions}
+          isAdmin={isAdmin}
           tab="speakers"
         />
       </TabsContent>
@@ -67,6 +84,8 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
           provinces={provinces}
           organizationId={organization?.id}
           organization={organization}
+          organizationOptions={organizationOptions}
+          isAdmin={isAdmin}
           tab="agenda"
         />
       </TabsContent>

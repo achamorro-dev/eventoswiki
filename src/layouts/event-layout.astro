@@ -14,12 +14,17 @@ import type { Organization } from '@/organizations/domain/organization'
 import { toOteEvent } from '@/ote/domain/ote-event.mapper'
 import { oteEventToJsonLd } from '@/ote/domain/ote-json-ld.mapper'
 import { OteUrls } from '@/ote/domain/ote-urls'
+import { CheckUserIsAdminByIdQuery } from '@/users/application/check-user-is-admin-by-id.query'
+import { UsersContainer } from '@/users/di/users.container'
 
 interface Props {
   event: Event | Meetup
   isOrganizer?: boolean
 }
 const { event, isOrganizer = false } = Astro.props
+
+const userId = Astro.locals.user?.id
+const isAdmin = userId ? await UsersContainer.get(CheckUserIsAdminByIdQuery).execute({ userId }) : false
 
 let organization: Organization | undefined
 if (event.organizationId) {
@@ -102,6 +107,7 @@ const url = event instanceof Meetup ? Urls.MEETUP(slug) : Urls.EVENT(slug)
       id={event.id.value}
       type={event instanceof Meetup ? 'meetup' : 'event'}
       isOrganizer={isOrganizer}
+      isAdmin={isAdmin}
       organizationHandle={organization?.handle}
     />
   </header>

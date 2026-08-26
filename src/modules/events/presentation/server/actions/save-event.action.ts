@@ -26,7 +26,9 @@ export const saveEventAction = defineAction({
       }
 
       const isNewEvent = !eventId
-      isNewEvent ? await _createEvent(organizationId, eventData, userId) : await _saveEvent(eventId, eventData, userId)
+      isNewEvent
+        ? await _createEvent(organizationId, eventData, userId)
+        : await _saveEvent(eventId, eventData, userId, organizationId ?? null)
 
       return
     } catch (error) {
@@ -39,12 +41,12 @@ export const saveEventAction = defineAction({
         case error instanceof OrganizerNotFound:
           throw new ActionError({
             code: 'FORBIDDEN',
-            message: 'No estás autorizado para crear eventos para esta organización',
+            message: 'No estás autorizado para guardar eventos de esta organización',
           })
         case error instanceof UserIsNotAdminError:
           throw new ActionError({
             code: 'FORBIDDEN',
-            message: 'Solo los administradores pueden crear eventos sin organización',
+            message: 'Solo los administradores pueden guardar eventos sin organización',
           })
         default:
           throw new ActionError({
@@ -67,10 +69,11 @@ async function _createEvent(organizationId: string | undefined, newEvent: EventE
   })
 }
 
-async function _saveEvent(eventId: string, newEvent: EventEditableData, userId: string) {
+async function _saveEvent(eventId: string, newEvent: EventEditableData, userId: string, organizationId: string | null) {
   await EventsContainer.get(UpdateEventCommand).execute({
     eventId,
     userId,
+    organizationId,
     data: {
       ...newEvent,
       location: newEvent.location ?? null,

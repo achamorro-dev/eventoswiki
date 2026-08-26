@@ -215,6 +215,7 @@ export class AstroDbEventsRepository implements EventsRepository {
           streamingUrl: value.streamingUrl,
           tags: value.tags.length > 0 ? value.tags.join(',') : '',
           content: value.content,
+          organizationId: value.organizationId ?? null,
           place: value.place ? value.place.toPrimitives() : null,
           callForSponsorsEnabled: value.callForSponsorsEnabled,
           callForSponsorsContent: value.callForSponsorsContent,
