@@ -144,7 +144,13 @@ export const SessionFormDialog = ({ open, onOpenChange, trackIndex, sessionIndex
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-4 overflow-y-auto pr-2">
+          <form
+            onSubmit={e => {
+              e.stopPropagation()
+              form.handleSubmit(onSubmit)(e)
+            }}
+            className="flex-1 space-y-4 overflow-y-auto pr-2"
+          >
             <FormField
               control={form.control}
               name="title"
