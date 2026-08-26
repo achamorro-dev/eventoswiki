@@ -10,9 +10,7 @@ type ThemeModeToggleProps = {
 }
 
 export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({ className }) => {
-  const { isDarkSelected, isSystemSelected, toggleTheme, theme } = useTheme()
-
-  if (!theme) return null
+  const { isDarkSelected, isSystemSelected, toggleTheme } = useTheme()
 
   const isLightSelected = !isDarkSelected && !isSystemSelected
 

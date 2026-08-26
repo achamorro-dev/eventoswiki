@@ -7,7 +7,16 @@ export enum ThemeMode {
   system = 'system',
 }
 
-const applyThemeClass = (mode: string) => {
+const isThemeMode = (value: string | null): value is ThemeMode =>
+  value === ThemeMode.light || value === ThemeMode.dark || value === ThemeMode.system
+
+const readStoredTheme = (): ThemeMode => {
+  const storedValue = localStorage.getItem(themeModeKey)
+
+  return isThemeMode(storedValue) ? storedValue : ThemeMode.system
+}
+
+const applyThemeClass = (mode: ThemeMode) => {
   const darkClass = ThemeMode.dark
 
   if (mode === ThemeMode.dark) {
@@ -23,45 +32,30 @@ const applyThemeClass = (mode: string) => {
   document.documentElement.classList.remove(darkClass)
 }
 
+const getNextTheme = (currentTheme: ThemeMode): ThemeMode => {
+  if (currentTheme === ThemeMode.system) return ThemeMode.light
+  if (currentTheme === ThemeMode.light) return ThemeMode.dark
+
+  return ThemeMode.system
+}
+
 export const useTheme = () => {
-  const [theme, setTheme] = useState<string>(ThemeMode.light)
-
-  const toggleTheme = (newTheme?: ThemeMode) => {
-    if (newTheme) {
-      setTheme(newTheme)
-      return
-    }
-
-    if (theme === ThemeMode.system) {
-      setTheme(ThemeMode.light)
-      return
-    }
-    if (theme === ThemeMode.light) {
-      setTheme(ThemeMode.dark)
-      return
-    }
-
-    setTheme(ThemeMode.system)
-    return
-  }
+  // El tema ya lo aplica el script inline de base-head.astro antes del primer pintado.
+  // Aquí solo se sincroniza el estado al montar (sin tocar el DOM ni localStorage) para
+  // evitar un repintado del tema claro cada vez que se monta el toggle.
+  const [theme, setTheme] = useState<ThemeMode>(ThemeMode.system)
 
   useEffect(() => {
-    const localStorageValue = localStorage?.getItem(themeModeKey)
-
-    if (localStorageValue) {
-      setTheme(localStorageValue)
-      return
-    }
-
-    setTheme(ThemeMode.light)
+    setTheme(readStoredTheme())
   }, [])
 
-  useEffect(() => {
-    if (!theme) return
+  const toggleTheme = (newTheme?: ThemeMode) => {
+    const nextTheme = newTheme ?? getNextTheme(theme)
 
-    applyThemeClass(theme)
-    localStorage.setItem(themeModeKey, theme)
-  }, [theme])
+    setTheme(nextTheme)
+    applyThemeClass(nextTheme)
+    localStorage.setItem(themeModeKey, nextTheme)
+  }
 
   const isDarkSelected = useMemo(() => theme === ThemeMode.dark, [theme])
   const isSystemSelected = useMemo(() => theme === ThemeMode.system, [theme])
