@@ -5,6 +5,7 @@ import { GetUserQuery } from '../application/get-user.query'
 import { GetUserByUsernameQuery } from '../application/get-user-by-username.query'
 import { SaveUserCommand } from '../application/save-user.command'
 import { SearchUsersQuery } from '../application/search-users.query'
+import { UserIsAdminEnsurer } from '../application/user-is-admin-ensurer.service'
 import { AstroDbUsersRepository } from '../infrastructure/astro-db-users.repository'
 
 const builder = new ContainerBuilder()
@@ -20,6 +21,8 @@ builder.register(FindUsersByIdsQuery).use(FindUsersByIdsQuery).withDependencies(
 builder.register(SearchUsersQuery).use(SearchUsersQuery).withDependencies([AstroDbUsersRepository])
 
 builder.register(CheckUserIsAdminQuery).use(CheckUserIsAdminQuery).withDependencies([AstroDbUsersRepository])
+
+builder.register(UserIsAdminEnsurer).use(UserIsAdminEnsurer).withDependencies([GetUserQuery, CheckUserIsAdminQuery])
 
 builder
   .register(SaveUserCommand)

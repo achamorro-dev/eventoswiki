@@ -8,6 +8,8 @@ import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-orga
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
 import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
 import { ProvincesContainer } from '@/provinces/di/provinces.container'
+import { UserIsAdminEnsurer } from '@/users/application/user-is-admin-ensurer.service'
+import { UsersContainer } from '@/users/di/users.container'
 import { AttendMeetupCommand } from '../application/attend-meetup.command'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
 import { DeleteMeetupCommand } from '../application/delete-meetup.command'
@@ -69,6 +71,9 @@ builder
 builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.get(UserIsOrganizerEnsurer))
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder.register(UserIsAdminEnsurer).useFactory(_ => UsersContainer.get(UserIsAdminEnsurer))
+
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder.register(GetOrganizationByIdQuery).useFactory(_ => OrganizationsContainer.get(GetOrganizationByIdQuery))
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
@@ -115,7 +120,12 @@ builder
 builder
   .register(UpdateMeetupCommand)
   .use(UpdateMeetupCommand)
-  .withDependencies([AstroDbMeetupsRepository, UserIsOrganizerEnsurer, SendOrganizationMeetupUpdatedEmailCommand])
+  .withDependencies([
+    AstroDbMeetupsRepository,
+    UserIsOrganizerEnsurer,
+    UserIsAdminEnsurer,
+    SendOrganizationMeetupUpdatedEmailCommand,
+  ])
 
 builder
   .register(CreateMeetupCommand)
@@ -123,13 +133,14 @@ builder
   .withDependencies([
     AstroDbMeetupsRepository,
     UserIsOrganizerEnsurer,
+    UserIsAdminEnsurer,
     SendOrganizationMeetupCreatedEmailToFollowersCommand,
   ])
 
 builder
   .register(DeleteMeetupCommand)
   .use(DeleteMeetupCommand)
-  .withDependencies([AstroDbMeetupsRepository, UserIsOrganizerEnsurer])
+  .withDependencies([AstroDbMeetupsRepository, UserIsOrganizerEnsurer, UserIsAdminEnsurer])
 
 builder
   .register(AttendMeetupCommand)

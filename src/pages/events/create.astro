@@ -1,5 +1,54 @@
 ---
+import { EventEditForm } from '@/events/presentation/client/components/event-edit-form/event-edit-form'
+import Layout from '@/layouts/layout.astro'
+import { GetUserOrganizationsQuery } from '@/organizations/application/get-user-organizations.query'
+import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { GetProvincesQuery } from '@/provinces/application/get-provinces.query'
+import { ProvincesContainer } from '@/provinces/di/provinces.container'
+import { CheckUserIsAdminQuery } from '@/users/application/check-user-is-admin.query'
+import { GetUserQuery } from '@/users/application/get-user.query'
+import { UsersContainer } from '@/users/di/users.container'
+import { PageTitle } from '@/ui/components/page-title/page-title'
 import { Urls } from '@/ui/urls/urls'
 
-return Astro.redirect(Urls.MEMBER_ORGANIZATIONS)
+const userId = Astro.locals.user?.id
+
+if (!userId) {
+  return Astro.redirect(Urls.LOGIN)
+}
+
+const [provinces, userOrganizations, user] = await Promise.all([
+  ProvincesContainer.get(GetProvincesQuery).execute(),
+  OrganizationsContainer.get(GetUserOrganizationsQuery).execute({ userId }),
+  UsersContainer.get(GetUserQuery)
+    .execute({ id: userId })
+    .catch(() => undefined),
+])
+
+const isAdmin = user?.email
+  ? await UsersContainer.get(CheckUserIsAdminQuery).execute({ email: user.email })
+  : false
+
+const organizationOptions = userOrganizations.map(organization => ({
+  id: organization.id.value,
+  handle: organization.handle,
+  name: organization.name,
+  image: organization.image?.toString(),
+}))
+
+if (!isAdmin && organizationOptions.length === 0) {
+  return Astro.redirect(Urls.MEMBER_ORGANIZATIONS)
+}
 ---
+
+<Layout title="Crear evento">
+  <article>
+    <PageTitle>Crear evento</PageTitle>
+    <EventEditForm
+      client:only="react"
+      provinces={provinces}
+      organizationOptions={organizationOptions}
+      isAdmin={isAdmin}
+    />
+  </article>
+</Layout>

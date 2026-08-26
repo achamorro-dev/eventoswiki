@@ -11,7 +11,7 @@ import { EventEditForm } from '../event-edit-form/event-edit-form'
 interface Props {
   event?: EventPrimitives
   provinces: Array<Province>
-  organization: Primitives<Organization>
+  organization?: Primitives<Organization>
 }
 
 type TabValue = 'info' | 'sponsors' | 'speakers' | 'agenda'
@@ -19,7 +19,7 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
   const [activeTab, setActiveTab] = useState<TabValue>('info')
 
   if (!event) {
-    return <EventEditForm provinces={provinces} organizationId={organization.id} />
+    return <EventEditForm provinces={provinces} organizationId={organization?.id} organization={organization} />
   }
 
   return (
@@ -35,7 +35,7 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
         <EventEditForm
           event={event}
           provinces={provinces}
-          organizationId={organization.id}
+          organizationId={organization?.id}
           organization={organization}
           tab="info"
         />
@@ -45,7 +45,7 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
         <EventEditForm
           event={event}
           provinces={provinces}
-          organizationId={organization.id}
+          organizationId={organization?.id}
           organization={organization}
           tab="sponsors"
         />
@@ -55,7 +55,7 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
         <EventEditForm
           event={event}
           provinces={provinces}
-          organizationId={organization.id}
+          organizationId={organization?.id}
           organization={organization}
           tab="speakers"
         />
@@ -65,7 +65,7 @@ export const EventEditTabs = ({ event, provinces, organization }: Props) => {
         <EventEditForm
           event={event}
           provinces={provinces}
-          organizationId={organization.id}
+          organizationId={organization?.id}
           organization={organization}
           tab="agenda"
         />

@@ -77,7 +77,7 @@ export class Meetup implements MeetupProps {
     this.externalId = props.externalId
   }
 
-  static create(data: MeetupEditableData, organizationId: string) {
+  static create(data: MeetupEditableData, organizationId?: string) {
     Meetup.ensureIsValidMeetup(data)
 
     const meetup = Meetup.fromPrimitives({

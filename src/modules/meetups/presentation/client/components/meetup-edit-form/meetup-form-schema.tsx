@@ -54,6 +54,7 @@ export const meetupFormSchema = z
       })
       .optional(),
     tags: NotRequiredArrayFormField(z.string()),
+    organizationId: z.string().optional(),
     allowsAttendees: z.boolean(),
     registrationEndsAt: z.date().optional(),
     maxAttendees: NotRequiredNumberFormField(MeetupMaxAttendeesValidator),

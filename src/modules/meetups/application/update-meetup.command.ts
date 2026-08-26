@@ -1,6 +1,7 @@
 import type { SendOrganizationMeetupUpdatedEmailCommand } from '@/emails/application/send-organization-meetup-updated-email.command'
 import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { Command } from '@/shared/application/use-case/command'
+import type { UserIsAdminEnsurer } from '@/users/application/user-is-admin-ensurer.service'
 import { type MeetupEditableData } from '../domain/meetup'
 import { MeetupId } from '../domain/meetup-id'
 import type { MeetupsRepository } from '../domain/meetups.repository'
@@ -67,6 +68,7 @@ export class UpdateMeetupCommand extends Command<Param, void> {
   constructor(
     private readonly meetupsRepository: MeetupsRepository,
     private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
+    private readonly userIsAdminEnsurer: UserIsAdminEnsurer,
     private readonly sendOrganizationMeetupUpdatedEmailCommand: SendOrganizationMeetupUpdatedEmailCommand,
   ) {
     super()
@@ -81,6 +83,8 @@ export class UpdateMeetupCommand extends Command<Param, void> {
     const organizationId = meetup.organizationId
     if (organizationId) {
       await this.userIsOrganizerEnsurer.ensure({ userId, organizationId: organizationId })
+    } else {
+      await this.userIsAdminEnsurer.ensure({ userId })
     }
 
     const criticalFieldsChanged = hasCriticalFieldChanged(meetup, data)

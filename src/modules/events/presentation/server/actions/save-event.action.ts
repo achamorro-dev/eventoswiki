@@ -5,6 +5,8 @@ import { UpdateEventCommand } from '@/events/application/update-event.command'
 import { EventsContainer } from '@/events/di/events.container'
 import { EventAlreadyExists } from '@/events/domain/errors/event-already-exists.error'
 import type { EventEditableData } from '@/events/domain/event'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
+import { UserIsNotAdminError } from '@/users/domain/errors/user-is-not-admin.error'
 import { saveEventActionSchema } from './save-event.schema'
 
 export const saveEventAction = defineAction({
@@ -34,6 +36,16 @@ export const saveEventAction = defineAction({
             code: 'BAD_REQUEST',
             message: 'Este evento ya se encuentra dado de alta',
           })
+        case error instanceof OrganizerNotFound:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'No estás autorizado para crear eventos para esta organización',
+          })
+        case error instanceof UserIsNotAdminError:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'Solo los administradores pueden crear eventos sin organización',
+          })
         default:
           throw new ActionError({
             code: 'INTERNAL_SERVER_ERROR',
@@ -44,7 +56,7 @@ export const saveEventAction = defineAction({
   },
 })
 
-async function _createEvent(organizationId: string, newEvent: EventEditableData, userId: string) {
+async function _createEvent(organizationId: string | undefined, newEvent: EventEditableData, userId: string) {
   await EventsContainer.get(CreateEventCommand).execute({
     organizationId,
     userId,

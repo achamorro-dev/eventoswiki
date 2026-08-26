@@ -1,18 +1,20 @@
 import type { SendOrganizationMeetupCreatedEmailToFollowersCommand } from '@/emails/application/send-organization-meetup-created-email-to-followers.command'
 import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { Command } from '@/shared/application/use-case/command'
+import type { UserIsAdminEnsurer } from '@/users/application/user-is-admin-ensurer.service'
 import { Meetup, type MeetupEditableData } from '../domain/meetup'
 import type { MeetupsRepository } from '../domain/meetups.repository'
 
 interface Param {
   data: MeetupEditableData
-  organizationId: string
+  organizationId?: string
   userId: string
 }
 export class CreateMeetupCommand extends Command<Param, void> {
   constructor(
     private readonly meetupsRepository: MeetupsRepository,
     private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
+    private readonly userIsAdminEnsurer: UserIsAdminEnsurer,
     private readonly sendOrganizationMeetupCreatedEmailToFollowersCommand: SendOrganizationMeetupCreatedEmailToFollowersCommand,
   ) {
     super()
@@ -21,19 +23,25 @@ export class CreateMeetupCommand extends Command<Param, void> {
   async execute(param: Param): Promise<void> {
     const { organizationId, data, userId } = param
 
-    await this.userIsOrganizerEnsurer.ensure({ userId, organizationId })
+    if (organizationId) {
+      await this.userIsOrganizerEnsurer.ensure({ userId, organizationId })
+    } else {
+      await this.userIsAdminEnsurer.ensure({ userId })
+    }
 
     const meetup = Meetup.create(data, organizationId)
 
     await this.meetupsRepository.save(meetup)
 
-    this.sendOrganizationMeetupCreatedEmailToFollowersCommand
-      .execute({
-        meetupId: meetup.id.value,
-        organizationId,
-      })
-      .catch(error => {
-        console.error('[CreateMeetupCommand] Error sending email notification:', error)
-      })
+    if (organizationId) {
+      this.sendOrganizationMeetupCreatedEmailToFollowersCommand
+        .execute({
+          meetupId: meetup.id.value,
+          organizationId,
+        })
+        .catch(error => {
+          console.error('[CreateMeetupCommand] Error sending email notification:', error)
+        })
+    }
   }
 }

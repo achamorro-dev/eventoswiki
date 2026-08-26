@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { Meetup } from '@/meetups/domain/meetup'
 import type { Organization } from '@/organizations/domain/organization'
+import type { OrganizationComboboxOption } from '@/organizations/presentation/client/components/organization-combobox/organization-combobox'
 import type { Province } from '@/provinces/domain/province'
 import type { Primitives } from '@/shared/domain/primitives/primitives'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs'
@@ -12,14 +13,23 @@ import { MeetupEditForm } from '../meetup-edit-form/meetup-edit-form'
 interface Props {
   meetup?: Primitives<Meetup>
   provinces: Array<Province>
-  organization: Primitives<Organization>
+  organization?: Primitives<Organization>
+  organizationOptions?: OrganizationComboboxOption[]
+  isAdmin?: boolean
 }
 
-export const MeetupEditTabs = ({ meetup, provinces, organization }: Props) => {
+export const MeetupEditTabs = ({ meetup, provinces, organization, organizationOptions, isAdmin }: Props) => {
   const [attendeesCount, setAttendeesCount] = useState(meetup?.attendees?.length ?? 0)
 
   if (!meetup) {
-    return <MeetupEditForm organization={organization} provinces={provinces} />
+    return (
+      <MeetupEditForm
+        organization={organization}
+        organizationOptions={organizationOptions}
+        isAdmin={isAdmin}
+        provinces={provinces}
+      />
+    )
   }
 
   return (

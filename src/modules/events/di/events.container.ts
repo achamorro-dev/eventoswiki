@@ -4,6 +4,8 @@ import { SendOrganizationEventUpdatedEmailCommand } from '@/emails/application/s
 import { EmailsContainer } from '@/emails/di/emails.container'
 import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { OrganizationsContainer } from '@/organizations/di/organizations.container'
+import { UserIsAdminEnsurer } from '@/users/application/user-is-admin-ensurer.service'
+import { UsersContainer } from '@/users/di/users.container'
 import { CreateEventCommand } from '../application/create-event.command'
 import { DeleteEventCommand } from '../application/delete-event.command'
 import { FindEventQuery } from '../application/find-event.query'
@@ -67,6 +69,9 @@ builder.register(SearchEventsQuery).use(SearchEventsQuery).withDependencies([Ast
 builder.register(UserIsOrganizerEnsurer).useFactory(_ => OrganizationsContainer.get(UserIsOrganizerEnsurer))
 
 // biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
+builder.register(UserIsAdminEnsurer).useFactory(_ => UsersContainer.get(UserIsAdminEnsurer))
+
+// biome-ignore lint/correctness/useHookAtTopLevel: It's not a hook
 builder
   .register(SendOrganizationEventCreatedEmailToFollowersCommand)
   .useFactory(_ => EmailsContainer.get(SendOrganizationEventCreatedEmailToFollowersCommand))
@@ -82,17 +87,23 @@ builder
   .withDependencies([
     AstroDbEventsRepository,
     UserIsOrganizerEnsurer,
+    UserIsAdminEnsurer,
     SendOrganizationEventCreatedEmailToFollowersCommand,
   ])
 
 builder
   .register(UpdateEventCommand)
   .use(UpdateEventCommand)
-  .withDependencies([AstroDbEventsRepository, UserIsOrganizerEnsurer, SendOrganizationEventUpdatedEmailCommand])
+  .withDependencies([
+    AstroDbEventsRepository,
+    UserIsOrganizerEnsurer,
+    UserIsAdminEnsurer,
+    SendOrganizationEventUpdatedEmailCommand,
+  ])
 
 builder
   .register(DeleteEventCommand)
   .use(DeleteEventCommand)
-  .withDependencies([AstroDbEventsRepository, UserIsOrganizerEnsurer])
+  .withDependencies([AstroDbEventsRepository, UserIsOrganizerEnsurer, UserIsAdminEnsurer])
 
 export const EventsContainer = builder.build({ autowire: false })

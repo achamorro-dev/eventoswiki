@@ -3,7 +3,9 @@ import { z } from 'astro/zod'
 import { DeleteMeetupCommand } from '@/meetups/application/delete-meetup.command'
 import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupNotFound } from '@/meetups/domain/errors/meetup-not-found'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
+import { UserIsNotAdminError } from '@/users/domain/errors/user-is-not-admin.error'
 
 export const deleteMeetupAction = defineAction({
   input: z.object({
@@ -35,6 +37,16 @@ export const deleteMeetupAction = defineAction({
           throw new ActionError({
             code: 'BAD_REQUEST',
             message: error.message,
+          })
+        case error instanceof OrganizerNotFound:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'No estás autorizado para eliminar este meetup',
+          })
+        case error instanceof UserIsNotAdminError:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'Solo los administradores pueden eliminar meetups sin organización',
           })
         default:
           throw new ActionError({

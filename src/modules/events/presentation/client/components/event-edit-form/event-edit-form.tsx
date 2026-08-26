@@ -16,6 +16,10 @@ import type { Place } from '@/modules/places/domain/place'
 import { PlaceEmbedMap } from '@/modules/places/presentation/client/components/place-embed-map/place-embed-map'
 import { PlaceSearch } from '@/modules/places/presentation/client/components/place-search'
 import type { Organization } from '@/organizations/domain/organization'
+import {
+  OrganizationCombobox,
+  type OrganizationComboboxOption,
+} from '@/organizations/presentation/client/components/organization-combobox/organization-combobox'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
@@ -42,12 +46,36 @@ type EventFormValues = Omit<EventPrimitives, 'id' | 'slug'> & Partial<Pick<Event
 interface Props {
   provinces: Province[]
   event?: EventFormValues
-  organizationId: string
+  organizationId?: string
   organization?: Primitives<Organization>
+  organizationOptions?: OrganizationComboboxOption[]
+  isAdmin?: boolean
   tab?: 'info' | 'sponsors' | 'speakers' | 'agenda'
 }
 
-export const EventEditForm = ({ provinces, organizationId, event, organization, tab = 'info' }: Props) => {
+const ORGANIZATION_SOCIAL_DEFAULT_FIELDS = [
+  'web',
+  'twitter',
+  'linkedin',
+  'youtube',
+  'twitch',
+  'facebook',
+  'instagram',
+  'github',
+  'telegram',
+  'whatsapp',
+  'discord',
+] as const
+
+export const EventEditForm = ({
+  provinces,
+  organizationId,
+  event,
+  organization,
+  organizationOptions,
+  isAdmin = false,
+  tab = 'info',
+}: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
   const uploadImageForEditor = useUploadImageForEditor({ maxWidth: 1920 })
@@ -86,6 +114,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
         : undefined,
       tickets: (event?.tickets as any) || [],
       tags: event?.tags ?? [],
+      organizationId: organizationId ?? organization?.id,
       callForSponsorsEnabled: event?.callForSponsorsEnabled ?? false,
       callForSponsorsContent: event?.callForSponsorsContent ?? '',
       callForSpeakersEnabled: event?.callForSpeakersEnabled ?? false,
@@ -128,7 +157,34 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
     }
   }, [type, form.setValue])
 
+  const onOrganizationChange = async (newOrganizationId: string | undefined) => {
+    form.setValue('organizationId', newOrganizationId)
+
+    if (!newOrganizationId) return
+
+    const { data, error } = await actions.organizations.getOrganizationAction({ organizationId: newOrganizationId })
+
+    if (error || !data) {
+      toast.error('No se han podido cargar los datos de la organización')
+      return
+    }
+
+    for (const socialField of ORGANIZATION_SOCIAL_DEFAULT_FIELDS) {
+      const currentValue = form.getValues(socialField)
+      const organizationValue = data.organization[socialField]
+      if (!currentValue && organizationValue) {
+        form.setValue(socialField, organizationValue)
+      }
+    }
+  }
+
   const onSubmit = async (values: EventFormSchema) => {
+    if (!isAdmin && !values.organizationId) {
+      form.setError('organizationId', { message: 'Selecciona una organización o crea una nueva' })
+      toast.error('El formulario contiene errores, por favor, revisa los campos.')
+      return
+    }
+
     const eventValues = {
       ...values,
       startsAt: values.startsAt.toISOString(),
@@ -153,7 +209,7 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
             })),
           }
         : undefined,
-      organizationId,
+      organizationId: values.organizationId || undefined,
       eventId: event?.id,
     }
 
@@ -252,6 +308,34 @@ export const EventEditForm = ({ provinces, organizationId, event, organization, 
                   {/* Sección: Información básica */}
                   <div className="space-y-4">
                     <h2 className="font-semibold text-xl">Información básica</h2>
+                    {organizationOptions && (
+                      <FormField
+                        control={form.control}
+                        name="organizationId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel htmlFor="organizationId">Organización</FormLabel>
+                            <FormControl>
+                              <OrganizationCombobox
+                                id="organizationId"
+                                organizations={organizationOptions}
+                                allowEmpty={isAdmin}
+                                enableRemoteSearch={isAdmin}
+                                disabled={form.formState.isSubmitting}
+                                value={field.value}
+                                onChange={onOrganizationChange}
+                              />
+                            </FormControl>
+                            {isAdmin && (
+                              <FormDescription>
+                                Selecciona una de tus organizaciones o crea el evento sin organización
+                              </FormDescription>
+                            )}
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
                     <FormField
                       control={form.control}
                       name="title"

@@ -5,7 +5,9 @@ import { UpdateMeetupCommand } from '@/meetups/application/update-meetup.command
 import { MeetupsContainer } from '@/meetups/di/meetups.container'
 import { MeetupAlreadyExists } from '@/meetups/domain/errors/meetup-already-exists.error'
 import type { MeetupEditableData } from '@/meetups/domain/meetup'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
 import { Datetime } from '@/shared/domain/datetime/datetime'
+import { UserIsNotAdminError } from '@/users/domain/errors/user-is-not-admin.error'
 import { saveMeetupActionSchema } from './save-meetup-action.schema'
 
 export const saveMeetupAction = defineAction({
@@ -37,6 +39,16 @@ export const saveMeetupAction = defineAction({
             code: 'BAD_REQUEST',
             message: 'Este meetup ya se encuentra dado de alta',
           })
+        case error instanceof OrganizerNotFound:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'No estás autorizado para crear meetups para esta organización',
+          })
+        case error instanceof UserIsNotAdminError:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'Solo los administradores pueden crear meetups sin organización',
+          })
         default:
           throw new ActionError({
             code: 'INTERNAL_SERVER_ERROR',
@@ -47,7 +59,7 @@ export const saveMeetupAction = defineAction({
   },
 })
 
-async function _createMeetup(organizationId: string, newMeetup: MeetupEditableData, userId: string) {
+async function _createMeetup(organizationId: string | undefined, newMeetup: MeetupEditableData, userId: string) {
   await MeetupsContainer.get(CreateMeetupCommand).execute({
     organizationId,
     userId,

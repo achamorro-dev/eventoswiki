@@ -14,6 +14,10 @@ import type { Place } from '@/modules/places/domain/place'
 import { PlaceEmbedMap } from '@/modules/places/presentation/client/components/place-embed-map/place-embed-map'
 import { PlaceSearch } from '@/modules/places/presentation/client/components/place-search'
 import type { Organization } from '@/organizations/domain/organization'
+import {
+  OrganizationCombobox,
+  type OrganizationComboboxOption,
+} from '@/organizations/presentation/client/components/organization-combobox/organization-combobox'
 import type { Province } from '@/provinces/domain/province'
 import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { ProvinceSelect } from '@/provinces/presentation/server/components/province-combobox/province-select'
@@ -26,7 +30,7 @@ import { DateRangeTimePicker } from '@/ui/components/date-range-time-picker'
 import { DateTimePicker } from '@/ui/components/date-time-picker'
 import { RichEditor } from '@/ui/components/rich-editor/rich-editor'
 import { SocialForm } from '@/ui/components/social-form/social-form'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import { Camera, Loader, NoImage, X } from '@/ui/icons'
 import { Input } from '@/ui/input'
 import { Switch } from '@/ui/switch'
@@ -38,10 +42,27 @@ import { type MeetupFormSchema, meetupFormSchema } from './meetup-form-schema'
 interface Props {
   provinces: Province[]
   meetup?: Primitives<Meetup>
-  organization: Primitives<Organization>
+  organization?: Primitives<Organization>
+  organizationOptions?: OrganizationComboboxOption[]
+  isAdmin?: boolean
 }
 
-export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
+const ORGANIZATION_SOCIAL_DEFAULT_FIELDS = [
+  'web',
+  'twitter',
+  'linkedin',
+  'youtube',
+  'twitch',
+  'facebook',
+  'instagram',
+  'github',
+  'telegram',
+  'whatsapp',
+  'discord',
+  'tiktok',
+] as const
+
+export const MeetupEditForm = ({ provinces, meetup, organization, organizationOptions, isAdmin = false }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { onInputFile, isLoading, image } = useUploadFile({ maxWidth: 1920 })
   const uploadImageForEditor = useUploadImageForEditor({ maxWidth: 1920 })
@@ -79,6 +100,7 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
           }
         : undefined,
       tags: meetup?.tags ?? [],
+      organizationId: meetup?.organizationId ?? organization?.id,
       allowsAttendees: meetup?.allowsAttendees !== undefined ? meetup.allowsAttendees : true,
       registrationEndsAt: meetup?.registrationEndsAt ? Datetime.toDate(meetup.registrationEndsAt) : undefined,
       maxAttendees: meetup?.maxAttendees,
@@ -119,13 +141,40 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
     }
   }, [type, form.setValue])
 
+  const onOrganizationChange = async (newOrganizationId: string | undefined) => {
+    form.setValue('organizationId', newOrganizationId)
+
+    if (!newOrganizationId) return
+
+    const { data, error } = await actions.organizations.getOrganizationAction({ organizationId: newOrganizationId })
+
+    if (error || !data) {
+      toast.error('No se han podido cargar los datos de la organización')
+      return
+    }
+
+    for (const socialField of ORGANIZATION_SOCIAL_DEFAULT_FIELDS) {
+      const currentValue = form.getValues(socialField)
+      const organizationValue = data.organization[socialField]
+      if (!currentValue && organizationValue) {
+        form.setValue(socialField, organizationValue)
+      }
+    }
+  }
+
   const onSubmit = async (values: MeetupFormSchema) => {
+    if (!isAdmin && !values.organizationId) {
+      form.setError('organizationId', { message: 'Selecciona una organización o crea una nueva' })
+      toast.error('El formulario contiene errores, por favor, revisa los campos.')
+      return
+    }
+
     const meetupValues = {
       ...values,
       startsAt: values.startsAt.toISOString(),
       endsAt: values.endsAt.toISOString(),
       registrationEndsAt: values.registrationEndsAt?.toISOString(),
-      organizationId: organization.id,
+      organizationId: values.organizationId || undefined,
       meetupId: meetup?.id,
     }
 
@@ -222,6 +271,34 @@ export const MeetupEditForm = ({ provinces, meetup, organization }: Props) => {
               {/* Sección: Información básica */}
               <div className="space-y-4">
                 <h2 className="font-semibold text-xl">Información básica</h2>
+                {organizationOptions && (
+                  <FormField
+                    control={form.control}
+                    name="organizationId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel htmlFor="organizationId">Organización</FormLabel>
+                        <FormControl>
+                          <OrganizationCombobox
+                            id="organizationId"
+                            organizations={organizationOptions}
+                            allowEmpty={isAdmin}
+                            enableRemoteSearch={isAdmin}
+                            disabled={form.formState.isSubmitting}
+                            value={field.value}
+                            onChange={onOrganizationChange}
+                          />
+                        </FormControl>
+                        {isAdmin && (
+                          <FormDescription>
+                            Selecciona una de tus organizaciones o crea el meetup sin organización
+                          </FormDescription>
+                        )}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 <FormField
                   control={form.control}
                   name="title"

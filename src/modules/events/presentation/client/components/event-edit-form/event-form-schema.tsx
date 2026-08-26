@@ -66,6 +66,7 @@ export const eventFormSchema = z
       )
       .optional(),
     tags: NotRequiredArrayFormField(z.string()),
+    organizationId: z.string().optional(),
     callForSponsorsEnabled: z.boolean().optional(),
     callForSponsorsContent: z.string().optional(),
     callForSpeakersEnabled: z.boolean().optional(),

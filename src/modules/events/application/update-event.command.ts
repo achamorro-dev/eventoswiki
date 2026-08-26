@@ -1,6 +1,7 @@
 import type { SendOrganizationEventUpdatedEmailCommand } from '@/emails/application/send-organization-event-updated-email.command'
-import { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
+import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { Command } from '@/shared/application/use-case/command'
+import type { UserIsAdminEnsurer } from '@/users/application/user-is-admin-ensurer.service'
 import { type EventEditableData } from '../domain/event'
 import { EventId } from '../domain/event-id'
 import type { EventsRepository } from '../domain/events.repository'
@@ -57,6 +58,7 @@ export class UpdateEventCommand extends Command<Param, void> {
   constructor(
     private readonly eventsRepository: EventsRepository,
     private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
+    private readonly userIsAdminEnsurer: UserIsAdminEnsurer,
     private readonly sendOrganizationEventUpdatedEmailCommand: SendOrganizationEventUpdatedEmailCommand,
   ) {
     super()
@@ -71,6 +73,8 @@ export class UpdateEventCommand extends Command<Param, void> {
     const organizationId = event.organizationId
     if (organizationId) {
       await this.userIsOrganizerEnsurer.ensure({ userId, organizationId: organizationId })
+    } else {
+      await this.userIsAdminEnsurer.ensure({ userId })
     }
 
     const criticalFieldsChanged = hasCriticalFieldChanged(event, data)

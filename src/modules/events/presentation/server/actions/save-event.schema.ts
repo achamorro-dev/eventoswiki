@@ -41,7 +41,7 @@ export const saveEventActionSchema = z.object({
       }),
     )
     .default([]),
-  organizationId: z.string(),
+  organizationId: z.string().optional(),
   eventId: z.string().optional(),
   tags: z.array(z.string()).default([]),
   callForSponsorsEnabled: z.boolean().optional().default(false),

@@ -24,7 +24,7 @@ export const saveMeetupActionSchema = z.object({
   discord: z.string().optional(),
   tiktok: z.string().optional(),
   streamingUrl: z.string().optional(),
-  organizationId: z.string(),
+  organizationId: z.string().optional(),
   meetupId: z.string().optional(),
   tags: z.array(z.string()).default([]),
   place: z

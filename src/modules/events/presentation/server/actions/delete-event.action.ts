@@ -3,7 +3,9 @@ import { z } from 'astro/zod'
 import { DeleteEventCommand } from '@/events/application/delete-event.command'
 import { EventsContainer } from '@/events/di/events.container'
 import { EventNotFound } from '@/events/domain/errors/event-not-found'
+import { OrganizerNotFound } from '@/organizations/domain/errors/organizer-not-found.error'
 import { BadRequest } from '@/shared/presentation/server/actions/errors/bad-request'
+import { UserIsNotAdminError } from '@/users/domain/errors/user-is-not-admin.error'
 
 export const deleteEventAction = defineAction({
   accept: 'json',
@@ -35,6 +37,16 @@ export const deleteEventAction = defineAction({
           throw new ActionError({
             code: 'BAD_REQUEST',
             message: error.message,
+          })
+        case error instanceof OrganizerNotFound:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'No estás autorizado para eliminar este evento',
+          })
+        case error instanceof UserIsNotAdminError:
+          throw new ActionError({
+            code: 'FORBIDDEN',
+            message: 'Solo los administradores pueden eliminar eventos sin organización',
           })
         default:
           throw new ActionError({

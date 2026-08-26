@@ -209,7 +209,7 @@ export class Event implements EventProps {
     }
   }
 
-  static create(data: EventEditableData, organizationId: string) {
+  static create(data: EventEditableData, organizationId?: string) {
     Event.ensureIsValidEvent(data)
 
     const normalizedStartsAt = data.startsAt
