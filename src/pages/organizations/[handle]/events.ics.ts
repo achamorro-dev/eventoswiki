@@ -4,15 +4,19 @@ import { OrganizationsContainer } from '@/organizations/di/organizations.contain
 import { OrganizationNotFound } from '@/organizations/domain/errors/organization-not-found.error'
 import { BuildOteFeedQuery } from '@/ote/application/build-ote-feed.query'
 import { OteContainer } from '@/ote/di/ote.container'
-import { oteFeedToIcs } from '@/ote/domain/ote-ics.mapper'
 import { OteUrls } from '@/ote/domain/ote-urls'
+import {
+  feedNotFoundResponse,
+  feedPreflightResponse,
+  oteIcsFeedResponse,
+} from '@/ote/presentation/server/feed-response'
 
 /** Calendario suscribible de una comunidad */
 export async function GET(context: APIContext): Promise<Response> {
   const handle = context.params.handle
 
   if (!handle) {
-    return new Response('Not found', { status: 404 })
+    return feedNotFoundResponse()
   }
 
   try {
@@ -25,17 +29,16 @@ export async function GET(context: APIContext): Promise<Response> {
       organizationId: organization.id.value,
     })
 
-    return new Response(oteFeedToIcs(feed), {
-      headers: {
-        'Content-Type': 'text/calendar; charset=utf-8',
-        'Cache-Control': 'public, max-age=600',
-      },
-    })
+    return oteIcsFeedResponse(feed)
   } catch (error) {
     if (error instanceof OrganizationNotFound) {
-      return new Response('Not found', { status: 404 })
+      return feedNotFoundResponse()
     }
 
     throw error
   }
+}
+
+export function OPTIONS(): Response {
+  return feedPreflightResponse()
 }

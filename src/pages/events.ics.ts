@@ -1,7 +1,7 @@
 import { BuildOteFeedQuery } from '@/ote/application/build-ote-feed.query'
 import { OteContainer } from '@/ote/di/ote.container'
-import { oteFeedToIcs } from '@/ote/domain/ote-ics.mapper'
 import { SITE_URL } from '@/ote/domain/ote-urls'
+import { feedPreflightResponse, oteIcsFeedResponse } from '@/ote/presentation/server/feed-response'
 
 const FEED_DESCRIPTION = 'Eventos y meetups tecnológicos de España publicados en eventos.wiki'
 
@@ -13,10 +13,9 @@ export async function GET(): Promise<Response> {
     description: FEED_DESCRIPTION,
   })
 
-  return new Response(oteFeedToIcs(feed), {
-    headers: {
-      'Content-Type': 'text/calendar; charset=utf-8',
-      'Cache-Control': 'public, max-age=600',
-    },
-  })
+  return oteIcsFeedResponse(feed)
+}
+
+export function OPTIONS(): Response {
+  return feedPreflightResponse()
 }

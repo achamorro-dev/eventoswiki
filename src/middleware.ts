@@ -2,8 +2,11 @@ import { defineMiddleware } from 'astro:middleware'
 import { verifyRequestOrigin } from 'lucia'
 import { lucia } from '@/shared/infrastructure/lucia/authentication'
 
+/** La comprobación de origen protege de CSRF, así que solo aplica a los métodos que mutan estado */
+const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS'])
+
 export const onRequest = defineMiddleware(async (context, next) => {
-  if (context.request.method !== 'GET') {
+  if (!SAFE_METHODS.has(context.request.method)) {
     const originHeader = context.request.headers.get('Origin')
     const hostHeader = context.request.headers.get('Host')
     if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [hostHeader])) {
