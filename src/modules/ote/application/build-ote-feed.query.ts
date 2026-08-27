@@ -9,9 +9,12 @@ import { Datetime } from '@/shared/domain/datetime/datetime'
 import { OTE_LICENSE, OTE_SPEC_VERSION, type OteFeed } from '../domain/ote-event'
 import { toOteEvent, toOteOrganizer } from '../domain/ote-event.mapper'
 
-/** Ventana de pasado que se publica, para que el feed no crezca sin límite */
-const PAST_WINDOW_MONTHS = 12
-const MAX_ITEMS_PER_COLLECTION = 500
+/**
+ * OTE v0.3 no define paginación —el feed es un fichero completo, no una API—, así
+ * que esta cota es lo único que impide que crezca sin límite. Al recortar por el
+ * extremo más antiguo, lo que se queda fuera es el histórico, nunca lo próximo.
+ */
+const MAX_ITEMS_PER_COLLECTION = 2000
 const TEXT_LANGUAGE = 'es'
 
 interface BuildOteFeedRequest {
@@ -32,15 +35,13 @@ export class BuildOteFeedQuery extends Query<OteFeed, BuildOteFeedRequest> {
   }
 
   async execute({ title, url, description, organizationId }: BuildOteFeedRequest): Promise<OteFeed> {
-    const startsAt = Datetime.subtract(Datetime.now(), PAST_WINDOW_MONTHS, 'month')
-
     const [events, meetups] = await Promise.all([
-      this.findEventsQuery.execute({ organizationId, startsAt, limit: MAX_ITEMS_PER_COLLECTION }),
-      this.findMeetupsQuery.execute({ organizationId, startsAt, limit: MAX_ITEMS_PER_COLLECTION }),
+      this.findEventsQuery.execute({ organizationId, limit: MAX_ITEMS_PER_COLLECTION }),
+      this.findMeetupsQuery.execute({ organizationId, limit: MAX_ITEMS_PER_COLLECTION }),
     ])
 
     const items: Array<Event | Meetup> = [...events.data, ...meetups.data].sort(
-      (a, b) => a.startsAt.getTime() - b.startsAt.getTime(),
+      (a, b) => b.startsAt.getTime() - a.startsAt.getTime(),
     )
 
     const organizations = await this.resolveOrganizations(items, organizationId)

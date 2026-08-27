@@ -2,7 +2,7 @@ import type { OteFeed } from '@/ote/domain/ote-event'
 import { OTE_MEDIA_TYPE } from '@/ote/domain/ote-event'
 import { oteFeedToIcs } from '@/ote/domain/ote-ics.mapper'
 
-const FEED_CACHE_CONTROL = 'public, max-age=600'
+const FEED_CACHE_CONTROL = 'public, max-age=1800'
 
 /**
  * Los feeds son públicos y anónimos, y los readers de terceros (opentechevents.org
