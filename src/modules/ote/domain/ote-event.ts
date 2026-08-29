@@ -7,7 +7,7 @@
  * de serialización, no un modelo de dominio.
  */
 
-export const OTE_SPEC_VERSION = '0.3.0'
+export const OTE_SPEC_VERSION = '0.4.0'
 export const OTE_LICENSE = 'CC-BY-4.0'
 export const OTE_MEDIA_TYPE = 'application/ote+json'
 
