@@ -42,8 +42,8 @@ Install dependencies with `pnpm install --frozen-lockfile` to stay aligned with 
 ### Development Workflow
 
 - **Git Hooks**: Use simple-git-hooks for pre-commit formatting
-- **Code Formatting**: Use Prettier with Tailwind plugin
-- **Linting**: Use commitlint for conventional commits
+- **Code Formatting**: Biome for TS, TSX, JS, JSON and CSS; Prettier for `.astro` files and Tailwind class order
+- **Linting**: Biome (`pnpm lint`); commitlint validates the commit message
 - **Type Checking**: Run `pnpm astro check` regularly
 
 ## Coding Standards
@@ -59,7 +59,7 @@ Install dependencies with `pnpm install --frozen-lockfile` to stay aligned with 
 
 ### Coding Style & Naming Conventions
 
-Prettier enforces two-space indentation, single quotes, trailing commas, and no semicolons; format large sets of changes with `pnpm exec prettier --write .`. Tailwind utility order is normalized by `prettier-plugin-tailwindcss`, so keep class lists descriptive rather than rearranging manually.
+Biome enforces two-space indentation, single quotes, trailing commas, and no semicolons; format large sets of changes with `pnpm format`. Astro files are outside its scope —`biome.json` ignores `**/*.astro`— and go through Prettier with `prettier-plugin-astro`. Tailwind utility order is normalized by `prettier-plugin-tailwindcss`, so keep class lists descriptive rather than rearranging manually.
 
 #### Clean Code Principles
 
