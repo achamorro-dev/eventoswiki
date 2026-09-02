@@ -1,13 +1,13 @@
 ---
-import Codely from '@/ui/components/sponsors/codely.astro'
 import NextDigital from '@/ui/components/sponsors/next-digital.astro'
+import SirviendoCodigo from '@/ui/components/sponsors/sirviendo-codigo.astro'
 ---
 
-<section class="sponsors">
-  <h2 class="sponsors-title">Con el apoyo de</h2>
-  <ul class="sponsors-list">
+<section class="initiative">
+  <h2 class="initiative-title">Iniciativa impulsada por <a href="https://wearenext.es" class="font-bold underline" target="_blank" rel="noopener noreferrer">We Are Next</a></h2>
+  <ul class="initiative-list">
     <li>
-      <Codely />
+      <SirviendoCodigo />
     </li>
   </ul>
 </section>
@@ -15,20 +15,20 @@ import NextDigital from '@/ui/components/sponsors/next-digital.astro'
 <style>
   @reference "../../../../../../styles/global.css";
 
-  .sponsors {
+  .initiative {
     @apply flex flex-col gap-4 pt-2;
   }
 
-  .sponsors-title {
+  .initiative-title {
     @apply text-muted-foreground text-[0.6875rem] font-medium tracking-[0.12em] uppercase;
   }
 
-  .sponsors-list {
+  .initiative-list {
     @apply flex list-none flex-col items-start gap-6 p-0;
   }
 
   /* La zona táctil vive en el contenedor: los logotipos son más bajos de 44 px. */
-  .sponsors-list li {
+  .initiative-list li {
     @apply m-0 flex min-h-11 items-center md:min-h-0;
   }
 </style>

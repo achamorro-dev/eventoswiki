@@ -3,11 +3,11 @@
   <defs>
     <style>
       .primary {
-        fill: var(--primary, #EF4444);
+        fill: var(--primary, #227966);
       }
 
       .accent {
-        fill: var(--accent, #A21534);
+        fill: var(--accent, #6FC0AB);
       }
     </style>
   </defs>

@@ -5,7 +5,7 @@ Esta guía documenta el sistema visual que vive en `src/styles/global.css` y en 
 encaja aquí, primero se decide el patrón y luego se implementa.
 
 La dirección es **contraste nocturno**: base oscura por defecto, tipografía geométrica, mucho aire y la portada del
-evento como protagonista. Minimalista, pero no tímido. El rojo de marca se reserva para lo que de verdad tiene que
+evento como protagonista. Minimalista, pero no tímido. El verde de marca se reserva para lo que de verdad tiene que
 destacar.
 
 Lienzo de referencia con las pantallas diseñadas:
@@ -31,37 +31,93 @@ literal en un componente: si te falta un tono, se añade como token.
 Los neutros llevan una pizca de croma cálido (matiz 25–60) en vez de gris puro. Es lo que evita que el modo oscuro se
 vea azulado y que el claro se vea clínico.
 
-#### Los tres rojos
+#### Los tres verdes
 
-El rojo de marca con texto blanco encima solo alcanza 3.5:1 de contraste, por debajo del 4.5:1 que exige la WCAG AA
-para texto normal. Por eso el rojo se reparte en tres tokens con responsabilidades distintas:
+El verde de marca, **`#6FC0AB`**, es un menta claro: con texto blanco encima se queda en 2.1:1 y como texto sobre el
+fondo claro en 2.1:1, muy por debajo del 4.5:1 que exige la WCAG AA. Sobre fondo oscuro, en cambio, llega a 9.1:1. Por
+eso el verde se reparte en tres tokens con responsabilidades distintas:
 
-| Token              | Valor                                                        | Cuándo se usa                                                                                                 |
-| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `--brand`          | `0.6579 0.2309 17.07` en ambos modos                         | El punto de 5 px del menú activo. Nunca lleva texto encima.                                                   |
-| `--primary`        | `0.55 0.21 17.07` en claro · `0.6579 0.2309 17.07` en oscuro | Texto y acentos en rojo. Cada modo usa el tono que contrasta con su fondo.                                    |
-| `--primary-strong` | `0.55 0.21 17.07` en ambos modos                             | Rellenos sólidos que llevan texto blanco: botón primario, badge por defecto, página activa, día seleccionado. |
+| Token              | Valor                                                        | Cuándo se usa                                                                                                   |
+| ------------------ | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `--brand`          | `0.7498 0.086 175.28` en ambos modos                         | El punto de 5 px del menú activo. Nunca lleva texto encima.                                                     |
+| `--primary`        | `0.52 0.086 175.28` en claro · `0.7498 0.086 175.28` en oscuro | Texto y acentos en verde. Cada modo usa el tono que contrasta con su fondo.                                     |
+| `--primary-strong` | `0.7498 0.086 175.28` en ambos modos                         | Rellenos sólidos: botón primario, badge por defecto, página activa, día seleccionado. Llevan texto **oscuro**. |
 
-Regla práctica: **si hay texto blanco encima, es `primary-strong`**. Si el rojo es el texto, es `primary`. Si es la
-marca y no hay texto de por medio, es `brand`.
+La diferencia importante frente al rojo anterior: **`--primary-foreground` ya no es blanco, es casi negro**
+(`0.19 0.012 40`). El menta es demasiado claro para sostener texto blanco, así que todo lo que se rellena con
+`primary-strong` lleva el texto oscuro encima, y ahí sí llega a 8.6:1. No lo vuelvas a poner en blanco.
 
-El logotipo de la cabecera y el pie (`logo.tsx`) va en `primary`, no en `brand`: en claro se lee en el rojo apagado y
-en oscuro en el vivo, igual que el resto de acentos rojos de la página.
+Regla práctica: **si es un relleno sólido de marca, es `primary-strong` y el texto encima es `primary-foreground`**.
+Si el verde es el texto, es `primary`. Si es la marca y no hay texto de por medio, es `brand`.
+
+El logotipo de la cabecera y el pie (`logo.tsx`) va en `primary`, no en `brand`: en claro se lee en el verde profundo
+y en oscuro en el menta, igual que el resto de acentos verdes de la página.
+
+#### El logotipo de la web
+
+`logo.tsx` es el lockup completo, «eventos.wiki by sirviendo.código;», dibujado en línea con clases de token para que
+responda al tema. Nunca lleva hex escrito. El reparto es:
+
+| Parte                | Clase                   | Por qué                                                        |
+| -------------------- | ----------------------- | -------------------------------------------------------------- |
+| La «e» y «eventos»   | `stroke-primary` / `fill-primary` | El acento verde de la página                          |
+| «wiki»               | `fill-wordmark`         | El azul de marca, o casi blanco en oscuro                      |
+| «by»                 | `fill-muted-foreground` | Preposición subordinada: pesa menos que el nombre              |
+| «sirviendo.código;»  | `fill-wordmark`         | Mismo rango que «wiki»                                         |
+
+El SVG de origen, `public/logo-by-sc.svg`, viene con los hex mezclados de los dos modos (menta de oscuro, azul de
+claro y un «by» en `#FAFAFA` invisible sobre blanco). Sirve como fuente del trazado, no de los colores: si lo
+reexportas, vuelve a mapear las cuatro clases a tokens.
+
+El lockup es más alto que el logotipo suelto —relación 3.16 frente a 4.27—, así que la cabecera pasó a `h-16 lg:h-20`
+para que quepa. Si cambias el tamaño del logo, comprueba esa altura: el header la tiene fija.
+
+La coletilla es tipografía muy pequeña: a `w-56` ronda los 6,5 px de altura de x. Funciona como firma, no como texto
+que alguien vaya a leer, y por eso no se le exige contraste de texto normal.
+
+#### El wordmark
+
+La palabra «wiki» del logotipo tiene token propio, `--wordmark`: `0.3825 0.0482 250.25` (**`#2F455C`**, un azul
+pizarra) en claro y `0.9851 0 0` (**`#FAFAFA`**) en oscuro. Antes iba en `fill-foreground`, es decir en el color de
+texto del tema, y por eso no podía tener color de marca propio.
+
+No lo confundas con `--primary-foreground`, que sigue en `0.19 0.012 40` y es el texto que va **encima** de los
+rellenos verdes. Son dos oscuros distintos con trabajos distintos: uno es identidad, el otro es legibilidad sobre el
+menta.
+
+El azul solo vale sobre fondo claro: sobre el fondo oscuro se queda en 2:1, y por eso en modo oscuro el wordmark es
+casi blanco, igual que en `logo-dark.svg`.
+
+`--ring` sigue a `primary`, no a `primary-strong`: un anillo de foco en menta sobre el fondo claro se quedaría en
+2.1:1 y dejaría de verse.
+
+#### El verde de éxito
+
+`--success` era un teal (`0.6 0.118 184.704`) que con la marca en rojo no chocaba con nada. Con la marca en verde
+quedaba a diez grados de matiz de ella, así que se ha movido a un verde más amarillo, `0.5285 0.1061 154.6`
+(**`#2E7D4F`**), que se distingue del verde de marca y de paso sube de 3.5:1 a 4.8:1 con su texto blanco.
+`--destructive` sigue en rojo y ahora contrasta mejor con el resto del sistema.
 
 #### Los assets de marca
 
-Los ficheros de `public/` no pueden leer tokens, así que llevan el hex escrito. El rojo es el mismo
-`primary-strong`, **`#CF1743`**, en todo lo que se ve sobre fondo claro o lleva la «e» blanca encima:
+Los ficheros de `public/` no pueden leer tokens, así que llevan el hex escrito. Cada uno lleva la pareja que le
+corresponde según el fondo sobre el que se ve:
 
-| Fichero                                                                                      | Rojo      | Nota                                                    |
-| -------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------- |
-| `logo.svg`, `logo.png`                                                                       | `#CF1743` | `logo.png` es el que viaja en los correos               |
-| `logo-dark.svg`                                                                              | `#FF385C` | Para fondo oscuro, igual que la página en modo oscuro   |
-| `icon.png`, `apple-touch-icon.png`, `android-chrome-*.png`, `favicon-96x96.png`, `favicon.*` | `#CF1743` | Tile rojo con la «e» en blanco                          |
-| `site.webmanifest`                                                                           | `#CF1743` | `theme_color`, que es la barra del navegador en Android |
+| Fichero                                                                                      | Marca     | Wordmark  | Nota                                                    |
+| -------------------------------------------------------------------------------------------- | --------- | --------- | ------------------------------------------------------- |
+| `logo.svg`, `logo.png`                                                                       | `#227966` | `#2F455C` | `logo.png` es el que viaja en los correos               |
+| `logo-dark.svg`                                                                              | `#6FC0AB` | `#FAFAFA` | Para fondo oscuro, igual que la página en modo oscuro   |
+| `og.jpg`                                                                                     | `#227966` | `#2F455C` | La previsualización social, wordmark sobre blanco       |
+| `icon.png`, `apple-touch-icon.png`, `android-chrome-*.png`, `favicon-96x96.png`, `favicon.*` | `#6FC0AB` | `#2F455C` | Tile menta con la «e» en azul                           |
+| `site.webmanifest`                                                                           | `#6FC0AB` | —         | `theme_color`, que es la barra del navegador en Android |
 
-`logo.png` se regenera desde `logo.svg`; los iconos se recolorean desde el original para no perder el antialiasing
-de la esquina redondeada. Si el rojo vuelve a cambiar, hay que rehacerlos todos: no hay build que los derive.
+Ojo con el tile: al pasar de rojo a menta la «e» dejó de poder ser blanca (2.1:1). Ahora va en el azul del wordmark,
+`#2F455C`, que da 4.6:1 sobre el menta. Cumple AA y a 48 px se lee sin problema, pero es bastante menos peso que el
+`#191210` que llevaba antes: si algún día el favicon se ve flojo a 16 px, ese es el número a subir.
+
+`logo.svg` y `logo.png` son el mismo diseño y deben ir a la vez; los iconos y `og.jpg` se recolorean desde el
+original para no perder el antialiasing de la esquina redondeada. Si alguno de los dos colores vuelve a cambiar, hay
+que rehacerlos todos: no hay build que los derive.
 
 #### Tokens que no cambian con el tema
 
@@ -90,7 +146,7 @@ que el salto al cargar la fuente no descoloque la maqueta.
 | Meta             | `text-sm`                                                                     | Ubicación, fechas, contadores                              |
 | Versalita        | `text-[0.6875rem] uppercase tracking-[0.12em]`                                | Etiquetas de las filas de datos y el mes del chip de fecha |
 
-Los titulares van siempre en `foreground`, no en rojo. El rojo aparece como palabra suelta acentuada dentro del titular
+Los titulares van siempre en `foreground`, no en verde. El verde aparece como palabra suelta acentuada dentro del titular
 del hero, y poco más.
 
 ### Radios
@@ -204,12 +260,13 @@ Los formularios largos se organizan en grupos separados por `border-t pt-6`, con
 ### Menú
 
 El ítem activo se marca con un **punto de `--brand` de 5 px delante del texto**, y el texto pasa a `foreground`. No se
-tiñe el enlace de rojo: a 14 px no llegaría a contraste AA, y el punto se lee mejor de un vistazo.
+tiñe el enlace de verde: a 14 px no llegaría a contraste AA, y el punto se lee mejor de un vistazo.
 
 ## Accesibilidad
 
-- **Contraste**: texto normal 4.5:1, texto grande y elementos no textuales 3:1. El reparto de los tres rojos existe
-  precisamente para cumplirlo; no lo deshagas usando `primary` como fondo de un botón.
+- **Contraste**: texto normal 4.5:1, texto grande y elementos no textuales 3:1. El reparto de los tres verdes
+  existe precisamente para cumplirlo. Las dos formas de deshacerlo: poner texto blanco sobre `primary-strong` (el
+  menta solo da 2.1:1 con blanco) o usar `brand` como color de texto sobre el fondo claro.
 - **Zonas táctiles**: 44 px mínimo en móvil.
 - **Foco**: anillo de `--ring` (3 px) que ya viene en `buttonVariants` y en los campos. No lo quites.
 - **Iconos**: decorativos con `aria-hidden`, informativos con etiqueta accesible.

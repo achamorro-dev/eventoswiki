@@ -3,6 +3,7 @@ import Logo from '@/ui/components/logo/logo.astro'
 import { ThemeModeToggle } from '@/ui/components/theme-mode-toggle/theme-mode-toggle'
 import { Github, XLogo } from '@/ui/icons'
 import SponsorsFooter from './sponsors-footer.astro'
+import WeAreNextFooter from './wearenext-footer.astro'
 
 const SOCIAL_LINKS = {
   X: 'https://twitter.com/eventos_wiki',
@@ -38,6 +39,7 @@ const SOCIAL_LINKS = {
       <ThemeModeToggle client:idle className="border-border w-fit rounded-full border" />
     </div>
   </div>
+  <WeAreNextFooter />
   <SponsorsFooter />
 </div>
 
