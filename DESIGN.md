@@ -106,6 +106,7 @@ corresponde según el fondo sobre el que se ve:
 | Fichero                                                                                      | Marca     | Wordmark  | Nota                                                    |
 | -------------------------------------------------------------------------------------------- | --------- | --------- | ------------------------------------------------------- |
 | `logo.svg`, `logo.png`                                                                       | `#227966` | `#2F455C` | `logo.png` es el que viaja en los correos               |
+| `logo-by-sc.svg`, `logo-by-sc.png`                                                           | `#227966` | `#2F455C` | El lockup completo «by sirviendo.código;» mapeado a claro (`by` en `#7A736D`); `logo-by-sc.png` es la cabecera de los correos |
 | `logo-dark.svg`                                                                              | `#6FC0AB` | `#FAFAFA` | Para fondo oscuro, igual que la página en modo oscuro   |
 | `og.jpg`                                                                                     | `#227966` | `#2F455C` | La previsualización social, wordmark sobre blanco       |
 | `icon.png`, `apple-touch-icon.png`, `android-chrome-*.png`, `favicon-96x96.png`, `favicon.*` | `#6FC0AB` | `#2F455C` | Tile menta con la «e» en azul                           |
