@@ -12,4 +12,5 @@ export enum SocialNetwork {
   tiktok = 'tiktok',
   web = 'web',
   meetup = 'meetup',
+  luma = 'luma',
 }

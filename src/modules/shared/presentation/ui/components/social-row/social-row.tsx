@@ -16,6 +16,7 @@ interface Props {
   discord?: string
   web?: string
   meetup?: string
+  luma?: string
   className?: string
 }
 
@@ -33,6 +34,7 @@ export const SocialRow = (props: Props) => {
     discord,
     web,
     meetup,
+    luma,
     className,
   } = props
 
@@ -50,6 +52,7 @@ export const SocialRow = (props: Props) => {
       {whatsapp && <SocialLink name={whatsapp} href={whatsapp} type={SocialNetwork.whatsapp} />}
       {discord && <SocialLink name={discord} href={discord} type={SocialNetwork.discord} />}
       {meetup && <SocialLink name={meetup} href={meetup} type={SocialNetwork.meetup} />}
+      {luma && <SocialLink name={luma} href={luma} type={SocialNetwork.luma} />}
     </div>
   )
 }

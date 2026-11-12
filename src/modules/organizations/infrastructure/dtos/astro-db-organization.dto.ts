@@ -18,6 +18,7 @@ export interface AstroDbOrganizationDto {
   discord: string | null
   tiktok: string | null
   meetup: string | null
+  luma: string | null
   createdAt: Date
   updatedAt: Date
 }

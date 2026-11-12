@@ -213,6 +213,7 @@ export const Organization = defineTable({
     discord: column.text({ optional: true }),
     tiktok: column.text({ optional: true }),
     meetup: column.text({ optional: true }),
+    luma: column.text({ optional: true }),
     createdAt: column.date({ default: NOW }),
     updatedAt: column.date({ default: NOW }),
   },

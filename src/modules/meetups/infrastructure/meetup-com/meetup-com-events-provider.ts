@@ -1,5 +1,9 @@
-import { MeetupGroupNotFound } from '../../domain/errors/meetup-group-not-found.error'
-import type { ExternalMeetupEvent, ExternalMeetupsProvider } from '../../domain/external-meetups-provider'
+import { ExternalMeetupsGroupNotFound } from '../../domain/errors/external-meetups-group-not-found.error'
+import type {
+  ExternalMeetupEvent,
+  ExternalMeetupEventSummary,
+  ExternalMeetupsProvider,
+} from '../../domain/external-meetups-provider'
 import { MeetupTypes } from '../../domain/meetup-type'
 
 const MEETUP_API_URL = 'https://api.meetup.com/gql-ext'
@@ -58,7 +62,22 @@ interface MeetupApiResponse {
 type EventStatusToSync = (typeof EVENT_STATUSES_TO_SYNC)[number]
 
 export class MeetupComEventsProvider implements ExternalMeetupsProvider {
-  async getEvents(groupUrl: string): Promise<ExternalMeetupEvent[]> {
+  getEventSummaries(groupUrl: string): Promise<ExternalMeetupEventSummary[]> {
+    return this._getAllEvents(groupUrl)
+  }
+
+  async getEvents(groupUrl: string, externalIds?: string[]): Promise<ExternalMeetupEvent[]> {
+    const events = await this._getAllEvents(groupUrl)
+    if (!externalIds) {
+      return events
+    }
+
+    const externalIdsToSync = new Set(externalIds)
+
+    return events.filter(event => externalIdsToSync.has(event.externalId))
+  }
+
+  private async _getAllEvents(groupUrl: string): Promise<ExternalMeetupEvent[]> {
     const urlname = this._extractUrlname(groupUrl)
 
     const eventsByStatus = await Promise.all(
@@ -107,7 +126,7 @@ export class MeetupComEventsProvider implements ExternalMeetupsProvider {
 
     const group = result.data?.groupByUrlname
     if (!group) {
-      throw new MeetupGroupNotFound(groupUrl)
+      throw new ExternalMeetupsGroupNotFound(groupUrl)
     }
 
     return group.events
@@ -150,7 +169,7 @@ export class MeetupComEventsProvider implements ExternalMeetupsProvider {
     try {
       pathname = new URL(groupUrl).pathname
     } catch (_error) {
-      throw new MeetupGroupNotFound(groupUrl)
+      throw new ExternalMeetupsGroupNotFound(groupUrl)
     }
 
     const urlname = pathname
@@ -159,7 +178,7 @@ export class MeetupComEventsProvider implements ExternalMeetupsProvider {
       .find(segment => !localePattern.test(segment))
 
     if (!urlname) {
-      throw new MeetupGroupNotFound(groupUrl)
+      throw new ExternalMeetupsGroupNotFound(groupUrl)
     }
 
     return urlname

@@ -3,6 +3,7 @@ import { type Control, type FieldValues, type Path, useWatch } from 'react-hook-
 import { Button } from '@/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import {
+  Calendar,
   Discord,
   Facebook,
   Github,
@@ -34,6 +35,7 @@ type Social = {
   github?: string
   linkedin?: string
   meetup?: string
+  luma?: string
 }
 
 type SocialKeys = keyof Social
@@ -104,9 +106,14 @@ const socialFields: Record<SocialKeys, { label: string; icon: React.ReactNode; p
     icon: <Meetup className="h-4 w-4" />,
     placeholder: 'https://www.meetup.com/tu-grupo',
   },
+  luma: {
+    label: 'Luma',
+    icon: <Calendar className="h-4 w-4" />,
+    placeholder: 'https://luma.com/tu-calendario',
+  },
 }
 
-const optionalSocialKeys: SocialKeys[] = ['meetup']
+const optionalSocialKeys: SocialKeys[] = ['meetup', 'luma']
 const defaultSocialKeys = (Object.keys(socialFields) as SocialKeys[]).filter(key => !optionalSocialKeys.includes(key))
 
 interface Props<T extends FieldValues> {

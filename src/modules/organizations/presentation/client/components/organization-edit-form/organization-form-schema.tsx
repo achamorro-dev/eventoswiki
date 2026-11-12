@@ -27,6 +27,7 @@ export const organizationFormSchema = z.object({
   github: NotRequiredStringFormField(OrganizationLinkValidator),
   linkedin: NotRequiredStringFormField(OrganizationLinkValidator),
   meetup: NotRequiredStringFormField(OrganizationLinkValidator),
+  luma: NotRequiredStringFormField(OrganizationLinkValidator),
 })
 
 export type OrganizationFormSchema = z.infer<typeof organizationFormSchema>

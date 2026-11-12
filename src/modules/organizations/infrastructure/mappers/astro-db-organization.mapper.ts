@@ -46,6 +46,7 @@ export class AstroOrganizationMapper {
       discord: organization.discord || undefined,
       tiktok: organization.tiktok || undefined,
       meetup: organization.meetup || undefined,
+      luma: organization.luma || undefined,
       createdAt: Datetime.toIsoString(organization.createdAt),
       updatedAt: Datetime.toIsoString(organization.updatedAt),
       organizers: organizerIds,

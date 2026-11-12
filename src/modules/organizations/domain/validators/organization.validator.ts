@@ -19,6 +19,7 @@ const socialKeys = [
   'discord',
   'tiktok',
   'meetup',
+  'luma',
 ] as const
 
 export class OrganizationValidator extends Validator<OrganizationEditableData> {

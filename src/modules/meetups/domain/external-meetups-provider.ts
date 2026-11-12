@@ -13,6 +13,12 @@ export interface ExternalMeetupEvent {
   tags: string[]
 }
 
+export type ExternalMeetupEventSummary = Pick<
+  ExternalMeetupEvent,
+  'externalId' | 'title' | 'startsAt' | 'imageUrl' | 'eventUrl'
+>
+
 export interface ExternalMeetupsProvider {
-  getEvents(groupUrl: string): Promise<ExternalMeetupEvent[]>
+  getEventSummaries(groupUrl: string): Promise<ExternalMeetupEventSummary[]>
+  getEvents(groupUrl: string, externalIds?: string[]): Promise<ExternalMeetupEvent[]>
 }

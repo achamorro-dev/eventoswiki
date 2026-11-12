@@ -1,13 +1,15 @@
 import type { GetOrganizationByIdQuery } from '@/organizations/application/get-organization-by-id.query'
 import type { UserIsOrganizerEnsurer } from '@/organizations/application/user-is-organizer-ensurer.service'
 import { Query } from '@/shared/application/use-case/query'
-import { OrganizationMeetupUrlMissing } from '../domain/errors/organization-meetup-url-missing.error'
-import type { ExternalMeetupsProvider } from '../domain/external-meetups-provider'
+import { OrganizationExternalMeetupsUrlMissing } from '../domain/errors/organization-external-meetups-url-missing.error'
+import type { ExternalMeetupsSource } from '../domain/external-meetups-source'
 import type { MeetupsRepository } from '../domain/meetups.repository'
+import type { ExternalMeetupsProviders } from './external-meetups-providers'
 
 interface Param {
   organizationId: string
   userId: string
+  source: ExternalMeetupsSource
 }
 
 export interface ExternalMeetupPreview {
@@ -24,21 +26,22 @@ export class GetExternalMeetupsQuery extends Query<ExternalMeetupPreview[], Para
     private readonly meetupsRepository: MeetupsRepository,
     private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
     private readonly getOrganizationByIdQuery: GetOrganizationByIdQuery,
-    private readonly externalMeetupsProvider: ExternalMeetupsProvider,
+    private readonly externalMeetupsProviders: ExternalMeetupsProviders,
   ) {
     super()
   }
 
-  async execute({ organizationId, userId }: Param): Promise<ExternalMeetupPreview[]> {
+  async execute({ organizationId, userId, source }: Param): Promise<ExternalMeetupPreview[]> {
     await this.userIsOrganizerEnsurer.ensure({ userId, organizationId })
 
     const organization = await this.getOrganizationByIdQuery.execute({ id: organizationId })
-    if (!organization.meetup) {
-      throw new OrganizationMeetupUrlMissing(organizationId)
+    const groupUrl = organization[source]
+    if (!groupUrl) {
+      throw new OrganizationExternalMeetupsUrlMissing(organizationId, source)
     }
 
     const [externalEvents, organizationMeetups] = await Promise.all([
-      this.externalMeetupsProvider.getEvents(organization.meetup),
+      this.externalMeetupsProviders.get(source).getEventSummaries(groupUrl),
       this.meetupsRepository.findByOrganizationId(organizationId),
     ])
 

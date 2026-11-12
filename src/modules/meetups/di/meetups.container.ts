@@ -14,6 +14,7 @@ import { AttendMeetupCommand } from '../application/attend-meetup.command'
 import { CreateMeetupCommand } from '../application/create-meetup.command'
 import { DeleteMeetupCommand } from '../application/delete-meetup.command'
 import { ExportAttendeesCommand } from '../application/export-attendees.command'
+import { ExternalMeetupsProviders } from '../application/external-meetups-providers'
 import { FindMeetupQuery } from '../application/find-meetup.query'
 import { FindMeetupAttendeesQuery } from '../application/find-meetup-attendees.query'
 import { FindMeetupBySlugQuery } from '../application/find-meetup-by-slug.query'
@@ -26,10 +27,11 @@ import { GetPastMeetupsQuery } from '../application/get-past-meetups.query'
 import { GetPastMeetupsAttendedByUserQuery } from '../application/get-past-meetups-attended-by-user.query'
 import { GetUpcomingMeetupsAttendedByUserQuery } from '../application/get-upcoming-meetups-attended-by-user.query'
 import { SearchMeetupsQuery } from '../application/search-meetups.query'
-import { SyncMeetupsFromMeetupCommand } from '../application/sync-meetups-from-meetup.command'
+import { SyncExternalMeetupsCommand } from '../application/sync-external-meetups.command'
 import { UnattendMeetupCommand } from '../application/unattend-meetup.command'
 import { UpdateMeetupCommand } from '../application/update-meetup.command'
 import { AstroDbMeetupsRepository } from '../infrastructure/astro-db-meetups.repository'
+import { LumaEventsProvider } from '../infrastructure/luma/luma-events-provider'
 import { MeetupComEventsProvider } from '../infrastructure/meetup-com/meetup-com-events-provider'
 
 const builder = new ContainerBuilder()
@@ -81,6 +83,13 @@ builder.register(GetProvincesQuery).useFactory(_ => ProvincesContainer.get(GetPr
 
 builder.register(MeetupComEventsProvider).use(MeetupComEventsProvider)
 
+builder.register(LumaEventsProvider).use(LumaEventsProvider)
+
+builder
+  .register(ExternalMeetupsProviders)
+  .use(ExternalMeetupsProviders)
+  .withDependencies([MeetupComEventsProvider, LumaEventsProvider])
+
 builder
   .register(GetExternalMeetupsQuery)
   .use(GetExternalMeetupsQuery)
@@ -88,17 +97,17 @@ builder
     AstroDbMeetupsRepository,
     UserIsOrganizerEnsurer,
     GetOrganizationByIdQuery,
-    MeetupComEventsProvider,
+    ExternalMeetupsProviders,
   ])
 
 builder
-  .register(SyncMeetupsFromMeetupCommand)
-  .use(SyncMeetupsFromMeetupCommand)
+  .register(SyncExternalMeetupsCommand)
+  .use(SyncExternalMeetupsCommand)
   .withDependencies([
     AstroDbMeetupsRepository,
     UserIsOrganizerEnsurer,
     GetOrganizationByIdQuery,
-    MeetupComEventsProvider,
+    ExternalMeetupsProviders,
     GetProvincesQuery,
   ])
 

@@ -54,6 +54,7 @@ export const OrganizationEditForm = ({ provinces, organization }: Props) => {
       github: organization?.github,
       linkedin: organization?.linkedin,
       meetup: organization?.meetup,
+      luma: organization?.luma,
     },
     resolver: zodResolver(organizationFormSchema),
   })
@@ -181,10 +182,10 @@ export const OrganizationEditForm = ({ provinces, organization }: Props) => {
             </div>
           </div>
 
-          <SocialForm control={form.control} extraFields={['meetup']} />
+          <SocialForm control={form.control} extraFields={['meetup', 'luma']} />
 
           <p className="text-muted-foreground text-sm">
-            Añade el enlace de tu grupo de Meetup para poder sincronizar tus meetups.
+            Añade el enlace de tu grupo de Meetup o de tu calendario de Luma para poder sincronizar tus meetups.
           </p>
         </div>
         <div className="mt-4 flex w-full justify-end">

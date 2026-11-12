@@ -3,6 +3,8 @@ import { navigate } from 'astro:transitions/client'
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import type { ExternalMeetupPreview } from '@/meetups/application/get-external-meetups.query'
+import type { ExternalMeetupsSource } from '@/meetups/domain/external-meetups-source'
+import { EXTERNAL_MEETUPS_SOURCE_LABELS } from '@/meetups/presentation/external-meetups-source-labels'
 import { Badge } from '@/ui/badge'
 import { Button } from '@/ui/button'
 import { Checkbox } from '@/ui/checkbox'
@@ -20,6 +22,7 @@ import { ArrowsClockwise, Loader } from '@/ui/icons'
 import { Urls } from '@/ui/urls/urls'
 
 interface Props {
+  source: ExternalMeetupsSource
   organizationId: string
   organizationHandle: string
 }
@@ -34,7 +37,8 @@ const isUpcoming = (meetup: ExternalMeetupPreview) => new Date(meetup.startsAt).
 
 const formatStartsAt = (startsAt: string) => dateFormatter.format(new Date(startsAt))
 
-export const SyncMeetupsButton = ({ organizationId, organizationHandle }: Props) => {
+export const SyncMeetupsButton = ({ source, organizationId, organizationHandle }: Props) => {
+  const { name: sourceName, group: sourceGroup } = EXTERNAL_MEETUPS_SOURCE_LABELS[source]
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [loadErrorMessage, setLoadErrorMessage] = useState<string | null>(null)
@@ -57,7 +61,7 @@ export const SyncMeetupsButton = ({ organizationId, organizationHandle }: Props)
     setIsLoading(true)
     setLoadErrorMessage(null)
 
-    const { data, error } = await actions.meetups.getExternalMeetupsAction({ organizationId })
+    const { data, error } = await actions.meetups.getExternalMeetupsAction({ organizationId, source })
 
     setIsLoading(false)
 
@@ -101,8 +105,9 @@ export const SyncMeetupsButton = ({ organizationId, organizationHandle }: Props)
   const syncSelected = async () => {
     setIsSyncing(true)
 
-    const { data, error } = await actions.meetups.syncMeetupsFromMeetupAction({
+    const { data, error } = await actions.meetups.syncExternalMeetupsAction({
       organizationId,
+      source,
       externalIds: [...selectedIds],
     })
 
@@ -122,18 +127,18 @@ export const SyncMeetupsButton = ({ organizationId, organizationHandle }: Props)
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <ArrowsClockwise /> Sincronizar con Meetup.com
+          <ArrowsClockwise /> Sincronizar con {sourceName}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Sincronizar con Meetup.com</DialogTitle>
-          <DialogDescription>Selecciona los meetups del grupo que quieres sincronizar.</DialogDescription>
+          <DialogTitle>Sincronizar con {sourceName}</DialogTitle>
+          <DialogDescription>Selecciona los meetups del {sourceGroup} que quieres sincronizar.</DialogDescription>
         </DialogHeader>
 
         {isLoading && (
           <div className="flex items-center justify-center gap-2 py-10 text-muted-foreground">
-            <Loader className="animate-spin" /> Cargando los meetups de Meetup.com…
+            <Loader className="animate-spin" /> Cargando los meetups de {sourceName}…
           </div>
         )}
 
@@ -148,7 +153,7 @@ export const SyncMeetupsButton = ({ organizationId, organizationHandle }: Props)
 
         {!isLoading && !loadErrorMessage && previews.length === 0 && (
           <p className="py-10 text-center text-muted-foreground text-sm">
-            No se han encontrado meetups en el grupo de Meetup.com.
+            No se han encontrado meetups en el {sourceGroup}.
           </p>
         )}
 
@@ -217,6 +222,8 @@ const MeetupPreviewGroup = ({ title, meetups, selectedIds, disabled, onToggle }:
     return null
   }
 
+  const hasThumbnails = meetups.some(meetup => meetup.imageUrl)
+
   return (
     <section>
       <h4 className="mb-2 font-semibold text-muted-foreground text-sm">
@@ -235,13 +242,15 @@ const MeetupPreviewGroup = ({ title, meetups, selectedIds, disabled, onToggle }:
                 onCheckedChange={checked => onToggle(meetup.externalId, checked === true)}
                 disabled={disabled}
               />
-              <img
-                className="h-10 w-16 shrink-0 rounded object-cover"
-                src={meetup.imageUrl ?? '/not-found.webp'}
-                alt=""
-                loading="lazy"
-                onError={toFallbackImage}
-              />
+              {hasThumbnails && (
+                <img
+                  className="h-10 w-16 shrink-0 rounded object-cover"
+                  src={meetup.imageUrl ?? '/not-found.webp'}
+                  alt=""
+                  loading="lazy"
+                  onError={toFallbackImage}
+                />
+              )}
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-medium text-sm">{meetup.title}</span>
                 <span className="block text-muted-foreground text-xs">{formatStartsAt(meetup.startsAt)}</span>

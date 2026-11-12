@@ -2,6 +2,7 @@
 import { GetNextMeetupsQuery } from '@/meetups/application/get-next-meetups.query'
 import { GetPastMeetupsQuery } from '@/meetups/application/get-past-meetups.query'
 import { MeetupsContainer } from '@/meetups/di/meetups.container'
+import { ExternalMeetupsSources } from '@/meetups/domain/external-meetups-source'
 import type { Organization } from '@/organizations/domain/organization'
 import { LIST_PAGE_SIZE } from '@/shared/presentation/list-page-size'
 import { EmptyMessage } from '@/ui/components/empty-message/empty-message'
@@ -29,7 +30,9 @@ const [upcomingMeetups, pastMeetups] = await Promise.all([
 const hasUpcomingMeetups = upcomingMeetups.data.length > 0
 const hasPastMeetups = pastMeetups.data.length > 0
 const hasMeetups = hasUpcomingMeetups || hasPastMeetups
-const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
+const syncSources = isOrganizer
+  ? Object.values(ExternalMeetupsSources).filter(source => Boolean(organization[source]))
+  : []
 ---
 
 <div class="groups">
@@ -39,13 +42,14 @@ const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
         <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
           Crear meetup
         </Link>
-        {canSyncMeetups && (
+        {syncSources.map(source => (
           <SyncMeetupsButton
             client:load
+            source={source}
             organizationId={organization.id.value}
             organizationHandle={organization.handle}
           />
-        )}
+        ))}
       </div>
     )
   }
@@ -85,13 +89,14 @@ const canSyncMeetups = isOrganizer && Boolean(organization.meetup)
             <Link href={Urls.CREATE_MEETUP(organization.handle)} variant="outline">
               Crear meetup
             </Link>
-            {canSyncMeetups && (
+            {syncSources.map(source => (
               <SyncMeetupsButton
                 client:load
+                source={source}
                 organizationId={organization.id.value}
                 organizationHandle={organization.handle}
               />
-            )}
+            ))}
           </div>
         )}
       </EmptyMessage>

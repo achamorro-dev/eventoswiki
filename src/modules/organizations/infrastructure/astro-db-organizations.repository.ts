@@ -147,6 +147,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
           discord: value.discord,
           tiktok: value.tiktok,
           meetup: value.meetup,
+          luma: value.luma,
           updatedAt: new Date(),
         })
         .where(eq(Organization.id, value.id.value))
@@ -179,6 +180,7 @@ export class AstroDbOrganizationsRepository implements OrganizationsRepository {
         discord: value.discord,
         tiktok: value.tiktok,
         meetup: value.meetup,
+        luma: value.luma,
         createdAt: new Date(),
         updatedAt: new Date(),
       })

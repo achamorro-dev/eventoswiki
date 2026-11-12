@@ -5,7 +5,7 @@ import { getAttendeesAction } from './get-attendees.action'
 import { getExternalMeetupsAction } from './get-external-meetups.action'
 import { removeAttendeeAction } from './remove-attendee.action'
 import { saveMeetupAction } from './save-meetup.action'
-import { syncMeetupsFromMeetupAction } from './sync-meetups-from-meetup.action'
+import { syncExternalMeetupsAction } from './sync-external-meetups.action'
 import { unattendMeetupAction } from './unattend-meetup.action'
 
 export const meetupsServerActions = {
@@ -17,5 +17,5 @@ export const meetupsServerActions = {
   exportAttendeesAction,
   getAttendeesAction,
   getExternalMeetupsAction,
-  syncMeetupsFromMeetupAction,
+  syncExternalMeetupsAction,
 }

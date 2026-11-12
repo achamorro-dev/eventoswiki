@@ -5,10 +5,12 @@ import { ProvinceCollection } from '@/provinces/domain/province-collection'
 import { Command } from '@/shared/application/use-case/command'
 import { RichContent } from '@/shared/domain/content/rich-content'
 import { SlugGenerator } from '@/shared/presentation/services/slugs/slug-generator'
-import { OrganizationMeetupUrlMissing } from '../domain/errors/organization-meetup-url-missing.error'
-import type { ExternalMeetupEvent, ExternalMeetupsProvider } from '../domain/external-meetups-provider'
+import { OrganizationExternalMeetupsUrlMissing } from '../domain/errors/organization-external-meetups-url-missing.error'
+import type { ExternalMeetupEvent } from '../domain/external-meetups-provider'
+import type { ExternalMeetupsSource } from '../domain/external-meetups-source'
 import { Meetup, type MeetupEditableData } from '../domain/meetup'
 import type { MeetupsRepository } from '../domain/meetups.repository'
+import type { ExternalMeetupsProviders } from './external-meetups-providers'
 
 const LEGACY_PLACEHOLDER_IMAGE = 'https://eventos.wiki/og.jpg'
 const DEFAULT_EVENT_DURATION_MS = 2 * 60 * 60 * 1000
@@ -17,6 +19,7 @@ const SHORT_DESCRIPTION_MAX_LENGTH = 160
 interface Param {
   organizationId: string
   userId: string
+  source: ExternalMeetupsSource
   externalIds?: string[]
 }
 
@@ -25,39 +28,39 @@ export interface SyncMeetupsResult {
   updated: number
 }
 
-export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResult> {
+export class SyncExternalMeetupsCommand extends Command<Param, SyncMeetupsResult> {
   private provinces: ProvinceCollection = new ProvinceCollection([])
   constructor(
     private readonly meetupsRepository: MeetupsRepository,
     private readonly userIsOrganizerEnsurer: UserIsOrganizerEnsurer,
     private readonly getOrganizationByIdQuery: GetOrganizationByIdQuery,
-    private readonly externalMeetupsProvider: ExternalMeetupsProvider,
+    private readonly externalMeetupsProviders: ExternalMeetupsProviders,
     private readonly getProvincesQuery: GetProvincesQuery,
   ) {
     super()
   }
 
   async execute(param: Param): Promise<SyncMeetupsResult> {
-    const { organizationId, userId } = param
+    const { organizationId, userId, source, externalIds } = param
 
     await this.userIsOrganizerEnsurer.ensure({ userId, organizationId })
 
     const organization = await this.getOrganizationByIdQuery.execute({ id: organizationId })
-    if (!organization.meetup) {
-      throw new OrganizationMeetupUrlMissing(organizationId)
+    const groupUrl = organization[source]
+    if (!groupUrl) {
+      throw new OrganizationExternalMeetupsUrlMissing(organizationId, source)
     }
 
     const [externalEvents, meetupsByExternalId, provinces] = await Promise.all([
-      this.externalMeetupsProvider.getEvents(organization.meetup),
+      this.externalMeetupsProviders.get(source).getEvents(groupUrl, externalIds),
       this._getMeetupsByExternalId(organizationId),
       this.getProvincesQuery.execute(),
     ])
     this.provinces = new ProvinceCollection(provinces)
 
-    const eventsToSync = this._filterEventsToSync(externalEvents, param.externalIds)
     const result: SyncMeetupsResult = { created: 0, updated: 0 }
 
-    for (const externalEvent of eventsToSync) {
+    for (const externalEvent of externalEvents) {
       const existingMeetup = meetupsByExternalId.get(externalEvent.externalId)
 
       if (existingMeetup) {
@@ -73,16 +76,6 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
     }
 
     return result
-  }
-
-  private _filterEventsToSync(externalEvents: ExternalMeetupEvent[], externalIds?: string[]): ExternalMeetupEvent[] {
-    if (!externalIds) {
-      return externalEvents
-    }
-
-    const externalIdsToSync = new Set(externalIds)
-
-    return externalEvents.filter(externalEvent => externalIdsToSync.has(externalEvent.externalId))
   }
 
   private async _getMeetupsByExternalId(organizationId: string): Promise<Map<string, Meetup>> {
@@ -132,21 +125,25 @@ export class SyncMeetupsFromMeetupCommand extends Command<Param, SyncMeetupsResu
   }
 
   private _toContent(externalEvent: ExternalMeetupEvent): string {
-    const description = externalEvent.description || `Más información en ${externalEvent.eventUrl}`
-    const venue = [externalEvent.venueName, externalEvent.venueAddress, externalEvent.venueCity]
-      .filter(Boolean)
-      .join(', ')
-    const markdown = venue ? `${description}\n\n**Ubicación:** ${venue}` : description
+    const description = RichContent.normalize(
+      externalEvent.description || `Más información en ${externalEvent.eventUrl}`,
+    )
+    const venue = this._toVenue(externalEvent)
 
-    // Meetup.com serves markdown, but content is stored as HTML so the editor can edit it as rich text
-    return RichContent.toHtml(markdown)
+    return venue ? `${description}${RichContent.toHtml(`**Ubicación:** ${venue}`)}` : description
+  }
+
+  private _toVenue({ venueName, venueAddress, venueCity }: ExternalMeetupEvent): string {
+    const isCityInAddress = Boolean(venueCity && venueAddress?.includes(venueCity))
+
+    return [venueName, venueAddress, isCityInAddress ? null : venueCity].filter(Boolean).join(', ')
   }
 
   private _generateSlug(externalEvent: ExternalMeetupEvent): string {
     const year = new Date(externalEvent.startsAt).getFullYear()
     const titleSlug = new SlugGenerator(externalEvent.title).generate()
 
-    return `${year}/${titleSlug}-${externalEvent.externalId}`
+    return `${year}/${titleSlug}-${externalEvent.externalId.toLowerCase()}`
   }
 
   private _toShortDescription(externalEvent: ExternalMeetupEvent): string {
