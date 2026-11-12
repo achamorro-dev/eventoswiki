@@ -37,7 +37,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   tiktok: <Tiktok />,
   web: <Globe />,
   meetup: <Meetup />,
-  luma: <Luma size={12} />,
+  luma: <Luma />,
 }
 
 export const SocialLink: FC<SocialLinkProps> = props => {

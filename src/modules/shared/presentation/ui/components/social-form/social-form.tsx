@@ -108,7 +108,7 @@ const socialFields: Record<SocialKeys, { label: string; icon: React.ReactNode; p
   },
   luma: {
     label: 'Luma',
-    icon: <Luma size={12} />,
+    icon: <Luma className="h-4 w-4" />,
     placeholder: 'https://luma.com/tu-calendario',
   },
 }
