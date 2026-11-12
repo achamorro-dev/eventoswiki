@@ -3,13 +3,13 @@ import { type Control, type FieldValues, type Path, useWatch } from 'react-hook-
 import { Button } from '@/ui/button'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/ui/form'
 import {
-  Calendar,
   Discord,
   Facebook,
   Github,
   Globe,
   Instagram,
   Linkedin,
+  Luma,
   Meetup,
   Telegram,
   Tiktok,
@@ -108,7 +108,7 @@ const socialFields: Record<SocialKeys, { label: string; icon: React.ReactNode; p
   },
   luma: {
     label: 'Luma',
-    icon: <Calendar className="h-4 w-4" />,
+    icon: <Luma size={12} />,
     placeholder: 'https://luma.com/tu-calendario',
   },
 }

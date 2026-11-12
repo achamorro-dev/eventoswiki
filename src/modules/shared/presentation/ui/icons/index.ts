@@ -87,6 +87,7 @@ export {
   Ticket,
   Twitch,
 } from './custom-icons'
+export { Luma } from './luma-logo'
 
 export const ArrowArcLeft = /*#__PURE__*/ createIcon(IconoirUndo)
 export const ArrowArcRight = /*#__PURE__*/ createIcon(IconoirRedo)

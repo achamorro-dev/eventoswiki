@@ -1,13 +1,13 @@
 import type { FC, ReactNode } from 'react'
 import type { SocialNetwork } from '@/shared/domain/social/social-network'
 import {
-  Calendar,
   Discord,
   Facebook,
   Github,
   Globe,
   Instagram,
   Linkedin,
+  Luma,
   Meetup,
   Telegram,
   Tiktok,
@@ -37,7 +37,7 @@ const SocialLinkIcon: { [key in SocialNetwork]: ReactNode } = {
   tiktok: <Tiktok />,
   web: <Globe />,
   meetup: <Meetup />,
-  luma: <Calendar />,
+  luma: <Luma size={12} />,
 }
 
 export const SocialLink: FC<SocialLinkProps> = props => {
