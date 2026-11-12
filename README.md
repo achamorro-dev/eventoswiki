@@ -154,7 +154,7 @@ Published content is also exposed as open data, with CORS enabled so third parti
 
 | Route                                    | Format                                                              |
 | ---------------------------------------- | ------------------------------------------------------------------- |
-| `/events.json`                           | [OpenTechEvents](https://opentechevents.org) v0.4.0 feed, plus JSON-LD      |
+| `/events.json`                           | [OpenTechEvents](https://opentechevents.org) v0.6.0 feed (upcoming events and the last 3 months, declared in `covers`), plus JSON-LD |
 | `/events.ics`                            | iCalendar, to subscribe from any calendar app                       |
 | `/organizations/<handle>/events.json`    | The same feed limited to one organization                           |
 | `/organizations/<handle>/events.ics`     | The same calendar limited to one organization                       |

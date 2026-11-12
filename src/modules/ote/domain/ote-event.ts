@@ -1,5 +1,5 @@
 /**
- * Tipos del formato OpenTechEvents (OTE) v0.3 — https://opentechevents.org
+ * Tipos del formato OpenTechEvents (OTE) v0.6 — https://opentechevents.org
  *
  * La especificación está en draft (0.x) y avisa de que los campos pueden
  * cambiar, renombrarse o desaparecer. Por eso estos tipos viven aislados en su
@@ -7,7 +7,7 @@
  * de serialización, no un modelo de dominio.
  */
 
-export const OTE_SPEC_VERSION = '0.4.0'
+export const OTE_SPEC_VERSION = '0.6.0'
 export const OTE_LICENSE = 'CC-BY-4.0'
 export const OTE_MEDIA_TYPE = 'application/ote+json'
 
@@ -101,6 +101,14 @@ export interface OteEvent {
   updatedAt?: string
 }
 
+/**
+ * Ventana de días (`YYYY-MM-DD`, comparada con el `startDate` de cada evento) para
+ * la que el feed se declara completo: dentro, un evento ausente es que no se
+ * celebra; fuera, el feed no afirma nada. `to` es inclusivo y la spec exige al
+ * menos uno de los dos extremos.
+ */
+export type OteCoverage = { from: string; to?: string } | { from?: string; to: string }
+
 export interface OteFeed {
   specVersion: string
   license: string
@@ -110,5 +118,6 @@ export interface OteFeed {
   textLanguage?: string
   organizers?: OteOrganizer[]
   updatedAt?: string
+  covers?: OteCoverage
   events: OteEvent[]
 }

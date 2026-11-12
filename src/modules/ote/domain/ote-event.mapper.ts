@@ -23,7 +23,7 @@ const CURRENCY = 'EUR'
 const TEXT_LANGUAGE = 'es'
 
 /**
- * Traduce un evento o meetup del dominio a un documento OTE v0.3.
+ * Traduce un evento o meetup del dominio a un documento OTE.
  *
  * Es la representación intermedia canónica: de aquí salen tanto el feed
  * (`/events.json`) como el JSON-LD de schema.org que se inyecta en las páginas

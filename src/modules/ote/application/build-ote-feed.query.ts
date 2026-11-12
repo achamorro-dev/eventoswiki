@@ -6,14 +6,25 @@ import { GetOrganizationByIdQuery } from '@/organizations/application/get-organi
 import type { Organization } from '@/organizations/domain/organization'
 import { Query } from '@/shared/application/use-case/query'
 import { Datetime } from '@/shared/domain/datetime/datetime'
-import { OTE_LICENSE, OTE_SPEC_VERSION, type OteFeed } from '../domain/ote-event'
+import { OTE_LICENSE, OTE_SPEC_VERSION, type OteCoverage, type OteFeed } from '../domain/ote-event'
 import { toOteEvent, toOteOrganizer } from '../domain/ote-event.mapper'
 
 /**
- * OTE v0.3 no define paginación —el feed es un fichero completo, no una API—, así
- * que esta cota es lo único que impide que crezca sin límite. Al recortar por el
- * extremo más antiguo, lo que se queda fuera es el histórico, nunca lo próximo.
+ * La spec no pagina ni lo hará: un feed es una vista actual, no un archivo. Se
+ * publica lo próximo más este margen de pasado, y `covers` lo declara para que
+ * los consumidores no interpreten lo podado como eventos retirados.
  */
+const PAST_COVERAGE_MONTHS = 3
+
+/**
+ * `covers.from` es un día de calendario que se compara con el `startDate` local de
+ * cada evento, pero la base de datos filtra por instantes. Pedir un día más evita
+ * que la diferencia horaria deje fuera un evento de la ventana; lo que sobra cae
+ * fuera de ella, donde el feed no afirma nada.
+ */
+const TIMEZONE_MARGIN_DAYS = 1
+
+/** Si una colección llega a esta cota, el feed ya no puede declararse completo */
 const MAX_ITEMS_PER_COLLECTION = 2000
 const TEXT_LANGUAGE = 'es'
 
@@ -35,10 +46,16 @@ export class BuildOteFeedQuery extends Query<OteFeed, BuildOteFeedRequest> {
   }
 
   async execute({ title, url, description, organizationId }: BuildOteFeedRequest): Promise<OteFeed> {
+    const coverageFrom = pastCoverageStartDate()
+    const startsAt = Datetime.subtract(Datetime.toDate(coverageFrom), TIMEZONE_MARGIN_DAYS, 'day')
+
     const [events, meetups] = await Promise.all([
-      this.findEventsQuery.execute({ organizationId, limit: MAX_ITEMS_PER_COLLECTION }),
-      this.findMeetupsQuery.execute({ organizationId, limit: MAX_ITEMS_PER_COLLECTION }),
+      this.findEventsQuery.execute({ organizationId, startsAt, limit: MAX_ITEMS_PER_COLLECTION }),
+      this.findMeetupsQuery.execute({ organizationId, startsAt, limit: MAX_ITEMS_PER_COLLECTION }),
     ])
+
+    const isTruncated = [events, meetups].some(result => result.data.length >= MAX_ITEMS_PER_COLLECTION)
+    const covers: OteCoverage | undefined = isTruncated ? undefined : { from: coverageFrom }
 
     const items: Array<Event | Meetup> = [...events.data, ...meetups.data].sort(
       (a, b) => b.startsAt.getTime() - a.startsAt.getTime(),
@@ -58,6 +75,7 @@ export class BuildOteFeedQuery extends Query<OteFeed, BuildOteFeedRequest> {
       // no declare organizadores propios y que cada evento traiga el suyo.
       ...(feedOrganization ? { organizers: [toOteOrganizer(feedOrganization)] } : {}),
       updatedAt: Datetime.toInstantString(Datetime.now()),
+      ...(covers ? { covers } : {}),
       events: items.map(item =>
         // En un feed de comunidad los eventos heredan el organizador del feed.
         toOteEvent(item, feedOrganization ? undefined : organizations.get(item.organizationId ?? '')),
@@ -87,4 +105,8 @@ export class BuildOteFeedQuery extends Query<OteFeed, BuildOteFeedRequest> {
 
     return organizations
   }
+}
+
+function pastCoverageStartDate(): string {
+  return Datetime.toDateIsoString(Datetime.subtract(Datetime.now(), PAST_COVERAGE_MONTHS, 'month'))
 }
